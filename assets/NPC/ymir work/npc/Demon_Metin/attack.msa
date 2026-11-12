@@ -1,0 +1,32 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\npc\Demon_Metin\attack.GR2"
+MotionDuration           0.033333
+
+Group MotionEventData
+{
+    MotionEventDataCount     2
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         0.002444
+        
+        IndependentFlag      0
+        AttachingEnable      0
+        AttachingBoneName    "Obj_b005"
+        FollowingEnable      1
+        EffectFileName       "d:/ymir work/effect/background/metinstone_splash.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+    Group Event01
+    {
+        MotionEventType      1
+        StartingTime         0.019487
+
+        AttachingEnable      1
+        AttachingBoneName    "Dummy01"
+        FollowingEnable      0
+        EffectScriptName     "D:\ymir work\effect\background\Demon_Stone.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+}

@@ -1176,7 +1176,9 @@ class Fixtures(unittest.TestCase):
         ids = [line["id"] for line in lines]
         self.assertEqual(ids, sorted(set(ids)), "%s: ids rise, oldest first" % path)
         for line in lines:
-            self.assertEqual(set(line), {"id", "type", "t", "runs"}, path)
+            # A shout carries its sender's language (NOVA-51) and empire
+            # (NOVA-110, ShoutFlags).
+            self.assertEqual(set(line) - {"empire", "lang"}, {"id", "type", "t", "runs"}, path)
             self.assertTrue(0 <= line["type"] <= 8, path)
             self.assertTrue(now - 4.0 <= line["t"] <= now, "%s: t within 4 s before the snap clock" % path)
             for run in line["runs"]:
@@ -1197,7 +1199,7 @@ class Fixtures(unittest.TestCase):
         self.assertTrue(any(run["color"] != -1 and not run["link"] for line in open_lines for run in line["runs"]),
                         "one line has a color tag")
         closed = self.check_lines(os.path.join(WINDOWS, "chat", "chat.chat.window.lines.json"))
-        self.assertEqual([line["type"] for line in closed], [0, 1, 2])
+        self.assertEqual([line["type"] for line in closed], [0, 1, 2, 6])
         self.assertEqual(fixture("chat", "open")["chat"]["mark"], "#")
         self.assertFalse(fixture("chat", "no-view-chat")["chat"]["view_chat"])
 
@@ -1238,6 +1240,139 @@ class Fixtures(unittest.TestCase):
             sheet = read(os.path.join(WINDOWS, window, window + ".rcss"))
             self.assertRegex(sheet, r"body\.%s\s*\{[^}]*focus: none;" % window, window)
             self.assertRegex(sheet, r"input\.%s__input\s*\{[^}]*focus: auto;" % window.replace("-log", "-log"), window)
+
+
+# --- the shout line's empire flag (NOVA-110) ----------------------------------------------------------
+
+SHOUT = 6  # CHAT_TYPE_SHOUT
+FEED_LINES = ("chat/chat.chat.window.lines.json", "chat/chat.open.chat.window.lines.json",
+              "chat-view/chat-view.chat.window.lines.json", "chat-log/chat-log.chat.log.lines.json",
+              "chat-log/chat-log.party.chat.log.lines.json")
+
+
+def rules(sheet):
+    """selector -> declarations of a sheet's one-line and block rules."""
+    found = {}
+    for selector, body in re.findall(r"([^{}/]+?)\s*\{([^{}]*)\}", re.sub(r"/\*.*?\*/", "", sheet, flags=re.S)):
+        found[" ".join(selector.split())] = body
+    return found
+
+
+def store_file(store):
+    """The file under assets/<group>/ a d:/ymir work store path names, or None."""
+    relative = store[3:] if store.startswith("d:/") else store
+    for group in os.listdir(os.path.join(REPO, "assets")):
+        path = os.path.join(REPO, "assets", group, *relative.split("/"))
+        if os.path.isfile(path):
+            return path
+        folder = os.path.dirname(path)
+        if os.path.isdir(folder):
+            names = {name.lower(): name for name in os.listdir(folder)}
+            if os.path.basename(path).lower() in names:
+                return os.path.join(folder, names[os.path.basename(path).lower()])
+    return None
+
+
+class ShoutFlags(unittest.TestCase):
+    """The feed stand-ins carry a shout's empire as NuiChatFeed publishes it
+    (a key on a shout line only), and both looks draw a flag for each of the
+    three empires from art the client ships."""
+
+    def test_a_shout_line_carries_its_empire_and_no_other_line_does(self):
+        shouts = 0
+        for name in FEED_LINES:
+            with open(os.path.join(WINDOWS, *name.split("/")), encoding="utf-8") as handle:
+                for line in json.load(handle):
+                    if line["type"] == SHOUT:
+                        shouts += 1
+                        self.assertIn(line.get("empire"), (1, 2, 3), "%s %s" % (name, line["id"]))
+                    else:
+                        self.assertNotIn("empire", line, "%s %s" % (name, line["id"]))
+        self.assertGreaterEqual(shouts, 4, "a shout in the closed chat, the closed view, the open chat and the log")
+
+    def test_the_closed_views_show_a_shout(self):
+        for name in ("chat/chat.chat.window.lines.json", "chat-view/chat-view.chat.window.lines.json"):
+            with open(os.path.join(WINDOWS, *name.split("/")), encoding="utf-8") as handle:
+                self.assertIn(SHOUT, [line["type"] for line in json.load(handle)], name)
+
+    def test_modern_draws_the_empire_select_banners_at_twenty_by_twelve(self):
+        sheet = rules(read(os.path.join(NUI, "components", "chat.rcss")))
+        flag = sheet[".nui-chat__flag"]
+        for declaration in ("display: inline-block;", "width: 20dp;", "height: 12dp;", "margin-right: 4dp;"):
+            self.assertIn(declaration, flag)
+        for empire, letter in ((1, "a"), (2, "b"), (3, "c")):
+            store = "d:/ymir work/ui/intro/empire/empireflag_%s.sub" % letter
+            self.assertIn('image("%s")' % store, sheet[".nui-chat__flag--empire-%d" % empire])
+            self.assertIsNotNone(store_file(store), store)
+
+    def test_classic_draws_olds_twenty_by_fifteen_flags(self):
+        sheet = rules(read(os.path.join(NUI, "skins", "classic", "classic.rcss")))
+        self.assertIn("height: 15dp;", sheet[".skin-classic .nui-chat__flag"])
+        for empire in (1, 2, 3):
+            store = "d:/ymir work/ui/flags/empire_20x15/empire_%d.png" % empire
+            self.assertIn('image("%s")' % store, sheet[".skin-classic .nui-chat__flag--empire-%d" % empire])
+            path = store_file(store)
+            self.assertIsNotNone(path, store)
+            with open(path, "rb") as handle:
+                head = handle.read(24)
+            self.assertEqual(head[:8], b"\x89PNG\r\n\x1a\n", store)
+            self.assertEqual((int.from_bytes(head[16:20], "big"), int.from_bytes(head[20:24], "big")), (20, 15), store)
+
+
+# --- the shout line's language flag (NOVA-51) ---------------------------------------------------------
+
+# language_packets.h's codes: the login screen's 17 locales, by id.
+LANGUAGE_CODES = ("en", "ae", "br", "cz", "de", "dk", "es", "fr", "gr", "hu", "it", "nl", "pl", "pt", "ro", "ru", "tr")
+
+
+def png_size(path):
+    with open(path, "rb") as handle:
+        head = handle.read(24)
+    if head[:8] != b"\x89PNG\r\n\x1a\n":
+        return None
+    return int.from_bytes(head[16:20], "big"), int.from_bytes(head[20:24], "big")
+
+
+class LanguageFlags(unittest.TestCase):
+    """A shout carries its sender's language code next to its empire, as
+    NuiChatFeed publishes it (a key on a shout with a language only), and
+    both looks draw a flag for each of the 17 languages from art the client
+    ships, before the empire flag."""
+
+    def test_a_shout_line_carries_a_language_code_and_no_other_line_does(self):
+        shouts = 0
+        for name in FEED_LINES:
+            with open(os.path.join(WINDOWS, *name.split("/")), encoding="utf-8") as handle:
+                for line in json.load(handle):
+                    if line["type"] == SHOUT:
+                        shouts += 1
+                        self.assertIn(line.get("lang"), LANGUAGE_CODES, "%s %s" % (name, line["id"]))
+                    else:
+                        self.assertNotIn("lang", line, "%s %s" % (name, line["id"]))
+        self.assertGreaterEqual(shouts, 4, "a shout in the closed chat, the closed view, the open chat and the log")
+
+    def test_modern_draws_the_login_strips_flags_in_the_shout_flags_box(self):
+        sheet = rules(read(os.path.join(NUI, "components", "chat.rcss")))
+        for code in LANGUAGE_CODES:
+            store = "d:/ymir work/ui/intro/login/server_flag_%s.sub" % code
+            rule = sheet.get(".nui-chat__flag--lang-%s" % code, "")
+            self.assertIn('image("%s" contain)' % store, rule, code)
+            self.assertIsNotNone(store_file(store), store)
+
+    def test_classic_draws_olds_twenty_by_fifteen_language_flags(self):
+        sheet = rules(read(os.path.join(NUI, "skins", "classic", "classic.rcss")))
+        for code in LANGUAGE_CODES:
+            store = "d:/ymir work/ui/flags/flags_20x15/%s.png" % code
+            self.assertIn('image("%s")' % store, sheet.get(".skin-classic .nui-chat__flag--lang-%s" % code, ""), code)
+            path = store_file(store)
+            self.assertIsNotNone(path, store)
+            self.assertEqual(png_size(path), (20, 15), store)
+
+    def test_the_login_strips_flags_are_listed_as_content_art(self):
+        with open(os.path.join(NUI, "content-art.json"), encoding="utf-8") as handle:
+            entries = json.load(handle)["content"]
+        self.assertIn(("d:/ymir work/ui/intro/login/server_flag_*.sub", "flag"),
+                      [(entry["path"], entry["kind"]) for entry in entries])
 
 
 # --- the chat log on demand (P11 spec 5.3, D5) -----------------------------------------------------------

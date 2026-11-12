@@ -1131,6 +1131,7 @@ DUEL_ANTI_POISON	Bez trucizny
 DUEL_ANTI_FIRE	Bez ognia
 DUEL_ANTI_CHANGE_EQUIP	Bez zmiany ekwipunku
 DUEL_ANTI_PARTY	Bez grupy
+DUEL_ANTI_PET_ADVANCED	Bez zaawansowanego zwierzaka
 TARGET_BUTTON_DENY_FIGHT	Odrzuć
 TARGET_BUTTON_CANCEL_AVENGE	Ułaskaw
 BATTLE_RULES	Zasady walki:
@@ -1280,3 +1281,12 @@ WIKI_PAGE_ERROR	This part of the page could not be shown:
 WIKI_CLASS_ALL	All	
 WIKI_VIEWER_HINT	Drag to turn, scroll to zoom, double-click to reset.	
 WIKI_LIST_RANGE	%d-%d of %d	
+ATLAS_MARK_BOSS	Boss
+ATLAS_MARK_KING	Królewski boss
+ATLAS_MARK_STONE	Kamień Metin
+ATLAS_MARK_RESPAWN_TIME	Czas odrodzenia: %s
+SHOP_NOT_ENOUGH_ITEM	Nie masz wystarczająco przedmiotów.
+SHOP_TEXT_OR	lub
+SHOP_BUY_COUNT_TITLE	Ilość do kupienia (maks. %d)
+DO_YOU_BUY_WITH_ITEM	Czy chcesz kupić %s za %s?
+SHOP_BULK_BUY_HINT	Shift + click: kup kilka

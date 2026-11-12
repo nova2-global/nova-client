@@ -1,0 +1,4 @@
+GENERAL WAIT wait.msa 33
+GENERAL WAIT1 wait_still.msa 33
+GENERAL WAIT2 wait_still2.msa 34
+

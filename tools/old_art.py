@@ -11,13 +11,27 @@ skins of the race shapes (the msm files' WingData groups) their value 3 names.
 	python3 tools/old_art.py import PACKER OLD_ITEM_LIST CUT_ITEM_PROTO GRLIST
 	python3 tools/old_art.py shop-plan PACKER GRLIST
 	python3 tools/old_art.py shop PACKER GRLIST
+	python3 tools/old_art.py rings-plan PACKER GRLIST
+	python3 tools/old_art.py rings PACKER GRLIST
+	python3 tools/old_art.py shining-plan PACKER GRLIST
+	python3 tools/old_art.py shining PACKER GRLIST
+
+	python3 tools/old_art.py files-plan PACKER GRLIST [STORE_PATH...]
+	python3 tools/old_art.py files PACKER GRLIST [STORE_PATH...]
+
+files and files-plan take the store paths named (OLD's spelling, any case)
+and every file they name in turn; with none named, the empire and language
+flags of the chat's shout lines (NOVA-110 CHAT_FLAGS, NOVA-51
+CHAT_LANGUAGE_FLAGS). They read NEW's groups from git's
+tree, as shop does.
 
 shop and shop-plan take the offline shop's decoration (NOVA-170) instead: the
 NPC models shop_deco.txt's type 1 rows name (by NEW's npclist folder for each
 vnum: the msm, its base model, motlist.txt and the motions it lists) and the
-eight parts of each type 2 row's sign pattern. They read NEW's files and
-groups from git's tree, so they work in a sparse worktree; add what they
-write with `git add --sparse`.
+eight parts of each type 2 row's sign pattern. rings and rings-plan take
+OLD's select and target rings (NOVA-127, RINGS) and what they name. Both
+read NEW's files and groups from git's tree, so they work in a sparse
+worktree; add what they write with `git add --sparse`.
 
 plan lists what an import would take (files and MB by kind) and writes
 nothing. OLD_ART_SCRATCH names a folder grlist (a Windows program) can read and
@@ -626,6 +640,143 @@ def import_shop(packer, grlist):
 	return place(packer, grlist, scratch, take, missing, index, folders, shop_group)
 
 
+# --- the select and target rings (NOVA-127) ----------------------------------
+
+# OLD playerSettingModule.py:295-302: each empire's ring and the monsters',
+# for the hover (select) and the clicked target (glow_select).
+RINGS = tuple("d:/ymir work/effect/world/%s_%sselect.mse" % (who, glow)
+	for who in ("shinsoo", "chunjo", "jinnos", "mob") for glow in ("", "glow_"))
+
+
+def ring_seeds(files):
+	"""The rings NEW does not publish."""
+	return [path for path in RINGS if path not in files]
+
+
+def git_blob(tree_path):
+	"""A file of git's index (the tree tree_files lists), read where a
+	sparse worktree has none on disk."""
+	done = subprocess.run(["git", "-C", old_content.REPO, "show", ":" + tree_path], capture_output=True, check=True)
+	return done.stdout
+
+
+def rings_gather(packer, grlist, scratch):
+	groups = _groups()
+	paths = tree_files()
+	files = tree_published(paths, groups)
+	index = packer_index(packer)
+	take, missing = closure(ring_seeds(files), index, files, packer, grlist, scratch)
+	return take, missing, index, tree_group_folders(paths, groups)
+
+
+def plan_rings(packer, grlist):
+	take, missing, _, _ = rings_gather(packer, grlist, scratch_folder())
+	for path in sorted(take):
+		print("  %s <- %s" % (path, take[path]))
+	print("would take %d files; %d named but missing in OLD too:" % (len(take), len(missing)))
+	for path in sorted(missing):
+		print("  %s <- %s" % (path, missing[path]))
+	return 0
+
+
+def import_rings(packer, grlist):
+	scratch = scratch_folder()
+	take, missing, index, folders = rings_gather(packer, grlist, scratch)
+	return place(packer, grlist, scratch, take, missing, index, folders)
+
+
+# --- named files (NOVA-110: the shout line's empire flags) -------------------
+
+# OLD PythonChat.cpp:578 (AppendChat): the empire flag of a shout line.
+CHAT_FLAGS = tuple("d:/ymir work/ui/flags/empire_20x15/empire_%d.png" % empire for empire in (1, 2, 3))
+# OLD PythonChat.cpp:574: the sender's language flag (NOVA-51), for the
+# login screen's 17 locales (nova-protocol language_packets.h's codes).
+LANGUAGE_CODES = ("en", "ae", "br", "cz", "de", "dk", "es", "fr", "gr", "hu", "it", "nl", "pl", "pt", "ro", "ru", "tr")
+CHAT_LANGUAGE_FLAGS = tuple("d:/ymir work/ui/flags/flags_20x15/%s.png" % code for code in LANGUAGE_CODES)
+
+
+def default_files():
+	"""What files and files-plan take with no names: both chat flags."""
+	return list(CHAT_FLAGS + CHAT_LANGUAGE_FLAGS)
+
+
+def files_seeds(names, files):
+	"""The store paths of `names` (OLD's spelling, any case) that NEW's
+	groups do not publish, in order, each once."""
+	out = []
+	for name in names:
+		path = old_content.store_name(name)
+		if path not in files and path not in out:
+			out.append(path)
+	return out
+
+
+def files_gather(packer, grlist, scratch, names):
+	groups = _groups()
+	paths = tree_files()
+	files = tree_published(paths, groups)
+	index = packer_index(packer)
+	take, missing = closure(files_seeds(names, files), index, files, packer, grlist, scratch)
+	return take, missing, index, tree_group_folders(paths, groups)
+
+
+def plan_files(packer, grlist, names):
+	take, missing, _, _ = files_gather(packer, grlist, scratch_folder(), names)
+	for path in sorted(take):
+		print("  %s <- %s" % (path, take[path]))
+	print("would take %d files; %d named but missing in OLD too:" % (len(take), len(missing)))
+	for path in sorted(missing):
+		print("  %s <- %s" % (path, missing[path] or "named"))
+	return 0
+
+
+def import_files(packer, grlist, names):
+	scratch = scratch_folder()
+	take, missing, index, folders = files_gather(packer, grlist, scratch, names)
+	return place(packer, grlist, scratch, take, missing, index, folders)
+
+
+# --- the weapon's and the body's shining (NOVA-176) --------------------------
+
+# shining and shining-plan take the effects NEW's locale/common/shiningtable.txt
+# names that NEW's groups do not publish, and every file they name in turn.
+# They read NEW's groups from git's tree, as shop does.
+
+
+def shining_table_seeds(data, files):
+	"""The effects a shining table names (shining_seeds) that NEW's groups
+	do not publish, in order, each once."""
+	return [path for path in shining_seeds(data) if path not in files]
+
+
+def shining_gather(packer, grlist, scratch):
+	groups = _groups()
+	paths = tree_files()
+	files = tree_published(paths, groups)
+	index = packer_index(packer)
+	with open(SHINING_TABLE, "rb") as handle:
+		start = shining_table_seeds(handle.read(), files)
+	take, missing = closure(start, index, files, packer, grlist, scratch)
+	return take, missing, index, tree_group_folders(paths, groups)
+
+
+def plan_shining(packer, grlist):
+	take, missing, _, _ = shining_gather(packer, grlist, scratch_folder())
+	total = sum(os.path.getsize(os.path.join(packer, take[path])) for path in take)
+	for path in sorted(take):
+		print("  %s <- %s" % (path, take[path]))
+	print("would take %d files, %.1f MB; %d named but missing in OLD too:" % (len(take), total / 1048576.0, len(missing)))
+	for path in sorted(missing):
+		print("  %s <- %s" % (path, missing[path] or "shiningtable.txt"))
+	return 0
+
+
+def import_shining(packer, grlist):
+	scratch = scratch_folder()
+	take, missing, index, folders = shining_gather(packer, grlist, scratch)
+	return place(packer, grlist, scratch, take, missing, index, folders)
+
+
 def _main(argv):
 	if len(argv) == 5 and argv[0] == "import":
 		return import_art(*argv[1:])
@@ -635,6 +786,17 @@ def _main(argv):
 		return import_shop(*argv[1:])
 	if len(argv) == 3 and argv[0] == "shop-plan":
 		return plan_shop(*argv[1:])
+	if len(argv) == 3 and argv[0] == "rings":
+		return import_rings(*argv[1:])
+	if len(argv) == 3 and argv[0] == "rings-plan":
+		return plan_rings(*argv[1:])
+	if len(argv) >= 3 and argv[0] in ("files", "files-plan"):
+		names = list(argv[3:]) or default_files()
+		return (import_files if argv[0] == "files" else plan_files)(argv[1], argv[2], names)
+	if len(argv) == 3 and argv[0] == "shining":
+		return import_shining(*argv[1:])
+	if len(argv) == 3 and argv[0] == "shining-plan":
+		return plan_shining(*argv[1:])
 	print(__doc__)
 	return 2
 

@@ -55,3 +55,43 @@ nui-chat-lines
    inline opacity (three steps, its fade-steps): an opacity change rebuilds
    the line's meshes, so a transition here would rebuild them every frame.
    is-fading marks the line while it fades. */
+
+/* The sender's language flag and empire flag at the start of a shout line
+   (NOVA-51, NOVA-110; the element's "Marks", ElementChatLines.h):
+   span.nui-chat__flag.nui-chat__flag--lang.nui-chat__flag--lang-<code>, then
+   span.nui-chat__flag.nui-chat__flag--empire.nui-chat__flag--empire-<1..3>,
+   before the runs (OLD's order). Modern themes draw the empire select's
+   banners (the same art the empire and select windows show; a flag is
+   content art, nui/content-art.json), 20 x 12dp, about their 128 x 79 aspect,
+   inside the 15dp line, and the login strip's flags (server_flag_<code>,
+   22 x 17) contained in the same box, so they keep their aspect; the classic
+   skin draws OLD's 20 x 15 flags (classic.rcss). The size and the 4dp gap
+   after each flag are defaults, Eddy to confirm. */
+.nui-chat__flag
+{
+	display: inline-block;
+	width: 20dp;
+	height: 12dp;
+	margin-right: 4dp;
+	vertical-align: middle;
+}
+.nui-chat__flag--empire-1 { decorator: image("d:/ymir work/ui/intro/empire/empireflag_a.sub"); }
+.nui-chat__flag--empire-2 { decorator: image("d:/ymir work/ui/intro/empire/empireflag_b.sub"); }
+.nui-chat__flag--empire-3 { decorator: image("d:/ymir work/ui/intro/empire/empireflag_c.sub"); }
+.nui-chat__flag--lang-en { decorator: image("d:/ymir work/ui/intro/login/server_flag_en.sub" contain); }
+.nui-chat__flag--lang-ae { decorator: image("d:/ymir work/ui/intro/login/server_flag_ae.sub" contain); }
+.nui-chat__flag--lang-br { decorator: image("d:/ymir work/ui/intro/login/server_flag_br.sub" contain); }
+.nui-chat__flag--lang-cz { decorator: image("d:/ymir work/ui/intro/login/server_flag_cz.sub" contain); }
+.nui-chat__flag--lang-de { decorator: image("d:/ymir work/ui/intro/login/server_flag_de.sub" contain); }
+.nui-chat__flag--lang-dk { decorator: image("d:/ymir work/ui/intro/login/server_flag_dk.sub" contain); }
+.nui-chat__flag--lang-es { decorator: image("d:/ymir work/ui/intro/login/server_flag_es.sub" contain); }
+.nui-chat__flag--lang-fr { decorator: image("d:/ymir work/ui/intro/login/server_flag_fr.sub" contain); }
+.nui-chat__flag--lang-gr { decorator: image("d:/ymir work/ui/intro/login/server_flag_gr.sub" contain); }
+.nui-chat__flag--lang-hu { decorator: image("d:/ymir work/ui/intro/login/server_flag_hu.sub" contain); }
+.nui-chat__flag--lang-it { decorator: image("d:/ymir work/ui/intro/login/server_flag_it.sub" contain); }
+.nui-chat__flag--lang-nl { decorator: image("d:/ymir work/ui/intro/login/server_flag_nl.sub" contain); }
+.nui-chat__flag--lang-pl { decorator: image("d:/ymir work/ui/intro/login/server_flag_pl.sub" contain); }
+.nui-chat__flag--lang-pt { decorator: image("d:/ymir work/ui/intro/login/server_flag_pt.sub" contain); }
+.nui-chat__flag--lang-ro { decorator: image("d:/ymir work/ui/intro/login/server_flag_ro.sub" contain); }
+.nui-chat__flag--lang-ru { decorator: image("d:/ymir work/ui/intro/login/server_flag_ru.sub" contain); }
+.nui-chat__flag--lang-tr { decorator: image("d:/ymir work/ui/intro/login/server_flag_tr.sub" contain); }

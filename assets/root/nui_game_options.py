@@ -23,10 +23,20 @@ exit with the other flags. The hide-buffi row (NOVA-38) sends /hide_buffi and
 shows the server's state. uiGameOption.blockMode and viewChatMode stay the shared
 state: this module reads and writes them, never a copy. Escape closes the
 window in its legacy place (nui_hud.EscapeProxy); a window the player moved
-keeps its place across a hide, as legacy's one window does."""
+keeps its place across a hide, as legacy's one window does.
+
+The Keyboard row (NOVA-121) opens the document's second page, the key
+bindings (`page` "keys"): keybindings.Page's rows, notice and capture, which
+the legacy key bindings dialog (uikeybindings.py) shares, so both show one
+table. A left press on a key cell waits for the next key the game window gets
+(game.py gives keybindings' capture every key first); Escape ends a waiting
+cell before it closes the window, and a hide ends it too. The page stays
+across a hide, as the place does. The window listens to the table, so a
+change made in the legacy dialog shows here."""
 
 import chat
 import constInfo
+import keybindings
 import localeInfo
 import net
 import player
@@ -86,7 +96,7 @@ class GameOptionsBoard(nui.Window):
 		return {"name_color": 0, "target_board": 0, "pk_mode": 0, "block": 0, "blocked": [False] * BLOCK_COUNT,
 		        "view_chat": True, "always_show_name": True, "show_damage": True, "sales_text": True,
 		        "pickup": [True] * PICKUP_COUNT, "hide_shops": False, "show_sash": True, "hide_buffi": False,
-		        "mob_level": True, "mob_ai": True}
+		        "mob_level": True, "mob_ai": True, "page": "main", "key_rows": [], "notice": ""}
 
 	@nui.on("choose")
 	def on_choose(self, what, value, button):
@@ -102,6 +112,21 @@ class GameOptionsBoard(nui.Window):
 	def on_pickup(self, index, button):
 		if button == 0:
 			self._owner.nui_pickup(index)
+
+	@nui.on("keypage")
+	def on_keypage(self, what, button):
+		if button == 0:
+			self._owner.nui_keypage(what)
+
+	@nui.on("bind")
+	def on_bind(self, action, column, button):
+		if button == 0:
+			self._owner.nui_bind(action, column)
+
+	@nui.on("reset_keys")
+	def on_reset_keys(self, button):
+		if button == 0:
+			self._owner.nui_reset_keys()
 
 	@nui.on("close")
 	def on_close(self, button):
@@ -124,6 +149,10 @@ class OptionDialog(nui_hud.LayoutCalls):
 		self.demand = None
 		self.escapeProxy = None
 		self.loaded = False
+		# NOVA-121: the keys page and the table it shows.
+		self.page = "main"
+		self.keyPage = keybindings.Page(self.RefreshKeys)
+		keybindings.current().listen(self)
 		if not nui_hud.has_engine():
 			return
 		try:
@@ -141,6 +170,10 @@ class OptionDialog(nui_hud.LayoutCalls):
 
 	def nui_discard(self):
 		self._nui_discarded = True
+		keyPage = getattr(self, "keyPage", None)
+		if keyPage is not None:
+			keyPage.cancel()
+			keybindings.current().forget(self)
 		proxy, self.escapeProxy = self.escapeProxy, None
 		if proxy is not None:
 			proxy.destroy()
@@ -168,7 +201,19 @@ class OptionDialog(nui_hud.LayoutCalls):
 		        "view_chat": bool(systemSetting.IsViewChat()), "always_show_name": bool(systemSetting.IsAlwaysShowName()),
 		        "show_damage": bool(systemSetting.IsShowDamage()), "sales_text": bool(systemSetting.IsShowSalesText()),
 		        "pickup": self.pickup(), "hide_shops": _hide_shops(), "show_sash": _show_sash(), "hide_buffi": _hide_buffi(),
-		        "mob_level": bool(systemSetting.IsShowMobLevel()), "mob_ai": bool(systemSetting.IsShowMobAIFlag())}
+		        "mob_level": bool(systemSetting.IsShowMobLevel()), "mob_ai": bool(systemSetting.IsShowMobAIFlag()),
+		        "page": self.page, "key_rows": self.key_rows(), "notice": nui.plain_text(self.keyPage.notice_text())}
+
+	def key_rows(self):
+		"""keybindings.Page's rows, their texts plain (they come from the
+		locale files and the key names, never a locale key)."""
+		rows = []
+		for row in self.keyPage.rows():
+			row = dict(row)
+			for key in ("label", "k1", "k2"):
+				row[key] = nui.plain_text(row[key])
+			rows.append(row)
+		return rows
 
 	def _board(self):
 		return self.demand.board() if self.demand is not None else None
@@ -203,6 +248,10 @@ class OptionDialog(nui_hud.LayoutCalls):
 				self.escapeProxy.show()
 
 	def Hide(self):
+		# A capture never outlives the page that waits (NOVA-121).
+		keyPage = getattr(self, "keyPage", None)
+		if keyPage is not None:
+			keyPage.cancel()
 		if self.escapeProxy is not None:
 			self.escapeProxy.hide()
 		if self.demand is not None:
@@ -222,6 +271,9 @@ class OptionDialog(nui_hud.LayoutCalls):
 		self.Hide()
 
 	def OnPressEscapeKey(self):
+		# A key cell that waits ends first; the next Escape closes (NOVA-121).
+		if self.keyPage.cancel():
+			return True
 		self.Close()
 		return True
 
@@ -267,6 +319,35 @@ class OptionDialog(nui_hud.LayoutCalls):
 		(player.IsHideBuffi; Interface.OnBuffiHide calls this on
 		GC::BUFFI_HIDE), never a local guess."""
 		self._set(hide_buffi=_hide_buffi())
+
+	def RefreshKeys(self):
+		"""The keys page's rows and notice (NOVA-121): after a key bound, a
+		wait begun or ended, a reset, or a change from the legacy dialog."""
+		self._set(key_rows=self.key_rows(), notice=nui.plain_text(self.keyPage.notice_text()))
+
+	def OnKeyBindingsChanged(self):
+		self.RefreshKeys()
+
+	def nui_keypage(self, what):
+		"""The Keyboard row's button ("open") and the keys page's Back."""
+		if what == "open":
+			self.page = "keys"
+		elif what == "back":
+			self.keyPage.cancel()
+			self.page = "main"
+		else:
+			return
+		self._set(page=self.page)
+		self.RefreshKeys()
+
+	def nui_bind(self, action, column):
+		"""A left press on a key cell: it waits for the next key."""
+		if action not in keybindings.ACTION or column not in (0, 1):
+			return
+		self.keyPage.press(action, int(column))
+
+	def nui_reset_keys(self):
+		self.keyPage.reset()
 
 	def RefreshPickupFilter(self):
 		"""A category's toggle is down while the filter picks it up

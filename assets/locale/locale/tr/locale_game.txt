@@ -1131,6 +1131,7 @@ DUEL_ANTI_POISON	No Poison
 DUEL_ANTI_FIRE	No Fire
 DUEL_ANTI_CHANGE_EQUIP	No Equipment Change
 DUEL_ANTI_PARTY	No Party
+DUEL_ANTI_PET_ADVANCED	No Advanced Pet
 TARGET_BUTTON_DENY_FIGHT	Deny
 TARGET_BUTTON_CANCEL_AVENGE	Pardon
 BATTLE_RULES	Battle Rules:
@@ -1280,3 +1281,12 @@ WIKI_PAGE_ERROR	This part of the page could not be shown:
 WIKI_CLASS_ALL	All	
 WIKI_VIEWER_HINT	Drag to turn, scroll to zoom, double-click to reset.	
 WIKI_LIST_RANGE	%d-%d of %d	
+ATLAS_MARK_BOSS	Patron
+ATLAS_MARK_KING	Kral patron
+ATLAS_MARK_STONE	Metin taşı
+ATLAS_MARK_RESPAWN_TIME	Yeniden doğma süresi: %s
+SHOP_NOT_ENOUGH_ITEM	Yeterli eşyaya sahip değilsin.
+SHOP_TEXT_OR	veya
+SHOP_BUY_COUNT_TITLE	Satın alınacak adet (en fazla %d)
+DO_YOU_BUY_WITH_ITEM	Satın almak istiyor musun? Nesne: %s Fiyat: %s
+SHOP_BULK_BUY_HINT	Shift + click: birden fazla satın al

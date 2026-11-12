@@ -36,6 +36,10 @@
 			{
 				"label": "No Party",
 				"checked": false
+			},
+			{
+				"label": "No Advanced Pet",
+				"checked": false
 			}
 		]
 	}

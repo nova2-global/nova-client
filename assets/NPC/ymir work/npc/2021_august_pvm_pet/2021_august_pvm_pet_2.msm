@@ -1,0 +1,59 @@
+ScriptType            RaceDataScript
+
+BaseModelFileName     "D:\Ymir Work\npc\2021_august_pvm_pet\2021_august_pvm_pet.GR2"
+
+Group ShapeData
+{
+	PathName 		 ""
+	ShapeDataCount		 1
+	Group ShapeData00
+	{
+		ShapeIndex			0
+
+		Model				"D:\Ymir Work\npc\2021_august_pvm_pet\2021_august_pvm_pet.GR2"
+		SourceSkin			"D:\Ymir Work\npc\2021_august_pvm_pet\SsalissaliKing_Pet_diff.dds"
+		CommonTargetSkin	"D:\Ymir Work\npc\2021_august_pvm_pet\SsalissaliKing_Pet_diff_col2.dds"
+		SourceSkin2			"D:\Ymir Work\npc\2021_august_pvm_pet\SsalissaliKing01_Pet_diff.dds"
+		CommonTargetSkin2	"D:\Ymir Work\npc\2021_august_pvm_pet\SsalissaliKing01_Pet_diff_col2.dds"
+	}
+}
+Group AttachingData
+{
+    AttachingDataCount       2
+    
+    Group AttachingData00
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Dummy_root_o"
+        
+        CollisionType        1
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           20.000000
+            Position         0.000000 0.000000 0.000000
+        }
+    }
+    
+    Group AttachingData01
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Dummy_root_o"
+        
+        CollisionType        3
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           31.000000
+            Position         0.000000 0.000000 0.000000
+        }
+    }
+}

@@ -218,6 +218,36 @@ body.minimap
 	color: var(--text-muted);
 }
 
+/* The FPS readout (NOVA-118): in a box at the map's place, so it shows
+   with the map closed too; under the server line on its pill, under the
+   observers while they show, and under the show button, flush with its
+   right edge, while the map is closed. */
+.minimap__fps
+{
+	display: block;
+	position: absolute;
+	right: 17dp;
+	top: 17dp;
+	width: 136dp;
+	height: 0;
+	pointer-events: none;
+}
+.minimap__line--fps
+{
+	top: 175dp;
+}
+.minimap__fps--observers .minimap__line--fps
+{
+	top: 199dp;
+}
+.minimap__fps--closed .minimap__line--fps
+{
+	top: 37dp;
+	left: auto;
+	right: -5dp;
+	justify-content: flex-end;
+}
+
 /* Closed: the show button alone, where the map's top right corner was: a
    dark disc like the map's buttons. */
 .minimap__closed

@@ -11,6 +11,12 @@ import colorInfo
 import constInfo
 import systemSetting
 import player
+# The key bindings' table (NOVA-121): the chat log button's tooltip names its key.
+import keybindings
+
+def ChatLogToolTip():
+	"""localeInfo.CHAT_LOG ("Show old messages [L]") with the chat log's key."""
+	return keybindings.with_hotkeys(localeInfo.CHAT_LOG, ("chat_log",))
 
 ENABLE_CHAT_COMMAND = True
 ENABLE_LAST_SENTENCE_STACK = True
@@ -773,9 +779,10 @@ class ChatWindow(ui.Window):
 		btnChatLog.SetUpVisual("d:/ymir work/ui/game/taskbar/Open_Chat_Log_Button_01.sub")
 		btnChatLog.SetOverVisual("d:/ymir work/ui/game/taskbar/Open_Chat_Log_Button_02.sub")
 		btnChatLog.SetDownVisual("d:/ymir work/ui/game/taskbar/Open_Chat_Log_Button_03.sub")
-		btnChatLog.SetToolTipText(localeInfo.CHAT_LOG)
+		btnChatLog.SetToolTipText(ChatLogToolTip())
 		btnChatLog.Hide()
 		self.btnChatLog = btnChatLog
+		keybindings.current().listen(self)
 
 		btnChatSizing = self.ChatButton()
 		btnChatSizing.SetOwner(self)
@@ -830,7 +837,12 @@ class ChatWindow(ui.Window):
 			rgb=colorItem[1]
 			chat.SetChatColor(type, rgb[0], rgb[1], rgb[2])
 
+	def OnKeyBindingsChanged(self):
+		if self.btnChatLog:
+			self.btnChatLog.SetToolTipText(ChatLogToolTip())
+
 	def Destroy(self):
+		keybindings.current().forget(self)
 		self.chatInputSet.Destroy()
 		self.chatInputSet = None
 

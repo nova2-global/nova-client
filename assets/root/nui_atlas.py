@@ -29,12 +29,19 @@ Where it differs from legacy: the window shows only when the atlas has a
 size (miniMap.GetAtlasSize), where legacy showed its frame without an image
 too. A map localeInfo.MINIMAP_ZONE_NAME_DICT lacks keeps the title the
 window has, as legacy's since NOVA-90 (it raised before): the default
-title, which the markup shows for an empty one, until a map with a name."""
+title, which the markup shows for an empty one, until a map with a name.
+
+NOVA-129: a boss or metin stone mark (GC::ATLAS_MARKS) hovers with its kind
+and level, its state (alive, the respawn countdown, dead) and its respawn
+time in lines under the name line; LoadWindow hands their strings to C++
+(uiMiniMap.SetAtlasMarkTexts), the view's label refreshes them once a second
+while it shows (nui-view), and C++ draws the marks into the atlas."""
 
 import weakref
 
 import localeInfo
 import miniMap
+import uiMiniMap
 import wndMgr
 
 try:
@@ -159,6 +166,9 @@ class AtlasWindow(object):
 		self.Hide()
 		miniMap.RegisterAtlasWindow(self)
 		self.registered = True
+		# NOVA-129: the boss and stone marks' hover lines, which C++ adds
+		# under the name line of the view's label (NuiViews.cpp).
+		uiMiniMap.SetAtlasMarkTexts()
 
 	def Show(self):
 		"""As uiminimap.py:164-177: with an atlas size, the atlas shows."""

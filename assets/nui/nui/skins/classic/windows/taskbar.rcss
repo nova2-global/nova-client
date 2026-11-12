@@ -349,6 +349,31 @@ body.skin-classic.taskbar .taskbar-key-art--4 { decorator: image("d:/ymir work/u
 body.skin-classic.taskbar .taskbar-key-art--5 { decorator: image("d:/ymir work/ui/game/taskbar/f2.sub" scale-none left top); }
 body.skin-classic.taskbar .taskbar-key-art--6 { decorator: image("d:/ymir work/ui/game/taskbar/f3.sub" scale-none left top); }
 body.skin-classic.taskbar .taskbar-key-art--7 { decorator: image("d:/ymir work/ui/game/taskbar/f4.sub" scale-none left top); }
+/* A quickslot whose key the player moved (NOVA-121): the art goes and the
+   key shows as a legacy text line at the art's place (uitaskbar.py
+   RefreshHotkeys: an outlined line at 3, 1 in the cell). The cell clips a
+   long key ("Num 6" shows "Num"), where legacy's line runs over the next
+   cell. */
+body.skin-classic.taskbar .taskbar-key-art.taskbar-key-art--off
+{
+	display: none;
+}
+body.skin-classic.taskbar .taskbar-key.taskbar-key--custom
+{
+	display: block;
+	left: 3dp;
+	top: 1dp;
+	max-width: none;
+	overflow: visible;
+	padding: 0;
+	border-radius: 0;
+	background-color: transparent;
+	color: var(--classic-button-text);
+	font-size: 11dp;
+	font-weight: normal;
+	line-height: 13dp;
+	font-effect: outline(1dp var(--classic-text-outline));
+}
 
 /* QuickSlotBoard at 272 in the board: the number box, the up and down
    buttons and the page number art. */

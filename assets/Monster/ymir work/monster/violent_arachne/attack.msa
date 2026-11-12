@@ -1,0 +1,21 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\monster\violent_arachne\attack.GR2"
+MotionDuration           3.333333
+
+Group MotionEventData
+{
+    MotionEventDataCount     1
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         1.823243
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "FxHand00"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/effect/monster2/impact6.mse"
+        EffectPosition       -50.000000 -200.000000 -200.000000
+    }
+}

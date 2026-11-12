@@ -238,6 +238,27 @@ class ShopSeeds(unittest.TestCase):
 		self.assertEqual(old_art.shop_group("d:/ymir work/ui/pattern/myshop/ice/p_ice_top.tga", folders), "ETC")
 
 
+class RingSeeds(unittest.TestCase):
+	"""NOVA-127: OLD's select and target rings (OLD playerSettingModule.py:
+	295-302), each of the three empires and the monsters'."""
+
+	def test_the_eight_rings_of_olds_registrations(self):
+		self.assertEqual(sorted(old_art.RINGS), sorted(
+			"d:/ymir work/effect/world/%s_%sselect.mse" % (who, glow)
+			for who in ("shinsoo", "chunjo", "jinnos", "mob") for glow in ("", "glow_")))
+
+	def test_a_ring_new_ships_is_left(self):
+		files = {"d:/ymir work/effect/world/mob_select.mse"}
+		got = old_art.ring_seeds(files)
+		self.assertNotIn("d:/ymir work/effect/world/mob_select.mse", got)
+		self.assertEqual(len(got), 7)
+
+	def test_a_blob_is_read_from_gits_tree(self):
+		"""The rings' scripts are read where the sparse worktree has no file."""
+		data = old_art.git_blob("assets/groups.txt")
+		self.assertIn(b"root", data)
+
+
 class TreeGroups(unittest.TestCase):
 	"""A sparse worktree has only some groups on disk: the shop's art takes
 	its groups and NEW's files from git's tree (old_art.tree_files)."""
@@ -250,6 +271,48 @@ class TreeGroups(unittest.TestCase):
 		self.assertEqual(old_art.choose_group("d:/ymir work/ui/pattern/myshop/fire/p_fire_top.tga", folders), "ETC")
 		self.assertEqual(old_art.tree_published(paths, ["npc2", "ETC", "icon"]), {
 			"d:/ymir work/npc2/privateshop/privateshop.msm", "d:/ymir work/ui/pattern/board_base.tga", "icon/item/1.tga"})
+
+
+class NamedFiles(unittest.TestCase):
+	"""files and files-plan (NOVA-110): store paths named on the command
+	line, by default the chat's empire flags."""
+
+	def test_the_names_new_lacks_are_seeds_once_and_in_order(self):
+		files = {"d:/ymir work/ui/flags/empire_20x15/empire_2.png"}
+		got = old_art.files_seeds(["D:/Ymir Work/UI/flags/empire_20x15/empire_1.png",
+			"d:/ymir work/ui/flags/empire_20x15/empire_2.png", "d:/ymir work/ui/flags/empire_20x15/empire_1.png"], files)
+		self.assertEqual(got, ["d:/ymir work/ui/flags/empire_20x15/empire_1.png"])
+
+	def test_the_default_names_are_olds_three_shout_flags(self):
+		"""OLD PythonChat.cpp:578: empire_<bEmpire>.png for the empires 1 to 3."""
+		self.assertEqual(old_art.CHAT_FLAGS, tuple(
+			"d:/ymir work/ui/flags/empire_20x15/empire_%d.png" % empire for empire in (1, 2, 3)))
+
+	def test_the_language_flags_are_olds_for_the_seventeen_locales(self):
+		"""OLD PythonChat.cpp:574: flags_20x15/<language>.png (NOVA-51), for
+		the login screen's 17 locales (language_packets.h's codes)."""
+		codes = ("en", "ae", "br", "cz", "de", "dk", "es", "fr", "gr", "hu", "it", "nl", "pl", "pt", "ro", "ru", "tr")
+		self.assertEqual(old_art.CHAT_LANGUAGE_FLAGS, tuple(
+			"d:/ymir work/ui/flags/flags_20x15/%s.png" % code for code in codes))
+
+	def test_with_no_names_files_takes_both_kinds_of_chat_flag(self):
+		self.assertEqual(old_art.default_files(), list(old_art.CHAT_FLAGS + old_art.CHAT_LANGUAGE_FLAGS))
+
+
+class ShiningSeeds(unittest.TestCase):
+	"""shining and shining-plan (NOVA-176): the effects NEW's shining table
+	names that NEW does not publish."""
+
+	def test_the_tables_effects_new_lacks_once_without_bones_or_quotes(self):
+		table = (b"12010~12049\tD:/ymir work/pc/common/effect/armor/armor-4-2-1.mse\t\t\n"
+			b"41971\tD:/ymir work/effect/hallowen_costume/body.mse\tD:/ymir work/effect/hallowen_costume/hand.mse#Bip01 L UpperArm"
+			b"\tD:/ymir work/effect/hallowen_costume/hand.mse#Bip01 R UpperArm\n"
+			b"42819\t\"d:/ymir work/effect/mehok/dragon_wind/armor.mse\"\n")
+		files = {"d:/ymir work/pc/common/effect/armor/armor-4-2-1.mse"}
+		self.assertEqual(old_art.shining_table_seeds(table, files), [
+			"d:/ymir work/effect/hallowen_costume/body.mse",
+			"d:/ymir work/effect/hallowen_costume/hand.mse",
+			"d:/ymir work/effect/mehok/dragon_wind/armor.mse"])
 
 
 class Manifest(unittest.TestCase):
@@ -275,6 +338,23 @@ class Manifest(unittest.TestCase):
 				custom.append(path)
 		self.assertEqual(custom, [])
 		self.assertIn("converted", {row[3] for row in self.rows})
+
+	def test_the_chat_flags_are_taken(self):
+		taken = {row[0] for row in self.rows}
+		self.assertEqual([path for path in old_art.CHAT_FLAGS if path not in taken], [])
+
+	def test_the_chat_language_flags_are_taken(self):
+		taken = {row[0] for row in self.rows}
+		self.assertEqual([path for path in old_art.CHAT_LANGUAGE_FLAGS if path not in taken], [])
+
+	def test_the_shining_tables_effects_are_taken_or_were_shipped(self):
+		"""NOVA-176: every effect of NEW's table is in the manifest or was in
+		NEW before the wave's art."""
+		taken = {row[0] for row in self.rows}
+		with open(old_art.SHINING_TABLE, "rb") as handle:
+			effects = old_art.shining_seeds(handle.read())
+		self.assertIn("d:/ymir work/effect/hallowen_costume/body.mse", taken)
+		self.assertEqual([path for path in effects if path.startswith("d:/ymir work/effect/hallowen_costume/") and path not in taken], [])
 
 	def test_the_waves_extra_files_are_taken(self):
 		taken = {row[0] for row in self.rows}

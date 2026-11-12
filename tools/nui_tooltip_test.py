@@ -374,7 +374,9 @@ class Transactions(unittest.TestCase):
             tip.SetShopItem(0)
             self.assertEqual((rec.STATS["builds"] - builds, rec.STATS["publishes"] - publishes), (1, 1))
             texts = [r["text"] for e in world.board().model["lines"] for r in e["runs"]]
-            self.assertEqual(texts[-1], "Price: 1.234 Yang", "AppendPrice after AddItemData's ShowToolTip")
+            # NOVA-83: an NPC shop item's bulk buy hint follows the price, in the same build.
+            self.assertEqual(texts[-2:], ["Price: 1.234 Yang", "Shift + click: buy several"],
+                             "AppendPrice after AddItemData's ShowToolTip")
 
     def test_the_header_icon_is_the_shown_items_and_clear_drops_it(self):
         """The modern header draws the item's icon beside its name: the model
@@ -837,6 +839,92 @@ class PlainTooltips(unittest.TestCase):
             self.assertTrue(facade().nui_ready())
         with World(engine_3b=False) as world:
             self.assertFalse(world.m("nui_item_tooltip").PlainToolTip().nui_ready(), "an exe without the 3b engine")
+
+
+# --- NOVA-83: a barter row's costs and the bulk buy hint (OLD uiToolTip.py:844-876, 2047-2100) ---
+
+COIN = {"name": "Battle Coin", "type": 3, "subtype": 0, "size": [1, 1], "antiflags": 0, "flags": 4, "wear": 0,
+        "limits": [[0, 0], [0, 0]], "applies": [], "values": [0] * 6, "price": {"buy": 0, "sell": 0}, "desc": "",
+        "summary": "", "icon": "icon/item/80005.tga"}
+SCALE = dict(COIN, name="Dragon Scale", icon="icon/item/80006.tga")
+BARTER = {"items": {"10": SWORD, "80005": COIN, "80006": SCALE}, "skills": {}, "mobs": {}}
+
+
+class ShopBarterTooltip(unittest.TestCase):
+    """A barter row's tooltip: per cost the item's icon and "Price: Nx name",
+    "or" between the costs of an any-one row, the yang line only when the
+    yang is above 0; the bulk buy hint last on an NPC shop's items. Legacy
+    shows it and the recorded NovaUI model holds the same icons and lines."""
+
+    def rows(self, shop):
+        """(legacy rows, NovaUI rows) of SetShopItem(0) on the sword."""
+        found = []
+        for recorder in (False, True):
+            with World(BARTER, recorder=recorder) as world:
+                world.case(shop=shop)
+                tip = world.tip_world.tooltip("item")
+                with corpus_tool.quiet():
+                    tip.SetShopItem(0)
+                if recorder:
+                    found.append(world.rec.model_rows(corpus_tool.published(world.tip_world, tip),
+                                                      now=world.game.state.now))
+                else:
+                    found.append(corpus_tool.stand_in_rows(tip))
+        return found
+
+    def tail(self, rows, start):
+        """The rows from the first image of a cost, as (kind, text or path)."""
+        index = [i for i, row in enumerate(rows) if row[0] == "image" and "8000" in row[1]]
+        rows = rows[index[0]:] if index else rows[-start:]
+        return [(row[0], row[1]) for row in rows]
+
+    def test_an_all_of_row_with_yang_shows_each_cost_then_the_yang_then_the_hint(self):
+        legacy, novaui = self.rows({"open": True, "private": False, "price": 1000, "barter": [[80005, 2], [80006, 1]],
+                                    "all": 1})
+        self.assertEqual(novaui, legacy)
+        with World(BARTER, recorder=False) as world:
+            money = world.game.modules["localeInfo"].NumberToMoneyString(1000)
+        self.assertEqual(self.tail(legacy, 0), [
+            ("image", "icon/item/80005.tga"), ("text", "Price: 2x Battle Coin"),
+            ("image", "icon/item/80006.tga"), ("text", "Price: 1x Dragon Scale"),
+            ("text", "Price: %s" % money), ("text", "Shift + click: buy several")])
+
+    def test_an_any_one_row_puts_or_between_its_costs_and_no_yang_line_at_0(self):
+        legacy, novaui = self.rows({"open": True, "private": False, "price": 0, "barter": [[80005, 3], [80006, 1]],
+                                    "all": 0})
+        self.assertEqual(novaui, legacy)
+        self.assertEqual(self.tail(legacy, 0), [
+            ("image", "icon/item/80005.tga"), ("text", "Price: 3x Battle Coin"), ("text", "or"),
+            ("image", "icon/item/80006.tga"), ("text", "Price: 1x Dragon Scale"),
+            ("text", "Shift + click: buy several")])
+
+    def test_a_player_s_shop_item_has_no_hint_and_a_yang_row_keeps_its_price(self):
+        legacy, novaui = self.rows({"open": True, "private": True, "price": 500})
+        self.assertEqual(novaui, legacy)
+        texts = [row[1] for row in legacy if row[0] == "text"]
+        self.assertNotIn("Shift + click: buy several", texts)
+        self.assertTrue(texts[-1].startswith("Price: "), texts[-1])
+        legacy, novaui = self.rows({"open": True, "private": False, "price": 500})
+        self.assertEqual(novaui, legacy)
+        self.assertEqual([row[1] for row in legacy if row[0] == "text"][-1], "Shift + click: buy several")
+
+    def test_the_hint_flag_and_an_exe_without_bulk_buys_hide_the_hint(self):
+        with World(BARTER, recorder=False) as world:
+            world.case(shop={"open": True, "private": False, "price": 500})
+            tip = world.tip_world.tooltip("item")
+            rules = world.game.loaded["uiToolTip"]
+            with corpus_tool.quiet():
+                tip.SetShopItem(0)
+            self.assertIn("Shift + click: buy several", [row[1] for row in corpus_tool.stand_in_rows(tip)])
+            rules.SHOP_BULK_BUY_HINT = False
+            with corpus_tool.quiet():
+                tip.SetShopItem(0)
+            self.assertNotIn("Shift + click: buy several", [row[1] for row in corpus_tool.stand_in_rows(tip)])
+            rules.SHOP_BULK_BUY_HINT = True
+            world.game.modules["shop"].lack("BUY_COUNT_MAX", "HasBarter")
+            with corpus_tool.quiet():
+                tip.SetShopItem(0)
+            self.assertNotIn("Shift + click: buy several", [row[1] for row in corpus_tool.stand_in_rows(tip)])
 
 
 class SkillBookWithoutASkill(unittest.TestCase):

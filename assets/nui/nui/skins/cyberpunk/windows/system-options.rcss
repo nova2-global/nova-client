@@ -29,7 +29,8 @@ body.skin-cyberpunk.system-options .system-options__icon
 	border-radius: 0;
 	background-color: var(--cyberpunk-cell);
 }
-body.skin-cyberpunk.system-options .so-row--sound, body.skin-cyberpunk.system-options .so-row--music
+body.skin-cyberpunk.system-options .so-row--sound, body.skin-cyberpunk.system-options .so-row--music,
+body.skin-cyberpunk.system-options .so-row--fov
 {
 	border-color: transparent;
 	border-radius: 0;

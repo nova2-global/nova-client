@@ -41,6 +41,10 @@ PET_EGG = 0
 PET_SUMMON = 1
 PET_EGG_HATCH_SOCKET = 1
 
+## NOVA-83: an NPC shop item's tooltip ends with how to buy several (Shift + click), when the exe
+## buys several (shop.BUY_COUNT_MAX). Default, Eddy to confirm.
+SHOP_BULK_BUY_HINT = True
+
 SASH_ABSORPTION_SOCKET = 0
 SASH_ABSORBED_SOCKET = 1
 
@@ -55,6 +59,32 @@ AURA_TIERS = {
 	149006: (5, 6, 0),
 }
 AURA_TIER_DEFAULT = (1, 1, 1000)
+
+
+def _IsIntConstant(module, name):
+	value = getattr(module, name, None)
+	return isinstance(value, int) and not isinstance(value, bool)
+
+
+def GetShopBarterCosts(slotIndex):
+	"""[(vnum, count)] of the items the NPC shop row costs besides its yang (NOVA-83); [] for a
+	yang row or an exe without barter (shop.HasBarter)."""
+	hasBarter = getattr(shop, "HasBarter", None)
+	if not hasBarter or not hasBarter(slotIndex):
+		return []
+	costMax = shop.BARTER_COST_MAX if _IsIntConstant(shop, "BARTER_COST_MAX") else 4
+	costs = []
+	for i in range(costMax):
+		(vnum, count) = shop.GetBarterCost(slotIndex, i)
+		if vnum and count > 0:
+			costs.append((vnum, count))
+	return costs
+
+
+def IsShopBarterAll(slotIndex):
+	"""1: the row takes every cost; 0: any one of them."""
+	isBarterAll = getattr(shop, "IsBarterAll", None)
+	return bool(isBarterAll(slotIndex)) if isBarterAll else True
 
 
 def GetAuraTier(itemVnum):
@@ -830,7 +860,41 @@ class ItemToolTip(ToolTip):
 			attrSlot.append(shop.GetItemAttribute(slotIndex, i))
 
 		self.AddItemData(itemVnum, metinSlot, attrSlot)
-		self.AppendPrice(price)
+
+		## A barter row (NOVA-83; OLD uiToolTip.py:869-876): its costs, then its yang only
+		## when above 0. An exe without barter shows the yang price, as before.
+		costs = GetShopBarterCosts(slotIndex)
+		if costs:
+			self.AppendShopBarterCosts(costs, IsShopBarterAll(slotIndex))
+			if price > 0:
+				self.AppendPrice(price)
+		else:
+			self.AppendPrice(price)
+
+		if SHOP_BULK_BUY_HINT and not shop.IsPrivateShop() and _IsIntConstant(shop, "BUY_COUNT_MAX"):
+			self.AppendTextLine(localeInfo.SHOP_BULK_BUY_HINT, self.NORMAL_COLOR)
+
+	## OLD's AppendBuyWithItemTextLine (uiToolTip.py:2047-2100), one cost under the other so
+	## the NovaUI tooltips show it as legacy does: the cost item's icon, centered, then
+	## "Price: Nx name", and "or" between the costs of an any-one row.
+	def AppendShopBarterCosts(self, costs, isAll):
+		self.AppendSpace(5)
+		for (index, (vnum, count)) in enumerate(costs):
+			if index and not isAll:
+				self.AppendTextLine(localeInfo.SHOP_TEXT_OR)
+
+			item.SelectItem(vnum)
+			icon = ui.ImageBox()
+			icon.SetParent(self)
+			icon.LoadImage(item.GetIconImageFileName())
+			icon.SetWindowHorizontalAlignCenter()
+			icon.SetPosition(0, self.toolTipHeight)
+			icon.Show()
+			self.childrenList.append(icon)
+			self.toolTipHeight += icon.GetHeight()
+			self.ResizeToolTip()
+
+			self.AppendTextLine(localeInfo.TOOLTIP_BUYPRICE % ("%dx %s" % (count, item.GetItemName())))
 
 	def SetShopItemBySecondaryCoin(self, slotIndex):
 		itemVnum = shop.GetItemID(slotIndex)

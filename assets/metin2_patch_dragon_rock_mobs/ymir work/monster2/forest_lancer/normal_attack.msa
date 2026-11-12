@@ -1,0 +1,78 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\Ymir Work\monster2\forest_lancer\satk.GR2"
+MotionDuration           2.833333
+Accumulation           0.00	-180.00	0.00
+
+Group MotionEventData
+{
+    MotionEventDataCount     4
+    Group Event00
+    {
+        MotionEventType      4
+        StartingTime         0.792624
+        DuringTime           0.200000
+        EnableHitProcess     0
+        
+        AttackType           0
+        HittingType          1
+        StiffenTime          0.000000
+        InvisibleTime        0.300000
+        ExternalForce        0.000000
+        HitLimitCount        0
+        CollisionType        4
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           110.000000
+            Position         0.000000 -160.000000 50.000000
+        }
+    }
+    Group Event01
+    {
+        MotionEventType      4
+        StartingTime         1.685804
+        DuringTime           0.000000
+        EnableHitProcess     0
+        
+        AttackType           0
+        HittingType          1
+        StiffenTime          0.000000
+        InvisibleTime        0.000000
+        ExternalForce        0.000000
+        HitLimitCount        0
+        CollisionType        4
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           110.000000
+            Position         0.000000 -150.000000 0.000000
+        }
+    }
+    Group Event02
+    {
+        MotionEventType      1
+        StartingTime         0.798539
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "Bip01 R Hand"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/effect/monster/spider_king_20_1_blow.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+    Group Event03
+    {
+        MotionEventType      1
+        StartingTime         1.685804
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "Bip01 L Hand"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/effect/hit/blow_4/blow_4_ref.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+}

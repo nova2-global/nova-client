@@ -13,6 +13,8 @@ import uiScriptLocale
 import uiPrivateShopBuilder # 占쏙옙占쏙옙호
 import interfaceModule # 占쏙옙占쏙옙호
 import nui_windows
+# The keyboard row's dialog (NOVA-121).
+import uikeybindings
 
 blockMode = 0
 viewChatMode = 0
@@ -63,8 +65,13 @@ class OptionDialog(ui.ScriptWindow):
 		self.mobLevelButtonList = []
 		self.mobAIButtonList = []
 		self.mobInfoLabels = []
+		self.keyboardLabel = None
+		self.keyboardButton = None
+		self.keyBindingsDialog = None
 
 	def Destroy(self):
+		if self.keyBindingsDialog:
+			self.keyBindingsDialog.Destroy()
 		self.ClearDictionary()
 
 		self.__Initialize()
@@ -179,6 +186,7 @@ class OptionDialog(ui.ScriptWindow):
 		self.__Load_ShowSash()
 		self.__Load_HideBuffi()
 		self.__Load_MobInfo()
+		self.__Load_Keyboard()
 
 	## The offline shops' NPCs and signs, shown or hidden (NOVA-9; OLD
 	## uiGameOption.py:1169-1218, a "companions" checkbox there): a row under
@@ -349,6 +357,38 @@ class OptionDialog(ui.ScriptWindow):
 	def RefreshMobInfo(self):
 		self.__ClickRadioButton(self.mobLevelButtonList, 0 if systemSetting.IsShowMobLevel() else 1)
 		self.__ClickRadioButton(self.mobAIButtonList, 0 if systemSetting.IsShowMobAIFlag() else 1)
+
+	## The key bindings (NOVA-121): a row under the mob info rows whose button
+	## opens uikeybindings.KeyBindingsDialog; the NovaUI game options show the
+	## same table as their keyboard page.
+	KEYBOARD_ROW_Y = MOB_INFO_AGGR_Y + 25
+	KEYBOARD_HEIGHT = MOB_INFO_HEIGHT + 25
+
+	def __Load_Keyboard(self):
+		board = self.GetChild("board")
+		board.SetSize(board.GetWidth(), self.KEYBOARD_HEIGHT)
+		self.SetSize(self.GetWidth(), self.KEYBOARD_HEIGHT)
+		label = ui.TextLine()
+		label.SetParent(board)
+		label.SetPosition(30, self.KEYBOARD_ROW_Y + 2)
+		label.SetText(uiScriptLocale.KEYBIND_ROW)
+		label.Show()
+		self.keyboardLabel = label
+		button = ui.Button()
+		button.SetParent(board)
+		button.SetPosition(90, self.KEYBOARD_ROW_Y)
+		button.SetUpVisual("d:/ymir work/ui/public/middle_button_01.sub")
+		button.SetOverVisual("d:/ymir work/ui/public/middle_button_02.sub")
+		button.SetDownVisual("d:/ymir work/ui/public/middle_button_03.sub")
+		button.SetText(uiScriptLocale.KEYBIND_OPEN)
+		button.SAFE_SetEvent(self.__OnClickKeyboardButton)
+		button.Show()
+		self.keyboardButton = button
+
+	def __OnClickKeyboardButton(self):
+		if not self.keyBindingsDialog:
+			self.keyBindingsDialog = uikeybindings.KeyBindingsDialog()
+		self.keyBindingsDialog.Open()
 
 	def __ClickRadioButton(self, buttonList, buttonIndex):
 		try:

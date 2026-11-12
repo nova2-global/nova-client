@@ -276,6 +276,8 @@ def _RebuildDerivedData():
 		'INVENTORY_FULL': 						SHOP_INVENTORY_FULL,
 		'INVALID_POS': 							SHOP_INVALID_POS,
 		'NOT_ENOUGH_MONEY_EX': 					SHOP_NOT_ENOUGH_MONEY_EX,
+		# NOVA-83: a barter row whose costs the player does not hold.
+		'NOT_ENOUGH_ITEM': 						SHOP_NOT_ENOUGH_ITEM,
 	}
 
 	# Character status description

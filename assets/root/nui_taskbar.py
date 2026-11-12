@@ -27,8 +27,10 @@ import mouseModule
 import net
 import player
 import skill
+import uiScriptLocale
 import wndMgr
 
+import keybindings
 import nui
 import nui_hud
 import nui_slots
@@ -111,6 +113,10 @@ class TaskBarBoard(nui.Window):
 			"expandable": True,
 			"open_character": False, "open_inventory": False, "open_messenger": False, "open_system": False,
 			"messenger_badge": "",
+			# NOVA-121: the keys shown, from the key bindings (TaskBar.nui_hotkeys).
+			"quick_keys": [""] * QUICK_SLOTS, "quick_key_art": [True] * QUICK_SLOTS,
+			"hotkey_character": "", "hotkey_inventory": "", "hotkey_messenger": "",
+			"tip_character": "", "tip_inventory": "", "tip_messenger": "", "tip_prev_page": "", "tip_next_page": "",
 		}
 
 	def on_theme_changed(self, theme_id):
@@ -244,9 +250,35 @@ class TaskBar(object):
 			return
 		try:
 			self.board = TaskBarBoard(self)
+			self.board.set(**self.nui_hotkeys())
+			keybindings.current().listen(self)
 		except Exception:
 			self.nui_discard()
 			raise
+
+	# --- the keys shown (NOVA-121) ------------------------------------------------------
+
+	@staticmethod
+	def nui_hotkeys():
+		"""The model's keys from the key bindings: each quickslot cell's key and
+		whether classic still draws its legacy art, the window buttons' badges
+		(the system button's Esc is fixed) and the tooltips that name keys
+		(uiTaskBar's rules, the legacy bar's)."""
+		keys = [uiTaskBar.QuickSlotKey(index) for index in range(QUICK_SLOTS)]
+		values = {"quick_keys": [nui.plain_text(name) for (name, art) in keys],
+		          "quick_key_art": [art for (name, art) in keys]}
+		for (button, name) in uiTaskBar.BUTTON_BADGES.items():
+			values["hotkey_" + name] = nui.plain_text(keybindings.badge(name))
+		for (button, name, text) in ((TaskBar.BUTTON_CHARACTER, "character", uiScriptLocale.TASKBAR_CHARACTER),
+		                             (TaskBar.BUTTON_INVENTORY, "inventory", uiScriptLocale.TASKBAR_INVENTORY),
+		                             (TaskBar.BUTTON_MESSENGER, "messenger", uiScriptLocale.TASKBAR_MESSENGER)):
+			values["tip_" + name] = nui.plain_text(uiTaskBar.ButtonToolTip(text, button))
+		values["tip_prev_page"] = nui.plain_text(uiTaskBar.QuickPageToolTip(uiScriptLocale.TASKBAR_PREV_QUICKSLOT, False))
+		values["tip_next_page"] = nui.plain_text(uiTaskBar.QuickPageToolTip(uiScriptLocale.TASKBAR_NEXT_QUICKSLOT, True))
+		return values
+
+	def OnKeyBindingsChanged(self):
+		self._set(**self.nui_hotkeys())
 
 	# --- the nui_windows.make() protocol ------------------------------------------
 
@@ -255,6 +287,7 @@ class TaskBar(object):
 
 	def nui_discard(self):
 		self._nui_discarded = True
+		keybindings.current().forget(self)
 		self._destroy_board()
 		nui_hud.forget("taskbar", self)
 
@@ -313,6 +346,7 @@ class TaskBar(object):
 		if gift is not None:
 			gift.Destroy()
 		self.tooltips = nui_slots.TooltipBridge()
+		keybindings.current().forget(self)
 		self._destroy_board()
 		nui_hud.forget("taskbar", self)
 

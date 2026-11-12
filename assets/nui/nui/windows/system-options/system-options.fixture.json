@@ -6,6 +6,12 @@
 		"camera": 0,
 		"fog": 1,
 		"tiling": 1,
+		"fov": 48,
+		"fov_min": 30,
+		"fov_max": 120,
+		"snow": 1,
+		"fps": 0,
+		"tips": 0,
 		"interface": true,
 		"themes": [
 			{"id": "modern-dark", "label": "@ui.THEME_MODERN_DARK"},

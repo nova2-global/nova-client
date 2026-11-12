@@ -183,6 +183,34 @@
 		"open_inventory": false,
 		"open_messenger": false,
 		"open_system": false,
-		"messenger_badge": ""
+		"messenger_badge": "",
+		"quick_keys": [
+			"1",
+			"2",
+			"3",
+			"4",
+			"F1",
+			"F2",
+			"F3",
+			"F4"
+		],
+		"quick_key_art": [
+			true,
+			true,
+			true,
+			true,
+			true,
+			true,
+			true,
+			true
+		],
+		"hotkey_character": "C",
+		"hotkey_inventory": "I",
+		"hotkey_messenger": "Alt+M",
+		"tip_character": "@ui.TASKBAR_CHARACTER",
+		"tip_inventory": "@ui.TASKBAR_INVENTORY",
+		"tip_messenger": "@ui.TASKBAR_MESSENGER",
+		"tip_prev_page": "@ui.TASKBAR_PREV_QUICKSLOT",
+		"tip_next_page": "@ui.TASKBAR_NEXT_QUICKSLOT"
 	}
 }

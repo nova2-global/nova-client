@@ -1,0 +1,112 @@
+ScriptType            RaceDataScript
+
+BaseModelFileName     "D:\Ymir Work\npc\2021_august_new_mount\2021_august_new_mount.GR2"
+
+Group ShapeData
+{
+	PathName 		 ""
+	ShapeDataCount		 1
+	Group ShapeData00
+	{
+		ShapeIndex			0
+
+		Model				"D:\Ymir Work\npc\2021_august_new_mount\2021_august_new_mount.GR2"
+		SourceSkin			"D:\Ymir Work\npc\2021_august_new_mount\Vehicle_GhostHorse_armor.dds"
+		CommonTargetSkin	"D:\Ymir Work\npc\2021_august_new_mount\Vehicle_GhostHorse_armor.dds"
+		CustomSpecularMask2		3
+		SourceSkin2			"D:\Ymir Work\npc\2021_august_new_mount\Vehicle_GhostHorse_body.dds"
+		CommonTargetSkin2	"D:\Ymir Work\npc\2021_august_new_mount\Vehicle_GhostHorse_body.dds"
+	}
+}
+Group AttachingData
+{
+    AttachingDataCount       6
+    
+    Group AttachingData00
+    {
+        AttachingDataType    1
+        
+        isAttaching          0
+        AttachingModelIndex  0
+        AttachingBoneName    "2021_feb_horse"
+        
+        CollisionType        1
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           37.000000
+            Position         0.000000 0.000000 100.000000
+        }
+    }
+    
+    Group AttachingData01
+    {
+        AttachingDataType    1
+        
+        isAttaching          0
+        AttachingModelIndex  0
+        AttachingBoneName    "2021_feb_horse"
+        
+        CollisionType        3
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           46.000000
+            Position         0.000000 0.000000 100.000000
+        }
+    }
+    
+    Group AttachingData02
+    {
+        AttachingDataType    2
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip01-L-Hand"
+        
+        EffectScriptName     "D:\ymir work\npc\2021_august_new_mount\foot_eff.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+        EffectRotation       0.000000 0.000000 0.000000
+    }
+    
+    Group AttachingData03
+    {
+        AttachingDataType    2
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip01-L-Toe0"
+        
+        EffectScriptName     "D:\ymir work\npc\2021_august_new_mount\foot_eff.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+        EffectRotation       0.000000 0.000000 0.000000
+    }
+    
+    Group AttachingData04
+    {
+        AttachingDataType    2
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip01-R-Toe0Nub"
+        
+        EffectScriptName     "D:\ymir work\npc\2021_august_new_mount\foot_eff.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+        EffectRotation       0.000000 0.000000 0.000000
+    }
+    
+    Group AttachingData05
+    {
+        AttachingDataType    2
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip01-R-Hand"
+        
+        EffectScriptName     "D:\ymir work\npc\2021_august_new_mount\foot_eff.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+        EffectRotation       0.000000 0.000000 0.000000
+    }
+}

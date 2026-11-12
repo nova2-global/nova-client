@@ -1131,6 +1131,7 @@ DUEL_ANTI_POISON	Fara otrava
 DUEL_ANTI_FIRE	Fara foc
 DUEL_ANTI_CHANGE_EQUIP	Nu poti schimba echipamentul
 DUEL_ANTI_PARTY	Fara grup
+DUEL_ANTI_PET_ADVANCED	No Advanced Pet
 TARGET_BUTTON_DENY_FIGHT	Respinge
 TARGET_BUTTON_CANCEL_AVENGE	Amnistie
 BATTLE_RULES	Regulile luptei:
@@ -1280,3 +1281,12 @@ WIKI_PAGE_ERROR	This part of the page could not be shown:
 WIKI_CLASS_ALL	All	
 WIKI_VIEWER_HINT	Drag to turn, scroll to zoom, double-click to reset.	
 WIKI_LIST_RANGE	%d-%d of %d	
+ATLAS_MARK_BOSS	Boss
+ATLAS_MARK_KING	Boss rege
+ATLAS_MARK_STONE	Piatră Metin
+ATLAS_MARK_RESPAWN_TIME	Timp de reapariție: %s
+SHOP_NOT_ENOUGH_ITEM	Nu ai destule iteme.
+SHOP_TEXT_OR	sau
+SHOP_BUY_COUNT_TITLE	Cantitate de cumpărat (max. %d)
+DO_YOU_BUY_WITH_ITEM	Vrei să cumperi %s pentru %s?
+SHOP_BULK_BUY_HINT	Shift + click: cumpără mai multe

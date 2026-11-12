@@ -1131,6 +1131,7 @@ DUEL_ANTI_POISON	No Poison
 DUEL_ANTI_FIRE	No Fire
 DUEL_ANTI_CHANGE_EQUIP	No Equipment Change
 DUEL_ANTI_PARTY	No Party
+DUEL_ANTI_PET_ADVANCED	No Advanced Pet
 TARGET_BUTTON_DENY_FIGHT	Deny
 TARGET_BUTTON_CANCEL_AVENGE	Pardon
 BATTLE_RULES	Battle Rules:
@@ -1280,3 +1281,12 @@ WIKI_PAGE_ERROR	This part of the page could not be shown:
 WIKI_CLASS_ALL	All	
 WIKI_VIEWER_HINT	Drag to turn, scroll to zoom, double-click to reset.	
 WIKI_LIST_RANGE	%d-%d of %d	
+ATLAS_MARK_BOSS	Boss
+ATLAS_MARK_KING	King boss
+ATLAS_MARK_STONE	Metin stone
+ATLAS_MARK_RESPAWN_TIME	Respawn time: %s
+SHOP_NOT_ENOUGH_ITEM	You do not have enough of the required items.
+SHOP_TEXT_OR	or
+SHOP_BUY_COUNT_TITLE	Items to buy (max. %d)
+DO_YOU_BUY_WITH_ITEM	Do you want to buy %s for %s?
+SHOP_BULK_BUY_HINT	Shift + click: buy several

@@ -25,6 +25,10 @@ DOCUMENT = "nui/windows/shop/shop.rml"
 KEY = "shop"
 LEAVE_RANGE = 1000
 PLACE_RIGHT, PLACE_TOP = 400, 10
+# NOVA-83: the modern looks mark an NPC shop's barter rows (a small code-drawn mark on the
+# item's cell, the cell's "barter" key); classic keeps legacy's look and hides it. Default,
+# Eddy to confirm.
+BARTER_MARK = True
 
 
 def _offline_page_count():
@@ -39,6 +43,13 @@ def _offline_row_count():
 		return max(0, int(getattr(shop, "OFFLINE_SHOP_ROWS_PER_PAGE", 8)))
 	except (TypeError, ValueError):
 		return 8
+
+
+def _empty_cells(count):
+	cells = [nui_slots.empty_cell(i) for i in range(count)]
+	for cell in cells:
+		cell["barter"] = False
+	return cells
 
 
 def _page_models(count=None):
@@ -285,7 +296,7 @@ class ShopDialog(nui_facade.Facade, uiShop.ShopDialog):
 		tabs = [{"index": i, "name": "", "down": False, "shown": False}
 		        for i in range(limits.SHOP_TAB_COUNT_MAX)]
 		return {
-			"cells": [nui_slots.empty_cell(i) for i in range(limits.SHOP_SLOT_COUNT)],
+			"cells": _empty_cells(limits.SHOP_SLOT_COUNT),
 			"cols": limits.SHOP_COLUMNS,
 			"attaching": False,
 			"tabs": tabs,
@@ -324,6 +335,15 @@ class ShopDialog(nui_facade.Facade, uiShop.ShopDialog):
 			return player.SLOT_TYPE_PRIVATE_SHOP
 		return player.SLOT_TYPE_PRIVATE_SHOP if shop.IsPrivateShop() else player.SLOT_TYPE_SHOP
 
+	def _marked(self, cells):
+		"""The cells with their "barter" key: an NPC shop row that costs items, on its
+		item's anchor cell (NOVA-83)."""
+		npc = BARTER_MARK and not getattr(self, "isOfflineShop", False) and not shop.IsPrivateShop()
+		for cell in cells:
+			cell["barter"] = bool(npc and cell["kind"] == "item" and not cell["covered"]
+			                      and uiShop.HasBarter(self._real_index(cell["index"])))
+		return cells
+
 	def _on_cells(self, cells):
 		events = getattr(self, "_cell_events", None)
 		states, picked = (events.states, events.picked) if events is not None else ({}, -1)
@@ -332,7 +352,7 @@ class ShopDialog(nui_facade.Facade, uiShop.ShopDialog):
 			for cell in cells:
 				if cell["kind"] and self.IsOfflineSlotInert(self.GetOfflineSlot(cell["index"])):
 					cell["disabled"] = True
-		self.nui_set(cells=cells)
+		self.nui_set(cells=self._marked(cells))
 
 	def _on_states(self, states, picked):
 		cells = nui_slots.with_states(self.itemSlotWindow.cells(), states, picked)
@@ -340,7 +360,7 @@ class ShopDialog(nui_facade.Facade, uiShop.ShopDialog):
 			for cell in cells:
 				if cell["kind"] and self.IsOfflineSlotInert(self.GetOfflineSlot(cell["index"])):
 					cell["disabled"] = True
-		self.nui_set(cells=cells)
+		self.nui_set(cells=self._marked(cells))
 
 	def _on_attaching(self, flag):
 		self.nui_set(attaching=flag)

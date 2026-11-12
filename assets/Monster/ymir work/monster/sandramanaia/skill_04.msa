@@ -1,0 +1,64 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\monster\sandramanaia\skill_04.GR2"
+MotionDuration           5.500000
+
+Group MotionEventData
+{
+    MotionEventDataCount     4
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         2.170146
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "sandra_root"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/effect/monster2/12_pig_s2_blow.mse"
+        EffectPosition       0.000000 -1300.000000 0.000000
+    }
+    Group Event01
+    {
+        MotionEventType      2
+        StartingTime         2.101253
+        
+        DuringTime           0.100000
+        Power                500
+        AffectingRange       800
+    }
+    Group Event02
+    {
+        MotionEventType      4
+        StartingTime         2.170146
+        DuringTime           1.000000
+        EnableHitProcess     0
+        
+        AttackType           0
+        HittingType          2
+        StiffenTime          0.000000
+        InvisibleTime        1.000000
+        ExternalForce        500.000000
+        HitLimitCount        0
+        CollisionType        4
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           1800.000000
+            Position         0.000000 -300.000000 0.000000
+        }
+    }
+    Group Event03
+    {
+        MotionEventType      1
+        StartingTime         0.574113
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "Bone_tail_R"
+        FollowingEnable      1
+        EffectFileName       "d:/ymir work/effect/monster2/12_pig_s2_making.mse"
+        EffectPosition       0.000000 50.000000 0.000000
+    }
+}

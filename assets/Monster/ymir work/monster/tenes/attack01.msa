@@ -1,0 +1,21 @@
+ScriptType               MotionData
+
+MotionFileName           "d:/ymir work/monster/tenes/attack01.gr2"
+MotionDuration           2.333333
+
+Group MotionEventData
+{
+    MotionEventDataCount     1
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         1.003479
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "AXE"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/effect/monster/tenes/blow_effect.mse"
+        EffectPosition       0.000000 -150.000000 0.000000
+    }
+}

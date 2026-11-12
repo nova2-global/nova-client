@@ -496,10 +496,14 @@ class GameCallbacks(unittest.TestCase):
     def test_the_keys_and_the_import(self):
         source = read_root("game.py")
         self.assertIn("import pet", source.split("\n"))
-        self.assertIn("onPressKeyDict[app.DIK_P]", source)
-        self.assertIn("self.interface.TogglePetWindow()", source)
-        self.assertIn("onPressKeyDict[app.DIK_TAB]", source)
+        # P and Tab are the defaults of NOVA-121's table (keybindings_game_test
+        # presses them).
+        self.assertIn('"pet": lambda: interface().TogglePetWindow()', source)
+        self.assertIn('"next_target": self.__PressTabKey', source)
         self.assertIn("self.interface.PressTabKey()", source)
+        table = read_root("keybindings.py")
+        self.assertIn('Action("pet", "windows", "KEYBIND_PET", "Pet", (key("P"),))', table)
+        self.assertIn('(key("TAB"),), hold=True)', table)
 
 
 class Interface(unittest.TestCase):

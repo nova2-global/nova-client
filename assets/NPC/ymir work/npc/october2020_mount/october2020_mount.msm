@@ -1,0 +1,66 @@
+ScriptType            RaceDataScript
+
+BaseModelFileName     "d:/ymir work/npc/october2020_mount/october2020_mount.GR2"
+
+Group ShapeData
+{
+	PathName 		 ""
+	ShapeDataCount		 2
+	Group ShapeData00
+	{
+		ShapeIndex			0
+		SpecularMask		4
+
+		Model				"D:\Ymir Work\npc\october2020_mount\october2020_mount.GR2"
+		SourceSkin			"D:\Ymir Work\npc\october2020_mount\Vehicle_Ostrich_B_diff_feathers.dds"
+		TargetSkin			"D:\Ymir Work\npc\october2020_mount\Vehicle_Ostrich_B_diff_feathers.dds"
+	}
+	Group ShapeData01
+	{
+		ShapeIndex			0
+
+		Model				"D:\Ymir Work\npc\october2020_mount\october2020_mount.GR2"
+		SourceSkin			"D:\Ymir Work\npc\october2020_mount\Vehicle_Ostrich_B_diff.dds"
+		TargetSkin			"D:\Ymir Work\npc\october2020_mount\Vehicle_Ostrich_B_diff.dds"
+	}
+}
+Group AttachingData
+{
+    AttachingDataCount       2
+    
+    Group AttachingData00
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "octo_mount"
+        
+        CollisionType        1
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           56.000000
+            Position         0.000000 0.000000 0.000000
+        }
+    }
+    
+    Group AttachingData01
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "octo_mount"
+        
+        CollisionType        3
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           46.000000
+            Position         0.000000 0.000000 0.000000
+        }
+    }
+}

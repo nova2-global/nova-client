@@ -1129,6 +1129,7 @@ DUEL_ANTI_POISON	Kein Gift
 DUEL_ANTI_FIRE	Kein Verbrennen
 DUEL_ANTI_CHANGE_EQUIP	Kein Equipment wechseln
 DUEL_ANTI_PARTY	Keine Gruppe
+DUEL_ANTI_PET_ADVANCED	Kein fortgeschrittenes Pet
 TARGET_BUTTON_DENY_FIGHT	Ablehnen
 TARGET_BUTTON_CANCEL_AVENGE	Pardon
 BATTLE_RULES	Duell Regeln:
@@ -1278,3 +1279,12 @@ WIKI_PAGE_ERROR	This part of the page could not be shown:
 WIKI_CLASS_ALL	All	
 WIKI_VIEWER_HINT	Drag to turn, scroll to zoom, double-click to reset.	
 WIKI_LIST_RANGE	%d-%d of %d	
+ATLAS_MARK_BOSS	Boss
+ATLAS_MARK_KING	Königsboss
+ATLAS_MARK_STONE	Metinstein
+ATLAS_MARK_RESPAWN_TIME	Wiedererscheinungszeit: %s
+SHOP_NOT_ENOUGH_ITEM	Du hast nicht genug Items.
+SHOP_TEXT_OR	oder
+SHOP_BUY_COUNT_TITLE	Anzahl kaufen (max. %d)
+DO_YOU_BUY_WITH_ITEM	Möchtest du %s für %s kaufen?
+SHOP_BULK_BUY_HINT	Shift + click: mehrere kaufen

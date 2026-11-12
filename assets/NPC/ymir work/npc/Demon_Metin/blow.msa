@@ -1,0 +1,44 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\npc\Demon_Metin\blow.GR2"
+MotionDuration           5.333333
+
+Group MotionEventData
+{
+    MotionEventDataCount     3
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         0.300855
+        
+        IndependentFlag      0
+        AttachingEnable      0
+        AttachingBoneName    "Obj_b005"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/effect/background/metinstone_laser.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+    Group Event01
+    {
+        MotionEventType      1
+        StartingTime         0.280342
+        
+        IndependentFlag      0
+        AttachingEnable      0
+        AttachingBoneName    "Obj_b005"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/effect/background/metinstone_blow.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+    Group Event02
+    {
+        MotionEventType      1
+        StartingTime         0.039487
+
+        AttachingEnable      1
+        AttachingBoneName    "Dummy01"
+        FollowingEnable      0
+        EffectScriptName     "D:\ymir work\effect\background\Demon_Stone.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+}

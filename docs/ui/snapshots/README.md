@@ -212,6 +212,8 @@ A mismatch means a switch left part of the old theme behind, or started a transi
 - **The open chat** holds eight lines in its 138dp history, so the top line is clear and the next at half (legacy's ramp of a full history); the field holds `#` and text, under the yellow mark.
 - **`chat-no-view-chat`** is empty on purpose: with the view-chat option off, a closed chat shows no line, as legacy's.
 - **The chat log** is at its smallest size, 450 x 120dp at 20, 20, which holds three rows.
+- **The shout flags** (NOVA-110, 2026-11-11): every shout line in the feed stand-ins carries `empire`, so it starts with its empire's flag (the empire select's banners at 20 x 12dp in the modern looks, OLD's 20 x 15 flags in classic). The closed chat and the closed view gained a fourth line, a Jinno shout; the log's shout and whisper swapped places so the shout sits in its three rows. The 54 chat, chat-view and chat-log goldens that changed were written with `--write --optimize` by a Linux build of `nova-client-src` `feature/chat-flags` (the first `nuitool` whose `nui-chat-lines` builds the flag span).
+- **The language flags** (NOVA-51, 2026-11-11): every shout line in the feed stand-ins also carries `lang` (`de` in the closed chat and view, `tr` in the open chat, `en` in the log), so it starts with its language's flag, then its empire's (the login strip's `server_flag_<code>` contained in the 20 x 12dp box in the modern looks, OLD's 20 x 15 `flags_20x15` in classic). The same 54 chat, chat-view and chat-log goldens changed; they were written with `--write --optimize` by a Linux build of `nova-client-src` `feature/multi-language` (`linuxdev-nui/build-wiki-r3`), the first `nuitool` whose `nui-chat-lines` reads `lang`.
 
 ## Wave 3a windows
 

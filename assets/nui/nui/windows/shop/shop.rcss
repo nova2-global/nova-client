@@ -186,6 +186,25 @@ body.shop.shop--offline
 	background-color: var(--slot-unavailable);
 	pointer-events: none;
 }
+/* NOVA-83: a barter row's mark, a small accent diamond at its item's top
+   left, over the icon. It takes no pointer, so the cell stays the target and
+   the grid keeps its hit boxes. Classic hides it. */
+.shop__barter
+{
+	display: block;
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+	width: 8dp;
+	height: 8dp;
+	z-index: 6;
+	box-sizing: border-box;
+	border-width: 1dp;
+	border-color: var(--surface-sunken);
+	background-color: var(--accent);
+	transform: rotate(45deg);
+	pointer-events: none;
+}
 .shop__lock
 {
 	position: absolute;

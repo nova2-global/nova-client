@@ -1,0 +1,91 @@
+ScriptType            RaceDataScript
+
+BaseModelFileName     "D:\ymir work\npc\pet_magic_bunny\pet_magic_bunny.GR2"
+
+Group ShapeData
+{
+    PathName 		 ""
+    ShapeDataCount 		 0
+}
+Group AttachingData
+{
+    AttachingDataCount       6
+    
+    Group AttachingData00
+    {
+        AttachingDataType    2
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bone_Card_Spade"
+        
+        EffectScriptName     "D:\ymir work\npc\pet_magic_bunny\magicbunny2.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+        EffectRotation       0.000000 0.000000 0.000000
+    }
+    
+    Group AttachingData01
+    {
+        AttachingDataType    2
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bone_Card_Heart"
+        
+        EffectScriptName     "D:\ymir work\npc\pet_magic_bunny\magicbunny2.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+        EffectRotation       0.000000 0.000000 0.000000
+    }
+    
+    Group AttachingData02
+    {
+        AttachingDataType    2
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bone_Card_Rabit"
+        
+        EffectScriptName     "D:\ymir work\npc\pet_magic_bunny\magicbunny2.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+        EffectRotation       0.000000 0.000000 0.000000
+    }
+    
+    Group AttachingData03
+    {
+        AttachingDataType    2
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bone_Card_Dia"
+        
+        EffectScriptName     "D:\ymir work\npc\pet_magic_bunny\magicbunny2.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+        EffectRotation       0.000000 0.000000 0.000000
+    }
+    
+    Group AttachingData04
+    {
+        AttachingDataType    2
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bone_Card_Club"
+        
+        EffectScriptName     "D:\ymir work\npc\pet_magic_bunny\magicbunny2.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+        EffectRotation       0.000000 0.000000 0.000000
+    }
+    
+    Group AttachingData05
+    {
+        AttachingDataType    2
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bone_Weapon_Scale"
+        
+        EffectScriptName     "D:\ymir work\npc\pet_magic_bunny\magicbunny2_wep.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+        EffectRotation       0.000000 0.000000 0.000000
+    }
+}

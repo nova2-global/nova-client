@@ -13,21 +13,24 @@
 	     reaches the window in its legacy place (nui_hud.EscapeProxy). The PvP
 	     choices carry legacy's hints. The pickup filter's four toggles
 	     (NOVA-50) flip what Z and ` pick up; the last row shows or hides
-	     every sash (SHOW_ACCE, NOVA-20). -->
+	     every sash (SHOW_ACCE, NOVA-20). The Keyboard row opens the keys
+	     page (NOVA-121), the same document's second page (model key page). -->
 	<title>game-options</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="game-options.rcss"/>
 </head>
-<body template="nui" class="nui-window nui-fx nui-anim game-options" data-model="game_options">
+<body template="nui" class="nui-window nui-fx nui-anim game-options" data-model="game_options" data-class-go-keys-page="page == 'keys'">
 	<div class="nui-window__titlebar game-options__titlebar">
 		<handle class="nui-window__handle game-options__handle" move_target="#document">
 			<span class="game-options__icon"><span class="nui-glyph game-options__glyph"><span class="nui-glyph__a"></span><span
 				class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
-			<span class="nui-window__title game-options__title">@ui.GAMEOPTION_TITLE</span>
+			<span class="nui-window__title game-options__title" data-if="page != 'keys'">@ui.GAMEOPTION_TITLE</span>
+			<span class="nui-window__title game-options__title" data-if="page == 'keys'">@ui.KEYBIND_TITLE</span>
 		</handle>
 		<button id="go-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim" data-event-mousedown="close(ev.button)">&#215;</button>
 	</div>
 	<div class="nui-window__body game-options__body">
+		<div class="go-main" data-if="page != 'keys'">
 		<div class="go-row go-row--name-color">
 			<span class="go-label go-label--name-color">@ui.OPTION_NAME_COLOR</span>
 			<div class="go-choices">
@@ -142,6 +145,43 @@
 			<div class="go-choices">
 				<button id="go-mob-ai-1" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--mob-ai-1" data-class-is-selected="mob_ai" data-event-mousedown="choose('mob_ai', 1, ev.button)"><span class="go-choice__label">@ui.OPTION_VIEW_CHAT_ON</span></button>
 				<button id="go-mob-ai-0" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--mob-ai-0" data-class-is-selected="!mob_ai" data-event-mousedown="choose('mob_ai', 0, ev.button)"><span class="go-choice__label">@ui.OPTION_VIEW_CHAT_OFF</span></button>
+			</div>
+		</div>
+		<!-- NOVA-121: the key bindings (legacy's Keyboard row under the mob
+		     info rows, whose button opens legacy's key bindings dialog); here
+		     the button opens the keys page below. -->
+		<div class="go-row go-row--keys">
+			<span class="go-label go-label--keys">@ui.KEYBIND_ROW</span>
+			<div class="go-choices">
+				<button id="go-keys-open" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--keys-open" data-event-mousedown="keypage('open', ev.button)"><span class="go-choice__label">@ui.KEYBIND_OPEN</span></button>
+			</div>
+		</div>
+		</div>
+		<!-- NOVA-121: the keys page (keybindings.Page): the sections and their
+		     actions, each with its key and its second key. A left press on a
+		     key waits for the next key the game gets (game.py gives the
+		     capture every key first), which binds it; Escape ends the wait,
+		     Backspace clears the key. The notice line says what a change did. -->
+		<div class="go-keys" data-if="page == 'keys'">
+			<div class="gk-head">
+				<span class="gk-head__action">@ui.KEYBIND_COLUMN_ACTION</span>
+				<span class="gk-head__key gk-head__key--1">@ui.KEYBIND_COLUMN_1</span>
+				<span class="gk-head__key gk-head__key--2">@ui.KEYBIND_COLUMN_2</span>
+			</div>
+			<div id="go-key-list" class="gk-list">
+				<div class="gk-row" data-for="row : key_rows">
+					<span class="gk-section" data-if="row.kind == 'section'">{{ row.label }}</span>
+					<div class="gk-action" data-if="row.kind == 'action'" data-class-is-changed="row.changed">
+						<span class="gk-label">{{ row.label }}</span>
+						<button class="nui-button nui-anim gk-cell gk-cell--1" data-class-is-selected="row.cap1" data-event-mousedown="bind(row.id, 0, ev.button)"><span class="gk-cell__text">{{ row.k1 }}</span></button>
+						<button class="nui-button nui-anim gk-cell gk-cell--2" data-class-is-selected="row.cap2" data-event-mousedown="bind(row.id, 1, ev.button)"><span class="gk-cell__text">{{ row.k2 }}</span></button>
+					</div>
+				</div>
+			</div>
+			<span class="gk-notice">{{ notice }}</span>
+			<div class="gk-foot">
+				<button id="go-keys-reset" class="nui-button nui-button--medium nui-anim gk-reset" data-event-mousedown="reset_keys(ev.button)"><span class="gk-button__label">@ui.KEYBIND_RESET</span></button>
+				<button id="go-keys-back" class="nui-button nui-button--medium nui-anim gk-back" data-event-mousedown="keypage('back', ev.button)"><span class="gk-button__label">@ui.KEYBIND_BACK</span></button>
 			</div>
 		</div>
 	</div>

@@ -118,6 +118,8 @@ APP_CONSTANTS.update({"ENABLE_ENERGY_SYSTEM": 1, "ENABLE_DRAGON_SOUL_SYSTEM": 1}
 APP_CONSTANTS.update({"VK_UP": 0x26, "VK_DOWN": 0x28, "DIK_LALT": 0x38, "DIK_LSHIFT": 0x2A, "DIK_LCONTROL": 0x1D})
 # Wave 3a: the help closes on H (uihelp.py OnKeyDown).
 APP_CONSTANTS.update({"DIK_H": 0x23})
+# NOVA-83: a bulk buy at an NPC shop takes either Shift (uishop.py BULK_BUY_KEYS).
+APP_CONSTANTS.update({"DIK_RSHIFT": 0x36})
 MINIMAP_CONSTANTS = {"TYPE_OPC": 0, "TYPE_OPCPVP": 1, "TYPE_OPCPVPSELF": 2, "TYPE_NPC": 3, "TYPE_MONSTER": 4, "TYPE_WARP": 5,
                      "TYPE_WAYPOINT": 6, "TYPE_PARTY": 7, "TYPE_EMPIRE": 8, "TYPE_EMPIRE_END": 12}
 # miniMap's answers when a test scripts none (PythonMiniMapModule.cpp's shapes).
@@ -1151,7 +1153,14 @@ class Game(object):
                          "show_damage": True, "show_mob_level": True, "show_mob_ai": True, "ui_theme": "", "ui_scale_percent": 0, "ui_reduced_motion": 0,
                          # The pickup filter's four categories (NOVA-50; the
                          # client's PICKUP_FILTER_ALL by default).
-                         "pickup_filter": [True, True, True, True]}
+                         "pickup_filter": [True, True, True, True],
+                         # The field of view in degrees (NOVA-116; POINT_OF_VIEW,
+                         # FIELD_OF_VIEW_DEFAULT by default).
+                         "field_of_view": 30.0,
+                         # NOVA-118: snowfall, the FPS counter and tips
+                         # (CPythonSystem's SNOWFALL_DEFAULT, FPS_COUNTER_DEFAULT
+                         # and TIPS_DEFAULT: OLD's off, off, on).
+                         "snowfall": False, "fps_counter": False, "tips": True}
         self.pk_mode = 0         # player.GetPKMode
         self.guild_id = 0        # player.GetGuildID
         self.software_tiling = False  # background.IsSoftwareTiling
@@ -1534,6 +1543,17 @@ class Game(object):
         # Through define(), so a test's scripted answer (Game.answer) wins.
         define(setting, "GetPickupFilter", lambda index: bool(settings["pickup_filter"][index]))
         setter("SetPickupFilter", lambda index, on: settings["pickup_filter"].__setitem__(index, bool(on)))
+        # The field of view (NOVA-116): OLD's pair, a float each way, clamped
+        # to the client's range (CPythonSystem::ClampFieldOfView), and the range.
+        setting.FIELD_OF_VIEW_MIN, setting.FIELD_OF_VIEW_MAX, setting.FIELD_OF_VIEW_DEFAULT = 30, 120, 30
+        getter("GetPOV", "field_of_view", float)
+        setter("SetPOV", lambda value: settings.__setitem__("field_of_view", min(120.0, max(30.0, float(value)))))
+        # NOVA-118: an int each way, 1 is on (OLD's rule).
+        for key, getter_name, setter_name in (("snowfall", "IsEnableSnowFall", "SetEnableSnowFall"),
+                                              ("fps_counter", "IsShowFPSCounter", "SetShowFPSCounter"),
+                                              ("tips", "IsShowTips", "SetShowTips")):
+            getter(getter_name, key, int)
+            setter(setter_name, lambda value, key=key: settings.__setitem__(key, value == 1))
 
         background = modules["background"]
         background.IsSoftwareTiling = lambda: bool(game.software_tiling)
@@ -1594,9 +1614,19 @@ class Game(object):
         it keeps memory only and writes nothing."""
         if name != "datacache" and "datacache" not in self.modules:
             self.load("datacache", "datacache.py")
+        # The key bindings' table (NOVA-121), which the option windows, the
+        # taskbars and the chats read: fresh for each world, config/keys.cfg
+        # the world's file (Game.files).
+        if name not in ("datacache", "keybindings") and "keybindings" not in self.modules:
+            self.load("keybindings", "keybindings.py")
         # The wiki imports its text pages (NOVA-139): the page format and the
         # page store come first unless the test loaded its own.
         for needed in WIKI_PAGE_MODULES if name == "nui_wiki" else ():
+            if needed not in self.modules:
+                self.load(needed, needed + ".py")
+        # The minimaps, the option windows and game.py share NOVA-118's
+        # options module (assets/root/player_options.py).
+        for needed in ("player_options",) if name in PLAYER_OPTIONS_USERS else ():
             if needed not in self.modules:
                 self.load(needed, needed + ".py")
         with self:
@@ -1608,7 +1638,7 @@ class Game(object):
         self.loaded[name] = module
         if name == "mouseModule":
             self._record_controller(module)
-        if name in ("uiTaskBar", "nui_taskbar"):
+        if name in ("uiTaskBar", "nui_taskbar", "keybindings"):
             module.open = self._open
         return module
 
@@ -1681,6 +1711,9 @@ FALLBACK_BUILDINGS = (
     (14300, "OBJECT", "object_1", "Stone Lantern", 30, 30, 360, "500000", ["5", "0", "0"]),
     (14301, "OBJECT", "object_2", "Flag", 0, 0, 0, "100000", ["0", "5", "0"]),
 )
+
+
+PLAYER_OPTIONS_USERS = ("uiMiniMap", "nui_minimap", "uiSystemOption", "nui_system_options")
 
 
 def source_of(file_name, names, inside=None):
@@ -2994,6 +3027,14 @@ def install_item_data(game, corpus):
     define(shop, "GetOfflineShopItemPrice", lambda slot: int(shop_state().get("price", 0)))
     define(shop, "IsOwner", lambda: bool(shop_state().get("owner", False)))
     define(shop, "IsOfflineShopSlotPending", lambda slot: bool(shop_state().get("pending", False)))
+    # NOVA-83: a barter row (shop "barter" [[vnum, count]], "all" 1 or 0) and
+    # the client's constants.
+    for name, value in (("BARTER_COST_MAX", 4), ("BUY_COUNT_MAX", 2000), ("BUY_UNSTACKED_MAX", 45)):
+        setattr(shop, name, value)
+    barter_of = lambda: [tuple(cost) for cost in shop_state().get("barter", ())]
+    define(shop, "HasBarter", lambda slot: bool(barter_of()))
+    define(shop, "IsBarterAll", lambda slot: bool(shop_state().get("all", 1)) if barter_of() else False)
+    define(shop, "GetBarterCost", lambda slot, i: (barter_of() + [(0, 0)] * 4)[i])
     for name in ("exchange", "safebox", "grpText"):
         if name not in modules:
             game.put(name, Recording(name, game.log))
@@ -3895,6 +3936,10 @@ W4_COMPARED = ("player", "net", "mouse", "app", "shop", "safebox", "exchange", "
 # (PythonExchangeModule.cpp at nova-client-src feature/port-wave-4b).
 W4_EXCHANGE_CONSTANTS = {"EXCHANGE_ITEM_MAX_NUM": 24, "EXCHANGE_COLUMNS": 6, "EXCHANGE_ROWS": 4}
 W4_SHOP_CONSTANTS = {"SHOP_SLOT_COUNT": 40, "SHOP_COIN_TYPE_GOLD": 0, "SHOP_COIN_TYPE_SECONDARY_COIN": 1}
+# NOVA-83: the barter rows and bulk buys (PythonShop.cpp at nova-client-src
+# feature/barter): four costs a row, 2000 items a request, 45 of a row that
+# does not stack.
+W4_SHOP_CONSTANTS.update({"BARTER_COST_MAX": 4, "BUY_COUNT_MAX": 2000, "BUY_UNSTACKED_MAX": 45})
 # SAFEBOX_PAGE_COUNT_MAX and SAFEBOX_MAX_NUM: CPythonSafeBox's constants since
 # the foundation cut (nova-client-src a9976fc), which uisafebox.py reads since
 # main's port (NOVA-97: five pages).
@@ -4051,6 +4096,13 @@ def install_wave4_ui(game):
     define(shop, "ClearPrivateShopStock", clear_stock)
     define(shop, "GetPrivateShopItemPrice", lambda window, pos: w4["shop"]["stock"].get((window, pos), (0, 0))[1])
     define(shop, "BuildPrivateShop", build)
+    # NOVA-83: a row's costs besides its yang (GC SHOP_BARTER, kept per slot by
+    # CPythonShop): an item's "barter" [(vnum, count)] and "all" (1: every cost,
+    # 0: any one of them; 1 when left out).
+    barter_of = lambda pos: [tuple(cost) for cost in _w4_item(shop_item(pos), "barter", ())]
+    define(shop, "HasBarter", lambda pos: bool(barter_of(pos)))
+    define(shop, "IsBarterAll", lambda pos: bool(_w4_item(shop_item(pos), "all", True)) if barter_of(pos) else False)
+    define(shop, "GetBarterCost", lambda pos, i: (barter_of(pos) + [(0, 0)] * W4_SHOP_CONSTANTS["BARTER_COST_MAX"])[i])
 
     # --- player, chr, item, app, net, grpText, wndMgr ------------------------------------------
     player = modules["player"]
@@ -4244,6 +4296,9 @@ def install_wave4_ui(game):
 
         def SetMaxLength(self, length):
             self.max_length = length
+
+        def SetNumberMode(self):
+            self.number_mode = True
 
         def SetValue(self, value):
             self.text = str(value)

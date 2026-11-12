@@ -9,8 +9,52 @@ import constInfo
 import mouseModule
 import uiScriptLocale
 import app
+# The key bindings' table (NOVA-121): the key art and tooltips follow it.
+import keybindings
 
 MOUSE_SETTINGS = [0, 0]
+
+## The hotkeys the taskbars show (NOVA-121), shared by this legacy bar and
+## nui_taskbar. A quickslot's legacy key art (slot_1..slot_8: 1-4, F1-F4)
+## stays while the slot has its default key; once the player moves it, the
+## key shows as text. Image slot_<n> is quickslot <n>'s, as legacy's art
+## names it (also in the right-to-left uiscript).
+QUICKSLOT_ACTIONS = tuple("quickslot_%d" % n for n in range(1, 9))
+# The window buttons' keys, in their tooltips' order ("Character [C/V/B/N]").
+BUTTON_HOTKEYS = {0: ("character", "skills", "emotions", "quests"), 1: ("inventory",), 2: ("messenger",)}
+BUTTON_BADGES = {0: "character", 1: "inventory", 2: "messenger"}
+
+def QuickSlotKey(index):
+	"""(the key's short name or "", whether the legacy art still shows it) of
+	quickslot cell `index` (0-7)."""
+	bindings = keybindings.current()
+	action = QUICKSLOT_ACTIONS[index]
+	keepsArt = bindings.get(action, 0) == keybindings.ACTION[action].defaults[0]
+	return (keybindings.badge(action, bindings), keepsArt)
+
+def ButtonToolTip(text, button):
+	"""A window button's tooltip with its keys (locale text, "[...]" replaced)."""
+	return keybindings.with_hotkeys(text, BUTTON_HOTKEYS[button])
+
+def QuickPageToolTip(text, nextPage):
+	"""The page buttons' tooltips name the quick page key (Shift) and, for the
+	next page, the show names key (Alt): the locale text while both are the
+	defaults, else its "[...]" written from the table."""
+	bindings = keybindings.current()
+	if bindings.is_default("quick_page_mode") and (not nextPage or bindings.is_default("show_names")):
+		return text
+	stripped = keybindings.with_hotkeys(text, ())
+	keys = []
+	pageKey = keybindings.badge("quick_page_mode", bindings, short=False)
+	if pageKey:
+		keys.append(pageKey + "+1-4")
+	if nextPage:
+		altKey = keybindings.badge("show_names", bindings, short=False)
+		if altKey:
+			keys.append(altKey)
+	if not keys:
+		return stripped
+	return "%s [%s]" % (stripped, ", ".join(keys))
 
 def InitMouseButtonSettings(left, right):
 	global MOUSE_SETTINGS
@@ -548,6 +592,50 @@ class TaskBar(ui.ScriptWindow):
 		self.__LoadMouseSettings()
 		self.RefreshStatus()
 		self.RefreshQuickSlot()
+		self.__LoadHotkeys()
+
+	## The key art and tooltips follow the key bindings (NOVA-121).
+	def __LoadHotkeys(self):
+		self.quickKeyArtList = []
+		self.quickKeyTextList = []
+		for index in range(8):
+			art = self.GetChild("slot_%d" % (index + 1))
+			text = ui.TextLine()
+			text.SetParent(self.GetChild("quick_slot_1" if index < 4 else "quick_slot_2"))
+			text.SetPosition(3 + 32 * (index % 4), 1)
+			text.SetOutline()
+			text.Hide()
+			self.quickKeyArtList.append(art)
+			self.quickKeyTextList.append(text)
+		self.RefreshHotkeys()
+		keybindings.current().listen(self)
+
+	def OnKeyBindingsChanged(self):
+		self.RefreshHotkeys()
+
+	def RefreshHotkeys(self):
+		if not getattr(self, "quickKeyTextList", None):
+			return
+		for index in range(8):
+			(name, keepsArt) = QuickSlotKey(index)
+			art = self.quickKeyArtList[index]
+			text = self.quickKeyTextList[index]
+			if keepsArt:
+				art.Show()
+				text.Hide()
+			else:
+				art.Hide()
+				text.SetText(name)
+				if name:
+					text.Show()
+				else:
+					text.Hide()
+		for (button, localeText) in ((self.BUTTON_CHARACTER, uiScriptLocale.TASKBAR_CHARACTER),
+		                             (self.BUTTON_INVENTORY, uiScriptLocale.TASKBAR_INVENTORY),
+		                             (self.BUTTON_MESSENGER, uiScriptLocale.TASKBAR_MESSENGER)):
+			self.toggleButtonDict[button].SetToolTipText(ButtonToolTip(localeText, button))
+		self.GetChild("QuickPageUpButton").SetToolTipText(QuickPageToolTip(uiScriptLocale.TASKBAR_PREV_QUICKSLOT, False))
+		self.GetChild("QuickPageDownButton").SetToolTipText(QuickPageToolTip(uiScriptLocale.TASKBAR_NEXT_QUICKSLOT, True))
 
 	def __RampageGauge_OverIn(self):
 		print("rampage_over_in")
@@ -592,6 +680,9 @@ class TaskBar(ui.ScriptWindow):
 
 	def Destroy(self):		
 		SaveMouseButtonSettings()
+		keybindings.current().forget(self)
+		self.quickKeyArtList = []
+		self.quickKeyTextList = []
 
 		self.ClearDictionary()
 		self.mouseModeButtonList[0].ClearDictionary()

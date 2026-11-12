@@ -202,18 +202,31 @@ SHOP_ITEMS_FOUNDATION.update({2: (27001, 2000), 9: (27003, 1999)})
 SHOP_TAB_NAMES = ("Weapons", "Armour", "Potions")
 
 
-def shop(limits, items, group="none", tab=0, down=(), mine=False, attaching=False):
+# NOVA-83: the cells of barter rows (the glaive, a potion, the scroll, an
+# earring) in the barter variant.
+SHOP_BARTER_CELLS = (1, 4, 8, 13)
+
+
+def barter_marked(cells, barter=()):
+    """cells with nui_shop's "barter" key: True on the anchor cells in `barter`."""
+    for cell in cells:
+        cell["barter"] = cell["index"] in barter and cell["kind"] == "item" and not cell["covered"]
+    return cells
+
+
+def shop(limits, items, group="none", tab=0, down=(), mine=False, attaching=False, barter=()):
     """The shop's model as nui_shop's _on_tabs and _on_buttons build it: one
     tab shows the buy and sell toggles; two or three show their group's
     buttons (legacy hides the toggles); the player's own shop shows the
-    close-shop button only."""
+    close-shop button only; `barter` the cells of rows that cost items."""
     cols, count = limits.SHOP_COLUMNS, limits.SHOP_SLOT_COUNT
     shown = {"none": 0, "middle": 2, "small": 3}[group]
     tabs = [{"index": i, "name": SHOP_TAB_NAMES[i] if i < shown else "", "down": i in down, "shown": i < shown}
             for i in range(limits.SHOP_TAB_COUNT_MAX)]
     toggles = group == "none" and not mine
     return {"shop": {
-        "cells": typed_grid(cols, count // cols, SLOT_TYPE_SHOP, items, ref=lambda index: tab * count + index),
+        "cells": barter_marked(typed_grid(cols, count // cols, SLOT_TYPE_SHOP, items,
+                                          ref=lambda index: tab * count + index), barter),
         "cols": cols,
         "attaching": attaching,
         "tabs": tabs,
@@ -252,8 +265,8 @@ def offline_shop(owner=False):
     owner-panel field."""
     page = 1 if owner else 0
     per_page = OFFLINE_COLS * OFFLINE_ROWS
-    cells = typed_grid(OFFLINE_COLS, OFFLINE_ROWS, SLOT_TYPE_PRIVATE_SHOP, OFFLINE_ITEMS,
-                       ref=lambda index: page * per_page + index)
+    cells = barter_marked(typed_grid(OFFLINE_COLS, OFFLINE_ROWS, SLOT_TYPE_PRIVATE_SHOP, OFFLINE_ITEMS,
+                                     ref=lambda index: page * per_page + index))
     if owner:
         cells[3]["disabled"] = True
     else:
@@ -802,6 +815,7 @@ def trade_fixtures():
         # An item attached over the grid: every cell its own target; the
         # shop's SLOT_STYLE_NONE draws no footprint (P14b, the sweep).
         ("shop", "attaching"): shop(TODAY, SHOP_ITEMS, attaching=True),
+        ("shop", "barter"): shop(TODAY, SHOP_ITEMS, barter=SHOP_BARTER_CELLS),
         ("shop", "offline"): offline_shop(),
         ("shop", "offline-owner"): offline_shop(owner=True),
         ("private-shop", ""): private_shop(TODAY, BUILDER_STOCK),

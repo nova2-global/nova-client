@@ -52,7 +52,8 @@ EFFECT_MODULES = ("net", "systemSetting", "snd", "background", "app", "chrmgr", 
                   "uiPrivateShopBuilder", "interface")
 QUESTION = "nui/windows/dialog-question/dialog-question.rml"
 LOADED_LEGACY = (("uiSelectMusic", "uiselectmusic.py"), ("uiCommon", "uicommon.py"),
-                 ("uiSystemOption", "uisystemoption.py"), ("uiGameOption", "uigameoption.py"),
+                 ("uiSystemOption", "uisystemoption.py"), ("keybindings", "keybindings.py"),
+                 ("uikeybindings", "uikeybindings.py"), ("uiGameOption", "uigameoption.py"),
                  ("uiSystem", "uisystem.py"), ("uiRestart", "uirestart.py"), ("uiHelp", "uihelp.py"),
                  ("uiPointReset", "uipointreset.py"))
 LOADED_NOVAUI = ("nui_dialog_kit", "nui_dialog_message", "nui_dialog_question", "nui_theme_picker", "nui_music_list",
@@ -243,7 +244,7 @@ SURFACES = {
          "OnPressExitKey", "OnPressEscapeKey"),
     ("uiSystemOption", "LegacyOptionDialog", "nui_system_options", "OptionDialog"):
         ("Destroy", "Close", "OnPressEscapeKey", "OnChangeMusicVolume", "OnChangeSoundVolume", "OnChangeShadowQuality",
-         "OnCloseInputDialog", "OnCloseQuestionDialog"),
+         "OnCloseInputDialog", "OnCloseQuestionDialog", "OnChangeFieldOfView"),
     ("uiSelectMusic", "FileListDialog", "nui_system_options", "FileListDialog"):
         ("Open", "Close", "SAFE_SetSelectEvent", "OnPressEscapeKey"),
     ("uiGameOption", "LegacyOptionDialog", "nui_game_options", "OptionDialog"):
@@ -1002,7 +1003,10 @@ class GameOptions(Pair):
             game.view_chat = False
             game.settings["show_damage"] = False
         legacy, novaui, a, b = self.pair(setup)
-        model = board(b).model
+        model = dict(board(b).model)
+        # The keys page (NOVA-121; nui_keyboard_page_test checks its rows).
+        self.assertEqual((model.pop("page"), len(model.pop("key_rows")) > 0, bool(model.pop("notice"))),
+                         ("main", True, True))
         # The pickup filter since NOVA-50 (uigameoption.py RefreshPickupFilter).
         self.assertEqual(model, {"name_color": 0, "target_board": 1, "pk_mode": 0, "block": 0, "blocked": [False] * 6,
                                  "view_chat": False, "always_show_name": True, "show_damage": False, "sales_text": True,
@@ -1369,7 +1373,7 @@ def kind(value):
 BOARDS = (("nui_system_menu", "SystemMenuBoard", "system-menu", ()),
           ("nui_system_options", "OptionBoard", "system-options", ("custom-scale",)),
           ("nui_music_list", "MusicListBoard", "music-list", ("empty", "selected")),
-          ("nui_game_options", "GameOptionsBoard", "game-options", ("blocked",)),
+          ("nui_game_options", "GameOptionsBoard", "game-options", ("blocked", "keys")),
           ("nui_restart", "RestartBoard", "restart", ()),
           ("nui_help", "HelpBoard", "help", ()))
 
@@ -1410,7 +1414,11 @@ class Fixtures(unittest.TestCase):
         keys = {"sound_volume", "music_volume", "music_file", "camera", "fog", "tiling", "interface", "themes", "theme",
                 "scales", "scale", "auto_percent", "reduced_motion",
                 # P13 spec 5.6: reduced effects and the player colors.
-                "reduced_effects", "effects_available", "color_slots", "accent_hue", "colors_adjusted"}
+                "reduced_effects", "effects_available", "color_slots", "accent_hue", "colors_adjusted",
+                # NOVA-116: the field of view and its range.
+                "fov", "fov_min", "fov_max",
+                # NOVA-118: snowfall, the FPS counter and tips (0 is On).
+                "snow", "fps", "tips"}
         self.assertEqual(set(options.nui_model()), keys)
         for variant in (None, "custom-scale", "colors", "no-effects"):
             self.assertEqual(set(fixture("system-options", variant)["system_options"]), keys, variant)
@@ -1419,7 +1427,9 @@ class Fixtures(unittest.TestCase):
         # show_sash: Wave 6's row (SHOW_ACCE, NOVA-20). hide_buffi: the buffi's row (NOVA-38).
         self.assertEqual(set(game_options.nui_model()), {"name_color", "target_board", "pk_mode", "block", "blocked",
                                                          "view_chat", "always_show_name", "show_damage", "sales_text",
-                                                         "pickup", "hide_shops", "show_sash", "hide_buffi", "mob_level", "mob_ai"})
+                                                         "pickup", "hide_shops", "show_sash", "hide_buffi", "mob_level", "mob_ai",
+                                                         # NOVA-121: the keys page.
+                                                         "page", "key_rows", "notice"})
 
 
 class HideShops(unittest.TestCase):
@@ -1484,8 +1494,13 @@ class ShowSash(unittest.TestCase):
         # The buffi's row (NOVA-38) comes under it and grows the board once more.
         self.assertEqual(cls.HIDE_BUFFI_HEIGHT, cls.SHOW_SASH_HEIGHT + 25)
         self.assertEqual(cls.MOB_INFO_HEIGHT, cls.HIDE_BUFFI_HEIGHT + 50)  # NOVA-40's two rows
-        self.assertEqual(dialog.GetChild("board").size[1], cls.MOB_INFO_HEIGHT, "the board grown by its rows")
-        self.assertEqual(dialog.size[1], cls.MOB_INFO_HEIGHT, "the window with it")
+        # NOVA-121's Keyboard row comes last.
+        self.assertEqual(cls.KEYBOARD_ROW_Y, cls.MOB_INFO_AGGR_Y + 25)
+        self.assertEqual(cls.KEYBOARD_HEIGHT, cls.MOB_INFO_HEIGHT + 25)
+        self.assertEqual(self.place(dialog.keyboardLabel), (30, cls.KEYBOARD_ROW_Y + 2))
+        self.assertEqual(self.place(dialog.keyboardButton), (90, cls.KEYBOARD_ROW_Y))
+        self.assertEqual(dialog.GetChild("board").size[1], cls.KEYBOARD_HEIGHT, "the board grown by its rows")
+        self.assertEqual(dialog.size[1], cls.KEYBOARD_HEIGHT, "the window with it")
         self.assertEqual(cls.SHOW_SASH_HEIGHT - cls.SHOW_SASH_ROW_Y, cls.HIDE_SHOPS_HEIGHT - cls.HIDE_SHOPS_ROW_Y,
                          "the bottom margin under the last row kept")
 
@@ -1555,9 +1570,10 @@ class ShowSash(unittest.TestCase):
             found = re.search(rule % ("go-choice--sash-%d" % value), classic)
             self.assertEqual((found.group(1), found.group(2)), (str(x), str(cls.SHOW_SASH_ROW_Y)))
         heights = re.findall(r"height: (\d+)dp;", classic.split(".game-options__titlebar")[0])
-        self.assertEqual(heights, [str(cls.MOB_INFO_HEIGHT)], "the body as tall as legacy's board")
+        # Legacy's board grows by the Keyboard row (NOVA-121) after the sash's.
+        self.assertEqual(heights, [str(cls.KEYBOARD_HEIGHT)], "the body as tall as legacy's board")
         body = classic.split("body.skin-classic.game-options .game-options__body")[1].split("}")[0]
-        self.assertIn("height: %ddp;" % cls.MOB_INFO_HEIGHT, body)
+        self.assertIn("height: %ddp;" % cls.KEYBOARD_HEIGHT, body)
 
     def test_the_label_is_in_every_locale_with_old_s_text(self):
         locales = [name for name in sorted(os.listdir(LOCALES))
@@ -1825,3 +1841,282 @@ class Wiring(unittest.TestCase):
             self.assertEqual(world.m("uiGameOption").OptionDialog.window_id, "game-options")
             with quiet():
                 self.assertIsInstance(world.m("uiSystemOption").OptionDialog(), world.m("uiSystemOption").LegacyOptionDialog)
+
+
+# --- the field of view (NOVA-116) -------------------------------------------------------------
+
+CLASSIC_SYSTEM_OPTIONS = os.path.normpath(os.path.join(WINDOWS, "..", "skins", "classic", "windows", "system-options.rcss"))
+# OPTION_FIELD_OF_VIEW in each locale (NOVA-116: a new key, not OLD's
+# OPTION_VIEW_POINT, whose de, cz and gr texts said "lookout" and "points").
+FIELD_OF_VIEW_TEXT = {"ae": "مجال الرؤية", "br": "Campo visual", "cz": "Zorné pole", "de": "Sichtfeld",
+                      "dk": "Synsfelt", "en": "Field of View", "es": "Campo visual", "fr": "Champ visuel",
+                      "gr": "Οπτικό πεδίο", "hu": "Látószög", "it": "Campo visivo", "nl": "Gezichtsveld",
+                      "pl": "Pole widzenia", "pt": "Campo visual", "ro": "Câmp vizual", "ru": "Поле зрения",
+                      "tr": "Görüş alanı"}
+
+
+class FieldOfView(Pair):
+    """The field of view row (POINT_OF_VIEW, NOVA-116; OLD's "View Point"
+    slider, uiGameOption.py:1248-1293, range 30 to 120, whole degrees) in the
+    legacy system options (uisystemoption.py, uiscript systemoptiondialog.py)
+    and in the NovaUI ones."""
+
+    def setup_state(self, game):
+        game.settings.update({"sound_volume": 0.75, "music_volume": 0.5, "fog_level": 1, "field_of_view": 48.0})
+        game.software_tiling = False
+
+    def pair(self):
+        legacy, novaui = self.worlds()
+        a, b = legacy.make_options(), novaui.make_options()
+        a.Show()
+        b.Show()
+        return legacy, novaui, a, b
+
+    def test_the_legacy_row_sits_in_the_free_row_under_tiling_and_the_board_keeps_its_size(self):
+        legacy, novaui, a, b = self.pair()
+        cls = type(a)
+        self.assertEqual(cls.FIELD_OF_VIEW_ROW_Y, 210, "the row legacy's commented-out shadow slider left free")
+        script = support.read_uiscript("uiscript/systemoptiondialog.py")
+        board_spec = script["children"][0]
+        children = {child["name"]: child for child in board_spec["children"]}
+        self.assertEqual((children["fov_name"]["x"], children["fov_name"]["y"]), (30, cls.FIELD_OF_VIEW_ROW_Y + 2))
+        self.assertEqual((children["fov_controller"]["type"], children["fov_controller"]["x"],
+                          children["fov_controller"]["y"]), ("sliderbar", 110, cls.FIELD_OF_VIEW_ROW_Y))
+        self.assertEqual(max(child["y"] for child in board_spec["children"]), cls.PLAYER_OPTION_ROW_Y["tips"] + 2,
+                         "NOVA-118's rows follow it")
+        self.assertIs(a.ctrlFieldOfView, a.GetChild("fov_controller"))
+        self.assertEqual(a.GetChild("fov_name").text, "OPTION_FIELD_OF_VIEW")
+        self.assertEqual((script["height"], board_spec["height"]), (330, 330), "grown by NOVA-118's three rows")
+
+    def test_each_show_puts_the_angle_on_both_sliders(self):
+        legacy, novaui, a, b = self.pair()
+        self.assertAlmostEqual(a.ctrlFieldOfView.GetSliderPos(), (48.0 - 30) / 90)
+        model = board(b).model
+        self.assertEqual((model["fov"], model["fov_min"], model["fov_max"]), (48, 30, 120))
+        novaui.game.settings["field_of_view"] = 120.0
+        b.Hide()
+        b.Show()
+        self.assertEqual(board(b).model["fov"], 120)
+        self.assertEqual(novaui.effects()[-1:], [], "a show only reads")
+
+    def test_a_move_sets_the_angle_in_whole_degrees_as_legacy_does(self):
+        legacy, novaui, a, b = self.pair()
+        for fraction, degrees in ((0.5, 75), (1.0, 120), (0.0, 30), (61.0 / 122 + 1.0 / 122, 76)):
+            with self.subTest(degrees=degrees):
+                calls = self.same(legacy, novaui, lambda: a.ctrlFieldOfView.drag_to(fraction),
+                                  lambda: fire(b, "fov", degrees), "fov %d" % degrees)
+                self.assertEqual(calls, [("systemSetting.SetPOV", (float(degrees),))])
+                self.assertIsInstance(calls[0][1][0], float, "OLD's SetPOV takes a float")
+                self.assertEqual(board(b).get("fov"), degrees)
+                self.assertEqual((legacy.game.settings["field_of_view"], novaui.game.settings["field_of_view"]),
+                                 (float(degrees), float(degrees)))
+        for world in (legacy, novaui):
+            self.assertNotIn(("systemSetting.SaveConfig", ()), world.effects(), "saved at exit, as the volumes")
+
+    def test_the_models_own_angle_coming_back_and_a_value_that_is_no_number_do_nothing(self):
+        legacy, novaui, a, b = self.pair()
+        mark = novaui.mark()
+        fire(b, "fov", 48)
+        fire(b, "fov", "48.2")
+        fire(b, "fov", "wide")
+        fire(b, "fov", None)
+        self.assertEqual(novaui.effects_since(mark), [])
+        fire(b, "fov", "90.4")
+        self.assertEqual(novaui.effects_since(mark), [("systemSetting.SetPOV", (90.0,))], "a slider's text value, rounded")
+        fire(b, "fov", 500)
+        self.assertEqual(novaui.effects_since(mark)[-1], ("systemSetting.SetPOV", (120.0,)), "kept in the range")
+        self.assertEqual(board(b).get("fov"), 120)
+
+    def test_the_novaui_row_is_a_whole_degree_slider_over_the_clients_range_after_tiling(self):
+        document = read(os.path.join(WINDOWS, "system-options", "system-options.rml"))
+        match = re.search(r'<input id="so-fov"[^>]*/>', document)
+        self.assertIsNotNone(match)
+        tag = match.group(0)
+        for part in ('type="range"', 'min="30"', 'max="120"', 'step="1"', 'data-attr-value="fov"',
+                     'data-event-change="fov(ev.value)"', "so-slider--fov"):
+            self.assertIn(part, tag)
+        self.assertIn('<span id="so-fov-label" class="so-label so-label--fov">@ui.OPTION_FIELD_OF_VIEW</span>', document)
+        self.assertIn('<span id="so-fov-value" class="so-value">{{ fov }}&#176;</span>', document)
+        self.assertLess(document.index('id="so-tiling-apply"'), document.index('id="so-fov"'), "under the tiling row")
+        self.assertLess(document.index('id="so-fov"'), document.index('id="so-interface"'), "in the legacy part")
+
+    def test_the_classic_row_is_at_legacy_s_place_and_the_legacy_part_grows_by_it(self):
+        legacy, novaui, a, b = self.pair()
+        row = type(a).FIELD_OF_VIEW_ROW_Y
+        classic = read(CLASSIC_SYSTEM_OPTIONS)
+        self.assertIn("body.skin-classic.system-options .so-label--fov { top: %ddp; }" % (row + 2), classic)
+        self.assertIn("body.skin-classic.system-options .so-slider--fov { top: %ddp; }" % row, classic)
+        part = classic.split("body.skin-classic.system-options .so-legacy\n{")[1].split("}")[0]
+        self.assertIn("height: %ddp;" % (type(a).PLAYER_OPTION_ROW_Y["tips"] + 22), part,
+                      "the legacy part as tall as its last row (NOVA-118's)")
+
+    def test_the_label_is_in_every_locale(self):
+        locales = [name for name in sorted(os.listdir(LOCALES))
+                   if os.path.exists(os.path.join(LOCALES, name, "locale_interface.txt"))]
+        self.assertEqual(locales, sorted(FIELD_OF_VIEW_TEXT))
+        for locale in locales:
+            with self.subTest(locale=locale):
+                with open(os.path.join(LOCALES, locale, "locale_interface.txt"), "rb") as handle:
+                    data = handle.read()
+                self.assertTrue(data.endswith(b"\n"))
+                self.assertNotIn(b"\r", data)
+                lines = [line for line in data.decode("utf-8").split("\n") if line.startswith("OPTION_FIELD_OF_VIEW\t")]
+                self.assertEqual(lines, ["OPTION_FIELD_OF_VIEW\t" + FIELD_OF_VIEW_TEXT[locale]])
+
+    def test_legacy_s_slider_event_on_the_facade_reads_the_boards_angle(self):
+        legacy, novaui, a, b = self.pair()
+        board(b).model["fov"] = 100
+        mark = novaui.mark()
+        b.OnChangeFieldOfView()
+        self.assertEqual(novaui.effects_since(mark), [("systemSetting.SetPOV", (100.0,))])
+
+
+# --- snowfall, the FPS counter and tips (NOVA-118) ---------------------------------------------
+
+# The rows under the field of view: (option, legacy uiscript name, model key,
+# systemSetting setter, settings key, label key); On first, as OLD's pairs
+# (uiSystemOption.py:145-154).
+PLAYER_OPTION_ROWS = (("snowfall", "snow", "SetEnableSnowFall", "snowfall", "OPTION_SNOWFALL"),
+                      ("fps_counter", "fps", "SetShowFPSCounter", "fps_counter", "OPTION_FPS_COUNTER"),
+                      ("tips", "tips", "SetShowTips", "tips", "OPTION_TIPS"))
+PLAYER_OPTION_TEXT = {
+    "OPTION_SNOWFALL": {"ae": "تساقط الثلج", "br": "Neve", "cz": "Sněžení", "de": "Schneefall", "dk": "Snefald",
+                        "en": "Snowfall", "es": "Nieve", "fr": "Neige", "gr": "Χιονόπτωση", "hu": "Havazás",
+                        "it": "Neve", "nl": "Sneeuwval", "pl": "Śnieg", "pt": "Neve", "ro": "Ninsoare",
+                        "ru": "Снегопад", "tr": "Kar yağışı"},
+    "OPTION_FPS_COUNTER": {"ae": "عداد FPS", "br": "Contador FPS", "cz": "Ukazatel FPS", "de": "FPS-Anzeige",
+                           "dk": "FPS-tæller", "en": "FPS Counter", "es": "Contador FPS", "fr": "Afficher FPS",
+                           "gr": "Δείκτης FPS", "hu": "FPS-mérő", "it": "Mostra FPS", "nl": "FPS-teller",
+                           "pl": "Licznik FPS", "pt": "Contador FPS", "ro": "Contor FPS", "ru": "Счётчик FPS",
+                           "tr": "FPS sayacı"},
+    "OPTION_TIPS": {"ae": "النصائح", "br": "Dicas", "cz": "Tipy", "de": "Tipps", "dk": "Tips", "en": "Tips",
+                    "es": "Consejos", "fr": "Astuces", "gr": "Συμβουλές", "hu": "Tippek", "it": "Consigli",
+                    "nl": "Tips", "pl": "Porady", "pt": "Dicas", "ro": "Sfaturi", "ru": "Подсказки",
+                    "tr": "İpuçları"},
+}
+PLAYER_OPTION_ROW_Y = {"snow": 235, "fps": 260, "tips": 285}
+
+
+class PlayerOptionRows(Pair):
+    """Snowfall, the FPS counter and tips (NOVA-118) in the legacy system
+    options (uisystemoption.py, uiscript systemoptiondialog.py) and the
+    NovaUI ones: On and Off as OLD's radio pairs, each press
+    player_options.set_option (systemSetting's setter with 1 or 0), saved at
+    exit with the other options."""
+
+    def setup_state(self, game):
+        game.settings.update({"sound_volume": 0.75, "music_volume": 0.5, "fog_level": 1,
+                              "snowfall": False, "fps_counter": True, "tips": True})
+        game.software_tiling = False
+
+    def pair(self):
+        legacy, novaui = self.worlds()
+        a, b = legacy.make_options(), novaui.make_options()
+        a.Show()
+        b.Show()
+        return legacy, novaui, a, b
+
+    def test_the_legacy_rows_sit_under_the_field_of_view_and_the_board_grows_by_them(self):
+        legacy, novaui, a, b = self.pair()
+        cls = type(a)
+        self.assertEqual(cls.PLAYER_OPTION_ROW_Y, PLAYER_OPTION_ROW_Y)
+        script = support.read_uiscript("uiscript/systemoptiondialog.py")
+        board_spec = script["children"][0]
+        children = {child["name"]: child for child in board_spec["children"]}
+        for _, name, _, _, label in PLAYER_OPTION_ROWS:
+            with self.subTest(row=name):
+                y = PLAYER_OPTION_ROW_Y[name]
+                self.assertEqual((children[name + "_name"]["x"], children[name + "_name"]["y"]), (30, y + 2))
+                self.assertEqual(a.GetChild(name + "_name").text, label)
+                for suffix, x, text in (("_on", 110, "NUI_SYSTEM_OPTIONS_ON"), ("_off", 180, "NUI_SYSTEM_OPTIONS_OFF")):
+                    child = children[name + suffix]
+                    self.assertEqual((child["type"], child["x"], child["y"], child["text"]), ("radio_button", x, y, text))
+                    self.assertTrue(child["default_image"].endswith("Middle_Button_01.sub"))
+        self.assertEqual((script["height"], board_spec["height"]), (330, 330), "255 and three rows of 25")
+        self.assertEqual(max(child["y"] for child in board_spec["children"]), PLAYER_OPTION_ROW_Y["tips"] + 2)
+
+    def test_each_show_puts_the_flags_on_both(self):
+        legacy, novaui, a, b = self.pair()
+        model = board(b).model
+        self.assertEqual((model["snow"], model["fps"], model["tips"]), (1, 0, 0), "0 is On, 1 is Off")
+        self.assertEqual([a.GetChild("snow_on").down, a.GetChild("snow_off").down], [False, True])
+        self.assertEqual([a.GetChild("fps_on").down, a.GetChild("fps_off").down], [True, False])
+        self.assertEqual([a.GetChild("tips_on").down, a.GetChild("tips_off").down], [True, False])
+        novaui.game.settings["snowfall"] = True
+        b.Hide()
+        b.Show()
+        self.assertEqual(board(b).model["snow"], 0)
+        self.assertEqual(novaui.effects(), [], "a show only reads")
+
+    def test_each_press_sets_the_flag_as_legacy_does_and_nothing_is_saved_yet(self):
+        legacy, novaui, a, b = self.pair()
+        steps = (("snow_on", ("choose", "snow", 0, 0), ("systemSetting.SetEnableSnowFall", (1,)), "snowfall", True),
+                 ("snow_off", ("choose", "snow", 1, 0), ("systemSetting.SetEnableSnowFall", (0,)), "snowfall", False),
+                 ("fps_off", ("choose", "fps", 1, 0), ("systemSetting.SetShowFPSCounter", (0,)), "fps_counter", False),
+                 ("fps_on", ("choose", "fps", 0, 0), ("systemSetting.SetShowFPSCounter", (1,)), "fps_counter", True),
+                 ("tips_off", ("choose", "tips", 1, 0), ("systemSetting.SetShowTips", (0,)), "tips", False),
+                 ("tips_on", ("choose", "tips", 0, 0), ("systemSetting.SetShowTips", (1,)), "tips", True))
+        for child, event, call, key, value in steps:
+            with self.subTest(event=event):
+                calls = self.same(legacy, novaui, lambda: a.GetChild(child).click(), lambda: fire(b, *event), str(event))
+                self.assertEqual(calls, [call])
+                self.assertEqual(board(b).get(event[1]), event[2], "the choice follows")
+                self.assertTrue(a.GetChild(child).down)
+                self.assertEqual((legacy.game.settings[key], novaui.game.settings[key]), (value, value))
+        for world in (legacy, novaui):
+            self.assertNotIn(("systemSetting.SaveConfig", ()), world.effects(), "saved at exit, as the other options")
+
+    def test_a_press_on_the_choice_in_effect_makes_no_call(self):
+        legacy, novaui, a, b = self.pair()
+        for child, event in (("snow_off", ("choose", "snow", 1, 0)), ("fps_on", ("choose", "fps", 0, 0)),
+                             ("tips_on", ("choose", "tips", 0, 0)), ("tips_on", ("choose", "tips", 2, 0))):
+            with self.subTest(event=event):
+                self.assertEqual(self.same(legacy, novaui, lambda: a.GetChild(child).click(),
+                                           lambda: fire(b, *event), str(event)), [])
+
+    def test_the_novaui_rows_are_on_off_choices_after_the_field_of_view(self):
+        document = read(os.path.join(WINDOWS, "system-options", "system-options.rml"))
+        last = document.index('id="so-fov"')
+        for _, name, _, _, label in PLAYER_OPTION_ROWS:
+            with self.subTest(row=name):
+                self.assertIn('<span id="so-%s-label" class="so-label so-label--%s">@ui.%s</span>' % (name, name, label),
+                              document)
+                for index, word in ((0, "ON"), (1, "OFF")):
+                    match = re.search(r'<button id="so-%s-%d"[^>]*>' % (name, index), document)
+                    self.assertIsNotNone(match)
+                    tag = match.group(0)
+                    self.assertIn('data-class-is-selected="%s == %d"' % (name, index), tag)
+                    self.assertIn("data-event-mousedown=\"choose('%s', %d, ev.button)\"" % (name, index), tag)
+                    self.assertIn("so-choice--%s-%d" % (name, index), tag)
+                    self.assertIn("@ui.NUI_SYSTEM_OPTIONS_%s" % word, document[match.end():match.end() + 120])
+                position = document.index('id="so-%s-0"' % name)
+                self.assertLess(last, position, "in OLD's order, after the field of view")
+                last = position
+        self.assertLess(last, document.index('id="so-interface"'), "in the legacy part")
+
+    def test_the_classic_rows_are_at_legacy_s_places_and_the_legacy_part_grows_by_them(self):
+        classic = read(CLASSIC_SYSTEM_OPTIONS)
+        for _, name, _, _, _ in PLAYER_OPTION_ROWS:
+            y = PLAYER_OPTION_ROW_Y[name]
+            with self.subTest(row=name):
+                self.assertIn("body.skin-classic.system-options .so-label--%s { top: %ddp; }" % (name, y + 2), classic)
+                self.assertIn("body.skin-classic.system-options .so-choice--%s-0 { left: 110dp; top: %ddp; }" % (name, y),
+                              classic)
+                self.assertIn("body.skin-classic.system-options .so-choice--%s-1 { left: 180dp; top: %ddp; }" % (name, y),
+                              classic)
+        part = classic.split("body.skin-classic.system-options .so-legacy\n{")[1].split("}")[0]
+        self.assertIn("height: %ddp;" % (PLAYER_OPTION_ROW_Y["tips"] + 22), part)
+
+    def test_the_labels_are_in_every_locale(self):
+        locales = [name for name in sorted(os.listdir(LOCALES))
+                   if os.path.exists(os.path.join(LOCALES, name, "locale_interface.txt"))]
+        for key, texts in PLAYER_OPTION_TEXT.items():
+            self.assertEqual(locales, sorted(texts))
+            for locale in locales:
+                with self.subTest(key=key, locale=locale):
+                    with open(os.path.join(LOCALES, locale, "locale_interface.txt"), "rb") as handle:
+                        data = handle.read()
+                    self.assertTrue(data.endswith(b"\n"))
+                    self.assertNotIn(b"\r", data)
+                    lines = [line for line in data.decode("utf-8").split("\n") if line.startswith(key + "\t")]
+                    self.assertEqual(lines, [key + "\t" + texts[locale]])

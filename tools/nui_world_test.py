@@ -417,8 +417,11 @@ class MapDifferential(unittest.TestCase):
         legacy, novaui = self.worlds()
         self.assertEqual(novaui.effects(), legacy.effects())
         calls = [name for name, _ in novaui.effects()]
+        # NOVA-129: each atlas hands C++ its boss and stone marks' strings
+        # after it registers (atlas_marks_test).
         self.assertEqual(calls, ["miniMap.Create", "miniMap.SetScale", "miniMap.HideAtlas", "miniMap.RegisterAtlasWindow",
-                                 "miniMap.HideAtlas", "miniMap.Show", "miniMap.Show", "miniMap.Show"])
+                                 "miniMap.SetAtlasMarkTexts", "miniMap.HideAtlas", "miniMap.Show", "miniMap.Show",
+                                 "miniMap.Show"])
         self.assertEqual(self.state(novaui), self.state(legacy))
         self.assertEqual(novaui.minimap.board.model["server_info"], "Nova - CH1")
         self.assertEqual(type(novaui.minimap.AtlasWindow).__module__, "nui_atlas")
@@ -661,6 +664,118 @@ class MapNovaUI(unittest.TestCase):
 
 
 # --- the player gauge -------------------------------------------------------------------------------
+
+class FpsReadout(unittest.TestCase):
+    """NOVA-118: the FPS readout under the minimap (OLD game.py:2380-2398, a
+    text line at W - 70, 164 showing "FPS:%s " from app.GetRenderFPS()),
+    shown while systemSetting.IsShowFPSCounter() is on, in the legacy
+    minimap and the NovaUI one alike, the map open or closed; the option
+    windows flip it through player_options.set_option."""
+
+    def worlds(self, on=False, fps=60):
+        self.clock = [100.0]   # the NovaUI clock; app.GetTime() is Game.time, 100 too
+
+        def setup(game):
+            game.answer("miniMap", "IsAtlas", 1)
+            game.answer("miniMap", "GetAtlasSize", (1, 256, 256))
+            game.answer("app", "GetRenderFPS", lambda: self.fps[0])
+            game.answer("player", "GetMainCharacterPosition", (0.0, 0.0, 0.0))
+            game.answer("miniMap", "GetInfo", (0, "", 0, 0, 0))
+            game.settings["fps_counter"] = on
+        self.fps = [fps]
+        legacy, novaui = pair(setup=setup)
+        for world in (legacy, novaui):
+            world.__enter__()
+            self.addCleanup(world.__exit__)
+            world.game.state.now = self.clock[0]
+            with quiet():
+                world.minimap = world.module("nui_windows").make("minimap", world.module("uiMiniMap").MiniMap,
+                                                                 "nui_minimap.MiniMap")
+                world.minimap.Show()
+        self.assertEqual(type(novaui.minimap).__module__, "nui_minimap")
+        return legacy, novaui
+
+    @staticmethod
+    def readout(world):
+        if world.nui_on:
+            model = world.minimap.board.model
+            return model["fps_text"] if model["fps_shown"] else None
+        line = world.minimap.fpsLine
+        return line.GetText() if line and line.IsShow() else None
+
+    def flip(self, world, on):
+        with quiet():
+            world.module("player_options").set_option("fps_counter", on)
+
+    def test_off_by_default_no_readout(self):
+        for world in self.worlds():
+            self.assertIsNone(self.readout(world))
+
+    def test_on_from_the_saved_setting_both_show_the_render_fps(self):
+        for world in self.worlds(on=True, fps=60):
+            self.assertEqual(self.readout(world), "FPS: 60", world.nui_on)
+
+    def test_the_option_shows_and_hides_the_readout(self):
+        for world in self.worlds():
+            self.flip(world, True)
+            self.assertEqual(self.readout(world), "FPS: 60", world.nui_on)
+            self.assertTrue(world.game.settings["fps_counter"])
+            self.flip(world, False)
+            self.assertIsNone(self.readout(world), world.nui_on)
+
+    def test_it_stays_while_the_map_is_closed(self):
+        for world in self.worlds(on=True):
+            with quiet():
+                world.minimap.HideMiniMap()
+            self.assertEqual(self.readout(world), "FPS: 60", world.nui_on)
+
+    def test_the_novaui_readout_reads_once_a_second_with_no_python_in_between(self):
+        legacy, novaui = self.worlds(on=True)
+        model = novaui.minimap.board.model
+        self.assertAlmostEqual(model["fps_next"], 101.0)
+        self.fps[0] = 45
+        novaui.game.state.now = 101.0
+        novaui.minimap.board.fire("fps_tick")
+        self.assertEqual(model["fps_text"], "FPS: 45")
+        self.assertAlmostEqual(model["fps_next"], 102.0)
+        self.flip(novaui, False)
+        self.assertEqual(model["fps_next"], 0.0, "the timer stops with the readout")
+        self.fps[0] = 30
+        novaui.minimap.board.fire("fps_tick")
+        self.assertEqual(model["fps_text"], "FPS: 45", "a late tick reads nothing")
+        self.assertEqual([name for name, _ in novaui.game.log if name in PER_FRAME], [])
+
+    def test_the_legacy_readout_reads_once_a_second_in_the_minimap_s_update(self):
+        legacy, novaui = self.worlds(on=True)
+        self.fps[0] = 45
+        legacy.game.time = 100.5          # app.GetTime()
+        with quiet():
+            legacy.minimap.OnUpdate()
+        self.assertEqual(self.readout(legacy), "FPS: 60", "within the second")
+        legacy.game.time = 101.0
+        with quiet():
+            legacy.minimap.OnUpdate()
+        self.assertEqual(self.readout(legacy), "FPS: 45")
+
+    def test_the_legacy_line_sits_at_the_position_line_s_place_on_the_minimap_itself(self):
+        legacy, novaui = self.worlds(on=True)
+        line = legacy.minimap.fpsLine
+        self.assertEqual(legacy.minimap.FPS_LINE_POSITION, (70, 160), "the hidden position line's place (uiscript minimap.py)")
+        calls = [call for call in line.calls if call[0] in ("SetPosition", "SetHorizontalAlignCenter", "SetOutline")]
+        self.assertIn(("SetPosition", 70, 160), calls)
+        self.assertIn(("SetHorizontalAlignCenter",), calls)
+        self.assertIn(("SetOutline",), calls)
+
+    def test_the_document_s_readout(self):
+        document = read(os.path.join(WINDOWS, "minimap", "minimap.rml"))
+        self.assertIn('<div id="minimap-fps" class="minimap__fps" data-if="shown &amp;&amp; fps_shown"', document)
+        self.assertIn("{{ fps_text }}", document)
+        self.assertIn('<nui-countdown id="minimap-fps-timer" format="none" data-attr-end="fps_next" '
+                      'data-event-countdownend="fps_tick()"/>', document)
+        classic = read(os.path.join(CLASSIC_WINDOWS, "minimap.rcss"))
+        self.assertIn("body.skin-classic.minimap .minimap__line--fps", classic)
+        self.assertRegex(classic, r"body\.skin-classic\.minimap \.minimap__line--fps,[^{]*\{\s*top: 160dp;")
+
 
 class GaugeDifferential(unittest.TestCase):
     def worlds(self):
@@ -1047,7 +1162,7 @@ class Fixtures(unittest.TestCase):
         return board
 
     def test_the_minimap_and_atlas_fixtures_match_their_models(self):
-        self.check(self.world.module("nui_minimap").MiniMapBoard(object()), "minimap", ("closed", "observers"))
+        self.check(self.world.module("nui_minimap").MiniMapBoard(object()), "minimap", ("closed", "observers", "fps", "fps-closed"))
         self.check(self.world.module("nui_atlas").AtlasBoard(object()), "atlas")
         self.assertFalse(fixture("minimap", "closed")["minimap"]["open"])
         self.assertEqual(fixture("minimap", "observers")["minimap"]["observers"], 3)
@@ -1088,7 +1203,7 @@ class Fixtures(unittest.TestCase):
     def test_the_golden_cases_name_the_stand_ins(self):
         cases = {window: json.loads(read(os.path.join(WINDOWS, window, window + ".snapshots.json")))["cases"]
                  for window in WORLD_WINDOWS}
-        self.assertEqual({c.get("variant") for c in cases["minimap"]}, {None, "closed", "observers"})
+        self.assertEqual({c.get("variant") for c in cases["minimap"]}, {None, "closed", "observers", "fps", "fps-closed"})
         self.assertEqual({c.get("variant") for c in cases["shop-signs"]}, {None, "own-only", "styles"})
         self.assertEqual({c.get("variant") for c in cases["guild-war"]}, {None, "two"})
         frames = {"minimap": "320x240", "atlas": "640x480", "player-gauge": "320x200", "shop-signs": "960x320",

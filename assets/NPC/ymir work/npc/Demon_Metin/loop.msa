@@ -1,0 +1,20 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\npc\Demon_Metin\loop.GR2"
+MotionDuration           0.033333
+
+Group MotionEventData
+{
+    MotionEventDataCount     1
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         0.019487
+
+        AttachingEnable      1
+        AttachingBoneName    "Dummy01"
+        FollowingEnable      1
+        EffectScriptName     "D:\ymir work\effect\background\Demon_Stone.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+}

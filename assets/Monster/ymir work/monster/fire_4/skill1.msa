@@ -1,0 +1,64 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\monster\fire_4\skill1.GR2"
+MotionDuration           1.300000
+
+Group MotionEventData
+{
+    MotionEventDataCount     4
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         0.244259
+        
+        IndependentFlag      0
+        AttachingEnable      0
+        AttachingBoneName    "Bip001 L Finger01"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/effect/plechito/monster/lava_fields/lf_boss3_skill01_blow.mse"
+        EffectPosition       -100.000000 -300.000000 0.000000
+    }
+    Group Event01
+    {
+        MotionEventType      1
+        StartingTime         0.827766
+        
+        IndependentFlag      0
+        AttachingEnable      0
+        AttachingBoneName    "Bip001 L Finger01"
+        FollowingEnable      0
+        EffectFileName       "0"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+    Group Event02
+    {
+        MotionEventType      4
+        StartingTime         0.241545
+        DuringTime           0.200000
+        EnableHitProcess     0
+        
+        AttackType           0
+        HittingType          1
+        StiffenTime          0.000000
+        InvisibleTime        0.300000
+        ExternalForce        0.000000
+        HitLimitCount        0
+        CollisionType        4
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           500.000000
+            Position         0.000000 -200.000000 0.000000
+        }
+    }
+    Group Event03
+    {
+        MotionEventType      2
+        StartingTime         0.246973
+        
+        DuringTime           0.600000
+        Power                2000
+        AffectingRange       1000
+    }
+}

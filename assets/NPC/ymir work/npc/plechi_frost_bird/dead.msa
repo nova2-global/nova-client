@@ -1,0 +1,26 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\npc\plechi_frost_bird\dead.GR2"
+MotionDuration           4.200000
+
+Group MotionEventData
+{
+    MotionEventDataCount     2
+    Group Event00
+    {
+        MotionEventType      8
+        StartingTime         3.908974
+    }
+    Group Event01
+    {
+        MotionEventType      1
+        StartingTime         3.808974
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "Bip01 Spine2"
+        FollowingEnable      1
+        EffectFileName       "d:/ymir work/npc/plechi_frost_bird/dead_eff.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+}

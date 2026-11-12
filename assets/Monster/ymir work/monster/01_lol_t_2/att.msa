@@ -1,0 +1,19 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\monster\01_lol_t_1\wait.GR2"
+MotionDuration           1.000000
+
+Group MotionEventData
+{
+    MotionEventDataCount     1
+    Group Event00
+    {
+        MotionEventType      6
+        StartingTime         0.169102
+        
+        AttachingEnable      1
+        AttachingBoneName    "Bone002"
+        FlyFileName       "D:\ymir work\effect\mehok\monster\v2\lekarz_burzowy_fly.msf"
+        FlyPosition       0.000000 0.000000 0.000000
+    }
+}

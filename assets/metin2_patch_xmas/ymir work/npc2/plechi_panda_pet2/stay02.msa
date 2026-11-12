@@ -1,0 +1,21 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\npc2\plechi_panda_pet2\stay02.GR2"
+MotionDuration           7.700000
+
+Group MotionEventData
+{
+    MotionEventDataCount     1
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         5.691394
+        
+        IndependentFlag      0
+        AttachingEnable      0
+        AttachingBoneName    "Root"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/npc2/plechi_panda_pet2/stay02_eff.mse"
+        EffectPosition       0.000000 -70.000000 0.000000
+    }
+}

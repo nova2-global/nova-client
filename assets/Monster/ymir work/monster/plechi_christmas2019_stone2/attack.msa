@@ -1,0 +1,22 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\monster\plechi_christmas2019_stone2\stay00.GR2"
+MotionDuration           0.333333
+
+
+Group MotionEventData
+{
+    MotionEventDataCount     1
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         0.004444
+        
+        IndependentFlag      0
+        AttachingEnable      0
+        AttachingBoneName    "plechi_christmas2019_stone1"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/effect/plechito/monster/christmas2019_stone1_wave.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+}

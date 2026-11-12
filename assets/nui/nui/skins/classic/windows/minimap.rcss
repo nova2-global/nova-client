@@ -145,6 +145,24 @@ body.skin-classic.minimap .minimap__line--observers
 {
 	top: 180dp;
 }
+/* The FPS readout (NOVA-118): legacy's line on the minimap window itself,
+   centered on x 70 at 160 (the hidden position line's place), the map open
+   or closed. */
+body.skin-classic.minimap .minimap__fps
+{
+	right: 0;
+	top: 0;
+	width: 136dp;
+}
+body.skin-classic.minimap .minimap__line--fps,
+body.skin-classic.minimap .minimap__fps--observers .minimap__line--fps,
+body.skin-classic.minimap .minimap__fps--closed .minimap__line--fps
+{
+	top: 160dp;
+	left: -30dp;
+	right: auto;
+	justify-content: center;
+}
 /* Legacy's server line has no clock. */
 body.skin-classic.minimap .minimap__clock
 {

@@ -1,0 +1,26 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\npc\plechi_summer2020_mount1\dead.GR2"
+MotionDuration           4.100000
+
+Group MotionEventData
+{
+    MotionEventDataCount     2
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         3.190000
+        
+        IndependentFlag      0
+        AttachingEnable      0
+        AttachingBoneName    "Root"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/npc/plechi_summer2020_mount1/dead_eff.mse"
+        EffectPosition       0.000000 0.000000 200.000000
+    }
+    Group Event01
+    {
+        MotionEventType      8
+        StartingTime         3.220000
+    }
+}

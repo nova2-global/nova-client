@@ -1290,3 +1290,164 @@ SHOP_TEXT_OR	of
 SHOP_BUY_COUNT_TITLE	Aantal te kopen (max. %d)
 DO_YOU_BUY_WITH_ITEM	Wil je %s voor %s kopen?
 SHOP_BULK_BUY_HINT	Shift + click: meerdere kopen
+CONFIRM_LEVEL_UP_QUESTION	Wil je level %d bereiken? Kerkers met een levelgrens kunnen voor je sluiten.
+ANTI_EXP_FREEZE_HINT	Klik: EXP bevriezen
+ANTI_EXP_FROZEN_HINT	EXP bevroren. Klik: ontdooien
+DETAILS_TITLE	Details
+DETAILS_CATE_1	Schade/Verdediging
+DETAILS_1	Kr. tegen Halfmensen
+DETAILS_TOOLTIP_1	Sterk tegen Halfmensen: Brengt zwaardere schade toe aan Halfmensen.
+DETAILS_2	Weerst. tg. Halfmens
+DETAILS_TOOLTIP_2	Weerstand tegen Halfmensen: Vermindert de schade die je oploopt van Halfmensen.
+DETAILS_3	Sterk tegen Orks
+DETAILS_TOOLTIP_3	Sterk tegen Orks: Brengt zwaardere schade toe aan orks.
+DETAILS_4	Sterk tegen Ondoden
+DETAILS_TOOLTIP_4	Sterk tegen Sterk tegen Ondoden: Brengt zwaardere schade toe aan ondoden.
+DETAILS_5	Sterk tegen Monsters
+DETAILS_TOOLTIP_5	Sterk tegen Monsters: Brengt zwaardere schade toe aan monsters.
+DETAILS_ELEMENTAL	Sterk tegen Elementairen
+DETAILS_TOOLTIP_ELEMENTAL	Sterk tegen Elementairen: Richt meer schade aan tegen elementairen.
+DETAILS_BOSS	Sterk tegen Bazen
+DETAILS_TOOLTIP_BOSS	Sterk tegen Bazen: Brengt zwaardere schade toe aan bazen.
+DETAILS_STONE	Sterk tegen Metin Stenen
+DETAILS_TOOLTIP_METIN	Sterk tegen Metin Stenen: Brengt zwaardere schade toe aan metin stenen.
+DETAILS_7	Sterk tegen Dieren
+DETAILS_TOOLTIP_7	Sterk tegen dieren: Brengt zwaardere schade toe aan dieren.
+DETAILS_8	Sterk tegen Esoteri.
+DETAILS_TOOLTIP_8	Sterk tegen Esoteristen: Brengt zwaardere schade toe aan esoteristen.
+DETAILS_9	Sterk tegen Duivels
+DETAILS_TOOLTIP_9	Sterk tegen Duivels: Brengt zwaardere schade toe aan duivels.
+DETAILS_12	Aanvalswaarde
+DETAILS_TOOLTIP_12	Verhoogt je aanvalswaarde
+DETAILS_13	Verdedigingswaarde
+DETAILS_TOOLTIP_13	Verhoogt je verdedigingswaarde
+DETAILS_14	Gemiddelde Schade
+DETAILS_TOOLTIP_14	Verhoogt de gemiddelde schade die je aan vijanden toebrengt bij een aanval.
+DETAILS_15	Gem. Schade Weerst.
+DETAILS_TOOLTIP_15	Weerstand tegen gemiddelde schade: vermindert de schade die je oploopt bij een aanval.
+DETAILS_16	Vaardigheden Schade
+DETAILS_TOOLTIP_16	Verhoogt de schade toegebracht door een vaardigheid.
+DETAILS_17	Vaardig. Schade Weerstand
+DETAILS_TOOLTIP_17	Weerstand tegen vaardigheden schade: Vermindert de schade die je toegebracht wordt door een vaardigheid.
+DETAILS_18	Magische/Fys. Aanval
+DETAILS_TOOLTIP_18	Verhoogt zowel je fysieke als magische aanvalswaarde.
+DETAILS_19	Magische Aanval
+DETAILS_TOOLTIP_19	Verhoogt de schade die je aan vijanden toebrengt bij een magische aanval.
+DETAILS_20	Kritieke Slag Kans
+DETAILS_TOOLTIP_20	Verhoogt de kans op het uitdelen van een kritieke slag.
+DETAILS_21	Perforerende Slag
+DETAILS_TOOLTIP_21	Perforerende slag kans: Verhoogt de kans op het uitdelen van een perforerende slag.
+DETAILS_22	Kritieke Slag Weerst
+DETAILS_TOOLTIP_22	Kritische slag weerstand: Vermindert de schade toegebracht door een kritieke slag.
+DETAILS_23	Perf. Slag Weerst.
+DETAILS_TOOLTIP_23	Perforerende slag weerstand: Vermindert de schade toegebracht door een perforerende slag.
+DETAILS_CATE_2	Elementale bonus
+DETAILS_76	Magie Weerstand
+DETAILS_TOOLTIP_76	Vermindert de schade die je oploopt bij een magische aanval.
+DETAILS_24	Bliksem Weerstand
+DETAILS_TOOLTIP_24	Vermindert de schade die je oploopt van bepaalde monsters.
+DETAILS_25	IJs Weerstand
+DETAILS_TOOLTIP_25	Vermindert de schade die je oploopt van bepaalde monsters.
+DETAILS_26	Duisternis Weerstand
+DETAILS_TOOLTIP_26	Duisternis weerstand: Vermindert de schade die je oploopt van bepaalde monsters.
+DETAILS_27	Vuur Weerstand
+DETAILS_TOOLTIP_27	Vermindert de schade die je oploopt van bepaalde monsters.
+DETAILS_28	Wind Weerstand
+DETAILS_TOOLTIP_28	Vermindert de schade die je oploopt van bepaalde monsters.
+DETAILS_29	Aarde Weerstand
+DETAILS_TOOLTIP_29	Vermindert de schade die je oploopt van bepaalde monsters.
+DETAILS_77	Anti-Magie
+DETAILS_TOOLTIP_77	Vermindert de magieweerstand van je vijand.
+DETAILS_30	Kracht van Bliksem
+DETAILS_TOOLTIP_30	Verhoogt de schade toe je toebrengt door de kracht van bliksem.
+DETAILS_31	Kracht van IJs
+DETAILS_TOOLTIP_31	Verhoogt de schade toe je toebrengt door de kracht van ijs.
+DETAILS_32	Kracht van Duistern.
+DETAILS_TOOLTIP_32	Verhoogt de schade toe je toebrengt door de kracht van duisternis.
+DETAILS_33	Kracht van Vuur
+DETAILS_TOOLTIP_33	Verhoogt de schade toe je toebrengt door de kracht van vuur.
+DETAILS_34	Kracht van de Wind
+DETAILS_TOOLTIP_34	Verhoogt de schade toe je toebrengt door de kracht van de wind.
+DETAILS_35	Kracht van Aarde
+DETAILS_TOOLTIP_35	Verhoogt de schade toe je toebrengt door de kracht van aarde.
+DETAILS_CATE_3	Klasse bonus
+DETAILS_36	Sterk tegen Krijgers
+DETAILS_TOOLTIP_36	Sterk tegen Krijgers: Brengt zwaardere schade toe aan krijgers.
+DETAILS_37	Sterk tegen Ninja's
+DETAILS_TOOLTIP_37	Sterk tegen Ninja's: Brengt zwaardere schade toe aan ninja's.
+DETAILS_38	Sterk tegen Sura's
+DETAILS_TOOLTIP_38	Sterk tegen Sura's: Brengt zwaardere schade toe aan sura's.
+DETAILS_39	Sterk tegen Sjamanen
+DETAILS_TOOLTIP_39	Sterk tegen Sjamanen: Brengt zwaardere schade toe aan sjamanen.
+DETAILS_41	Verd. tegen Krijgers
+DETAILS_TOOLTIP_41	Verdedigingskans tegen aanvallen van krijgers: Vermindert de schade die je oploopt van krijgers.
+DETAILS_42	Verd. tegen Ninja's
+DETAILS_TOOLTIP_42	Verdedigingskans tegen aanvallen van ninja's: Vermindert de schade die je oploopt van ninja's.
+DETAILS_43	Verd. tegen Sura's
+DETAILS_TOOLTIP_43	Verdedigingskans tegen aanvallen van sura's: Vermindert de schade die je oploopt van sura's.
+DETAILS_44	Verd. tegen Sjamanen
+DETAILS_TOOLTIP_44	Verdedigingskans tegen aanvallen van sjamanen: Vermindert de schade die je oploopt van sjamanen.
+DETAILS_CATE_4	Wapenbonus
+DETAILS_46	Zwaard Verdediging
+DETAILS_TOOLTIP_46	Vermindert de schade toegebracht door een zwaard.
+DETAILS_47	Twee-handig Verd.
+DETAILS_TOOLTIP_47	Vermindert de schade toegebracht door een twee-handig wapen.
+DETAILS_48	Dolk Verdediging
+DETAILS_TOOLTIP_48	Vermindert de schade toegebracht door een dolk.
+DETAILS_50	Bel Verdediging
+DETAILS_TOOLTIP_50	Vermindert de schade toegebracht door een bel.
+DETAILS_51	Waaier Verdediging
+DETAILS_TOOLTIP_51	Vermindert de schade toegebracht door een waaier.
+DETAILS_52	Pijl Verdediging
+DETAILS_TOOLTIP_52	Vermindert de schade toegebracht door pijl en boog.
+DETAILS_CATE_5	Overige bonus
+DETAILS_53	Flauwvalkans
+DETAILS_TOOLTIP_53	Verhoogt de kans om een tegenstander te laten flauw vallen.
+DETAILS_54	Langzaam maken Kans
+DETAILS_TOOLTIP_54	Verhoogt de kans om een tegenstander te vertragen.
+DETAILS_55	Vergiftigingskans
+DETAILS_TOOLTIP_55	Verhoogt de kans om een tegenstander te vergiftigen.
+DETAILS_56	Gif Weerstand
+DETAILS_TOOLTIP_56	Vermindert de schade toegebracht door gif.
+DETAILS_59	LP Stelen
+DETAILS_TOOLTIP_59	Steelt LP van je vijanden als je ze raakt.
+DETAILS_60	TP Stelen
+DETAILS_TOOLTIP_60	Steelt TP van je vijanden als je ze raakt.
+DETAILS_61	LP Herstel
+DETAILS_TOOLTIP_61	Verhoogt het herstel van je levenspunten.
+DETAILS_62	TP Herstel
+DETAILS_TOOLTIP_62	Verhoogt het herstel van je spreukpunten.
+DETAILS_63	Blokkeer Aanval
+DETAILS_TOOLTIP_63	Kans om een fysieke aanval te blokkeren: Verhoogt de kans op het ontwijken van een fysieke aanval.
+DETAILS_64	Ontwijk Pijlaanval
+DETAILS_TOOLTIP_64	Kans om een pijlaanval te ontwijken: Verhoogt de kans op het ontwijken van pijl- of afstandsaanval door een monster.
+DETAILS_65	Weerkaats Fys. Aanv.
+DETAILS_TOOLTIP_65	Kans om fysieke aanvallen te weerkaatsen: Een deel van de fysieke aanval van de vijand wordt weerkaatst naar hen.
+DETAILS_66	LP Herstel bij Doden
+DETAILS_TOOLTIP_66	HP herstel bij doden: Je levenspunten stijgen wanneer je een vijand doodt.
+DETAILS_67	TP Herstel bij Doden
+DETAILS_TOOLTIP_67	TP herstel bij doden: Je spreukpunten stijgen wanneer je een vijand doodt.
+DETAILS_68	Dubbel ERV
+DETAILS_TOOLTIP_68	Kans om dubbele ervaring te krijgen: Verhoogt de kans op een ERV-bonus als je een tegenstander verslaat.
+DETAILS_69	Dubbel Yang
+DETAILS_TOOLTIP_69	Kans op dubbele Yang: Verhoogt de kans op het ontvangen van twee keer zoveel Yang.
+DETAILS_70	Drop Kans
+DETAILS_TOOLTIP_70	Kans op het droppen van items: Verhoogt de kans op het buitmaken van twee keer zoveel items.
+DETAILS_CATE_6	Speciale bonus
+DETAILS_71	Aanvalswaarde
+DETAILS_TOOLTIP_71	Verhoogt je aanvalswaarde
+DETAILS_72	Verdedigingswaarde
+DETAILS_TOOLTIP_72	Verhoogt je verdedigingswaarde
+DETAILS_73	ERV
+DETAILS_TOOLTIP_73	Verhoogt het verzamelen van ervaring.
+DETAILS_74	Drop Kans
+DETAILS_TOOLTIP_74	Item drop-kans: Verhoogt de kans op het buitmaken van items.
+DETAILS_75	Dubbel Yang
+DETAILS_TOOLTIP_75	Yang drop-kans: Verhoogt de kans op het buitmaken van meer Yang.
+STAT_PICK_TITLE_CON	Vitaliteit
+STAT_PICK_TITLE_INT	Intelligentie
+STAT_PICK_TITLE_STR	Kracht
+STAT_PICK_TITLE_DEX	Behendigheid
+SKILL_MAX_UP_HINT	Shift + click: verhogen tot Meester
+REMOVE_AFFECT_QUESTION	Wil je %s uitschakelen?
+REFINE_FAST_UPGRADE	Snel upgraden

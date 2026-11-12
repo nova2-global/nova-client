@@ -1290,3 +1290,164 @@ SHOP_TEXT_OR	veya
 SHOP_BUY_COUNT_TITLE	Satın alınacak adet (en fazla %d)
 DO_YOU_BUY_WITH_ITEM	Satın almak istiyor musun? Nesne: %s Fiyat: %s
 SHOP_BULK_BUY_HINT	Shift + click: birden fazla satın al
+CONFIRM_LEVEL_UP_QUESTION	%d. seviyeye ulaşmak istiyor musun? Seviye sınırı olan zindanlar sana kapanabilir.
+ANTI_EXP_FREEZE_HINT	Tıkla: TP'yi dondur
+ANTI_EXP_FROZEN_HINT	TP donduruldu. Tıkla: çöz
+DETAILS_TITLE	Ayrıntılar
+DETAILS_CATE_1	Hasar/savunma
+DETAILS_1	Yr. insanl. krş. gç.
+DETAILS_TOOLTIP_1	Yarı insanlara karşı güçlü: Yarı insanlara daha büyük hasar verir.
+DETAILS_2	Yarı insan direnci
+DETAILS_TOOLTIP_2	Yarı insanlara karşı direnç: Yarı insanlardan alınan hasarı düşürür.
+DETAILS_3	Orklara karşı güçlü
+DETAILS_TOOLTIP_3	Orklar karşısında güçlü: Orklara daha çok hasar verir.
+DETAILS_4	Ölümsüz. karşı güçlü
+DETAILS_TOOLTIP_4	Ölümsüzler karşısında güçlü: Ölümsüzlere daha çok hasar verir.
+DETAILS_5	Canavarl. krş. güçlü
+DETAILS_TOOLTIP_5	Canavarlar karşısında güçlü: Canavarlara daha çok hasar verir.
+DETAILS_ELEMENTAL	Elementlere Karşı Güçlü
+DETAILS_TOOLTIP_ELEMENTAL	Elementlere Karşı Güçlü: Elementlere daha ağır hasarlar verir.
+DETAILS_BOSS	Patronlara Karsi Güçlü
+DETAILS_TOOLTIP_BOSS	Patronlara Karsi Güçlü: Patronlara fazladan hasar vurur.
+DETAILS_STONE	Metinlere Karsi Güçlü
+DETAILS_TOOLTIP_METIN	Metinlere Karsi Güçlü: Metinlere fazladan hasar vurur.
+DETAILS_7	Hayvanl. karşı güçlü
+DETAILS_TOOLTIP_7	Hayvanlar karşısında güçlü: Vahşi hayvanlara daha çok hasar verir.
+DETAILS_8	Mistikl. karşı güçlü
+DETAILS_TOOLTIP_8	Mistikler karşısında güçlü: Mistiklere daha çok hasar verir.
+DETAILS_9	Şeytanl. karşı güçlü
+DETAILS_TOOLTIP_9	Şeytanlar karşısında güçlü: Canavarlara daha çok hasar verir.
+DETAILS_12	Saldırı değeri
+DETAILS_TOOLTIP_12	Saldırı değerini artırır.
+DETAILS_13	Savunma değeri
+DETAILS_TOOLTIP_13	Savunma değerini artırır.
+DETAILS_14	Ortalama hasar
+DETAILS_TOOLTIP_14	Rakiplere saldırırken verdiğin ortalama hasarı yükseltir.
+DETAILS_15	Ortl. hasar direnci
+DETAILS_TOOLTIP_15	Ortalama hasara karşı direnç: Bir saldırıda aldığın hasarı düşürür.
+DETAILS_16	Beceri hasarı
+DETAILS_TOOLTIP_16	Bir becerinin meydana getirdiği hasarı artırır.
+DETAILS_17	Dayanıklılık beceri hsr.
+DETAILS_TOOLTIP_17	Beceri hasarına direnç: Sana bir yetenekle verilen hasarı düşürür.
+DETAILS_18	Büyü/yakın sav. sal.
+DETAILS_TOOLTIP_18	Hem bedensel hem de büyü saldırı değeri yükselir.
+DETAILS_19	Büyü saldırısı
+DETAILS_TOOLTIP_19	Rakiplere bir büyü saldırısıyla verdiğin hasarı yükseltir.
+DETAILS_20	Krit. isabet şansı
+DETAILS_TOOLTIP_20	Bir kritik vuruş meydana getirme şansını yükseltir.
+DETAILS_21	Delici isabet
+DETAILS_TOOLTIP_21	Delici isabet şansı: Delici isabet yapma şansını artırır.
+DETAILS_22	Kritik vuruş direnci
+DETAILS_TOOLTIP_22	Kritik isabete karşı direnç: Bir kritik vuruşla meydana getirilen hasarı düşürür.
+DETAILS_23	Del. isabet direnci
+DETAILS_TOOLTIP_23	Delici isabete karşı direnç: Bir delici isabetle meydana getirilen hasarı düşürür.
+DETAILS_CATE_2	Temel bonuslar
+DETAILS_76	Büyüye karşı direnç
+DETAILS_TOOLTIP_76	Büyü saldırısıyla aldığın hasarı düşürür.
+DETAILS_24	Şimşek direnci
+DETAILS_TOOLTIP_24	Belli canavarlardan alınan hasarı düşürür.
+DETAILS_25	Buz direnci
+DETAILS_TOOLTIP_25	Belli canavarlardan alınan hasarı düşürür.
+DETAILS_26	Karanlığa kr. direnç
+DETAILS_TOOLTIP_26	Karanlığa karşı direnç: Belli canavarlardan alınan hasarı düşürür.
+DETAILS_27	Ateşe karşı direnç
+DETAILS_TOOLTIP_27	Belli canavarlardan alınan hasarı düşürür.
+DETAILS_28	Rüzgara karşı direnç
+DETAILS_TOOLTIP_28	Belli canavarlardan alınan hasarı düşürür.
+DETAILS_29	Toprak direnci
+DETAILS_TOOLTIP_29	Belli canavarlardan alınan hasarı düşürür.
+DETAILS_77	Büyü bozma
+DETAILS_TOOLTIP_77	Rakibinin büyü direncini düşürür.
+DETAILS_30	Şimşeklerin gücü
+DETAILS_TOOLTIP_30	Şimşeklerin gücüyle verdiğin hasarı artırır.
+DETAILS_31	Buzun gücü
+DETAILS_TOOLTIP_31	Buzun gücüyle verdiğin hasarı artırır.
+DETAILS_32	Karanlığın gücü
+DETAILS_TOOLTIP_32	Karanlığın gücüyle verdiğin hasarı artırır.
+DETAILS_33	Ateşin gücü
+DETAILS_TOOLTIP_33	Ateşin gücüyle verdiğin hasarı artırır.
+DETAILS_34	Rüzgarın gücü
+DETAILS_TOOLTIP_34	Rüzgarın gücüyle verdiğin hasarı artırır.
+DETAILS_35	Toprağın gücü
+DETAILS_TOOLTIP_35	Toprağın gücüyle verdiğin hasarı artırır.
+DETAILS_CATE_3	Sınıf bonusları
+DETAILS_36	Savaşçı. krş. güçlü
+DETAILS_TOOLTIP_36	Savaşçılar karşısında güçlü: Savaşçılara daha çok hasar verir.
+DETAILS_37	Ninjal. krş. güçlü
+DETAILS_TOOLTIP_37	Ninjalar karşısında güçlü: Ninjalara daha çok hasar verir.
+DETAILS_38	Suralara karşı güçlü
+DETAILS_TOOLTIP_38	Sura karşısında güçlü: Suralara daha çok hasar verir.
+DETAILS_39	Şamanl. karşı güçlü
+DETAILS_TOOLTIP_39	Şamanlar karşısında güçlü: Şamanlara daha çok hasar verir.
+DETAILS_41	Savaşçıl. krş. sav.
+DETAILS_TOOLTIP_41	Savaşçı saldırılarını savuşturma şansı: Savaşçılardan alınan hasarı azaltır.
+DETAILS_42	Ninjal. karşı savun.
+DETAILS_TOOLTIP_42	Ninja saldırılarını savuşturma şansı: Ninjalardan alınan hasarı azaltır.
+DETAILS_43	Sural. karşı savunma
+DETAILS_TOOLTIP_43	Sura saldırılarını savuşturma şansı: Suralardan alınan hasarı azaltır.
+DETAILS_44	Şamanlara karşı sav.
+DETAILS_TOOLTIP_44	Şaman saldırılarını savuşturma şansı: Şamanlardan alınan hasarı azaltır.
+DETAILS_CATE_4	Silah bonusları
+DETAILS_46	Kılıç savunması
+DETAILS_TOOLTIP_46	Bir kılıçtan alınan hasarı düşürür.
+DETAILS_47	Çift el savunması
+DETAILS_TOOLTIP_47	Bir çift el silahtan alınan hasarı düşürür.
+DETAILS_48	Hançer savunması
+DETAILS_TOOLTIP_48	Bir hançerden alınan hasarı düşürür.
+DETAILS_50	Çan savunması
+DETAILS_TOOLTIP_50	Bir çandan alınan hasarı düşürür.
+DETAILS_51	Yelpaze savunması
+DETAILS_TOOLTIP_51	Bir yelpazeden alınan hasarı düşürür.
+DETAILS_52	Ok savunması
+DETAILS_TOOLTIP_52	Bir ok veya yaydan alınan hasarı düşürür.
+DETAILS_CATE_5	Diğer bonuslar
+DETAILS_53	Bayılma olasılığı
+DETAILS_TOOLTIP_53	Rakibi bayıltma şansını yükseltir.
+DETAILS_54	Yavaşlama şansı
+DETAILS_TOOLTIP_54	Rakibi yavaşlama şansını yükseltir.
+DETAILS_55	Zehirlenme olasılığı
+DETAILS_TOOLTIP_55	Rakibi zehirleme şansını yükseltir.
+DETAILS_56	Zehir direnci
+DETAILS_TOOLTIP_56	Bir zehirden alınan hasarı düşürür.
+DETAILS_59	Hayat yağması
+DETAILS_TOOLTIP_59	Rakibinle karşılaştığında ondan HP çeker.
+DETAILS_60	SP yağması
+DETAILS_TOOLTIP_60	Rakibinle karşılaştığında ondan SP çeker.
+DETAILS_61	HP yükleme
+DETAILS_TOOLTIP_61	Hayat puanlarının yenilenmesini hızlandırır.
+DETAILS_62	SP yükleme
+DETAILS_TOOLTIP_62	Mana puanlarının yenilenmesini hızlandırır.
+DETAILS_63	Saldırı engelleme
+DETAILS_TOOLTIP_63	Yakın dövüş saldırılarını bloklama şansı: Bir yakın dövüş saldırısından sıyrılma şansını artırır.
+DETAILS_64	Ok saldır. sıyrılma
+DETAILS_TOOLTIP_64	Ok saldırılarını bloklama şansı: Bir canavarın ok veya uzak saldırısından sıyrılma şansını artırır.
+DETAILS_65	Yak. dövüş yansıması
+DETAILS_TOOLTIP_65	Yakın dövüş vuruşlarını yansıtma şansı: Yakın dövüş vuruşlarının bir kısmı rakibe geri yansıtılır.
+DETAILS_66	Öldürmede HP yenile.
+DETAILS_TOOLTIP_66	Öldürmede HP yenilemesi: Bir rakip öldürdüğünde hayat puanların yükselir.
+DETAILS_67	Öldürmede SP yenile.
+DETAILS_TOOLTIP_67	Öldürmede SP yenilemesi: Bir rakip öldürdüğünde mana puanların yükselir.
+DETAILS_68	2 kat EXP
+DETAILS_TOOLTIP_68	İki kat tecrübe kazanma şansı: Rakibini yendiğinde EXP bonusu kazanma şansını artırır.
+DETAILS_69	2 kat Yang
+DETAILS_TOOLTIP_69	İki kat Yang düşürme şansı: İki kat Yang elde etme şansını artırır.
+DETAILS_70	Düşürme şansı
+DETAILS_TOOLTIP_70	Nesne düşürme şansı: Nesneleri çift çift elde etme şansını artırır.
+DETAILS_CATE_6	Özel bonuslar
+DETAILS_71	Saldırı değeri
+DETAILS_TOOLTIP_71	Saldırı değerini artırır.
+DETAILS_72	Savunma
+DETAILS_TOOLTIP_72	Savunma değerini artırır.
+DETAILS_73	EXP
+DETAILS_TOOLTIP_73	Tecrübe toplamayı artırır.
+DETAILS_74	Düşürme şansı
+DETAILS_TOOLTIP_74	Nesne düşürme şansı: Nesne elde etme şansını artırır.
+DETAILS_75	2 kat Yang
+DETAILS_TOOLTIP_75	Yang düşürme şansı: Daha fazla Yang elde etme şansını artırır.
+STAT_PICK_TITLE_CON	Canlılık
+STAT_PICK_TITLE_INT	Zeka
+STAT_PICK_TITLE_STR	Güç
+STAT_PICK_TITLE_DEX	Çeviklik
+SKILL_MAX_UP_HINT	Shift + click: Master'a kadar yükselt
+REMOVE_AFFECT_QUESTION	%s devre dışı bırakılsın mı?
+REFINE_FAST_UPGRADE	Hızlı yükseltme

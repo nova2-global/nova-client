@@ -1290,3 +1290,164 @@ SHOP_TEXT_OR	lub
 SHOP_BUY_COUNT_TITLE	Ilość do kupienia (maks. %d)
 DO_YOU_BUY_WITH_ITEM	Czy chcesz kupić %s za %s?
 SHOP_BULK_BUY_HINT	Shift + click: kup kilka
+CONFIRM_LEVEL_UP_QUESTION	Czy chcesz osiągnąć poziom %d? Lochy z limitem poziomu mogą zostać dla ciebie zamknięte.
+ANTI_EXP_FREEZE_HINT	Kliknij: zamroź PD
+ANTI_EXP_FROZEN_HINT	PD zamrożone. Kliknij: odmroź
+DETAILS_TITLE	Szczegóły
+DETAILS_CATE_1	Obrażenia/Obrona
+DETAILS_1	Siła vs Ludziom
+DETAILS_TOOLTIP_1	Siła w walce z Ludźmi: zadaje więcej obrażeń Ludziom.
+DETAILS_2	Siła vs Ludziom
+DETAILS_TOOLTIP_2	Odporność na Ludzi: zmniejsza obrażenia zadawane przez Ludzi.
+DETAILS_3	Siła vs Orkom
+DETAILS_TOOLTIP_3	Siła w walce z orkami: zadaje większe obrażenia orkom.
+DETAILS_4	Siła vs Nieumarłym
+DETAILS_TOOLTIP_4	Siła w walce z nieumarłymi: zadaje większe obrażenia nieumarłym.
+DETAILS_5	Siła vs Potworom
+DETAILS_TOOLTIP_5	Siła w walce z potworami: zadaje większe obrażenia potworom.
+DETAILS_ELEMENTAL	Siła vs Żywiołakom
+DETAILS_TOOLTIP_ELEMENTAL	Silny przeciwko Żywiołakom: zadaje większe obrażenia Żywiołakom.
+DETAILS_BOSS	Silny vs Bossy
+DETAILS_TOOLTIP_BOSS	Silny przeciwko Bossom: Powoduje większe obrażenia bossom.
+DETAILS_STONE	Silny vs Kamieniom
+DETAILS_TOOLTIP_METIN	Silny przeciwko Kamieniomom: Powoduje większe obrażenia kamieniom.
+DETAILS_7	Siła vs Zwierzętom
+DETAILS_TOOLTIP_7	Siła w walce ze zwierzętami: zadaje większe obrażenia dzikim zwierzętom.
+DETAILS_8	Siła vs Mistykom
+DETAILS_TOOLTIP_8	Siła w walce z mistykami: zadaje większe obrażenia mistykom.
+DETAILS_9	Siła vs Diabłom
+DETAILS_TOOLTIP_9	Siła w walce diabłami: zadaje większe obrażenia diabłom.
+DETAILS_12	Siła Ataku
+DETAILS_TOOLTIP_12	Zwiększa twoją siłę ataku.
+DETAILS_13	Siła Obrony
+DETAILS_TOOLTIP_13	Zwiększa twoją siłę obrony.
+DETAILS_14	Przeciętne Obrażenia
+DETAILS_TOOLTIP_14	Zwiększa przeciętne obrażenia, które zadajesz przeciwnikom podczas ataku
+DETAILS_15	Odp. na Przecię.Obr.
+DETAILS_TOOLTIP_15	Odporność na przeciętne obrażenia: zmniejsza obrażenia, które odnosisz podczas ataku.
+DETAILS_16	Obraż. umiejętności
+DETAILS_TOOLTIP_16	Zwiększa obrażenia zadawane przez umiejętność.
+DETAILS_17	Odporność na obraż. umiej.
+DETAILS_TOOLTIP_17	Odporność na obrażenia umiejętności: zmniejsza obrażenia, które odnosisz wskutek umiejętności.
+DETAILS_18	Mag./Krótkodyst. Atak
+DETAILS_TOOLTIP_18	Zwiększa zarówno fizyczną jak i magiczną siłę ataku.
+DETAILS_19	Magiczny Atak
+DETAILS_TOOLTIP_19	Zwiększa obrażenia, które zadajesz przeciwnikom za pomocą magicznych ataków.
+DETAILS_20	Szansa na Cios Kryt.
+DETAILS_TOOLTIP_20	Zwiększa szansę na zadanie ciosu krytycznego.
+DETAILS_21	Przeszyw. Cios
+DETAILS_TOOLTIP_21	Szansa na przeszywający cios: zwiększa szansę na zadanie przeszywającego ciosu.
+DETAILS_22	Odp. na Przesz. Cios
+DETAILS_TOOLTIP_22	Odporność na cios krytyczny: zmniejsza obrażenia odnoszone wskutek ciosu krytycznego.
+DETAILS_23	Odp. na Przesz. Cios
+DETAILS_TOOLTIP_23	Odporność na przeszywający cios: zmniejsza obrażenia odnoszone wskutek przeszywającego ciosu.
+DETAILS_CATE_2	Bonusy żywiołowe
+DETAILS_76	Odp. na Magię
+DETAILS_TOOLTIP_76	Zmniejsza obrażenia odnoszone wskutek magicznych ataków.
+DETAILS_24	Odp. na Błyskawice
+DETAILS_TOOLTIP_24	Zmniejsza obrażenia zadawane przez określone potwory.
+DETAILS_25	Odp. na Lód
+DETAILS_TOOLTIP_25	Zmniejsza obrażenia zadawane przez określone potwory.
+DETAILS_26	Odp. na Mrok
+DETAILS_TOOLTIP_26	Odporność na mrok: zmniejsza obrażenia zadawane przez określone potwory.
+DETAILS_27	Odp. na Ogień
+DETAILS_TOOLTIP_27	Zmniejsza obrażenia zadawane przez określone potwory.
+DETAILS_28	Odp. na Wiatr
+DETAILS_TOOLTIP_28	Zmniejsza obrażenia zadawane przez określone potwory.
+DETAILS_29	Odp. na Ziemię
+DETAILS_TOOLTIP_29	Zmniejsza obrażenia zadawane przez określone potwory.
+DETAILS_77	Antymagia
+DETAILS_TOOLTIP_77	Zmniejsza odporność na magię twojego przeciwnika.
+DETAILS_30	Moc Błyskawic
+DETAILS_TOOLTIP_30	Zwiększa obrażenia, które zadajesz za pomocą błyskawic.
+DETAILS_31	Moc Lodu
+DETAILS_TOOLTIP_31	Zwiększa obrażenia, które zadajesz za pomocą lodu.
+DETAILS_32	Moc Mroku
+DETAILS_TOOLTIP_32	Zwiększa obrażenia, które zadajesz za pomocą mroku.
+DETAILS_33	Moc Ognia
+DETAILS_TOOLTIP_33	Zwiększa obrażenia, które zadajesz za pomocą ognia.
+DETAILS_34	Moc Wiatru
+DETAILS_TOOLTIP_34	Zwiększa obrażenia, które zadajesz za pomocą wiatru.
+DETAILS_35	Moc Ziemi
+DETAILS_TOOLTIP_35	Zwiększa obrażenia, które zadajesz za pomocą ziemi.
+DETAILS_CATE_3	Bonusy klasowe
+DETAILS_36	Siła vs Wojownikom
+DETAILS_TOOLTIP_36	Siła w walce z wojownikami: zadaje większe obrażenia wojownikom.
+DETAILS_37	Siła vs Ninja
+DETAILS_TOOLTIP_37	Siła w walce z ninja: zadaje większe obrażenia ninja.
+DETAILS_38	Siła vs Sura
+DETAILS_TOOLTIP_38	Siła w walce z sura: zadaje większe obrażenia sura.
+DETAILS_39	Siła vs Szamanom
+DETAILS_TOOLTIP_39	Siła w walce z szamanami: zadaje większe obrażenia szamanom.
+DETAILS_41	Obrona vs Wojownikom
+DETAILS_TOOLTIP_41	Odporność na Wojowników: zmniejsza obrażenia, które odnosisz z ręki Wojowników.
+DETAILS_42	Obrona vs Ninja
+DETAILS_TOOLTIP_42	Odporność na Ninja: zmniejsza obrażenia, które odnosisz z ręki Ninja.
+DETAILS_43	Obrona vs Sura
+DETAILS_TOOLTIP_43	Odporność na Sura: zmniejsza obrażenia, które odnosisz z ręki Sura.
+DETAILS_44	Obrona vs Szamanom
+DETAILS_TOOLTIP_44	Odporność na Szamanów: zmniejsza obrażenia, które odnosisz z ręki Szamanów.
+DETAILS_CATE_4	Bonus broni
+DETAILS_46	Odporność na Miecz
+DETAILS_TOOLTIP_46	Zmniejsza obrażenia zadawane mieczem.
+DETAILS_47	Odp. na Br. Dwuręczną
+DETAILS_TOOLTIP_47	Zmniejsza obrażenia zadawane bronią dwuręczną.
+DETAILS_48	Odporność na Sztylet
+DETAILS_TOOLTIP_48	Zmniejsza obrażenia zadawane sztyletem.
+DETAILS_50	Odporność na Dzwon
+DETAILS_TOOLTIP_50	Zmniejsza obrażenia zadawane dzwonem.
+DETAILS_51	Odporność na Wachlarz
+DETAILS_TOOLTIP_51	Zmniejsza obrażenia zadawane wachlarzem.
+DETAILS_52	Odporność na Strzał
+DETAILS_TOOLTIP_52	Zmniejsza obrażenia zadawane łukiem i strzałami.
+DETAILS_CATE_5	Inne bonusy
+DETAILS_53	Szansa na Omdlenie
+DETAILS_TOOLTIP_53	Zwiększa szansę wywołania u przeciwnika efektu omdlenia.
+DETAILS_54	Szansa na Spowolnie.
+DETAILS_TOOLTIP_54	Zwiększa szansę na spowolnienie przeciwnika.
+DETAILS_55	Szansa na Zatrucie
+DETAILS_TOOLTIP_55	Zwiększa szansę na zatrucie przeciwnika.
+DETAILS_56	Odp. na Truciznę
+DETAILS_TOOLTIP_56	Zmniejsza obrażenia zadawane trucizną.
+DETAILS_59	Kradzież Życia
+DETAILS_TOOLTIP_59	Przy trafieniu absorbuje PŻ przeciwnika.
+DETAILS_60	Kradzież PE
+DETAILS_TOOLTIP_60	Przy trafieniu absorbuje PE przeciwnika.
+DETAILS_61	Regeneracja PŻ
+DETAILS_TOOLTIP_61	Przyspiesza regenerację twoich punktów życia.
+DETAILS_62	Regeneracja PE
+DETAILS_TOOLTIP_62	Przyspiesza regenerację twoich punktów energii.
+DETAILS_63	Blok Ataku
+DETAILS_TOOLTIP_63	Szansa na blok ciosów: zwiększa szansę na uniknięcie ataku z krótkiego dystansu.
+DETAILS_64	Unik Strzały
+DETAILS_TOOLTIP_64	Szansa na uniknięcie strzały: zwiększa szansę na uniknięcie strzały lub długodystansowego ataku potwora.
+DETAILS_65	Odbicie Walki. Wręcz
+DETAILS_TOOLTIP_65	Szansa na odbicie ciosu: część obrażeń od ciosu jest odbijana do przeciwnika.
+DETAILS_66	Reg. PŻ przy Zabiciu
+DETAILS_TOOLTIP_66	Regeneracja PŻ przy zabiciu: zabicie przeciwnika podwyższa twoje punkty życia.
+DETAILS_67	Reg. PE przy Zabiciu
+DETAILS_TOOLTIP_67	Regeneracja PE przy zabiciu: zabicie przeciwnika podwyższa twoje punkty energii.
+DETAILS_68	2x PD
+DETAILS_TOOLTIP_68	Szansa na otrzymanie podwójnego doświadczenia: zwiększa szansę na bonusowe PD po pokonaniu przeciwnika.
+DETAILS_69	2x Yang
+DETAILS_TOOLTIP_69	Szansa na drop podwójnej ilości Yang: zwiększa szansę na otrzymanie podwójnej ilości Yang.
+DETAILS_70	Szansa Dropu
+DETAILS_TOOLTIP_70	Szansa na drop przedmiotów: zwiększa szansę na podwójny łup przedmiotów.
+DETAILS_CATE_6	Bonusy specjalne
+DETAILS_71	Siła Ataku
+DETAILS_TOOLTIP_71	Zwiększa twoją siłę ataku.
+DETAILS_72	Obrona
+DETAILS_TOOLTIP_72	Zwiększa twoją siłę obrony.
+DETAILS_73	PD
+DETAILS_TOOLTIP_73	Zwiększa wzrost doświadczenia.
+DETAILS_74	Szansa Dropu
+DETAILS_TOOLTIP_74	Szansa na drop przedmiotów: zwiększa szansę na zdobycie przedmiotów.
+DETAILS_75	2x Yang
+DETAILS_TOOLTIP_75	Szansa na drop Yang: zwiększa szansę na zdobycie więcej Yang.
+STAT_PICK_TITLE_CON	Witalność
+STAT_PICK_TITLE_INT	Inteligencja
+STAT_PICK_TITLE_STR	Siła
+STAT_PICK_TITLE_DEX	Zręczność
+SKILL_MAX_UP_HINT	Shift + click: podnieś do Mistrza
+REMOVE_AFFECT_QUESTION	Czy chcesz wyłączyć %s?
+REFINE_FAST_UPGRADE	Szybkie ulepszanie

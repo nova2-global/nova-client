@@ -1302,3 +1302,164 @@ SHOP_TEXT_OR	ou
 SHOP_BUY_COUNT_TITLE	Quantidade a comprar (máx. %d)
 DO_YOU_BUY_WITH_ITEM	Queres comprar %s por %s?
 SHOP_BULK_BUY_HINT	Shift + click: comprar vários
+CONFIRM_LEVEL_UP_QUESTION	Queres atingir o nível %d? As masmorras com nível máximo podem ficar fechadas para ti.
+ANTI_EXP_FREEZE_HINT	Clique: congelar EXP
+ANTI_EXP_FROZEN_HINT	EXP congelada. Clique: descongelar
+DETAILS_TITLE	Detalhes
+DETAILS_CATE_1	Dano/Defesa
+DETAILS_1	Frt. vs Semi-Humanos
+DETAILS_TOOLTIP_1	Forte contra Semi-Humanos: inflige mais dano a Semi-Humanos.
+DETAILS_2	Res. a Semi-Humanos
+DETAILS_TOOLTIP_2	Resistência a Semi-Humanos: reduz o dano que sofres de Semi-Humanos.
+DETAILS_3	Frt. vs Orcs
+DETAILS_TOOLTIP_3	Forte contra Orcs: inflige mais dano a Orcs.
+DETAILS_4	Frt. vs Mortos-Vivos
+DETAILS_TOOLTIP_4	Forte contra Mortos-Vivos: inflige mais dano a Mortos-Vivos.
+DETAILS_5	Frt. vs Monstros
+DETAILS_TOOLTIP_5	Forte contra Monstros: inflige mais dano a Monstros.
+DETAILS_ELEMENTAL	Fortes vs Elementais
+DETAILS_TOOLTIP_ELEMENTAL	Forte contra Elementais: Causa dano maior aos elementais.
+DETAILS_BOSS	Forte contra Bosses
+DETAILS_TOOLTIP_BOSS	Forte contra Bosses: Aumenta o dano contra bosses.
+DETAILS_STONE	Forte contra Metins
+DETAILS_TOOLTIP_METIN	Forte contra Metins: Aumenta o dano contra pedras metin
+DETAILS_7	Frt. vs Animais
+DETAILS_TOOLTIP_7	Forte contra Animais: inflige mais dano a animais selvagens.
+DETAILS_8	Frt. vs Esotéricos
+DETAILS_TOOLTIP_8	Forte contra Esotéricos: inflige mais dano a Esotéricos.
+DETAILS_9	Frt. vs Demónios
+DETAILS_TOOLTIP_9	Forte contra Demónios: inflige mais dano a Demónios.
+DETAILS_12	Valor de Ataque
+DETAILS_TOOLTIP_12	Aumenta o teu Valor de Ataque.
+DETAILS_13	Valor de Defesa
+DETAILS_TOOLTIP_13	Aumenta o teu Valor de Defesa.
+DETAILS_14	Dano Médio
+DETAILS_TOOLTIP_14	Aumenta o dano médio que infliges a inimigos com um ataque.
+DETAILS_15	Res. a Dano Média
+DETAILS_TOOLTIP_15	Resistência a Dano Médio: reduz o dano que sofres com um ataque.
+DETAILS_16	Dano de Habilidade
+DETAILS_TOOLTIP_16	Aumenta o dano infligido por uma habilidade.
+DETAILS_17	Resist. Dano de Habilidade
+DETAILS_TOOLTIP_17	Resistência a Dano de Habilidades: reduz o dano que te é infligido por uma habilidade.
+DETAILS_18	Ataque Mágico/CaC
+DETAILS_TOOLTIP_18	Aumenta tanto o teu Valor de Ataque Físico como o Mágico.
+DETAILS_19	Ataque Mágico
+DETAILS_TOOLTIP_19	Aumenta o dano que infliges a inimigos com um ataque mágico.
+DETAILS_20	Prob. Golpe Crítico
+DETAILS_TOOLTIP_20	Aumenta a probabilidade de desferires um Golpe Crítico.
+DETAILS_21	Golpe Perfurante
+DETAILS_TOOLTIP_21	Probabilidade de Golpe Perfurante: aumenta a probabilidade de desferires um Golpe Perfurante.
+DETAILS_22	Res. a Golpe Crítico
+DETAILS_TOOLTIP_22	Resistência a Golpes Críticos: reduz o dano infligido por um Golpe Crítico.
+DETAILS_23	Res. a Golpe Perf.
+DETAILS_TOOLTIP_23	Resistência a Golpes Perfurantes: reduz o dano infligido por um Golpe Perfurante.
+DETAILS_CATE_2	Bónus de Elementos
+DETAILS_76	Resistência Mágica
+DETAILS_TOOLTIP_76	Reduz o dano que sofres com um ataque mágico.
+DETAILS_24	Res. a Relâmpagos
+DETAILS_TOOLTIP_24	Reduz o dano que sofres de certos monstros.
+DETAILS_25	Res. a Gelo
+DETAILS_TOOLTIP_25	Reduz o dano que sofres de certos monstros.
+DETAILS_26	Res. a Trevas
+DETAILS_TOOLTIP_26	Resistência a Trevas: reduz o dano que sofres de certos monstros.
+DETAILS_27	Res. a Fogo
+DETAILS_TOOLTIP_27	Reduz o dano que sofres de certos monstros.
+DETAILS_28	Res. a Vento
+DETAILS_TOOLTIP_28	Reduz o dano que sofres de certos monstros.
+DETAILS_29	Res. a Terra
+DETAILS_TOOLTIP_29	Reduz o dano que sofres de certos monstros.
+DETAILS_77	Anti-Magia
+DETAILS_TOOLTIP_77	Reduz a Resistência Mágica do teu inimigo.
+DETAILS_30	Poder dos Raios
+DETAILS_TOOLTIP_30	Aumenta o dano que infliges com o poder dos raios.
+DETAILS_31	Poder do Gelo
+DETAILS_TOOLTIP_31	Aumenta o dano que infliges com o poder do gelo.
+DETAILS_32	Poder das Trevas
+DETAILS_TOOLTIP_32	Aumenta o dano que infliges com o poder das trevas.
+DETAILS_33	Poder do Fogo
+DETAILS_TOOLTIP_33	Aumenta o dano que infliges com o poder do fogo.
+DETAILS_34	Poder do Vento
+DETAILS_TOOLTIP_34	Aumenta o dano que infliges com o poder do vento.
+DETAILS_35	Poder da Terra
+DETAILS_TOOLTIP_35	Aumenta o dano que infliges com o poder da terra.
+DETAILS_CATE_3	Bónus de Classe
+DETAILS_36	Frt. vs Guerreiros
+DETAILS_TOOLTIP_36	Forte contra Guerreiros: inflige mais dano a Guerreiros.
+DETAILS_37	Frt. vs Ninjas
+DETAILS_TOOLTIP_37	Forte contra Ninjas: inflige mais dano a Ninjas.
+DETAILS_38	Frt. vs Suras
+DETAILS_TOOLTIP_38	Forte contra Suras: inflige mais dano a Suras.
+DETAILS_39	Frt. vs Xamãs
+DETAILS_TOOLTIP_39	Forte contra Xamãs: inflige mais dano a Xamãs.
+DETAILS_41	Def. vs Guerreiros
+DETAILS_TOOLTIP_41	Defesa contra Ataques de Guerreiros: reduz o dano que sofres de Guerreiros.
+DETAILS_42	Def. vs Ninjas
+DETAILS_TOOLTIP_42	Defesa contra Ataques de Ninjas: reduz o dano que sofres de Ninjas.
+DETAILS_43	Def. vs Suras
+DETAILS_TOOLTIP_43	Defesa contra Ataques de Suras: reduz o dano que sofres de Suras.
+DETAILS_44	Def. vs Xamãs
+DETAILS_TOOLTIP_44	Defesa contra Ataques de Xamãs: reduz o dano que sofres de Xamãs.
+DETAILS_CATE_4	Bónus de Arma
+DETAILS_46	Def. vs Espadas
+DETAILS_TOOLTIP_46	Reduz o dano infligido por uma espada.
+DETAILS_47	Def. vs Duas-Mãos
+DETAILS_TOOLTIP_47	Reduz o dano infligido por uma arma de duas mãos.
+DETAILS_48	Def. vs Punhais
+DETAILS_TOOLTIP_48	Reduz o dano infligido por uma adaga.
+DETAILS_50	Def. vs Campainhas
+DETAILS_TOOLTIP_50	Reduz o dano infligido por uma campainha.
+DETAILS_51	Def. vs Leques
+DETAILS_TOOLTIP_51	Reduz o dano infligido por um leque.
+DETAILS_52	Def. vs Flechas
+DETAILS_TOOLTIP_52	Reduz o dano infligido por arcos e flechas.
+DETAILS_CATE_5	Outros Bónus
+DETAILS_53	Prob. Atordoamento
+DETAILS_TOOLTIP_53	Aumenta a probabilidade de atordoar um adversário.
+DETAILS_54	Prob. Abrandamento
+DETAILS_TOOLTIP_54	Aumenta a probabilidade de abrandar um adversário.
+DETAILS_55	Prob. Envenenamento
+DETAILS_TOOLTIP_55	Aumenta a probabilidade de envenenar um adversário.
+DETAILS_56	Res. a Veneno
+DETAILS_TOOLTIP_56	Reduz o dano infligido por veneno.
+DETAILS_59	Roubo de VD
+DETAILS_TOOLTIP_59	Drena a VD do teu inimigo quando o atinges.
+DETAILS_60	Roubo de MN
+DETAILS_TOOLTIP_60	Drena a MN do teu inimigo quando o atinges.
+DETAILS_61	Recuperação de VD
+DETAILS_TOOLTIP_61	Aumenta a recuperação dos teus pontos de vida.
+DETAILS_62	Recuperação de MN
+DETAILS_TOOLTIP_62	Aumenta a recuperação dos teus pontos de magia.
+DETAILS_63	Bloqueio de Ataque
+DETAILS_TOOLTIP_63	Probabilidade de bloquear um ataque corpo-a-corpo: aumenta a probabilidade de evasão a um ataque corpo-a-corpo.
+DETAILS_64	Evasão Atq. Flecha
+DETAILS_TOOLTIP_64	Probabilidade de evitar um ataque de flecha: aumenta a probabilidade de evadir um ataque de flecha ou de longo alcance de um monstro.
+DETAILS_65	Reflectir Ataque CaC
+DETAILS_TOOLTIP_65	Probabilidade de reflectir ataques corpo-a-corpo: parte do dano corpo-a-corpo do inimigo é reflectido de volta contra ele.
+DETAILS_66	Recup. VD com Morte
+DETAILS_TOOLTIP_66	Recuperação de VD ao Matar: os teus pontos de vida aumentam quando matas um inimigo.
+DETAILS_67	Recup. MN com Morte
+DETAILS_TOOLTIP_67	Recuperação de MN ao Matar: os teus pontos de magia aumentam quando matas um inimigo.
+DETAILS_68	EXP a Dobrar
+DETAILS_TOOLTIP_68	Probabilidade de receber experiência a dobrar: aumenta a probabilidade de um bónus de EXP quando derrotas um inimigo.
+DETAILS_69	Yang a Dobrar
+DETAILS_TOOLTIP_69	Probabilidade de receber Yang a dobrar: aumenta a probabilidade de receber uma quantidade de Yang a dobrar.
+DETAILS_70	Prob. Queda Itens
+DETAILS_TOOLTIP_70	Probabilidade de Queda de Itens: aumenta a probabilidade de pilhar o dobro da quantidade de itens.
+DETAILS_CATE_6	Bónus Especial
+DETAILS_71	Valor de Ataque
+DETAILS_TOOLTIP_71	Aumenta o teu Valor de Ataque.
+DETAILS_72	Valor de Defesa
+DETAILS_TOOLTIP_72	Aumenta o teu Valor de Defesa.
+DETAILS_73	EXP
+DETAILS_TOOLTIP_73	Aumenta a obtenção de experiência.
+DETAILS_74	Prob. Queda Itens
+DETAILS_TOOLTIP_74	Probabilidade de queda de itens: aumenta a probabilidade de pilhares itens.
+DETAILS_75	Yang a Dobrar
+DETAILS_TOOLTIP_75	Probabilidade de queda de Yang: aumenta a probabilidade de pilhares mais Yang.
+STAT_PICK_TITLE_CON	Vitalidade
+STAT_PICK_TITLE_INT	Inteligência
+STAT_PICK_TITLE_STR	Força
+STAT_PICK_TITLE_DEX	Destreza
+SKILL_MAX_UP_HINT	Shift + click: subir até Mestre
+REMOVE_AFFECT_QUESTION	Queres desativar %s?
+REFINE_FAST_UPGRADE	Melhoria rápida

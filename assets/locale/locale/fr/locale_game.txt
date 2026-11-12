@@ -1290,3 +1290,164 @@ SHOP_TEXT_OR	ou
 SHOP_BUY_COUNT_TITLE	Quantité à acheter (max. %d)
 DO_YOU_BUY_WITH_ITEM	Voulez-vous acheter %s pour %s ?
 SHOP_BULK_BUY_HINT	Shift + click: acheter plusieurs
+CONFIRM_LEVEL_UP_QUESTION	Veux-tu atteindre le niveau %d ? Les donjons avec un niveau maximum peuvent t'être fermés.
+ANTI_EXP_FREEZE_HINT	Clic : geler l'EXP
+ANTI_EXP_FROZEN_HINT	EXP gelée. Clic : dégeler
+DETAILS_TITLE	Détails
+DETAILS_CATE_1	Dégâts/Défense
+DETAILS_1	Force c. demi-hum.
+DETAILS_TOOLTIP_1	Fort contre les demi-humains : les demi-humains subissent des dégâts plus importants.
+DETAILS_2	Rés. c. demi-humains
+DETAILS_TOOLTIP_2	Résistance contre les demi-humains : les dégâts infligés par les demi-humains sont réduits.
+DETAILS_3	Force c. orcs
+DETAILS_TOOLTIP_3	Fort contre les orcs : les orcs subissent des dégâts plus importants.
+DETAILS_4	Force c. m-vivants
+DETAILS_TOOLTIP_4	Fort contre les morts-vivants : les morts-vivants subissent des dégâts plus importants.
+DETAILS_5	Force c. monstres
+DETAILS_TOOLTIP_5	Fort contre les monstres : les monstres subissent des dégâts plus importants.
+DETAILS_ELEMENTAL	Strong vs Elementals
+DETAILS_TOOLTIP_ELEMENTAL	Strong against Elementals: Deals heavier damage to elementals.
+DETAILS_BOSS	Fort vs Patrons
+DETAILS_TOOLTIP_BOSS	Fort contre les Patrons: inflige des dégâts plus lourds aux Patrons.
+DETAILS_STONE	Fort vs Pierres
+DETAILS_TOOLTIP_METIN	Fort contre la pierre de metin: inflige des dégâts plus importants aux pierres de metin.
+DETAILS_7	Force c. animaux
+DETAILS_TOOLTIP_7	Fort contre les animaux : les animaux sauvages subissent des dégâts plus importants.
+DETAILS_8	Force c. mystiques
+DETAILS_TOOLTIP_8	Fort contre les mystiques : les mystiques subissent des dégâts plus importants.
+DETAILS_9	Force c. diable
+DETAILS_TOOLTIP_9	Fort contre le mal : les démons subissent des dégâts plus importants.
+DETAILS_12	Valeur d'attaque
+DETAILS_TOOLTIP_12	Votre valeur d'attaque augmente.
+DETAILS_13	Valeur de défense
+DETAILS_TOOLTIP_13	Votre valeur de défense augmente.
+DETAILS_14	Dégâts moyens
+DETAILS_TOOLTIP_14	Les dégâts moyens infligés aux ennemis à chaque attaque augmentent.
+DETAILS_15	Rés. dégâts moyens
+DETAILS_TOOLTIP_15	Résistance contre les dégâts moyens : les dégâts subis pour chaque attaque sont diminués.
+DETAILS_16	Dégâts de compétence
+DETAILS_TOOLTIP_16	Les dégâts infligés par une compétence augmentent.
+DETAILS_17	Résist. dégâts compétence
+DETAILS_TOOLTIP_17	Résistance contre les dégâts de compétence : les dégâts que vous subissez à cause d'une compétence sont réduits.
+DETAILS_18	Attaque de mêlée/mag
+DETAILS_TOOLTIP_18	Les valeurs d'attaque physique et magique augmentent.
+DETAILS_19	Attaque magique
+DETAILS_TOOLTIP_19	Les dégâts infligés aux ennemis à chaque attaque magique augmentent.
+DETAILS_20	Chance de coup crit.
+DETAILS_TOOLTIP_20	La chance d'effectuer un coup critique augmente.
+DETAILS_21	Coup perçant
+DETAILS_TOOLTIP_21	Chances de coup perçant : les chances d'infliger un coup perçant augmentent.
+DETAILS_22	Rés. coup critique
+DETAILS_TOOLTIP_22	Résistance contre les coups critiques : les dégâts infligés par un coup critique sont réduits.
+DETAILS_23	Rés. coup perçant
+DETAILS_TOOLTIP_23	Résistance contre les coups perçants : les dégâts infligés par un coup perçant sont réduits.
+DETAILS_CATE_2	Bonus élémentaires
+DETAILS_76	Résistance magique
+DETAILS_TOOLTIP_76	Les dégâts que vous subissez à chaque attaque magique sont réduits.
+DETAILS_24	Résistance foudre
+DETAILS_TOOLTIP_24	Les dégâts infligés par certains monstres sont réduits.
+DETAILS_25	Résistance glace
+DETAILS_TOOLTIP_25	Les dégâts infligés par certains monstres sont réduits.
+DETAILS_26	Rés. obscurité
+DETAILS_TOOLTIP_26	Résistance contre l'obscurité : les dégâts infligés par certains monstres sont réduits.
+DETAILS_27	Résistance feu
+DETAILS_TOOLTIP_27	Les dégâts infligés par certains monstres sont réduits.
+DETAILS_28	Résistance vent
+DETAILS_TOOLTIP_28	Les dégâts infligés par certains monstres sont réduits.
+DETAILS_29	Résistance terre
+DETAILS_TOOLTIP_29	Les dégâts infligés par certains monstres sont réduits.
+DETAILS_77	Anti-magie
+DETAILS_TOOLTIP_77	La résistance magique de votre ennemi est réduite.
+DETAILS_30	Pouvoir de la foudre
+DETAILS_TOOLTIP_30	Les dégâts que vous infligez grâce au pouvoir de la foudre augmentent.
+DETAILS_31	Pouvoir de la glace
+DETAILS_TOOLTIP_31	Les dégâts que vous infligez grâce au pouvoir de la glace augmentent.
+DETAILS_32	Pouvoir des ténèbres
+DETAILS_TOOLTIP_32	Les dégâts que vous infligez grâce au pouvoir des ténèbres augmentent.
+DETAILS_33	Pouvoir du feu
+DETAILS_TOOLTIP_33	Les dégâts que vous infligez grâce au pouvoir du feu augmentent.
+DETAILS_34	Pouvoir du vent
+DETAILS_TOOLTIP_34	Les dégâts que vous infligez grâce au pouvoir du vent augmentent.
+DETAILS_35	Pouvoir de la terre
+DETAILS_TOOLTIP_35	Les dégâts que vous infligez grâce au pouvoir de la terre augmentent.
+DETAILS_CATE_3	Bonus de classe
+DETAILS_36	Force c. Guerriers
+DETAILS_TOOLTIP_36	Fort contre les Guerriers : les Guerriers subissent des dégâts plus importants.
+DETAILS_37	Force c. Ninjas
+DETAILS_TOOLTIP_37	Fort contre les Ninjas : les Ninjas subissent des dégâts plus importants.
+DETAILS_38	Force c. Suras
+DETAILS_TOOLTIP_38	Fort contre les Suras : les Sura subissent des dégâts plus importants.
+DETAILS_39	Force c. Chamanes
+DETAILS_TOOLTIP_39	Fort contre les Chamanes : les Chamanes subissent des dégâts plus importants.
+DETAILS_41	Déf. c. Guerriers
+DETAILS_TOOLTIP_41	Chance de parer une attaque Guerrier : les dégâts infligés par des Guerriers sont réduits.
+DETAILS_42	Déf. c. Ninjas
+DETAILS_TOOLTIP_42	Chance de parer une attaque Ninja : les dégâts infligés par des Ninjas sont réduits.
+DETAILS_43	Déf. c. Suras
+DETAILS_TOOLTIP_43	Chance de parer une attaque Sura : les dégâts infligés par des Suras sont réduits.
+DETAILS_44	Déf. c. Chamanes
+DETAILS_TOOLTIP_44	Chance de parer une attaque Chamane : les dégâts infligés par des Chamanes sont réduits.
+DETAILS_CATE_4	Bonus d'arme
+DETAILS_46	Défense c. épée
+DETAILS_TOOLTIP_46	Les dégâts infligés par une épée sont réduits.
+DETAILS_47	Déf. c. deux mains
+DETAILS_TOOLTIP_47	Les dégâts infligés par une arme à deux mains sont réduits.
+DETAILS_48	Défense c. dague
+DETAILS_TOOLTIP_48	Les dégâts infligés par une dague sont réduits.
+DETAILS_50	Défense c. gong
+DETAILS_TOOLTIP_50	Les dégâts infligés par un gong sont réduits.
+DETAILS_51	Défense c. éventail
+DETAILS_TOOLTIP_51	Les dégâts infligés par un éventail sont réduits.
+DETAILS_52	Défense c. flèches
+DETAILS_TOOLTIP_52	Les dégâts infligés par un arc et des flèches sont réduits.
+DETAILS_CATE_5	Autres bonus
+DETAILS_53	Chance d'étourdir
+DETAILS_TOOLTIP_53	La chance d'étourdir un ennemi augmente.
+DETAILS_54	Chance de ralentir
+DETAILS_TOOLTIP_54	La chance de ralentir un ennemi augmente.
+DETAILS_55	Chance d'empoisonner
+DETAILS_TOOLTIP_55	La chance d'empoisonner un ennemi augmente.
+DETAILS_56	Résistance poison
+DETAILS_TOOLTIP_56	Les dégâts infligés par le poison sont réduits.
+DETAILS_59	Vol de vie
+DETAILS_TOOLTIP_59	Des PV sont retirés à votre ennemi quand vous le touchez.
+DETAILS_60	Vol de PM
+DETAILS_TOOLTIP_60	Des PM sont retirés à votre ennemi quand vous le touchez.
+DETAILS_61	Restauration de PV
+DETAILS_TOOLTIP_61	La régénération de vos points de vie est accélérée.
+DETAILS_62	Restauration de PM
+DETAILS_TOOLTIP_62	La régénération de vos points de mana est accélérée.
+DETAILS_63	Bloquer une attaque
+DETAILS_TOOLTIP_63	Chance de bloquer un coup au corps à corps : les chances d'esquiver une attaque au corps à corps augmentent.
+DETAILS_64	Éviter des flèches
+DETAILS_TOOLTIP_64	Chance d'éviter les flèches : les chances d'esquiver une flèche ou une attaque à distance d'un monstre augmentent.
+DETAILS_65	R. d'att. de mêlée
+DETAILS_TOOLTIP_65	Chance de renvoyer une attaque au corps à corps : une partie des dégâts au corps à corps est renvoyée à l'ennemi.
+DETAILS_66	Réc. de PV en tuant
+DETAILS_TOOLTIP_66	Récupération de PV en tuant : si vous tuez un ennemi, vos points de vie augmentent.
+DETAILS_67	Réc. de PM en tuant
+DETAILS_TOOLTIP_67	Récupération de PM en tuant : si vous tuez un ennemi, vos points de mana augmentent.
+DETAILS_68	Double d'EXP
+DETAILS_TOOLTIP_68	Chance d'obtenir le double de points d'expérience : les chances d'obtenir un bonus d'EXP en éliminant un ennemi augmentent.
+DETAILS_69	Double de Yangs
+DETAILS_TOOLTIP_69	Chance d'abandonner le double de Yangs : vos chances d'obtenir un double montant de Yangs augmentent.
+DETAILS_70	Chance de butin
+DETAILS_TOOLTIP_70	Chance d'abandonner des objets : vos chances d'obtenir le double d'objets augmentent.
+DETAILS_CATE_6	Bonus spéciaux
+DETAILS_71	Valeur d'attaque
+DETAILS_TOOLTIP_71	Votre valeur d'attaque augmente.
+DETAILS_72	Défense
+DETAILS_TOOLTIP_72	Votre valeur de défense augmente.
+DETAILS_73	EXP
+DETAILS_TOOLTIP_73	Les gains d'expérience sont augmentés.
+DETAILS_74	Chance de butin
+DETAILS_TOOLTIP_74	Chance d'obtenir des objets : vos chances d'obtenir des objets en butin augmentent.
+DETAILS_75	Double de Yangs
+DETAILS_TOOLTIP_75	Chance d'obtenir des Yangs : vos chances d'obtenir des Yangs en butin augmentent.
+STAT_PICK_TITLE_CON	Vitalité
+STAT_PICK_TITLE_INT	Intelligence
+STAT_PICK_TITLE_STR	Force
+STAT_PICK_TITLE_DEX	Dextérité
+SKILL_MAX_UP_HINT	Shift + click: monter jusqu'à Maître
+REMOVE_AFFECT_QUESTION	Voulez-vous désactiver %s?
+REFINE_FAST_UPGRADE	Amélioration rapide

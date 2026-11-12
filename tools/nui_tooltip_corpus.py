@@ -887,6 +887,9 @@ def api_cases(items):
     add("skill-width-reset-normal", "skill", [["SetSkillNew", [1, 121, 3, 40]], ["SetSkill", [1]]],
         skill={"vnum": 121, "slot": 1, "grade": 3, "level": 40, "efficient": 0.5, "next": 0.6})
     add("skill-only-name-none", "skill", [["SetSkillOnlyName", [1, 0, 0]]])
+    # NOVA-196: the character window's hint after a job skill whose plus shows.
+    add("skill-max-up-hint", "skill", [["SetSkillNew", [1, 1, 0, 5]], ["AppendSkillMaxUpHint", []]],
+        skill={"vnum": 1, "slot": 1, "grade": 0, "level": 5, "efficient": 0.5, "next": 0.6})
     add("guild-war-type", "plain", [["_parent", [300, 200]], ["ClearToolTip", []], ["AutoAppendTextLine", ["Normal war", 0xFFF1E6C0]],
                                     ["AutoAppendTextLine", ["Kill the enemy guild's members."]], ["AlignHorizonalCenter", []],
                                     ["ShowToolTip", []]])
@@ -1177,6 +1180,9 @@ class DialogWorld(TipWorld):
                 if len(fields) >= 2 and fields[0]:
                     strings.__dict__[fields[0]] = fields[1]
         game.modules["systemSetting"].GetUINuiWindows = lambda: self.FLAGS if recorder else ""
+        # The refine dialog's fast upgrade box (NOVA-198).
+        if not isinstance(getattr(game.modules["ui"], "CheckBox", None), type):
+            game.modules["ui"].CheckBox = support.LegacyCheckBox
         # The legacy materials' text lines (uirefine.py AppendMaterial) align
         # vertically; the tooltip ui's stand-in TextLine has no such call.
         text_line = game.modules["ui"].TextLine
@@ -1185,6 +1191,7 @@ class DialogWorld(TipWorld):
                 setattr(text_line, name, lambda widget, value=value: setattr(widget, "valign", value))
         with quiet():
             for name, file_name in (("nui_limits", "nui_limits.py"), ("nui_proxies", "nui_proxies.py"),
+                                    ("nui_form_proxies", "nui_form_proxies.py"),
                                     ("uiRefine", "uirefine.py"), ("uiAttachMetin", "uiattachmetin.py")):
                 game.load(name, file_name)
             if recorder:

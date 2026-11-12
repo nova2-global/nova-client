@@ -118,6 +118,8 @@ APP_CONSTANTS.update({"ENABLE_ENERGY_SYSTEM": 1, "ENABLE_DRAGON_SOUL_SYSTEM": 1}
 APP_CONSTANTS.update({"VK_UP": 0x26, "VK_DOWN": 0x28, "DIK_LALT": 0x38, "DIK_LSHIFT": 0x2A, "DIK_LCONTROL": 0x1D})
 # Wave 3a: the help closes on H (uihelp.py OnKeyDown).
 APP_CONSTANTS.update({"DIK_H": 0x23})
+# NOVA-195, NOVA-196: the right-hand modifiers the character window reads.
+APP_CONSTANTS.update({"DIK_RSHIFT": 0x36, "DIK_RCONTROL": 0x9D})
 # NOVA-83: a bulk buy at an NPC shop takes either Shift (uishop.py BULK_BUY_KEYS).
 APP_CONSTANTS.update({"DIK_RSHIFT": 0x36})
 MINIMAP_CONSTANTS = {"TYPE_OPC": 0, "TYPE_OPCPVP": 1, "TYPE_OPCPVPSELF": 2, "TYPE_NPC": 3, "TYPE_MONSTER": 4, "TYPE_WARP": 5,
@@ -1313,6 +1315,9 @@ class Game(object):
         wndmgr.IsDragging = lambda: game.dragging
         wndmgr.AttachIcon = recorded(log, "wndMgr.AttachIcon", lambda *args: None)
         wndmgr.SetAttachingFlag = lambda flag: None
+        # The legacy taskbar tints the EXP points while anti-EXP is on (NOVA-200).
+        if not hasattr(wndmgr, "SetDiffuseColor"):
+            wndmgr.SetDiffuseColor = recorded(log, "wndMgr.SetDiffuseColor", lambda *args: None)
         wndmgr.IsAttaching = lambda: bool(game.modules["mouseModule"].mouseController.isAttached())
         for name in ("SetSlotBaseImage", "AppendSlot", "SetCoverButton", "SetSlotStyle", "Register", "Destroy",
                      "Show", "Hide", "SetTop", "SetWindowSize", "SetWindowPosition", "IsShow", "SetParent"):
@@ -2430,6 +2435,60 @@ class LegacySlotWindow(object):
         return getattr(self._base, attr)
 
 
+class LegacyCheckBox(object):
+    """ui.CheckBox (ui.py CheckBox) as the refine dialog uses it (NOVA-198):
+    its text, state, shown flag and ON_CHECK and ON_UNCHECK events; a left
+    release flips it and calls the event of the new state."""
+
+    def __init__(self, layer="UI"):
+        self.checked = False
+        self.text = ""
+        self.shown = False
+        self.position = (0, 0)
+        self.events = {"ON_CHECK": None, "ON_UNCHECK": None}
+
+    def SetParent(self, parent):
+        pass
+
+    def SetPosition(self, x, y):
+        self.position = (x, y)
+
+    def SetWindowHorizontalAlignCenter(self):
+        pass
+
+    def SetWindowVerticalAlignBottom(self):
+        pass
+
+    def SetTextInfo(self, text):
+        self.text = text
+
+    def SetCheckStatus(self, flag):
+        self.checked = bool(flag)
+
+    def GetCheckStatus(self):
+        return self.checked
+
+    def SetEvent(self, func, kind):
+        if kind in self.events:
+            self.events[kind] = func
+
+    def Show(self):
+        self.shown = True
+
+    def Hide(self):
+        self.shown = False
+
+    def IsShow(self):
+        return self.shown
+
+    def OnMouseLeftButtonUp(self):
+        self.SetCheckStatus(not self.checked)
+        event = self.events["ON_CHECK" if self.checked else "ON_UNCHECK"]
+        if event:
+            event()
+        return True
+
+
 class LegacyDialog(object):
     """A legacy common dialog (uiCommon.QuestionDialog, QuestionDialog2,
     PopupDialog; uiPickMoney.PickMoneyDialog): records Open and Close with
@@ -2797,8 +2856,11 @@ def _wave3b_modules(game):
                                    QuestionDialog2=dialog("uiCommon", "QuestionDialog2"),
                                    PopupDialog=dialog("uiCommon", "PopupDialog")))
     game.put("uiPickMoney", module_of("uiPickMoney", PickMoneyDialog=dialog("uiPickMoney", "PickMoneyDialog")))
+    # The fast upgrade's record (NOVA-198): RefineItem records its scroll; a no-op here
+    # (nui_refine_attach_test tests the record).
+    fast_refine = types.SimpleNamespace(RecordScroll=lambda *args: None, RecordNpc=lambda *args: None)
     game.put("uiRefine", module_of("uiRefine", RefineDialog=window("uiRefine.RefineDialog"),
-                                   RefineDialogNew=window("uiRefine.RefineDialogNew")))
+                                   RefineDialogNew=window("uiRefine.RefineDialogNew"), FAST_REFINE=fast_refine))
     game.put("uiAttachMetin", module_of("uiAttachMetin", AttachMetinDialog=window("uiAttachMetin.AttachMetinDialog")))
 
     class Interface(object):
@@ -3592,6 +3654,10 @@ class PlainToolTip(object):
         self._log("SetTitle", name)
         self.lines.append((name, "title"))
 
+    def AppendDescription(self, desc, color=None):
+        self._log("AppendDescription", desc)
+        self.lines.append((desc, "description"))
+
     def AlignHorizonalCenter(self):
         self._log("AlignHorizonalCenter")
 
@@ -3767,6 +3833,24 @@ def install_wave3c_ui(game):
     ui.PythonScriptLoader = PythonScriptLoader
     ui.ImageBox = Image
     ui.ExpandedImageBox = Image
+
+    class ScrollWindow(Win):
+        """ui.ScrollWindow (NOVA-207's details panel): its content window."""
+
+        def __init__(self, width, height, kind=0, layer="UI"):
+            Win.__init__(self, layer)
+            self.content = None
+
+        def SetContentWindow(self, content):
+            self.content = content
+
+        def OnRunMouseWheel(self, length):
+            return bool(self.content)
+
+    ui.ScrollWindow = ScrollWindow
+    ui.HorizontalBar = Win
+    if not hasattr(ui, "SlotBar"):
+        ui.SlotBar = Win
     class SlotWindow(LegacySkillSlotWindow):
         """ui.SlotWindow and ui.GridSlotWindow, a class, so a legacy module
         loaded after this (uitaskbar.py's SkillButton) can subclass it."""

@@ -1442,6 +1442,8 @@ class InventoryWindow(ui.ScriptWindow):
 
 		###########################################################
 		self.__SendUseItemToItemPacket(scrollSlotPos, targetSlotPos)
+		# NOVA-198: the fast upgrade repeats this request through RefineItem.
+		uiRefine.FAST_REFINE.RecordScroll(scrollSlotPos, scrollIndex, targetSlotPos, ui.__mem_func__(self.RefineItem))
 		#net.SendItemUseToItemPacket(scrollSlotPos, targetSlotPos)
 		return
 		###########################################################

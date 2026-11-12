@@ -10,8 +10,9 @@
 	     document for both (variant). The item in its 1 to 3 cells beside
 	     the item's tooltip (the next grade's, built by the legacy rules and
 	     recorded: the block is components/item-tip.rcss's), the materials
-	     (icon and "name x 02"), the lines legacy shows (its probability line
-	     is hidden in both dialogs), OK and Cancel. The document exists only
+	     (icon and "name x 02"), the fast upgrade box (the server's dialog,
+	     NOVA-198), the lines legacy shows (its probability line is hidden in
+	     both dialogs), OK and Cancel. The document exists only
 	     while the dialog shows; it opens at legacy's place. The body and its
 	     controls take no focus; controls act on a left mousedown. A left or right
 	     press anywhere on it raises the window (board_press), as legacy's
@@ -83,6 +84,13 @@
 				<span class="nui-slot refine__material-cell"><img class="nui-slot__icon" data-if="m.icon != ''" data-attr-src="m.icon"/></span>
 				<span class="refine__material-text">{{ m.text }}</span>
 			</div>
+		</div>
+		<!-- NOVA-198: the fast upgrade box (legacy's ui.CheckBox): a left press on
+		     it flips it; it is kept for the session. -->
+		<div class="refine__fast-row" data-if="fast_shown">
+			<div id="refine-fast" class="refine__fast" data-class-is-checked="fast_checked"
+			     data-event-mousedown="fast_press(ev.button)"><span class="refine__check nui-anim"><span
+				class="refine__check-mark"></span></span><span class="refine__fast-label">@game.REFINE_FAST_UPGRADE</span></div>
 		</div>
 		<div class="refine__line refine__prob" data-if="prob_shown">{{ prob_text }}</div>
 		<div class="refine__line refine__cost" data-if="cost_shown">{{ cost_text }}</div>

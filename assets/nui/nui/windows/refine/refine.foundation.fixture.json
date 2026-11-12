@@ -390,6 +390,8 @@
 				]
 			}
 		],
-		"min_w": 227
+		"min_w": 227,
+		"fast_checked": false,
+		"fast_shown": true
 	}
 }

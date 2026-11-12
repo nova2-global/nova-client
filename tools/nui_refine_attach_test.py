@@ -22,6 +22,7 @@ import inspect
 import json
 import os
 import sys
+import types
 import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -45,10 +46,12 @@ _DATA = []
 
 
 def data():
-    """The fixtures' corpus, with the glaive's next grade."""
+    """The fixtures' corpus, with the glaive's next grades (+1 to +9: the
+    fast upgrade's steps, NOVA-198)."""
     if not _DATA:
         corpus = corpus_tool.fixture_corpus()
-        corpus["items"]["3001"] = dict(corpus["items"]["3000"], name="Glaive+1")
+        for grade in range(1, 10):
+            corpus["items"][str(3000 + grade)] = dict(corpus["items"]["3000"], name="Glaive+%d" % grade)
         _DATA.append(corpus)
     return _DATA[0]
 
@@ -534,6 +537,307 @@ class TradableLocks(unittest.TestCase):
             legacy, novaui = run_with_locks(pair, lambda w, d, n: press(w, d, n, which))
             self.assertEqual(legacy, novaui)
             self.assertEqual(legacy, [("inventory.SetCanMouseEventCell", (2,)), ("inventory.SetCanMouseEventCell", (0,))])
+
+
+# --- NOVA-198: fast upgrade ------------------------------------------------------------------------
+
+SCROLL_CELL, SCROLL_VNUM = 1, 25040
+NPC_VID = 77
+INVENTORY = 1   # player.INVENTORY
+
+
+class FastPair(Pair):
+    """A Pair of the server's refine dialogs, the glaive at 5 (+0, or
+    `grade`) and three blessing scrolls at 1."""
+
+    def __init__(self, grade=0, scroll_count=3):
+        self.which = "new"
+        self.legacy = corpus_tool.DialogWorld(data(), recorder=False)
+        self.novaui = corpus_tool.DialogWorld(data(), recorder=True)
+        items = [dict(GLAIVE[0], vnum=3000 + grade), {"pos": SCROLL_CELL, "vnum": SCROLL_VNUM, "count": scroll_count}]
+        for world in self.worlds():
+            with world:
+                corpus_tool.place_items(world, {"vnum": 0, "player": dict(PLAYER), "clock": CLOCK}, items)
+                world.dialog = world.make("new")
+
+    def fast(self, world):
+        return world.m("uiRefine").FAST_REFINE
+
+
+def held(world):
+    return world.data.case["items"]
+
+
+def record_scroll(world, dialog, novaui):
+    """uiinventory.RefineItem's record, its sender standing in for the
+    inventory's (the use packet through the private shop guard)."""
+    net = world.game.modules["net"]
+    world.m("uiRefine").FAST_REFINE.RecordScroll(SCROLL_CELL, SCROLL_VNUM, 5,
+                                                 lambda scroll, target: net.SendItemUseToItemPacket(scroll, target))
+
+
+def record_npc(world, dialog, novaui):
+    world.m("uiRefine").FAST_REFINE.RecordNpc(NPC_VID, INVENTORY, 5, 1)
+
+
+def check_fast(world, dialog, novaui):
+    """A left press on the fast upgrade box: legacy's CheckBox, or the board's event."""
+    if novaui:
+        dialog.demand.board().fire("fast_press", 0)
+    else:
+        dialog.fastRefineCheck.OnMouseLeftButtonUp()
+
+
+def open_step(grade=0, kind=2):
+    """The server's refine info for the glaive at 5 (+grade to +grade+1), at 100%."""
+    return lambda w, d, n: d.Open(5, 3001 + grade, 25000, 100, kind)
+
+
+def accept(world, dialog, novaui):
+    press(world, dialog, novaui, "accept")
+
+
+def result(succeeded):
+    return lambda w, d, n: d.OnRefineResult(succeeded)
+
+
+class FastRefine(unittest.TestCase):
+    """NOVA-198 (OLD uiRefine.py:262-277, 636-675; game.py:3315-3321): a
+    "Fast upgrade" box in the server's refine dialog, kept for the session.
+    The request that opened the dialog is recorded (a scroll on the item, or
+    the item given to a blacksmith); on RefineSuceeded with the box checked
+    the same request goes again, so the server answers with the next step,
+    which still needs Accept. It stops on a failure, at +9, when the scroll
+    is gone, on cancel, and without the box nothing changes. Legacy and
+    NovaUI make the same calls."""
+
+    def chain(self, pair, record=record_scroll, kind=2, grade=0, check=True):
+        """Record, open, (check), accept: the effects of each must match."""
+        steps = [record, open_step(grade, kind)] + ([check_fast] if check else []) + [accept]
+        for step in steps:
+            legacy, novaui = pair.run(step)
+            self.assertEqual(legacy, novaui)
+        return legacy
+
+    def test_the_constants(self):
+        world = FastPair().legacy
+        self.assertEqual(world.m("uiRefine").FAST_REFINE_STOP_GRADE, 9)
+        self.assertEqual(tuple(world.m("uiRefine").FAST_REFINE_NPC_TYPES), (0, 4), "REFINE_TYPE_NORMAL, REFINE_TYPE_MONEY_ONLY")
+
+    def test_the_box_is_off_and_its_state_is_kept_for_the_session(self):
+        pair = FastPair()
+        pair.run(open_step())
+        board = pair.board()
+        self.assertFalse(pair.legacy.dialog.fastRefineCheck.GetCheckStatus())
+        self.assertTrue(pair.legacy.dialog.fastRefineCheck.shown)
+        self.assertEqual(pair.legacy.dialog.fastRefineCheck.text, "Fast upgrade")
+        self.assertEqual((board.model["fast_checked"], board.model["fast_shown"]), (False, True))
+        pair.run(check_fast)
+        self.assertTrue(pair.legacy.dialog.fastRefineCheck.GetCheckStatus())
+        self.assertTrue(pair.board().model["fast_checked"])
+        for world in pair.worlds():
+            self.assertTrue(pair.fast(world).enabled)
+        pair.run(lambda w, d, n: press(w, d, n, "cancel"))
+        for world in pair.worlds():
+            with world, corpus_tool.quiet():
+                world.dialog = world.make("new")
+        pair.run(open_step())
+        self.assertTrue(pair.legacy.dialog.fastRefineCheck.GetCheckStatus(), "a new dialog shows the session's state")
+        self.assertTrue(pair.board().model["fast_checked"])
+        pair.run(check_fast)
+        for world in pair.worlds():
+            self.assertFalse(pair.fast(world).enabled)
+
+    def test_a_success_sends_the_scroll_again_and_the_reply_needs_accept(self):
+        pair = FastPair()
+        self.assertEqual(self.chain(pair), [("net.SendRefinePacket", (5, 2))])
+        legacy, novaui = pair.run(result(True))
+        self.assertEqual(legacy, novaui)
+        self.assertEqual(legacy, [("net.SendItemUseToItemPacket", (SCROLL_CELL, 5))], "no refine packet without Accept")
+        # The server's answer: the item is +1 now, its next step opens.
+        for world in pair.worlds():
+            held(world)[5]["vnum"] = 3001
+        legacy, novaui = pair.run(open_step(1))
+        self.assertEqual((legacy, novaui), ([], []))
+        self.assertTrue(pair.novaui.dialog.IsShow())
+        self.assertTrue(pair.board().model["fast_checked"])
+        legacy, novaui = pair.run(accept)
+        self.assertEqual(legacy, novaui)
+        self.assertEqual(legacy, [("net.SendRefinePacket", (5, 2))])
+        legacy, novaui = pair.run(result(True))
+        self.assertEqual(legacy, novaui)
+        self.assertEqual(legacy, [("net.SendItemUseToItemPacket", (SCROLL_CELL, 5))])
+
+    def test_a_blacksmith_gets_the_item_again(self):
+        for kind in (0, 4):
+            pair = FastPair()
+            self.chain(pair, record=record_npc, kind=kind)
+            legacy, novaui = pair.run(result(True))
+            self.assertEqual(legacy, novaui)
+            self.assertEqual(legacy, [("net.SendGiveItemPacket", (NPC_VID, INVENTORY, 5, 1))])
+
+    def test_without_the_box_a_result_is_todays(self):
+        pair = FastPair()
+        self.chain(pair, check=False)
+        for succeeded in (True, False, True):
+            legacy, novaui = pair.run(result(succeeded))
+            self.assertEqual((legacy, novaui), ([], []))
+        self.assertFalse(pair.novaui.dialog.IsShow())
+
+    def test_a_failure_stops_and_forgets(self):
+        for kind, record in ((2, record_scroll), (3, record_scroll), (0, record_npc)):
+            pair = FastPair()
+            self.chain(pair, record=record, kind=kind)
+            for succeeded in (False, True):
+                legacy, novaui = pair.run(result(succeeded))
+                self.assertEqual((legacy, novaui), ([], []), "a failure sends nothing, and the record is gone")
+            self.assertFalse(pair.novaui.dialog.IsShow())
+
+    def test_a_refine_from_plus_8_stops(self):
+        for grade, goes_on in ((7, True), (8, False)):
+            pair = FastPair(grade=grade)
+            self.chain(pair, grade=grade)
+            legacy, novaui = pair.run(result(True))
+            self.assertEqual(legacy, novaui)
+            self.assertEqual(bool(legacy), goes_on, "+%d" % grade)
+
+    def test_the_scroll_must_still_be_there(self):
+        changes = (lambda items: items[SCROLL_CELL].update(count=0), lambda items: items[SCROLL_CELL].update(vnum=25041),
+                   lambda items: items.pop(SCROLL_CELL))
+        for change in changes:
+            pair = FastPair()
+            self.chain(pair)
+            for world in pair.worlds():
+                change(held(world))
+            legacy, novaui = pair.run(result(True))
+            self.assertEqual((legacy, novaui), ([], []))
+        pair = FastPair(scroll_count=1)
+        self.chain(pair)
+        legacy, novaui = pair.run(result(True))
+        self.assertEqual(legacy, [("net.SendItemUseToItemPacket", (SCROLL_CELL, 5))], "the last scroll's cell, while it holds it")
+
+    def test_cancel_the_close_button_and_escape_forget_the_request(self):
+        for action in (lambda w, d, n: press(w, d, n, "cancel"), lambda w, d, n: press(w, d, n, "close"),
+                       lambda w, d, n: d.OnPressEscapeKey()):
+            pair = FastPair()
+            for step in (record_scroll, open_step(), check_fast, action):
+                pair.run(step)
+            # A late result (or a stray one) finds nothing to repeat.
+            legacy, novaui = pair.run(result(True))
+            self.assertEqual((legacy, novaui), ([], []))
+
+    def test_a_dialog_opened_by_something_else_forgets_the_request(self):
+        others = ((record_scroll, lambda w, d, n: d.Open(6, 3001, 25000, 100, 2)),   # another item
+                  (record_scroll, open_step(kind=0)),                                # a blacksmith's step
+                  (record_npc, open_step(kind=2)))                                   # a scroll's step
+        for record, opened in others:
+            pair = FastPair()
+            for step in (record, opened, check_fast, accept):
+                pair.run(step)
+            legacy, novaui = pair.run(result(True))
+            self.assertEqual((legacy, novaui), ([], []))
+
+    def test_an_item_outside_the_inventory_is_not_recorded(self):
+        pair = FastPair()
+        self.chain(pair, record=lambda w, d, n: w.m("uiRefine").FAST_REFINE.RecordNpc(NPC_VID, 6, 5, 1), kind=0)
+        legacy, novaui = pair.run(result(True))
+        self.assertEqual((legacy, novaui), ([], []))
+
+
+class GameWindowStub(object):
+    pass
+
+
+def methods_of(file_name, cls, names, namespace):
+    """The methods `names` of class `cls` in a root module, compiled into a
+    class of that name over `namespace` (the private names mangle as there)."""
+    source = support.source_of(file_name, names, inside=cls)
+    body = "\n".join("\t" + line if line else line for line in source.split("\n"))
+    exec(compile("class %s(object):\n%s\n" % (cls, body), file_name, "exec"), namespace)
+    return namespace[cls]
+
+
+class Recorder(object):
+    def __init__(self, log, name):
+        self._log, self._name = log, name
+
+    def __getattr__(self, attr):
+        if attr.startswith("__"):
+            raise AttributeError(attr)
+        return lambda *args: self._log.append(("%s.%s" % (self._name, attr), args))
+
+
+class FastRefineHooks(unittest.TestCase):
+    """The shared files only call into the fast upgrade: uiinventory's
+    RefineItem records a scroll with itself as the sender, game.py's give to
+    an NPC records the blacksmith, the refine results reach the dialog
+    through the Interface."""
+
+    def test_refine_item_records_the_scroll_with_itself_as_the_sender(self):
+        log = []
+
+        class FastRecord(object):
+            def RecordScroll(self, *args):
+                log.append(("RecordScroll", args[:3]))
+                self.send = args[3]
+
+        fast = FastRecord()
+        player = types.SimpleNamespace(GetItemIndex=lambda cell: {1: SCROLL_VNUM, 5: 3000}[cell], REFINE_OK=0,
+                                       CanRefine=lambda scroll, target: 0)
+        ui = types.SimpleNamespace(__mem_func__=lambda method: method)
+        namespace = {"player": player, "uiRefine": types.SimpleNamespace(FAST_REFINE=fast), "ui": ui}
+        Window = methods_of("uiinventory.py", "InventoryWindow", ("RefineItem",), namespace)
+        Window._InventoryWindow__SendUseItemToItemPacket = lambda self, scroll, target: log.append(("send", (scroll, target)))
+        window = Window()
+        window.RefineItem(SCROLL_CELL, 5)
+        self.assertEqual(log, [("send", (SCROLL_CELL, 5)), ("RecordScroll", (SCROLL_CELL, SCROLL_VNUM, 5))])
+        fast.send(SCROLL_CELL, 5)
+        self.assertEqual(log[2], ("send", (SCROLL_CELL, 5)), "the sender is RefineItem: the guard and CanRefine again")
+        player.CanRefine = lambda scroll, target: 3
+        del log[:]
+        window.RefineItem(SCROLL_CELL, 5)
+        self.assertEqual(log, [], "a refused refine records nothing")
+
+    def test_a_give_to_an_npc_records_it(self):
+        log = []
+        fast = types.SimpleNamespace(RecordNpc=lambda *args: log.append(("RecordNpc", args)))
+        SLOT_INVENTORY = 1
+        player = types.SimpleNamespace(SLOT_TYPE_INVENTORY=SLOT_INVENTORY, SLOT_TYPE_DRAGON_SOUL_INVENTORY=2,
+                                       SLOT_TYPE_EXTRA_INVENTORY=3, SlotTypeToInvenType=lambda kind: INVENTORY,
+                                       GetMainCharacterIndex=lambda: 1, IsEquipmentSlot=lambda cell: False,
+                                       GetItemIndex=lambda window, cell: 3000)
+        chr_ = types.SimpleNamespace(HasInstance=lambda vid: True, IsNPC=lambda vid: vid == NPC_VID)
+        namespace = {"player": player, "chr": chr_, "net": Recorder(log, "net"), "constInfo":
+                     types.SimpleNamespace(IS_AUTO_POTION=lambda vnum: False), "uiRefine": types.SimpleNamespace(FAST_REFINE=fast)}
+        Window = methods_of("game.py", "GameWindow", ("__PutItem",), namespace)
+        window = Window()
+        window.PickingCharacterIndex = NPC_VID
+        window._GameWindow__PutItem(SLOT_INVENTORY, 3000, 5, 1, NPC_VID)
+        self.assertEqual(log, [("net.SendGiveItemPacket", (NPC_VID, INVENTORY, 5, 1)),
+                               ("RecordNpc", (NPC_VID, INVENTORY, 5, 1))])
+        del log[:]
+        window.PickingCharacterIndex = 8
+        window._GameWindow__PutItem(SLOT_INVENTORY, 3000, 5, 1, 8)
+        self.assertNotIn("RecordNpc", [name for name, args in log], "a trade with a player records nothing")
+
+    def test_the_results_reach_the_dialog_through_the_interface(self):
+        log = []
+        locale = types.SimpleNamespace(REFINE_SUCCESS="ok", REFINE_FAILURE_KEEP_GRADE="keep", REFINE_FAILURE_GRADE_DOWN="down",
+                                       REFINE_FAILURE_DEL_ITEM="gone")
+        namespace = {"snd": types.SimpleNamespace(PlaySound=lambda name: None), "localeInfo": locale}
+        Window = methods_of("game.py", "GameWindow", ("RefineSuceededMessage", "RefineFailedMessage"), namespace)
+        window = Window()
+        window.PopupMessage = lambda text: log.append(("popup", text))
+        window.interface = Recorder(log, "interface")
+        window.RefineSuceededMessage("2")
+        window.RefineFailedMessage("2")
+        self.assertEqual(log, [("popup", "ok"), ("interface.OnRefineResult", (True,)),
+                               ("popup", "down"), ("interface.OnRefineResult", (False,))])
+        Interface = methods_of("interfacemodule.py", "Interface", ("OnRefineResult",), {})
+        interface = Interface()
+        interface.dlgRefineNew = Recorder(log, "dlgRefineNew")
+        interface.OnRefineResult(True)
+        self.assertEqual(log[-1], ("dlgRefineNew.OnRefineResult", (True,)))
 
 
 class Fixtures(unittest.TestCase):

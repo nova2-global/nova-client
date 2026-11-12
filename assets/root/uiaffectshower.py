@@ -294,6 +294,8 @@ class AffectImage(ui.ExpandedImageBox):
 		self.isClocked = True
 		self.autoPotionToolTipTitle = None
 		self.autoPotionToolTipLine = None
+		self.pressEvent = None
+		self.pressEventArgs = ()
 
 	def SetAffect(self, affect):
 		self.affect = affect
@@ -558,6 +560,15 @@ class AffectImage(ui.ExpandedImageBox):
 	def IsSkillAffect(self):
 		return self.isSkillAffect
 
+	## NOVA-197: what a left press does (a support buff's removal question); none by default.
+	def SetPressEvent(self, event, *args):
+		self.pressEvent = event
+		self.pressEventArgs = args
+
+	def OnMouseLeftButtonDown(self):
+		if self.pressEvent:
+			self.pressEvent(*self.pressEventArgs)
+
 	def OnMouseOverIn(self):
 		# MR-10: Add toolTip support and real-time countdown for affects
 		self.isHover = True
@@ -689,6 +700,32 @@ class PremiumImage(ui.ExpandedImageBox):
 	def OnMouseOverOut(self):
 		self.toolTip.HideToolTip()
 
+## NOVA-197 (OLD uiAffectShower.py:46-61, 415-448): the skill vnums of the
+## support buffs a left press on their icon offers to remove (HOSIN, BOHO,
+## GICHEON, KWAESOK, JEUNGRYEOK). Keep it equal to the server's
+## REMOVABLE_SKILL_BUFFS, which refuses /remove_skill_affect for any other.
+REMOVABLE_SKILL_BUFFS = (94, 95, 96, 110, 111)
+
+## NOVA-218 (OLD uiAffectShower.py __ArrangeImageList): the icons in two
+## rows, each sorted by affect so an icon never moves when another starts,
+## ends or is renewed. The first row holds the status icons (premium, heart,
+## horse) and the skill affects (the classic affect bits: buffs and debuffs);
+## the second the potions and item bonuses: every affect the server sends as
+## a NEW_AFFECT (the mall bonuses, EXP and drop bonuses, the auto potions, the
+## dragon soul decks, ...) and the classic bits a potion or an item gives.
+## Default, Eddy to confirm.
+AFFECT_ROW_SKILLS = 0
+AFFECT_ROW_ITEMS = 1
+ITEM_AFFECT_BITS = (chr.AFFECT_ATT_SPEED_POTION, chr.AFFECT_MOV_SPEED_POTION, chr.AFFECT_FISH_MIND,
+	chr.AFFECT_CHINA_FIREWORK)
+
+def AffectRow(affect, isSkillAffect):
+	"""The row of an affect's icon: a classic affect bit (SetAffect) is a
+	skill unless a potion or an item gives it; the rest are items."""
+	if isSkillAffect and affect not in ITEM_AFFECT_BITS:
+		return AFFECT_ROW_SKILLS
+	return AFFECT_ROW_ITEMS
+
 def BuffiNameAffect():
 	"""The buffi name scroll's affect (NOVA-38): chr.AFFECT_BUFFI_NAME, the
 	server's AFFECT_BUFFI_NAME 553 on an exe without the name."""
@@ -811,6 +848,9 @@ class AffectShower(ui.Window):
 		self.horseImage = None
 		self.lovePointImage = None
 		self.premiumImage = None
+		self.removeQuestion = None
+		self.removeQuestionAffect = None
+		self.removeQuestionSkill = 0
 		self.autoPotionImageHP = AutoPotionImage()
 		self.autoPotionImageSP = AutoPotionImage()
 		# MR-16: Classic affect duration countdown
@@ -824,6 +864,7 @@ class AffectShower(ui.Window):
 		self.horseImage = None
 		self.lovePointImage = None
 		self.affectImageDict = {}
+		self.__CloseRemoveQuestion()
 		# MR-16: Classic affect duration countdown
 		self.pendingClassicDurations = {}
 		# MR-16: -- END OF -- Classic affect duration countdown
@@ -838,6 +879,8 @@ class AffectShower(ui.Window):
 				self.living_affectImageDict[key] = image
 
 		self.affectImageDict = self.living_affectImageDict
+		if self.removeQuestionAffect not in self.affectImageDict:
+			self.__CloseRemoveQuestion()
 		# MR-16: Classic affect duration countdown
 		self.pendingClassicDurations = {}
 		# MR-16: -- END OF -- Classic affect duration countdown
@@ -1036,6 +1079,41 @@ class AffectShower(ui.Window):
 		self.serverPlayTime = playTime
 		self.clientPlayTime = app.GetTime()
 
+	## NOVA-197 (OLD uiAffectShower.py:415-448): a left press on a support
+	## buff's icon asks whether to remove it; Yes sends /remove_skill_affect
+	## with the skill's vnum, which the server checks against its own list.
+	## One question at a time; it closes when its affect ends.
+	def __AskRemoveSkillAffect(self, affect, skillIndex):
+		import uiCommon
+		self.__CloseRemoveQuestion()
+
+		questionDialog = uiCommon.QuestionDialog()
+		questionDialog.SetText(localeInfo.REMOVE_AFFECT_QUESTION % skill.GetSkillName(skillIndex))
+		questionDialog.SetWidth(350)
+		questionDialog.SetAcceptEvent(ui.__mem_func__(self.__AcceptRemoveQuestion))
+		questionDialog.SetCancelEvent(ui.__mem_func__(self.__CloseRemoveQuestion))
+		questionDialog.Open()
+		self.removeQuestion = questionDialog
+		self.removeQuestionAffect = affect
+		self.removeQuestionSkill = skillIndex
+
+	def __AcceptRemoveQuestion(self):
+		## Once per question: the dialog goes before the command is sent.
+		if not self.removeQuestion:
+			return
+
+		skillIndex = self.removeQuestionSkill
+		self.__CloseRemoveQuestion()
+		net.SendChatPacket("/remove_skill_affect %d" % skillIndex)
+
+	def __CloseRemoveQuestion(self):
+		if self.removeQuestion:
+			self.removeQuestion.Close()
+
+		self.removeQuestion = None
+		self.removeQuestionAffect = None
+		self.removeQuestionSkill = 0
+
 	def __AppendAffect(self, affect):
 
 		if affect in self.affectImageDict:
@@ -1065,6 +1143,8 @@ class AffectShower(ui.Window):
 
 		image.SetToolTipText(name, 0, 40)
 		image.SetScale(0.7, 0.7)
+		if skillIndex in REMOVABLE_SKILL_BUFFS:
+			image.SetPressEvent(ui.__mem_func__(self.__AskRemoveSkillAffect), affect, skillIndex)
 		image.Show()
 		self.affectImageDict[affect] = image
 
@@ -1109,40 +1189,46 @@ class AffectShower(ui.Window):
 
 		print(("__RemoveAffect %s ( Affect )" % affect))
 		del self.affectImageDict[affect]
+		if affect == self.removeQuestionAffect:
+			self.__CloseRemoveQuestion()
 		
 		self.__ArrangeImageList()
 
+	## NOVA-218: two rows (AffectRow), the second only when it has icons, at
+	## the top when the first is empty; each sorted by affect.
+	ROW_STEP = 25
+
 	def __ArrangeImageList(self):
-
-		width = len(self.affectImageDict) * self.IMAGE_STEP
-		if self.premiumImage:
-			width+=self.IMAGE_STEP
-		if self.lovePointImage:
-			width+=self.IMAGE_STEP
-		if self.horseImage:
-			width+=self.IMAGE_STEP
-
-		self.SetSize(width, 26)
-
-		xPos = 0
+		rows = ([], [])
 
 		## The premium icon first (OLD uiAffectShower.py:982-987).
 		if self.premiumImage:
-			self.premiumImage.SetPosition(xPos, 0)
-			xPos += self.IMAGE_STEP
+			rows[AFFECT_ROW_SKILLS].append(self.premiumImage)
 
 		if self.lovePointImage:
 			if self.lovePointImage.IsShow():
-				self.lovePointImage.SetPosition(xPos, 0)
-				xPos += self.IMAGE_STEP
+				rows[AFFECT_ROW_SKILLS].append(self.lovePointImage)
 
 		if self.horseImage:
-			self.horseImage.SetPosition(xPos, 0)
-			xPos += self.IMAGE_STEP
+			rows[AFFECT_ROW_SKILLS].append(self.horseImage)
 
-		for image in list(self.affectImageDict.values()):
-			image.SetPosition(xPos, 0)
-			xPos += self.IMAGE_STEP
+		for affect in sorted(self.affectImageDict):
+			image = self.affectImageDict[affect]
+			rows[AffectRow(affect, image.IsSkillAffect())].append(image)
+
+		width = 0
+		yPos = 0
+		for row in rows:
+			if not row:
+				continue
+
+			for (index, image) in enumerate(row):
+				image.SetPosition(index * self.IMAGE_STEP, yPos)
+
+			width = max(width, len(row) * self.IMAGE_STEP)
+			yPos += self.ROW_STEP
+
+		self.SetSize(width, 26 + max(0, yPos - self.ROW_STEP))
 
 	# MR-12: Fix realtime countdown auto-start
 	def OnUpdate(self):

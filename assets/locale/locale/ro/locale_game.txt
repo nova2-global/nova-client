@@ -1290,3 +1290,7 @@ SHOP_TEXT_OR	sau
 SHOP_BUY_COUNT_TITLE	Cantitate de cumpărat (max. %d)
 DO_YOU_BUY_WITH_ITEM	Vrei să cumperi %s pentru %s?
 SHOP_BULK_BUY_HINT	Shift + click: cumpără mai multe
+SEARCH_IN_SHOPS	Ctrl + click: caută în magazine
+SEARCH_IN_WIKI	Shift + right-click: deschide în wiki
+MOVE_FROM_SAFEBOX_TO_INVENTORY	Right-click: mută în inventar
+COSTUME_PREVIEW_HINT	Ține %s: previzualizare pe personajul tău

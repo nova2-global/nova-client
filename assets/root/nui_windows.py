@@ -123,6 +123,8 @@ WINDOWS = (            # (id, default) in this order; every window is on by defa
 	("wiki", True),               # the item and mob browser (no legacy window)
 	# Wave 7 (NOVA-18): the chest-drop preview, in the items group.
 	("chest-drop", True),         # what a chest can give, with each item's chance tier
+	# Wave 10 (NOVA-202): the costume preview popup, in the items group.
+	("costume-preview", True),    # the player's model wearing a hovered costume (Alt)
 	# Wave 7 (NOVA-43): the switchbot, in the items group.
 	("switchbot", True),          # the switchbot's six slots, targets, cost and start/stop
 	# Wave 8 (NOVA-17): fast equip, in the items group.
@@ -161,7 +163,8 @@ GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
 	"hud2": ("chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", "guild-war", "guild-war-top"),
 	"sys": ("system-menu", "system-options", "game-options", "restart", "help", "point-reset"),
 	"rest": ("quest", "guild-building", "web", "console", "select-skill"),
-	"items": ("inventory", "tooltips", "refine", "attach-metin", "select-item", "extra-inventory", "sash", "aura", "chest-drop", "wiki",
+	"items": ("inventory", "tooltips", "refine", "attach-metin", "select-item", "extra-inventory", "sash", "aura", "chest-drop",
+	          "costume-preview", "wiki",
 	          "switchbot", "fastequip", "pet", "pet-mini", "pet-hatch", "pet-evolution", "pet-attr-refine"),
 	"wave3c": ("character", "dragon-soul", "dragon-soul-refine"),
 	"trade": ("exchange", "shop", "private-shop", "safebox", "mall", "equipment-view", "gem-shop", "shop-search",
@@ -231,6 +234,8 @@ ON_DEMAND_DOCUMENTS = (
 	("shop-deco", ("shop-deco",)),
 	# Wave 7: the chest-drop preview, only while it shows.
 	("chest-drop", ("chest-drop",)),
+	# Wave 10 (NOVA-202): the costume preview popup, kept for the phase once shown.
+	("costume-preview", ("costume-preview",)),
 	# Wave 8 (NOVA-42): the wiki browser, only while it shows.
 	("wiki", ("wiki",)),
 	# Wave 7 (NOVA-43): the switchbot, only while it shows.

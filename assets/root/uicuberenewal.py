@@ -7,6 +7,7 @@ import localeInfo
 import uiCommon
 import uiToolTip
 import cube_renewal
+import costume_preview
 
 ## Limits. The wire contract's values come from cube_renewal.
 SLOTS_PER_PAGE = 5						# material slots shown at once; materials 6 to 10 are on the next page.
@@ -962,6 +963,23 @@ class CubeRenewalWindow(ui.ScriptWindow):
 			self.startLine = startLine
 			self.__LayoutRows()
 
+	## The wheel over the window scrolls the recipe list a row a notch
+	## (NOVA-186; OLD uiCubeRenewal.py:1134-1137), while the list overflows;
+	## True takes the turn, so the camera does not zoom.
+	def OnScrollWheel(self, length):
+		overflow = len(self.visibleRows) - self.visibleRowCount
+		if overflow <= 0 or not self.scrollBar.IsShow():
+			return False
+
+		startLine = max(0, min(overflow, self.startLine + (-1 if length > 0 else 1)))
+		if startLine != self.startLine:
+			self.startLine = startLine
+			self.isSettingScroll = True
+			self.scrollBar.SetPos(float(startLine) / overflow)
+			self.isSettingScroll = False
+			self.__LayoutRows()
+		return True
+
 	def __LayoutRows(self):
 		shownRows = self.visibleRows[self.startLine:self.startLine + self.visibleRowCount]
 
@@ -1249,11 +1267,14 @@ class CubeRenewalWindow(ui.ScriptWindow):
 			return
 
 		(vnum, sockets, attrs) = data
+		## Alt over a costume shows it on the player (NOVA-202; OLD :1205).
+		costume_preview.hover(vnum)
 		self.tooltipItem.ClearToolTip()
 		self.tooltipItem.AddItemData(vnum, sockets, attrs)
 
 	def OverOutItem(self):
 		self.overSlot = -1
+		costume_preview.leave()
 		if self.tooltipItem:
 			self.tooltipItem.HideToolTip()
 

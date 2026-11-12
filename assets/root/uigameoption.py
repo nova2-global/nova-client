@@ -15,6 +15,7 @@ import interfaceModule # 占쏙옙占쏙옙호
 import nui_windows
 # The keyboard row's dialog (NOVA-121).
 import uikeybindings
+import item_glow
 
 blockMode = 0
 viewChatMode = 0
@@ -40,6 +41,7 @@ class OptionDialog(ui.ScriptWindow):
 		self.RefreshShowSash()
 		self.RefreshHideBuffi()
 		self.RefreshMobInfo()
+		self.RefreshNewItemHighlight()
 
 	def __del__(self):
 		ui.ScriptWindow.__del__(self)
@@ -68,6 +70,8 @@ class OptionDialog(ui.ScriptWindow):
 		self.keyboardLabel = None
 		self.keyboardButton = None
 		self.keyBindingsDialog = None
+		self.newItemLabel = None
+		self.newItemButtonList = []
 
 	def Destroy(self):
 		if self.keyBindingsDialog:
@@ -187,6 +191,7 @@ class OptionDialog(ui.ScriptWindow):
 		self.__Load_HideBuffi()
 		self.__Load_MobInfo()
 		self.__Load_Keyboard()
+		self.__Load_NewItemHighlight()
 
 	## The offline shops' NPCs and signs, shown or hidden (NOVA-9; OLD
 	## uiGameOption.py:1169-1218, a "companions" checkbox there): a row under
@@ -384,6 +389,46 @@ class OptionDialog(ui.ScriptWindow):
 		button.SAFE_SetEvent(self.__OnClickKeyboardButton)
 		button.Show()
 		self.keyboardButton = button
+
+	## A newly received item glows until hovered (NOVA-188; OLD
+	## settingsData.py:201 "item_mark"): a row under the key bindings, on by
+	## default (systemSetting.IsShowNewItemHighlight, metin2.cfg).
+	NEW_ITEM_ROW_Y = KEYBOARD_ROW_Y + 25
+	NEW_ITEM_HEIGHT = KEYBOARD_HEIGHT + 25
+
+	def __Load_NewItemHighlight(self):
+		if not hasattr(systemSetting, "IsShowNewItemHighlight"):
+			return
+		board = self.GetChild("board")
+		board.SetSize(board.GetWidth(), self.NEW_ITEM_HEIGHT)
+		self.SetSize(self.GetWidth(), self.NEW_ITEM_HEIGHT)
+		label = ui.TextLine()
+		label.SetParent(board)
+		label.SetPosition(30, self.NEW_ITEM_ROW_Y + 2)
+		label.SetText(uiScriptLocale.OPTION_NEW_ITEM_HIGHLIGHT)
+		label.Show()
+		self.newItemLabel = label
+		for (index, caption) in enumerate((uiScriptLocale.OPTION_SALESTEXT_VIEW_ON, uiScriptLocale.OPTION_SALESTEXT_VIEW_OFF)):
+			button = ui.RadioButton()
+			button.SetParent(board)
+			button.SetPosition(90 + 65 * index, self.NEW_ITEM_ROW_Y)
+			button.SetUpVisual("d:/ymir work/ui/public/middle_button_01.sub")
+			button.SetOverVisual("d:/ymir work/ui/public/middle_button_02.sub")
+			button.SetDownVisual("d:/ymir work/ui/public/middle_button_03.sub")
+			button.SetText(caption)
+			button.SAFE_SetEvent(self.__OnClickNewItemButton, index)
+			button.Show()
+			self.newItemButtonList.append(button)
+
+	def __OnClickNewItemButton(self, index):
+		systemSetting.SetShowNewItemHighlight(0 if index else 1)
+		if index:
+			item_glow.forget_all()
+		self.RefreshNewItemHighlight()
+
+	def RefreshNewItemHighlight(self):
+		if self.newItemButtonList:
+			self.__ClickRadioButton(self.newItemButtonList, 0 if systemSetting.IsShowNewItemHighlight() else 1)
 
 	def __OnClickKeyboardButton(self):
 		if not self.keyBindingsDialog:

@@ -2,6 +2,7 @@ import time
 
 import player
 import exchange
+import costume_preview
 import net
 import localeInfo
 import chat
@@ -430,12 +431,15 @@ class ExchangeDialog(ui.ScriptWindow):
 
 	def OverInOwnerItem(self, slotIndex):
 		self.tabPreviewItem = (PET_PREVIEW_EXCHANGE_SELF, slotIndex)
+		## Alt over a costume shows it on the player (NOVA-202; OLD :447).
+		costume_preview.hover(exchange.GetItemVnumFromSelf(slotIndex))
 
 		if 0 != self.tooltipItem:
 			self.tooltipItem.SetExchangeOwnerItem(slotIndex)
 
 	def OverInTargetItem(self, slotIndex):
 		self.tabPreviewItem = (PET_PREVIEW_EXCHANGE_OTHER, slotIndex)
+		costume_preview.hover(exchange.GetItemVnumFromTarget(slotIndex))
 
 		if 0 != self.tooltipItem:
 			self.tooltipItem.SetExchangeTargetItem(slotIndex)
@@ -460,6 +464,7 @@ class ExchangeDialog(ui.ScriptWindow):
 
 	def OverOutItem(self):
 		self.tabPreviewItem = None
+		costume_preview.leave()
 
 		if 0 != self.tooltipItem:
 			self.tooltipItem.HideToolTip()

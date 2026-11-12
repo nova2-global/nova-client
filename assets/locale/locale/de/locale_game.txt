@@ -1288,3 +1288,7 @@ SHOP_TEXT_OR	oder
 SHOP_BUY_COUNT_TITLE	Anzahl kaufen (max. %d)
 DO_YOU_BUY_WITH_ITEM	Möchtest du %s für %s kaufen?
 SHOP_BULK_BUY_HINT	Shift + click: mehrere kaufen
+SEARCH_IN_SHOPS	Ctrl + click: in den Shops suchen
+SEARCH_IN_WIKI	Shift + right-click: im Wiki öffnen
+MOVE_FROM_SAFEBOX_TO_INVENTORY	Right-click: ins Inventar verschieben
+COSTUME_PREVIEW_HINT	%s halten: an deinem Charakter ansehen

@@ -20,6 +20,7 @@ import ime
 import link_tokens
 import wndMgr
 import nui_windows
+import item_glow
 
 ITEM_FLAG_APPLICABLE = 1 << 14
 
@@ -966,6 +967,22 @@ class InventoryWindow(ui.ScriptWindow):
 
 		return self.inventoryPageIndex*player.INVENTORY_PAGE_SIZE + local
 
+	## The wheel over the window turns the bag's page (NOVA-185; OLD
+	## uiInventory.py:1147-1157): a notch up the previous page, down the next.
+	## The window manager offers it the wheel (NOVA-186); True takes it, so the
+	## camera does not zoom.
+	def OnScrollWheel(self, length):
+		pageCount = len(self.inventoryTab) or player.INVENTORY_PAGE_COUNT
+		if length >= 0:
+			page = max(0, self.inventoryPageIndex - 1)
+		else:
+			page = min(pageCount - 1, self.inventoryPageIndex + 1)
+		if page != self.inventoryPageIndex:
+			if page < len(self.inventoryTab):
+				self.inventoryTab[page].Down()
+			self.SetInventoryPage(page)
+		return True
+
 	def RefreshBagSlotWindow(self):
 		getItemVNum=player.GetItemIndex
 		getItemCount=player.GetItemCount
@@ -978,6 +995,7 @@ class InventoryWindow(ui.ScriptWindow):
 			# If itemCount == 0, clear the slot.
 			if 0 == itemCount:
 				self.wndItem.ClearSlot(i)
+				item_glow.clear_new(player.INVENTORY, slotNumber)
 				continue
 			elif 1 == itemCount:
 				itemCount = 0
@@ -985,57 +1003,28 @@ class InventoryWindow(ui.ScriptWindow):
 			itemVnum = getItemVNum(slotNumber)
 			setItemVNum(i, itemVnum, itemCount)
 			
-			## Auto-potion special handling (HP: #72723~#72726, SP: #72727~#72730) - Display activation/deactivation in slot even though it's an item - [hyo]
+			## Auto-potion special handling (HP: #72723~#72726, SP: #72727~#72730): the
+			## player module learns the active potion's charge. [hyo]
 			if constInfo.IS_AUTO_POTION(itemVnum):
 				# metinSocket - [0]: Activation status, [1]: Amount used, [2]: Maximum capacity
-				metinSocket = [player.GetItemMetinSocket(slotNumber, j) for j in range(player.METIN_SOCKET_MAX_NUM)]	
-				
-				if slotNumber >= player.INVENTORY_PAGE_SIZE * self.inventoryPageIndex:
-					slotNumber -= player.INVENTORY_PAGE_SIZE * self.inventoryPageIndex
-					
+				metinSocket = [player.GetItemMetinSocket(slotNumber, j) for j in range(player.METIN_SOCKET_MAX_NUM)]
 				isActivated = 0 != metinSocket[0]
-				
 				if isActivated:
-					self.wndItem.ActivateSlot(slotNumber)
 					potionType = 0
 					if constInfo.IS_AUTO_POTION_HP(itemVnum):
 						potionType = player.AUTO_POTION_TYPE_HP
 					elif constInfo.IS_AUTO_POTION_SP(itemVnum):
-						potionType = player.AUTO_POTION_TYPE_SP						
-					
+						potionType = player.AUTO_POTION_TYPE_SP
 					usedAmount = int(metinSocket[1])
-					totalAmount = int(metinSocket[2])					
-					player.SetAutoPotionInfo(potionType, isActivated, (totalAmount - usedAmount), totalAmount, self.__InventoryLocalSlotPosToGlobalSlotPos(i))
-					
-				else:
-					self.wndItem.DeactivateSlot(slotNumber)			
+					totalAmount = int(metinSocket[2])
+					player.SetAutoPotionInfo(potionType, isActivated, (totalAmount - usedAmount), totalAmount, slotNumber)
 
-			## A summoned pet's seal glows (NOVA-24; OLD uiInventory.py:1469-1473:
-			## socket 3 is set while it is out). OLD tinted the cell; NEW's slot
-			## window activates it, as an active auto potion.
-			elif GetPetItemSubType(itemVnum) == PET_SUMMON:
-				if player.GetItemMetinSocket(slotNumber, PET_SUMMONED_SOCKET) != 0:
-					self.wndItem.ActivateSlot(i)
-				else:
-					self.wndItem.DeactivateSlot(i)
+			## The cell's glow (NOVA-188; OLD uiInventory.py:1450-1545): an active
+			## auto potion, summoned pet seal (NOVA-24), buffi item (NOVA-38) or
+			## toggle item that is on (NOVA-183) in its kind's color, else a newly
+			## received item until it is hovered (item_glow).
+			item_glow.show(self.wndItem, i, player.INVENTORY, slotNumber, itemVnum)
 
-			## A buffi item is active while its buffi is out (NOVA-38; OLD
-			## uiInventory.py:1476-1479: the server sets its socket 3).
-			elif constInfo.IS_FAKEBUFF_ITEM(itemVnum):
-				if player.METIN_SOCKET_MAX_NUM > 3 and 0 != player.GetItemMetinSocket(slotNumber, 3):
-					self.wndItem.ActivateSlot(i)
-				else:
-					self.wndItem.DeactivateSlot(i)
-
-			## A toggle item that is on: its pet or mount out, its tag worn, its
-			## buff active (NOVA-183; OLD uiInventory.py:1461-1467). NOVA-188
-			## colors it later; OLD tinted buffs red and the rest cyan.
-			elif IsToggleItem(itemVnum):
-				if 0 != player.GetItemMetinSocket(slotNumber, TOGGLE_ON_SOCKET):
-					self.wndItem.ActivateSlot(i)
-				else:
-					self.wndItem.DeactivateSlot(i)
-					
 		self.RefreshMarkSlots()
 		self.wndItem.RefreshSlot()
 
@@ -1599,6 +1588,9 @@ class InventoryWindow(ui.ScriptWindow):
 		## OLD's selectedItem (uiInventory.py:2159): Shift over a chest shows
 		## its contents (NOVA-18).
 		constInfo.SET_HOVERED_CHEST(player.GetItemIndex(overSlotPos))
+		## A newly received item stops glowing once hovered (NOVA-188; OLD :2150).
+		if item_glow.clear_new(player.INVENTORY, overSlotPos):
+			self.RefreshBagSlotWindow()
 
 		if mouseModule.mouseController.isAttached():
 			attachedItemType = mouseModule.mouseController.GetAttachedType()

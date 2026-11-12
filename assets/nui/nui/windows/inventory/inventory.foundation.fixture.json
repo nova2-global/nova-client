@@ -51,7 +51,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 1,
@@ -74,7 +75,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 2,
@@ -97,7 +99,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 3,
@@ -120,7 +123,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 4,
@@ -143,7 +147,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 5,
@@ -166,7 +171,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 6,
@@ -189,7 +195,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 7,
@@ -212,7 +219,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 8,
@@ -235,7 +243,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 9,
@@ -258,7 +267,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 10,
@@ -281,7 +291,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 11,
@@ -302,6 +313,7 @@
 				"target": "",
 				"picked": false,
 				"unavailable": false,
+				"glow": "red",
 				"refine": 0,
 				"in_use": false,
 				"unusable_ontop": false
@@ -327,7 +339,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 13,
@@ -350,7 +363,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 14,
@@ -373,7 +387,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 15,
@@ -396,7 +411,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 16,
@@ -419,7 +435,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 17,
@@ -442,7 +459,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 18,
@@ -465,7 +483,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 19,
@@ -488,7 +507,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 20,
@@ -511,7 +531,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 21,
@@ -534,7 +555,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 22,
@@ -557,7 +579,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 23,
@@ -580,7 +603,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 24,
@@ -603,7 +627,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 25,
@@ -626,7 +651,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 26,
@@ -649,7 +675,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 27,
@@ -672,7 +699,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 28,
@@ -695,7 +723,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 29,
@@ -718,7 +747,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 30,
@@ -741,7 +771,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 31,
@@ -764,7 +795,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 32,
@@ -787,7 +819,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 33,
@@ -810,7 +843,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 34,
@@ -833,7 +867,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 35,
@@ -856,7 +891,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 36,
@@ -879,7 +915,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 37,
@@ -902,7 +939,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 38,
@@ -925,7 +963,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 39,
@@ -948,7 +987,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 40,
@@ -971,7 +1011,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 41,
@@ -994,7 +1035,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 42,
@@ -1017,7 +1059,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 43,
@@ -1040,7 +1083,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			},
 			{
 				"index": 44,
@@ -1063,7 +1107,8 @@
 				"unavailable": false,
 				"refine": 0,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"glow": ""
 			}
 		],
 		"bag_cols": 5,

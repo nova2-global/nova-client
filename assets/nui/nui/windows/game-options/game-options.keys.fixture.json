@@ -27,6 +27,7 @@
 		],
 		"mob_level": true,
 		"mob_ai": true,
+		"new_item_glow": true,
 		"page": "keys",
 		"notice": "M was on Minimap, which now has I.",
 		"key_rows": [

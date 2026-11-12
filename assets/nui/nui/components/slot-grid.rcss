@@ -540,6 +540,50 @@
 {
 	box-shadow: 0 0 6dp var(--accent-glow);
 }
+/* NOVA-188: an active item's kind tints its cell (assets/root/item_glow.py:
+   red for an HP potion or a buff, blue for an SP potion, yellow for a mount
+   or a buffi item, cyan for a pet, violet for an effect tag); a new item keeps
+   the accent look. The grid's proxy sets is-glow-<name> (nui_slots GLOW_KEY). */
+.nui-slot-grid--lean > .nui-slot.is-active.is-glow-red
+{
+	border-color: var(--glow-red);
+}
+.nui-slot.is-glow-red.nui-fx
+{
+	box-shadow: 0 0 6dp var(--glow-red);
+}
+.nui-slot-grid--lean > .nui-slot.is-active.is-glow-blue
+{
+	border-color: var(--glow-blue);
+}
+.nui-slot.is-glow-blue.nui-fx
+{
+	box-shadow: 0 0 6dp var(--glow-blue);
+}
+.nui-slot-grid--lean > .nui-slot.is-active.is-glow-yellow
+{
+	border-color: var(--glow-yellow);
+}
+.nui-slot.is-glow-yellow.nui-fx
+{
+	box-shadow: 0 0 6dp var(--glow-yellow);
+}
+.nui-slot-grid--lean > .nui-slot.is-active.is-glow-cyan
+{
+	border-color: var(--glow-cyan);
+}
+.nui-slot.is-glow-cyan.nui-fx
+{
+	box-shadow: 0 0 6dp var(--glow-cyan);
+}
+.nui-slot-grid--lean > .nui-slot.is-active.is-glow-violet
+{
+	border-color: var(--glow-violet);
+}
+.nui-slot.is-glow-violet.nui-fx
+{
+	box-shadow: 0 0 6dp var(--glow-violet);
+}
 /* The parts in the grid's stacking context, in the legacy order. */
 .nui-slot-grid--lean .nui-slot__icon
 {

@@ -306,6 +306,14 @@ class _InventoryBoard(nui_hud.RaisesOnPress, nui.Window):
 
 	# --- the bag and the wear cells: the legacy slot windows' events ---------------
 
+	@nui.on("wheel")
+	def on_wheel(self, delta):
+		# NOVA-185: the wheel turns the bag's page. RmlUi's sign: positive is
+		# down, the next page; legacy's OnScrollWheel takes a notch up as positive.
+		delta = float(delta)
+		if delta:
+			self._owner.OnScrollWheel(-1 if delta > 0 else 1)
+
 	@nui.on("bag_press")
 	def on_bag_press(self, index, button):
 		self.raise_for(button)
@@ -685,7 +693,7 @@ class InventoryWindow(uiInventory.InventoryWindow):
 
 		wndItem = nui_slots.SlotWindowProxy(range(limits.INVENTORY_PAGE_SIZE), self._on_bag,
 		                                    cols=limits.INVENTORY_COLUMNS, rows=limits.INVENTORY_ROWS,
-		                                    positions=self._bag_position, refine=True, marks=True)
+		                                    positions=self._bag_position, refine=True, marks=True, glows=True)
 		self._wear_slots = nui_limits.wear_group("equipment", limits)
 		wndEquip = nui_slots.SlotWindowProxy([slot.cell for slot in self._wear_slots], self._on_wear, refine=True)
 		self.wndMoney = nui_proxies.TextProxy(self._on_money)

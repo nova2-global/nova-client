@@ -34,6 +34,7 @@ import localeInfo
 import uiScriptLocale
 import uiCommon
 import offlineshopconst
+import costume_preview
 
 ROW_WIDTH = 531
 ROW_HEIGHT = 36
@@ -919,12 +920,15 @@ class SearchShopWindow(ui.ScriptWindow):
 		self.tabPreviewRow = row
 		if not self.tooltipItem or not row:
 			return
+		## Alt over a costume shows it on the player (NOVA-202; OLD :686).
+		costume_preview.hover(row["vnum"])
 		self.tooltipItem.ClearToolTip()
 		self.tooltipItem.AddItemData(row["vnum"], list(row["sockets"]), list(row["attrs"]))
 		self.tooltipItem.ShowToolTip()
 
 	def HideRowToolTip(self):
 		self.tabPreviewRow = None
+		costume_preview.leave()
 		if self.tooltipItem:
 			self.tooltipItem.HideToolTip()
 

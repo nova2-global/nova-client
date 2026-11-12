@@ -1,0 +1,7 @@
+{
+	"$comment": "Golden cases of the costume preview popup (tools/check_nui_snapshots.py; NOVA-202): the player's model wearing a hovered costume over its name. The model view stands in with the wiki's model picture (views), as the engine draws the model preview \"costume\" into it.",
+	"cases": [
+		{"page": "costume-preview", "themes": "all", "except": ["classic"], "scales": [["100", "1", "260x320"], ["150", "1.5", "390x480"], ["200", "2", "520x640"]], "fixture": true, "roots": [], "time": null, "views": {"model-costume": "nui/windows/wiki/wiki.model.view.png"}},
+		{"page": "costume-preview", "themes": ["classic"], "scales": [["100", "1", "260x320"], ["150", "1.5", "390x480"], ["200", "2", "520x640"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "views": {"model-costume": "nui/windows/wiki/wiki.model.view.png"}}
+	]
+}

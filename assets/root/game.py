@@ -1846,6 +1846,8 @@ class GameWindow(ui.ScriptWindow):
 				constInfo.SET_ITEM_QUESTION_DIALOG_STATUS(1)
 
 	def RequestDropItem(self, answer):
+		# NOVA-189: whatever ends the drop question ends its destroy warning.
+		self.__CloseDestroyQuestion()
 		if not self.itemDropQuestionDialog:
 			return
 
@@ -1889,6 +1891,9 @@ class GameWindow(ui.ScriptWindow):
 	# its Yes sends the destroy packet for the window, cell, vnum and count the
 	# drop question names (OLD sent the cell only and destroyed the whole
 	# stack). The server refuses an item that changed, and says why.
+	# The warning takes the drop question's place, and its No brings the drop
+	# question back: NovaUI has one question window, so a warning opened above
+	# the drop question found it in use and fell back to the legacy dialog.
 	destroyQuestionDialog = None
 
 	def __NewItemDropQuestion(self, itemVnum):
@@ -1904,12 +1909,18 @@ class GameWindow(ui.ScriptWindow):
 			return
 
 		self.__CloseDestroyQuestion()
+		self.itemDropQuestionDialog.Close()
 		dialog = uiCommon.QuestionDialog()
 		dialog.SetText(localeInfo.DESTROY_ITEM_WARNING)
 		dialog.SetAcceptEvent(ui.__mem_func__(self.__AcceptDestroyItem))
-		dialog.SetCancelEvent(ui.__mem_func__(self.__CloseDestroyQuestion))
+		dialog.SetCancelEvent(ui.__mem_func__(self.__CancelDestroyItem))
 		dialog.Open()
 		self.destroyQuestionDialog = dialog
+
+	def __CancelDestroyItem(self):
+		self.__CloseDestroyQuestion()
+		if self.itemDropQuestionDialog:
+			self.itemDropQuestionDialog.Open()
 
 	def __CloseDestroyQuestion(self):
 		if self.destroyQuestionDialog:

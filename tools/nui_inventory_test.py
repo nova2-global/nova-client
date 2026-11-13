@@ -1349,8 +1349,8 @@ class Flows(Pair):
 GAME_DROP = ("OnMouseLeftButtonUp", "__PutItem", "__PutMoney", "__DropMoney", "__DropItem", "RequestDropItem",
              "__SendDropItemPacket",
              # NOVA-189: the drop question's Destroy.
-             "__NewItemDropQuestion", "__AskDestroyItem", "__CloseDestroyQuestion", "__AcceptDestroyItem",
-             "__SendDestroyItemPacket")
+             "destroyQuestionDialog", "__NewItemDropQuestion", "__AskDestroyItem", "__CancelDestroyItem",
+             "__CloseDestroyQuestion", "__AcceptDestroyItem", "__SendDestroyItemPacket")
 
 
 def game_window(world):

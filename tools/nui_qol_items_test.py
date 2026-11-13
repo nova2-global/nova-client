@@ -18,6 +18,7 @@ of its own with the same state (nui_w4_world.World), and the two make the
 same calls (W4_COMPARED, the sounds and the dialogs) in the same order."""
 import os
 import sys
+import types
 import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -310,6 +311,95 @@ class DestroyFromInventory(inventory_test.Pair):
         legacy, _, _ = self.same(flow, setup=self.setups())
         self.assertNotIn("net.SendItemDestroyPacket", [name for name, _ in legacy])
         self.assertIn("chat.AppendChat", [name for name, _ in legacy])
+
+
+class DestroyOnTheKit(kit_test.KitTest):
+    """NOVA-189 on the dialog kit itself, with game.py's own drop and destroy
+    methods. The kit has one question window: a warning opened above the
+    drop question found it in use and opened the legacy dialog, whatever
+    the theme (r46, Eddy on cyberpunk). The warning now takes the drop
+    question's place, and No brings the drop question back."""
+
+    NAMES = ("RequestDropItem", "destroyQuestionDialog", "__NewItemDropQuestion", "__AskDestroyItem",
+             "__CancelDestroyItem", "__CloseDestroyQuestion", "__AcceptDestroyItem", "__SendDestroyItemPacket",
+             "__SendDropItemPacket")
+
+    def setUp(self):
+        kit_test.KitTest.setUp(self)
+        self.sent = []
+        self.status = []
+        sys.modules["uiScriptLocale"].DESTROY = "DESTROY"
+        stub = kit_test.support.stub_module
+        player = stub("player", SLOT_TYPE_INVENTORY=1, SLOT_TYPE_DRAGON_SOUL_INVENTORY=7, SLOT_TYPE_EXTRA_INVENTORY=9,
+                      INVENTORY=1, DRAGON_SOUL_INVENTORY=2, EXTRA_INVENTORY=3, ITEM_MONEY=-1,
+                      GetItemCount=lambda window, cell: 10)
+        namespace = {
+            "uiCommon": self.uiCommon, "player": player, "snd": stub("snd", PlaySound=lambda name: None),
+            "ui": types.SimpleNamespace(__mem_func__=lambda method: method),
+            "localeInfo": types.SimpleNamespace(DESTROY_ITEM_WARNING="DESTROY_ITEM_WARNING",
+                                                DROP_ITEM_FAILURE_PRIVATE_SHOP="PRIVATE_SHOP"),
+            "net": stub("net", SendItemDestroyPacket=lambda *args: self.sent.append(("destroy",) + args),
+                        SendItemDropPacketNew=lambda *args: self.sent.append(("drop",) + args)),
+            "constInfo": stub("constInfo", SET_ITEM_QUESTION_DIALOG_STATUS=self.status.append),
+            "uiPrivateShopBuilder": stub("uiPrivateShopBuilder", IsBuildingPrivateShop=lambda: False),
+            "chat": stub("chat", CHAT_TYPE_INFO=1, AppendChat=lambda kind, text: None),
+        }
+        source = support.source_of("game.py", self.NAMES, inside="GameWindow")
+        body = "\n".join("\t" + line if line else line for line in source.split("\n"))
+        exec(compile("class GameWindow(object):\n" + body + "\n", "game.py", "exec"), namespace)
+        self.game = namespace["GameWindow"]()
+        self.game.itemDropQuestionDialog = None
+
+    def drop_question(self):
+        """The drop question of 10 potions at cell 4, as game.py's __DropItem
+        makes it."""
+        game = self.game
+        dialog = game._GameWindow__NewItemDropQuestion(POTION)
+        dialog.SetText("HOW_MANY_ITEM_DO_YOU_DROP")
+        dialog.SetAcceptEvent(lambda: game.RequestDropItem(True))
+        dialog.SetCancelEvent(lambda: game.RequestDropItem(False))
+        dialog.Open()
+        dialog.dropType, dialog.dropNumber, dialog.dropCount = 1, 4, 10
+        game.itemDropQuestionDialog = dialog
+        return dialog
+
+    def shows(self):
+        window = self.kit_window(QUESTION)
+        return window.is_visible(), window.model["lines"], window.model["middle_on"]
+
+    def test_the_warning_runs_on_the_kit_not_the_legacy_dialog(self):
+        drop = self.drop_question()
+        self.assertIsNone(drop._legacy)
+        self.kit_window(QUESTION).fire("middle")
+        warning = self.game.destroyQuestionDialog
+        self.assertIsNone(warning._legacy, "the warning fell back to the legacy dialog")
+        self.assertEqual(self.shows(), (True, ["DESTROY_ITEM_WARNING"], False))
+        self.kit_window(QUESTION).fire("accept")
+        self.assertEqual(self.sent, [("destroy", 1, 4, POTION, 10)])
+        self.assertFalse(self.kit_window(QUESTION).is_visible())
+        self.assertIsNone(self.game.itemDropQuestionDialog)
+        self.assertEqual(self.status, [0])
+
+    def test_no_in_the_warning_brings_the_drop_question_back_on_the_kit(self):
+        drop = self.drop_question()
+        self.kit_window(QUESTION).fire("middle")
+        self.kit_window(QUESTION).fire("cancel")
+        self.assertIsNone(self.game.destroyQuestionDialog)
+        self.assertIsNone(drop._legacy)
+        self.assertEqual(self.shows(), (True, ["HOW_MANY_ITEM_DO_YOU_DROP"], True))
+        self.kit_window(QUESTION).fire("accept")
+        self.assertEqual(self.sent, [("drop", 1, 4, 10)])
+        self.assertFalse(self.kit_window(QUESTION).is_visible())
+
+    def test_ending_the_drop_question_ends_the_warning(self):
+        """Escape on the game window (game.py OnKeyDown) ends the drop
+        question, and the warning with it."""
+        self.drop_question()
+        self.kit_window(QUESTION).fire("middle")
+        self.game.RequestDropItem(False)
+        self.assertIsNone(self.game.destroyQuestionDialog)
+        self.assertFalse(self.kit_window(QUESTION).is_visible())
+        self.assertEqual(self.sent, [])
 
 
 class DestroyFromExtraInventory(extra_test.Pair):

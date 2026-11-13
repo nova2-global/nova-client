@@ -1477,6 +1477,53 @@ KI_F1, KI_F12 = 107, 118
 DIK = {"DIK_F%d" % (n + 1): code for n, code in enumerate(list(range(0x3B, 0x45)) + [0x57, 0x58])}
 
 
+class FilledCarets(SecretsTest):
+    """NOVA-257: the saved account fills the name and the password before
+    either field has the focus, and the name through the model alone left
+    the field's caret where it was. Each field shows its caret at the end of
+    its text when it takes the focus (the host places a caret asked for an
+    unfocused field at its focus)."""
+
+    def test_the_saved_account_fills_both_fields_with_the_caret_at_their_end(self):
+        self.save_account()
+        self.secrets["2/kalinka"] = PASSWORD
+        win, board = self.open_board()
+        self.assertEqual(board.focused, PASSWORD_FIELD)
+        self.assertEqual(board.carets.get(PASSWORD_FIELD), len(PASSWORD))
+        self.assertIn(("set_value", ID_FIELD, "kalinka", "end"), board.calls)
+        self.assertEqual(board.get_value(ID_FIELD), "kalinka")
+        board.focus(ID_FIELD)  # focus_field, or Shift+Tab
+        self.assertEqual(board.carets.get(ID_FIELD), len("kalinka"))
+        self.assertEqual(board.get_caret(ID_FIELD), (7, 7))
+
+    def test_a_picked_account_puts_both_carets_at_the_end(self):
+        self.save_account("kalinka")
+        self.save_account("mirela")
+        self.secrets["2/kalinka"] = PASSWORD
+        win, board = self.open_board()
+        self.assertEqual(board.get("user"), "mirela", "no stored password: the field waits for it")
+        board.on_pick_account("kalinka", 0)
+        self.assertEqual(board.focused, PASSWORD_FIELD)
+        self.assertEqual(board.carets.get(PASSWORD_FIELD), len(PASSWORD))
+        board.focus(ID_FIELD)
+        self.assertEqual(board.carets.get(ID_FIELD), len("kalinka"))
+
+    def test_the_name_fields_own_fill_is_no_edit(self):
+        # set_user's text reaches the field's change event as typing's does;
+        # that echo must not act as an edit (an error on the name stays, a
+        # stored password stays).
+        self.save_account()
+        self.secrets["2/kalinka"] = PASSWORD
+        win, board = self.open_board()
+        board.set(error="@ui.NUI_LOGIN_ERR_LOGIN", error_on="user")
+        board.set_user("kalinka")
+        self.assertEqual((board.get("error"), board.get("error_on")), ("@ui.NUI_LOGIN_ERR_LOGIN", "user"))
+        self.assertTrue(board.model["stored_password"])
+        board.on_user_edit("kalinkax", False)
+        self.assertEqual(board.get("error_on"), "", "a typed edit still clears it")
+        self.assertFalse(board.model["stored_password"])
+
+
 class SlotKeys(SecretsTest):
     """OLD introLogin.py:997-1001, 775-786: F<N> logs in with saved account N,
     in the order the list shows; an empty slot does nothing."""

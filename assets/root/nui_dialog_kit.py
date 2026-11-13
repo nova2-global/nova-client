@@ -32,8 +32,10 @@ the legacy constructor and method names and meanings, so no caller changes.
   nui-escape-passes-key-down: a kept Escape still reaches the legacy key
   handlers, as under a legacy question (game.py's OnKeyDown ends the item
   drop question and the inventory lock).
-- A field takes its text after it has the focus: RmlUi places the caret only
-  in a focused field, and a focus does not move it.
+- A field takes its text after it has the focus, so the caret is at its end
+  at once. (The host now also places a caret asked for an unfocused field at
+  its next focus, NOVA-257; an exe before that placed it only in a focused
+  field.)
 - A legacy common dialog that opens above NovaUI (the busy fallback, the
   time-limited question, a dialog the kit does not port) covers the kit:
   nui_windows.legacy_dialog_layer calls cover(). Until it hides, every kit
@@ -399,8 +401,9 @@ class DialogFacade(object):
 		return True
 
 	def _fill_field(self, window):
-		"""The field's text with the caret at its end: the focus first, since
-		RmlUi moves the caret only in a focused field."""
+		"""The field's text with the caret at its end: the focus first, so the
+		caret is placed at once (an exe before NOVA-257 placed it only in a
+		focused field)."""
 		field = self._field_id(window)
 		if field:
 			window.focus(field)

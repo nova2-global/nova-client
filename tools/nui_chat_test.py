@@ -495,6 +495,32 @@ class ChatDifferential(unittest.TestCase):
         legacy, novaui = self.flow(steps)
         self.assertEqual(novaui.text(), "second")
 
+    def test_a_recalled_line_keeps_its_key_and_has_the_caret_at_its_end(self):
+        # NOVA-257: Up and Down are kept, so the host's text widget does not
+        # also move the caret (to the start), and the line comes with the
+        # caret at its end, in the chat and in the chat log's field.
+        for which in ("chat", "log"):
+            world = World(True)
+            world.enter_game()
+            with world:
+                if which == "chat":
+                    world.chat.OpenChat()
+                else:
+                    world.log.Open()
+            for text in ("first line", "the second line"):
+                world.type(text, which)
+                world.enter(which)
+                if which == "chat":
+                    with world:
+                        world.chat.OpenChat()
+            board, field = world.board(which), world.field(which)
+            self.assertIs(world.key("up", which), True, which)
+            self.assertEqual((board.get_value(field), board.get_caret(field)), ("the second line", (15, 15)), which)
+            self.assertIs(world.key("up", which), True, which)
+            self.assertEqual((board.get_value(field), board.get_caret(field)), ("first line", (10, 10)), which)
+            self.assertIs(world.key("down", which), True, which)
+            self.assertEqual(board.get_caret(field), (15, 15), which)
+
     def test_the_shout_color_button_picker_and_one_colored_shout(self):
         """Wave 5 (NOVA-11; legacy ChatInputSet): with the perk, the button shows
         while the chat is open; a swatch picks the color the next shout sends,

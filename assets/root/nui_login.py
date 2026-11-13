@@ -528,7 +528,10 @@ class LoginBoard(nui.Window):
 
 	@nui.on("user_edit")
 	def on_user_edit(self, value, linebreak):
-		self._user = _as_text(value)
+		value = _as_text(value)
+		if not linebreak and value == self._user:
+			return  # set_user's own fill (typing always changes the name)
+		self._user = value
 		if self._stored_key is not None and self._stored_key[1] != self._user:
 			self._set_password("")
 		if self.get("error_on") == "user" or self.get("error_ok"):
@@ -792,8 +795,14 @@ class LoginBoard(nui.Window):
 	# --- values ---------------------------------------------------------------
 
 	def set_user(self, user):
+		"""The name, in the model and in its field. The field takes it through
+		set_value as well (NOVA-257): the model's binding alone left the caret
+		where it was, at the start of the saved account's name, while
+		set_value puts it at the end now or when the field next takes the
+		focus. on_user_edit ignores the change this sends."""
 		self._user = _as_text(user)
 		self.set(user=self._user)
+		self.set_value(ID_FIELD, self._user, even_hidden=True)
 
 	def login_failed(self, error):
 		"""Drops the pending password and invalidates a refused stored one."""
@@ -817,6 +826,7 @@ class LoginBoard(nui.Window):
 		# starts from the model and its password field empty.
 		self.set(user=self._user, show_password=False, stored_password=False,
 		         secrets_available=nui_accounts.secrets_available())
+		self.set_value(ID_FIELD, self._user, even_hidden=True)  # its caret at the end (set_user)
 		self._set_password("")
 		self._reg.update(password="", confirm="")
 		self.reload_accounts()

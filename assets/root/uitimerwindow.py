@@ -186,6 +186,63 @@ def iter_indices_sorted():
 	return events + normals
 
 
+# NOVA-256: every dungeon's boss preview, warmed while the player plays, so a card shows its boss
+# the first time the window opens and at every deck turn (Eddy, r47: no placeholder, ever).
+BOSS_PREVIEW_PREFIX = "dungeon_boss_"
+
+
+def boss_preview_name(idx):
+	return BOSS_PREVIEW_PREFIX + str(int(idx))
+
+
+def warm_order():
+	"""Every dungeon in the order its boss is warmed: the deck's front (the first visible one),
+	then the nearest, alternating right and left as the deck wraps; the hidden ones last."""
+	visible = [idx for idx in iter_indices_sorted() if not is_hidden_for_current_view(idx)]
+	order = []
+	for step in range(len(visible)):
+		# 0, +1, -1, +2, -2, ...: the front card, its right (the next), its left, ...
+		offset = (step + 1) // 2 if step % 2 else -(step // 2)
+		idx = visible[offset % len(visible)]
+		if idx not in order:
+			order.append(idx)
+	for idx in list(iter_indices_sorted()):
+		if idx not in order:
+			order.append(idx)
+	return order
+
+
+def warm_boss_previews():
+	"""Asks the client to make every dungeon's boss in the background, hidden (modelpreview's
+	SetBackground and SetWarm): it starts once the game phase has settled, one step at a time and
+	after the cards in view. The window's own Select of a boss then finds its model. A client
+	without SetWarm warms nothing. Returns how many were asked."""
+	preview = model_preview()
+	if preview is None or getattr(preview, "SetWarm", None) is None or getattr(preview, "SetBackground", None) is None:
+		return 0
+	asked = 0
+	for idx in warm_order():
+		race = int(DESCRIPTION[idx][0][0])
+		if not race:
+			continue
+		name = boss_preview_name(idx)
+		preview.SetBackground(name, True)
+		preview.SetWarm(name, True)
+		if preview.Select(name, race):
+			asked += 1
+	return asked
+
+
+def clear_boss_previews():
+	"""Every dungeon's boss preview goes (the window's Destroy, at the phase's end): its model
+	waits in the client's preview pool, which the next phase's warm-up takes it back from."""
+	preview = model_preview()
+	if preview is None:
+		return
+	for idx in sorted(DESCRIPTION):
+		preview.Clear(boss_preview_name(idx))
+
+
 def parse_cooldown_to_seconds(val):
 	"""300, "300", "5 Mins", "5m", "1 hour", "2h", "45 secs", "45s": seconds."""
 	if isinstance(val, int):
@@ -530,6 +587,7 @@ class TimerWindow(ui.ScriptWindow):
 		if self.load_error:
 			self.emptyLabel.SetText(localeInfo.TIMERWINDOW_LOAD_ERROR % self.load_error)
 			self.emptyLabel.Show()
+		warm_boss_previews()
 
 	def __LoadWindow(self):
 		pyScrLoader = ui.PythonScriptLoader()
@@ -901,6 +959,7 @@ class TimerWindow(ui.ScriptWindow):
 		preview = model_preview()
 		if preview is not None:
 			preview.Clear(BOSS_PREVIEW)
+		clear_boss_previews()
 		self.bossView = None
 		self.board = None
 		self.itemSlot = None

@@ -56,7 +56,7 @@ class ModelGaps(base.WikiTest):
 		with world.game, w4.quiet():
 			window.Open()
 			window.open_item(KIMONO)
-		self.assertIn(("SetParts", "wiki", KIMONO, 0, 0, 0), self.previews.calls)
+		self.assertIn(("Select", "wiki", 1, KIMONO, 0, 0, 0), self.previews.calls)
 		self.assertFalse(self.model(window)["model_view"])
 		self.assertEqual(self.model(window)["page_icon"] != "", True)
 		self.assertIn(("Show", "wiki", False), self.previews.calls)

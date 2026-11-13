@@ -11,9 +11,11 @@ insert_text() change it and, when the text changed, call the window's
 change handler as RmlUi's change event would (NuiState.field_events names
 the data event a field's data-event-change calls). Each field has a caret,
 as RmlUi's text widget does: a new field has it at 0, the focus leaves it
-where it is, set_value() places it only in the focused field (another
-field's caret is cut to its new text, as the next layout does), and
-insert_text() types and erases at it. show() records whether it showed the
+where it is, set_value() places it in the focused field and, in another
+field (whose caret is cut to its new text, as the next layout does), when
+that field next takes the focus, once, as the host does (NOVA-257; "keep"
+asks nothing), and insert_text() types and erases at it. get_caret()
+answers (caret, caret). show() records whether it showed the
 window as a modal (Window.modal). Feeds follow nui.py's FEEDS: a window
 binds each key it names when it is made (the key takes the feed's value
 then, if NuiState.feeds holds one), NuiState.publish() changes a feed and
@@ -134,6 +136,7 @@ def make_nui(state):
             self.modal = False
             self.fields = {}
             self.carets = {}         # field id -> caret index
+            self.asks = {}           # field id -> the caret set_value asked while it had no focus
             self.handlers = {}       # (element id, event) -> fn
             self.placement = None
             self.pointer_side = None  # follow_pointer_as_tooltip's kept side (frame())
@@ -191,6 +194,11 @@ def make_nui(state):
 
         def _take_focus(self, element_id):
             self.focused = element_id
+            ask = self.asks.pop(element_id, None)
+            if ask is not None:
+                text = self.fields.get(element_id, "")
+                at = len(text) if ask == "end" else 0 if ask == "start" else ask
+                self.carets[element_id] = max(0, min(at, len(text)))
             handler = self.handlers.get((element_id, "focus"))
             if handler is not None:
                 handler({"type": "focus", "target_id": element_id})
@@ -396,17 +404,23 @@ def make_nui(state):
                 self.fields[element_id] = text
                 self.carets[element_id] = min(kept, len(text))
                 self._change(element_id, False)
-            # Only into a field that had the focus and still has it.
-            if focused and self.focused == element_id:
+            # Into the field when it has the focus after the change handlers
+            # ("keep" only if it had it before), else at its next focus.
+            if self.focused != element_id:
+                if caret != "keep":
+                    self.asks[element_id] = caret
+            elif focused or caret != "keep":
+                self.asks.pop(element_id, None)
+                current = self.fields.get(element_id, "")
                 if caret == "keep":
                     at = kept
                 elif caret == "start":
                     at = 0
                 elif caret == "end":
-                    at = len(text)
+                    at = len(current)
                 else:
                     at = caret
-                self.carets[element_id] = max(0, min(at, len(text)))
+                self.carets[element_id] = max(0, min(at, len(current)))
             return True
 
         def insert_text(self, element_id, text):
@@ -443,6 +457,12 @@ def make_nui(state):
             if not self._doc:
                 return None
             return self.fields.get(element_id, "")
+
+        def get_caret(self, element_id):
+            if not self._doc or element_id not in self.fields:
+                return None
+            at = self.carets.get(element_id, 0)
+            return (at, at)
 
     def set_theme(name):
         if name not in [theme_id for theme_id, _ in state.themes]:

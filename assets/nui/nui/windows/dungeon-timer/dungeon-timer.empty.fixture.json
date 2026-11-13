@@ -4,66 +4,66 @@
    {
     "idx": 0,
     "title": "Demon Tower",
-    "mono": "DT",
     "level": "Lv 75-105",
     "slot": "l2",
     "hidden": false,
     "view": true,
+    "fade": false,
     "state": "ready",
     "end": 0.0
    },
    {
     "idx": 1,
     "title": "Spider Baroness",
-    "mono": "SB",
     "level": "Lv 75-105",
     "slot": "l1",
     "hidden": false,
     "view": false,
+    "fade": false,
     "state": "ready",
     "end": 0.0
    },
    {
     "idx": 2,
     "title": "Devil`s Catacomb",
-    "mono": "DC",
     "level": "Lv 75-105",
     "slot": "c",
     "hidden": false,
     "view": true,
+    "fade": false,
     "state": "ready",
     "end": 0.0
    },
    {
     "idx": 3,
     "title": "Aqua Dragon",
-    "mono": "AD",
     "level": "Lv 75-105",
     "slot": "r1",
     "hidden": false,
     "view": true,
+    "fade": false,
     "state": "ready",
     "end": 0.0
    },
    {
     "idx": 5,
     "title": "Nemeres",
-    "mono": "NE",
     "level": "Lv 90-120",
     "slot": "r2",
     "hidden": false,
     "view": true,
+    "fade": false,
     "state": "cd",
     "end": 421.0
    },
    {
     "idx": 6,
     "title": "Razador",
-    "mono": "RA",
     "level": "Lv 90-120",
     "slot": "r3",
     "hidden": false,
     "view": false,
+    "fade": false,
     "state": "ready",
     "end": 0.0
    }

@@ -12,7 +12,8 @@
 	     a card's place is a slot class and its move is a transition): each
 	     card shows its boss's model preview, view "model-dungeon-boss-<idx>"
 	     (one named preview per dungeon, only for the visible cards), or a
-	     monogram for a race without a model, a badge (Ready, the live
+	     plain card until the boss is made (every dungeon's boss is warmed
+	     ahead, NOVA-256; a late one fades in), a badge (Ready, the live
 	     countdown, Hidden), the dungeon's name and level band. The eye on
 	     the front card hides it; the chip shows the hidden cards dashed. The
 	     front card's details, the drops of all its mobs merged in one grid
@@ -45,8 +46,8 @@
 				<span class="dungeon-timer__dash dungeon-timer__dash--l" data-if="c.hidden"></span>
 				<span class="dungeon-timer__dash dungeon-timer__dash--r" data-if="c.hidden"></span>
 				<span class="dungeon-timer__art">
-					<nui-view class="nui-anim dungeon-timer__view" data-if="c.view" data-attr-name="'model-dungeon-boss-' + c.idx" hover="none"></nui-view>
-					<span class="dungeon-timer__mono" data-if="!c.view">{{ c.mono }}</span>
+					<nui-view class="nui-anim dungeon-timer__view" data-if="c.view" data-class-dungeon-timer__view--fade="c.fade"
+					          data-attr-name="'model-dungeon-boss-' + c.idx" hover="none"></nui-view>
 					<span class="dungeon-timer__badge dungeon-timer__badge--ready" data-if="c.state == 'ready'">@ui.DUNGEON_MANAGER_READY</span>
 					<span class="dungeon-timer__badge dungeon-timer__badge--cd" data-if="c.state == 'cd'"><nui-countdown
 						format="ms" data-attr-end="c.end" data-event-countdownend="card_ready(c.idx)"/></span>

@@ -57,9 +57,9 @@ class Deck(unittest.TestCase):
         self.assertEqual([c["idx"] for c in model(window)["cards"]], NEW_DUNGEONS)
         self.assertEqual(slots(window), {0: "c", 1: "r1", 2: "r2", 3: "r3", 5: "l2", 6: "l1"})
         self.assertEqual(model(window)["selected"], 0)
-        self.assertEqual((card(window, 0)["title"], card(window, 0)["level"], card(window, 0)["mono"]),
-                         ("Demon Tower", "Lv 75-105", "DT"))
-        self.assertEqual(card(window, 5)["mono"], "NE")
+        self.assertEqual((card(window, 0)["title"], card(window, 0)["level"]), ("Demon Tower", "Lv 75-105"))
+        # NOVA-256 (Eddy, r47: "I see DT then seconds later the render"): no monogram, ever.
+        self.assertFalse([c for c in model(window)["cards"] if "mono" in c])
 
     def test_a_press_on_a_side_card_selects_it_and_the_deck_turns(self):
         world, window, _ = opened()
@@ -155,12 +155,13 @@ class Bosses(unittest.TestCase):
         with world.game, w4.quiet():
             window.Destroy()
         cleared = [c for c in self.previews(world)[closed:] if c[0] == "Clear" and c[1].startswith("dungeon_boss_")]
-        self.assertEqual(sorted(c[1] for c in cleared), ["dungeon_boss_%d" % i for i in (0, 1, 2, 5, 6)])
+        self.assertEqual(sorted(c[1] for c in cleared), ["dungeon_boss_%d" % i for i in (0, 1, 2, 3, 5, 6)],
+                         "every dungeon's boss preview (warmed ones too), each once")
 
-    def test_a_race_without_a_model_shows_the_monogram(self):
+    def test_a_race_without_a_model_shows_the_plain_card(self):
         world, window, _ = opened(preview=True, select_ok=False)
         self.assertEqual([c["view"] for c in model(window)["cards"]], [False] * 6)
-        self.assertEqual(card(window, 0)["mono"], "DT")
+        self.assertNotIn("mono", card(window, 0))
 
     def test_a_dungeon_without_a_boss_selects_no_model(self):
         # Race 0 is the warrior for the client now (r39), no longer "no model".
@@ -220,9 +221,10 @@ class Bosses(unittest.TestCase):
 
 
 class BackgroundBosses(unittest.TestCase):
-    """NOVA-256: no boss is made in the open's frame. The previews are background previews
+    """NOVA-256 on a client without SetWarm (r47): no boss is made in the open's frame. The previews are background previews
     (modelpreview.SetBackground): Select answers at once, the client makes each model over the
-    next steps, front card first, and a card shows its monogram until its own boss is made."""
+    next steps, front card first, and a card shows its plain background until its own boss is
+    made, which then fades in."""
 
     def previews(self, world):
         return world.game.modules["modelpreview"]
@@ -237,17 +239,17 @@ class BackgroundBosses(unittest.TestCase):
         return dict((c["idx"], c["view"]) for c in model(window)["cards"])
 
     def test_every_boss_is_asked_as_a_background_preview_and_none_shows_at_the_open(self):
-        world, window, _ = opened(preview="background")
+        world, window, _ = opened(preview="background-cold")
         calls = self.previews(world).calls
         selects = [c[1] for c in calls if c[0] == "Select"]
         self.assertEqual(selects, ["dungeon_boss_%d" % i for i in (0, 1, 6, 2, 5)], "the front card first, then the nearest")
         for name in selects:
             self.assertLess(calls.index(("SetBackground", name, True)), calls.index(("Select", name, window.nui_race(int(name[-1])))))
-        self.assertEqual(self.views(window), {0: False, 1: False, 2: False, 3: False, 5: False, 6: False}, "monograms while they load")
+        self.assertEqual(self.views(window), {0: False, 1: False, 2: False, 3: False, 5: False, 6: False}, "plain cards while they load")
         self.assertGreater(model(window)["previews_check"], 0.0)
 
     def test_each_card_shows_its_boss_once_the_client_made_it(self):
-        world, window, _ = opened(preview="background")
+        world, window, _ = opened(preview="background-cold")
         mp = self.previews(world)
         self.assertEqual(mp.step(), "dungeon_boss_0")
         self.poll(world, window)
@@ -262,7 +264,7 @@ class BackgroundBosses(unittest.TestCase):
         self.assertEqual(len(selects), 5, "a boss is asked for once")
 
     def test_a_close_keeps_the_bosses_and_a_reopen_shows_them_at_once(self):
-        world, window, _ = opened(preview="background")
+        world, window, _ = opened(preview="background-cold")
         mp = self.previews(world)
         while mp.step():
             pass
@@ -278,7 +280,7 @@ class BackgroundBosses(unittest.TestCase):
         self.assertEqual(model(window)["previews_check"], 0.0)
 
     def test_a_boss_still_loading_at_the_close_comes_at_the_next_open(self):
-        world, window, _ = opened(preview="background")
+        world, window, _ = opened(preview="background-cold")
         mp = self.previews(world)
         mp.step()
         with world.game, w4.quiet():
@@ -294,7 +296,7 @@ class BackgroundBosses(unittest.TestCase):
         self.assertEqual(self.views(window), {0: True, 1: True, 2: True, 3: False, 5: True, 6: True})
 
     def test_a_card_never_shows_another_dungeon_s_boss(self):
-        world, window, _ = opened(preview="background")
+        world, window, _ = opened(preview="background-cold")
         mp = self.previews(world)
         while mp.step():
             pass
@@ -304,8 +306,8 @@ class BackgroundBosses(unittest.TestCase):
         self.assertFalse(views[2], "a model of another race is never shown")
         self.assertTrue(views[0])
 
-    def test_a_boss_that_makes_no_model_keeps_the_monogram_and_is_not_asked_again(self):
-        world = dts.World(True, preview="background")
+    def test_a_boss_that_makes_no_model_keeps_the_plain_card_and_is_not_asked_again(self):
+        world = dts.World(True, preview="background-cold")
         world.rank()
         window = world.timer()
         world.game.modules["modelpreview"].fail.add(window.nui_race(1))
@@ -317,26 +319,26 @@ class BackgroundBosses(unittest.TestCase):
             pass
         self.poll(world, window)
         self.assertEqual(self.views(window), {0: True, 1: False, 2: True, 3: False, 5: True, 6: True})
-        self.assertTrue(card(window, 1)["mono"], "the card shows its monogram")
+        self.assertNotIn("mono", card(window, 1))
         press(world, window, "arrow_press", "next", 0)
         self.assertEqual(len([c for c in mp.calls if c[0] == "Select" and c[1] == "dungeon_boss_1"]), 1)
 
     def test_a_turn_brings_in_a_card_whose_boss_loads_meanwhile(self):
-        world, window, _ = opened(preview="background")
+        world, window, _ = opened(preview="background-cold")
         mp = self.previews(world)
         while mp.step():
             pass
         self.poll(world, window)
         press(world, window, "arrow_press", "next", 0)
         self.assertEqual(card(window, 3)["slot"], "r2")
-        self.assertFalse(card(window, 3)["view"], "its monogram while it loads")
+        self.assertFalse(card(window, 3)["view"], "its plain card while it loads")
         self.assertTrue(card(window, 1)["view"])
         self.assertEqual(mp.step(), "dungeon_boss_3")
         self.poll(world, window)
         self.assertTrue(card(window, 3)["view"])
 
     def test_the_board_is_loaded_with_the_window_and_kept_hidden_and_empty(self):
-        world = dts.World(True, preview="background")
+        world = dts.World(True, preview="background-cold")
         world.rank()
         window = world.timer()
         kept = window.demand.kept()
@@ -360,7 +362,7 @@ class BackgroundBosses(unittest.TestCase):
 
     def test_hide_before_init_and_destroy_twice_survive(self):
         # ui.Window.__init__ calls Hide before __init__ has set anything (the r34 trap).
-        world = dts.World(True, preview="background")
+        world = dts.World(True, preview="background-cold")
         with world.game:
             import nui_dungeon_timer
             bare = nui_dungeon_timer.TimerWindow.__new__(nui_dungeon_timer.TimerWindow)
@@ -368,13 +370,99 @@ class BackgroundBosses(unittest.TestCase):
             bare._clear_previews()
 
     def test_a_late_look_while_hidden_runs_no_clock(self):
-        world, window, _ = opened(preview="background")
+        world, window, _ = opened(preview="background-cold")
         board = w4.board(window)
         with world.game, w4.quiet():
             w4.press(window, "close_press", 0)
             board.fire("previews_ready")
         self.assertEqual(board.model["previews_check"], 0.0)
         self.assertEqual(window._state["previews_check"], 0.0)
+
+
+class WarmBosses(unittest.TestCase):
+    """NOVA-256 (Eddy, r47): the real boss on every card the first time the window opens and on
+    every deck turn. Every dungeon's boss is warmed (modelpreview.SetWarm) when the window is made:
+    the client makes them in the background, hidden, once the game phase settles. A boss not ready
+    yet shows the plain card, then fades in (the card's fade)."""
+
+    def made(self):
+        world = dts.World(True, preview="background")
+        world.rank()
+        window = world.timer()
+        world.game.state.now = 100.0
+        return world, window, world.game.modules["modelpreview"]
+
+    def open(self, world, window):
+        with world.game, w4.quiet():
+            window.Open()
+
+    def test_the_window_warms_every_dungeon_s_boss_when_it_is_made_front_first(self):
+        world, window, mp = self.made()
+        warmed = [c[1] for c in mp.calls if c[0] == "SetWarm" and c[2]]
+        self.assertEqual(warmed, ["dungeon_boss_%d" % i for i in (0, 1, 6, 2, 5, 3)], "the front card, then the nearest, every dungeon")
+        for name in warmed:
+            idx = int(name.rsplit("_", 1)[1])
+            race = window.nui_race(idx)
+            self.assertLess(mp.calls.index(("SetBackground", name, True)), mp.calls.index(("Select", name, race)))
+            self.assertLess(mp.calls.index(("SetWarm", name, True)), mp.calls.index(("Select", name, race)))
+        self.assertFalse([c for c in mp.calls if c[0] == "Show" and c[2]], "warmed hidden")
+
+    def test_warmed_bosses_show_at_the_first_open_with_no_fade(self):
+        world, window, mp = self.made()
+        while mp.step():
+            pass
+        self.open(world, window)
+        cards = dict((c["idx"], c) for c in model(window)["cards"])
+        self.assertEqual(dict((i, c["view"]) for i, c in cards.items()), {0: True, 1: True, 2: True, 3: False, 5: True, 6: True})
+        self.assertFalse([i for i, c in cards.items() if c["fade"]], "ready at the open: no fade")
+        self.assertEqual(model(window)["previews_check"], 0.0)
+        press(world, window, "arrow_press", "next", 0)
+        self.assertTrue(card(window, 3)["view"], "a deck turn brings in a warmed boss at once")
+        self.assertFalse(card(window, 3)["fade"])
+
+    def test_a_boss_made_after_its_card_showed_fades_in_once(self):
+        world, window, mp = self.made()
+        self.open(world, window)
+        self.assertFalse(card(window, 0)["view"])
+        self.assertFalse(card(window, 0)["fade"])
+        self.assertEqual(mp.step(), "dungeon_boss_0", "the card in front goes first")
+        with world.game, w4.quiet():
+            w4.fire(window, "previews_ready")
+        self.assertTrue(card(window, 0)["view"])
+        self.assertTrue(card(window, 0)["fade"], "it came late: it fades in")
+        with world.game, w4.quiet():
+            w4.press(window, "close_press", 0)
+            window.Open()
+        self.assertTrue(card(window, 0)["view"])
+        self.assertFalse(card(window, 0)["fade"], "ready at the next open: no fade")
+
+    def test_destroy_clears_every_dungeon_s_boss_shown_or_not(self):
+        world, window, mp = self.made()
+        while mp.step():
+            pass
+        self.open(world, window)
+        before = len(mp.calls)
+        with world.game, w4.quiet():
+            window.Destroy()
+        cleared = sorted(set(c[1] for c in mp.calls[before:] if c[0] == "Clear" and c[1].startswith("dungeon_boss_")))
+        self.assertEqual(cleared, ["dungeon_boss_%d" % i for i in (0, 1, 2, 3, 5, 6)], "the pool keeps them for the next phase's warm-up")
+
+    def test_a_client_without_set_warm_warms_nothing(self):
+        world = dts.World(True, preview=True)
+        world.rank()
+        world.timer()
+        self.assertFalse([c for c in world.game.modules["modelpreview"].calls if c[0] == "Select"], "the r47 client: none before the open")
+
+    def test_the_document_has_no_monogram_and_a_fade(self):
+        with open(os.path.join(WINDOWS, "dungeon-timer", "dungeon-timer.rml"), encoding="utf-8") as handle:
+            text = handle.read()
+        self.assertNotIn("dungeon-timer__mono", text)
+        self.assertIn('data-class-dungeon-timer__view--fade="c.fade"', text)
+        with open(os.path.join(WINDOWS, "dungeon-timer", "dungeon-timer.rcss"), encoding="utf-8") as handle:
+            sheet = handle.read()
+        self.assertNotIn("dungeon-timer__mono", sheet)
+        self.assertIn(".dungeon-timer__view--fade.nui-anim", sheet)
+        self.assertIn("0.15s", sheet)
 
 
 class Hiding(unittest.TestCase):

@@ -58,6 +58,8 @@ import localeInfo
 
 import playerSettingModule
 import interfaceModule
+import uiRefine
+import uiprogression
 import nui_windows
 
 import musicInfo
@@ -284,6 +286,11 @@ class GameWindow(ui.ScriptWindow):
 		skill.ClearSkillData()
 		wndMgr.Unlock()
 		mouseModule.mouseController.DeattachObject()
+
+		# NOVA-199: an open level-up question goes with the game.
+		if getattr(self, "levelUpQuestion", None):
+			self.levelUpQuestion.Close()
+			self.levelUpQuestion = None
 
 		if self.guildWarQuestionDialog:
 			self.guildWarQuestionDialog.Close()
@@ -1705,6 +1712,8 @@ class GameWindow(ui.ScriptWindow):
 					# MR-3: -- END OF -- Auto-deactivate auto potions before moving out
 					if chr.IsNPC(dstChrID):
 						net.SendGiveItemPacket(dstChrID, attachedInvenType, attachedItemSlotPos, attachedItemCount)
+						# NOVA-198: a blacksmith's refine, which the fast upgrade repeats.
+						uiRefine.FAST_REFINE.RecordNpc(dstChrID, attachedInvenType, attachedItemSlotPos, attachedItemCount)
 					else:
 						net.SendExchangeStartPacket(dstChrID)
 						net.SendExchangeItemAddPacket(attachedInvenType, attachedItemSlotPos, 0)
@@ -2366,6 +2375,11 @@ class GameWindow(ui.ScriptWindow):
 			"ClearBossInfo"			: self.__ClearBossInfo,
 			"AddBossInfo"			: self.__AddBossInfo,
 			"BossInfoLoadComplete"	: self.__BossInfoLoadComplete,
+
+			# NOVA-199, NOVA-200 (uiprogression.py): the checkpoint level-up's
+			# question and the anti-EXP switch's state.
+			"ConfirmLevelUp"		: self.__ConfirmLevelUp,
+			"AntiExpState"			: self.__AntiExpState,
 		}
 
 		self.serverCommander=stringCommander.Analyzer()
@@ -2373,6 +2387,17 @@ class GameWindow(ui.ScriptWindow):
 			self.serverCommander.SAFE_RegisterCallBack(
 				serverCommandItem[0], serverCommandItem[1]
 			)
+
+	## NOVA-199: the server holds a checkpoint level-up and asks first.
+	def __ConfirmLevelUp(self):
+		if not getattr(self, "levelUpQuestion", None):
+			self.levelUpQuestion = uiprogression.LevelUpQuestion()
+		self.levelUpQuestion.Open()
+
+	## NOVA-200: the anti-EXP switch, at login and at each change.
+	def __AntiExpState(self, state):
+		interface = getattr(self, "interface", None)
+		uiprogression.set_anti_exp(state, getattr(interface, "wndTaskBar", None))
 
 	def BINARY_ServerCommand_Run(self, line):
 		#dbg.TraceError(line)
@@ -2430,6 +2455,9 @@ class GameWindow(ui.ScriptWindow):
 	def RefineSuceededMessage(self, arg = None):
 		snd.PlaySound("sound/ui/make_soket.wav")
 		self.PopupMessage(localeInfo.REFINE_SUCCESS)
+		# NOVA-198: the fast upgrade's next step.
+		if self.interface:
+			self.interface.OnRefineResult(True)
 
 	def RefineFailedMessage(self, arg = None):
 		snd.PlaySound("sound/ui/jaeryun_fail.wav")
@@ -2447,6 +2475,9 @@ class GameWindow(ui.ScriptWindow):
 			self.PopupMessage(localeInfo.REFINE_FAILURE_GRADE_DOWN)
 		else:
 			self.PopupMessage(localeInfo.REFINE_FAILURE_DEL_ITEM)
+		# NOVA-198: a failure ends the fast upgrade.
+		if self.interface:
+			self.interface.OnRefineResult(False)
 	# MR-15: -- END OF -- Update refine messages
 
 	def CommandCloseSafebox(self):

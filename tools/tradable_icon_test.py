@@ -341,6 +341,7 @@ class OtherLocks(unittest.TestCase):
             def __init__(self):
                 self.probText, self.costText, self.itemImage = Shown(), Shown(), Shown()
                 self.slotList = [Shown(), Shown(), Shown()]
+                self.fastRefineCheck = Shown()   # NOVA-198's box
                 self.toolTip = ext.DialogToolTip()
                 self.toolTip.AddRefineItemData = lambda *args: None
                 self.lockedItems = []
@@ -356,6 +357,7 @@ class OtherLocks(unittest.TestCase):
 
             def Hide(self):
                 pass
+        namespace["FAST_REFINE"] = Shown()   # NOVA-198's record: nothing recorded
         dialog = ext.compiled("uirefine.py", "RefineDialogNew", source_names, namespace, base=Base)()
         dialog.SetInven(world.inventory, world.extra)
         world.inventory.BindWindow(dialog)

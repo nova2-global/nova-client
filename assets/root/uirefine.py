@@ -9,6 +9,110 @@ import localeInfo
 import uiCommon
 import constInfo
 
+## NOVA-198, fast upgrade (OLD uiRefine.py:262-277, 636-675, game.py:3315-3321):
+## a refine from +8 makes +9 and ends the chain (the grade is the vnum's last
+## digit: the client's Python reads no refine level or next grade).
+FAST_REFINE_STOP_GRADE = 9
+## The refine types the server opens the dialog with when the item was given
+## to a blacksmith (REFINE_TYPE_NORMAL, REFINE_TYPE_MONEY_ONLY); a scroll
+## opens it with any other.
+FAST_REFINE_NPC_TYPES = (0, 4)
+
+class FastRefine(object):
+	"""The fast upgrade box's state (kept for the session) and the request
+	that opened the refine dialog, to send again after a success.
+
+	The request is a scroll used on the item (uiinventory.RefineItem records
+	it with itself as the sender, so its private shop guard and CanRefine
+	still apply) or the item given to a blacksmith (game.py). The server's
+	answer opens the dialog (OnOpen); Accept sends the refine packet as
+	always (OnAccept); on RefineSuceeded with the box checked the request
+	goes again (SendAgain) and the server answers with the next step, which
+	needs its own Accept. Anything else forgets the request: a failure, +9, a
+	scroll gone, a cancel or close, a dialog opened for another item."""
+
+	SCROLL = "scroll"
+	NPC = "npc"
+
+	## The request's state: sent, waiting for the dialog; the dialog shows
+	## it; accepted, waiting for the result.
+	REQUESTED, OPEN, AWAITING = list(range(3))
+
+	def __init__(self):
+		self.enabled = False
+		self.Forget()
+
+	def Forget(self):
+		self.kind = None
+		self.state = None
+		self.target = -1
+		self.targetVnum = 0
+		self.scroll = None	# (cell, vnum)
+		self.npc = None		# (vid, window, cell, count)
+		self.send = None
+
+	def RecordScroll(self, scrollPos, scrollVnum, targetPos, send):
+		self.Forget()
+		self.kind = self.SCROLL
+		self.scroll = (scrollPos, scrollVnum)
+		self.target = targetPos
+		self.send = send
+		self.state = self.REQUESTED
+
+	def RecordNpc(self, vid, window, cell, count):
+		self.Forget()
+		## Only an inventory item refines (the server's RefineInformation).
+		if window != player.INVENTORY:
+			return
+
+		self.kind = self.NPC
+		self.npc = (vid, window, cell, count)
+		self.target = cell
+		self.state = self.REQUESTED
+
+	def OnOpen(self, targetPos, type):
+		viaNpc = type in FAST_REFINE_NPC_TYPES
+		if self.state != self.REQUESTED or targetPos != self.target or viaNpc != (self.kind == self.NPC):
+			self.Forget()
+			return
+
+		self.state = self.OPEN
+		self.targetVnum = player.GetItemIndex(targetPos)
+
+	def OnAccept(self):
+		if self.state == self.OPEN:
+			self.state = self.AWAITING
+
+	def IsAwaiting(self):
+		return self.state == self.AWAITING
+
+	def CanGoOn(self):
+		## RefineSuceeded comes before the item's cell is replaced: the cell
+		## still holds the refined item, its old vnum.
+		if player.GetItemIndex(self.target) != self.targetVnum:
+			return False
+
+		if self.targetVnum % 10 + 1 >= FAST_REFINE_STOP_GRADE:
+			return False
+
+		if self.kind == self.SCROLL:
+			(scrollPos, scrollVnum) = self.scroll
+			## The scroll's count is already lowered: the last one leaves the cell empty.
+			if player.GetItemIndex(scrollPos) != scrollVnum or player.GetItemCount(scrollPos) <= 0:
+				return False
+
+		return True
+
+	def SendAgain(self):
+		kind, scroll, npc, target, send = self.kind, self.scroll, self.npc, self.target, self.send
+		self.state = self.REQUESTED
+		if kind == self.SCROLL:
+			send(scroll[0], target)
+		elif kind == self.NPC:
+			net.SendGiveItemPacket(*npc)
+
+FAST_REFINE = FastRefine()
+
 class RefineDialog(ui.ScriptWindow):
 	makeSocketSuccessPercentage = ( 100, 33, 20, 15, 10, 5, 0 )
 	upgradeStoneSuccessPercentage = ( 30, 29, 28, 27, 26, 25, 24, 23, 22 )
@@ -188,6 +292,11 @@ class RefineDialog(ui.ScriptWindow):
 
 class RefineDialogNew(ui.ScriptWindow):
 
+	## NOVA-198: the fast upgrade box's row, between the materials and the
+	## cost (whose bottom-aligned y is 64): the board grows by it.
+	FAST_REFINE_ROW = 20
+	FAST_REFINE_Y = 84
+
 	def __init__(self):
 		ui.ScriptWindow.__init__(self)
 		self.__Initialize()
@@ -252,6 +361,20 @@ class RefineDialogNew(ui.ScriptWindow):
 		self.itemImage = itemImage
 
 		self.titleBar.SetCloseEvent(ui.__mem_func__(self.CancelRefine))
+
+		## NOVA-198: the fast upgrade box, centered above the cost (OLD put it
+		## at the bottom; UpdateDialog makes its row).
+		checkBox = ui.CheckBox()
+		checkBox.SetParent(self)
+		checkBox.SetTextInfo(localeInfo.REFINE_FAST_UPGRADE)
+		checkBox.SetPosition(0, self.FAST_REFINE_Y)
+		checkBox.SetWindowHorizontalAlignCenter()
+		checkBox.SetWindowVerticalAlignBottom()
+		checkBox.SetEvent(ui.__mem_func__(self.OnToggleFastRefine), "ON_CHECK")
+		checkBox.SetEvent(ui.__mem_func__(self.OnToggleFastRefine), "ON_UNCHECK")
+		checkBox.Show()
+		self.fastRefineCheck = checkBox
+
 		self.isLoaded = True
 
 	def __del__(self):
@@ -295,6 +418,8 @@ class RefineDialogNew(ui.ScriptWindow):
 		self.successPercentage = None
 		self.slotList = []
 		self.children = []
+		self.fastRefineCheck = None
+		FAST_REFINE.Forget()
 
 	def Open(self, targetItemPos, nextGradeItemVnum, cost, prob, type):
 		if False == self.isLoaded:
@@ -338,6 +463,9 @@ class RefineDialogNew(ui.ScriptWindow):
 		self.dialogHeight = self.toolTip.GetHeight() + 46
 		self.UpdateDialog()
 
+		FAST_REFINE.OnOpen(targetItemPos, type)
+		self.fastRefineCheck.SetCheckStatus(FAST_REFINE.enabled)
+
 		self.SetTop()
 		self.Show()
 
@@ -353,6 +481,30 @@ class RefineDialogNew(ui.ScriptWindow):
 		self.Hide()
 
 		self.__ReleaseCells()
+
+		## An accepted step keeps its request for the result; any other close forgets it.
+		if not FAST_REFINE.IsAwaiting():
+			FAST_REFINE.Forget()
+
+	## NOVA-198: the fast upgrade box's state, kept for the session.
+	def OnToggleFastRefine(self):
+		FAST_REFINE.enabled = self.fastRefineCheck.GetCheckStatus()
+
+	## NOVA-198: RefineSuceeded or RefineFailed (game.py, through the
+	## Interface). Without an accepted fast upgrade step it does nothing, as
+	## before; with one, a success with the box checked sends the request
+	## again, and anything else ends the chain.
+	def OnRefineResult(self, succeeded):
+		if not FAST_REFINE.IsAwaiting():
+			return
+
+		if succeeded and FAST_REFINE.enabled and FAST_REFINE.CanGoOn():
+			FAST_REFINE.SendAgain()
+			return
+
+		FAST_REFINE.Forget()
+		if self.IsShow():
+			self.Close()
 
 	## The tradable icon (NOVA-13; OLD uiRefine.py:437-438, 556-558, 679-705): the cells of the items the
 	## dialog works on take no mouse event while it shows.
@@ -432,6 +584,7 @@ class RefineDialogNew(ui.ScriptWindow):
 		# MR-15: -- END OF -- Adjust button padding for refine window
 
 		newHeight -= 8
+		newHeight += self.FAST_REFINE_ROW
 
 		if app.IsRTL():
 			self.board.SetPosition(newWidth, 0)
@@ -477,6 +630,7 @@ class RefineDialogNew(ui.ScriptWindow):
 
 	def Accept(self):
 		net.SendRefinePacket(self.targetItemPos, self.type)
+		FAST_REFINE.OnAccept()
 		self.Close()
 
 	def CancelRefine(self):

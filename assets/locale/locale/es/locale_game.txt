@@ -1297,3 +1297,164 @@ COSTUME_PREVIEW_HINT	Mantén %s: ver en tu personaje
 DESTROY_ITEM_WARNING	¿Estás seguro de que quieres destruir este artículo de forma permanente?
 ITEM_SPLIT_ALL	Dividir todo
 SHOP_MARK_SELL_HINT	Tab + clic: marcar para vender
+CONFIRM_LEVEL_UP_QUESTION	¿Quieres alcanzar el nivel %d? Las mazmorras con nivel máximo podrían cerrarse para ti.
+ANTI_EXP_FREEZE_HINT	Clic: congelar EXP
+ANTI_EXP_FROZEN_HINT	EXP congelada. Clic: descongelar
+DETAILS_TITLE	Detalles
+DETAILS_CATE_1	Daño/Defensa
+DETAILS_1	Fza. c. mediohumanos
+DETAILS_TOOLTIP_1	Fuerza contra mediohumanos: provoca más daños a mediohumanos.
+DETAILS_2	Res. a mediohumanos
+DETAILS_TOOLTIP_2	Resistencia contra mediohumanos: reduce el daño que se sufre de mediohumanos.
+DETAILS_3	Fuerza contra orcos
+DETAILS_TOOLTIP_3	Fuerza contra orcos: causa más daño a orcos.
+DETAILS_4	Fza. c. muertos viv.
+DETAILS_TOOLTIP_4	Fuerza contra muertos vivientes: causa más daño a muertos vivientes.
+DETAILS_5	Fuerza c. monstruos
+DETAILS_TOOLTIP_5	Fuerza contra monstruos: causa más daño a monstruos.
+DETAILS_ELEMENTAL	Fuerte vs Elemental
+DETAILS_TOOLTIP_ELEMENTAL	Fuerte contra elementales: inflige un daño mayor a los elementales.
+DETAILS_BOSS	Fuerte contra jefes
+DETAILS_TOOLTIP_BOSS	Fuerte contra jefes: inflige más daño a los jefes.
+DETAILS_STONE	Fuerte contra piedras
+DETAILS_TOOLTIP_METIN	Fuerte contra Piedra Metin: inflige más daño a las piedras metin.
+DETAILS_7	Fuerza c. animales
+DETAILS_TOOLTIP_7	Fuerza contra animales: causa más daño a animales salvajes.
+DETAILS_8	Fuerza c. esotéricos
+DETAILS_TOOLTIP_8	Fuerza contra esotéricos: causa más daño a esotéricos.
+DETAILS_9	Fuerza c. demonios
+DETAILS_TOOLTIP_9	Fuerza contra demonios: causa más daño a demonios.
+DETAILS_12	Valor de ataque
+DETAILS_TOOLTIP_12	Aumenta tu valor de ataque.
+DETAILS_13	Valor de defensa
+DETAILS_TOOLTIP_13	Aumenta tu valor de defensa.
+DETAILS_14	Daño medio
+DETAILS_TOOLTIP_14	Aumenta el daño medio que provocas en tus enemigos al atacar.
+DETAILS_15	Res. a daño medio
+DETAILS_TOOLTIP_15	Resistencia contra daño medio: reduce el daño que sufres con un ataque.
+DETAILS_16	Daño de habilidad
+DETAILS_TOOLTIP_16	Aumenta el daño que provoca una habilidad.
+DETAILS_17	Resist. daño de habilidad
+DETAILS_TOOLTIP_17	Resistencia contra daño de habilidad: reduce el daño que te provoca una habilidad.
+DETAILS_18	At. mág./cpo. a cpo.
+DETAILS_TOOLTIP_18	Aumentan tanto el valor de ataque físico como el mágico.
+DETAILS_19	Ataque mágico
+DETAILS_TOOLTIP_19	Aumenta el daño que provocas a los enemigos con un ataque mágico.
+DETAILS_20	Prob. golpe crítico
+DETAILS_TOOLTIP_20	Aumenta la probabilidad de lograr un golpe crítico.
+DETAILS_21	Golpe perforador
+DETAILS_TOOLTIP_21	Probabilidad de golpe penetrante: aumenta la probabilidad de provocar un golpe penetrante.
+DETAILS_22	Res. a golpe crítico
+DETAILS_TOOLTIP_22	Resistencia contra golpe crítico: reduce el daño que provoca un golpe crítico.
+DETAILS_23	Res. a golpe perf.
+DETAILS_TOOLTIP_23	Resistencia contra golpe penetrante: reduce el daño que provoca un golpe penetrante.
+DETAILS_CATE_2	Boni. elementales
+DETAILS_76	Resistencia a magia
+DETAILS_TOOLTIP_76	Reduce el daño que sufres por un ataque mágico.
+DETAILS_24	Res. a relámpago
+DETAILS_TOOLTIP_24	Reduce el daño que se sufre de determinados monstruos.
+DETAILS_25	Resistencia a hielo
+DETAILS_TOOLTIP_25	Reduce el daño que se sufre de determinados monstruos.
+DETAILS_26	Res. a oscuridad
+DETAILS_TOOLTIP_26	Resistencia contra la oscuridad: reduce el daño que se sufre de determinados monstruos.
+DETAILS_27	Resistencia a fuego
+DETAILS_TOOLTIP_27	Reduce el daño que se sufre de determinados monstruos.
+DETAILS_28	Resistencia a viento
+DETAILS_TOOLTIP_28	Reduce el daño que se sufre de determinados monstruos.
+DETAILS_29	Resistencia a tierra
+DETAILS_TOOLTIP_29	Reduce el daño que se sufre de determinados monstruos.
+DETAILS_77	Rompemagia
+DETAILS_TOOLTIP_77	Reduce la resistencia a magia de tu enemigo.
+DETAILS_30	Poder del relámpago
+DETAILS_TOOLTIP_30	Aumenta el daño que causas gracias al poder del relámpago.
+DETAILS_31	Poder del hielo
+DETAILS_TOOLTIP_31	Aumenta el daño que causas gracias al poder del hielo.
+DETAILS_32	Poder de oscuridad
+DETAILS_TOOLTIP_32	Aumenta el daño que causas gracias al poder de la oscuridad.
+DETAILS_33	Poder del fuego
+DETAILS_TOOLTIP_33	Aumenta el daño que causas gracias al poder del fuego.
+DETAILS_34	Poder del viento
+DETAILS_TOOLTIP_34	Aumenta el daño que causas gracias al poder del viento.
+DETAILS_35	Poder de la tierra
+DETAILS_TOOLTIP_35	Aumenta el daño que causas gracias al poder de la tierra.
+DETAILS_CATE_3	Boni. de clase
+DETAILS_36	Fza. c. Guerreros
+DETAILS_TOOLTIP_36	Fuerza contra Guerreros: causa más daño a Guerreros.
+DETAILS_37	Fuerza contra Ninjas
+DETAILS_TOOLTIP_37	Fuerza contra Ninjas: causa más daño a Ninjas.
+DETAILS_38	Fuerza contra Suras
+DETAILS_TOOLTIP_38	Fuerza contra Suras: causa más daño a Suras.
+DETAILS_39	Fuerza c. Chamanes
+DETAILS_TOOLTIP_39	Fuerza contra Chamanes: causa más daño a Chamanes.
+DETAILS_41	Defensa c. Guerreros
+DETAILS_TOOLTIP_41	Probabilidad de defensa contra ataques de Guerreros: reduce el daño que se sufre por parte de Guerreros.
+DETAILS_42	Defensa c. Ninjas
+DETAILS_TOOLTIP_42	Probabilidad de defensa contra ataques de Ninjas: reduce el daño que se sufre por parte de Ninjas.
+DETAILS_43	Defensa contra Suras
+DETAILS_TOOLTIP_43	Probabilidad de defensa contra ataques de Suras: reduce el daño que se sufre por parte de Suras.
+DETAILS_44	Defensa c. Chamanes
+DETAILS_TOOLTIP_44	Probabilidad de defensa contra ataques de Chamanes: reduce el daño que se sufre por parte de Chamanes.
+DETAILS_CATE_4	Boni. de arma
+DETAILS_46	Defensa c. espadas
+DETAILS_TOOLTIP_46	Reduce el daño que causa una espada.
+DETAILS_47	Defensa c. dos manos
+DETAILS_TOOLTIP_47	Reduce el daño que causa un arma a dos manos.
+DETAILS_48	Defensa contra dagas
+DETAILS_TOOLTIP_48	Reduce el daño que causa una daga.
+DETAILS_50	Defensa c. campanas
+DETAILS_TOOLTIP_50	Reduce el daño que provoca una campana.
+DETAILS_51	Defensa c. abanicos
+DETAILS_TOOLTIP_51	Reduce el daño que provoca un abanico.
+DETAILS_52	Defensa c. flechas
+DETAILS_TOOLTIP_52	Reduce el daño que provocan un arco y flechas.
+DETAILS_CATE_5	Otras bonificaciones
+DETAILS_53	Probabilidad desmayo
+DETAILS_TOOLTIP_53	Aumenta la probabilidad de hacer desmayar a un enemigo.
+DETAILS_54	Probabilidad retardo
+DETAILS_TOOLTIP_54	Aumenta la probabilidad de ralentizar a un enemigo.
+DETAILS_55	Prob. envenenamiento
+DETAILS_TOOLTIP_55	Aumenta la probabilidad de envenenar a un enemigo.
+DETAILS_56	Resistencia a veneno
+DETAILS_TOOLTIP_56	Reduce el daño que provoca el veneno.
+DETAILS_59	Robo de vida
+DETAILS_TOOLTIP_59	Absorbe HP de tu enemigo cuando lo golpeas.
+DETAILS_60	Robo de SP
+DETAILS_TOOLTIP_60	Absorbe SP de tu enemigo cuando lo golpeas.
+DETAILS_61	Restauración de HP
+DETAILS_TOOLTIP_61	Acelera la regeneración de tus puntos de vida.
+DETAILS_62	Restauración de SP
+DETAILS_TOOLTIP_62	Acelera la regeneración de tus puntos de maná.
+DETAILS_63	Bloquear ataque
+DETAILS_TOOLTIP_63	Probabilidad de bloquear un ataque cuerpo a cuerpo: aumenta la probabilidad de evadir un ataque cuerpo a cuerpo.
+DETAILS_64	Evasión de flechas
+DETAILS_TOOLTIP_64	Probabilidad de evitar flechas: aumenta la probabilidad de evadir el ataque con flechas o a distancia de un monstruo.
+DETAILS_65	Reflec. cpo. a cpo.
+DETAILS_TOOLTIP_65	Probabilidad de reflectar golpes cuerpo a cuerpo: se devuelve una parte del daño cuerpo a cuerpo al enemigo.
+DETAILS_66	Restau. HP al matar
+DETAILS_TOOLTIP_66	Restauración de HP al matar: cuando matas a un enemigo, aumentan tus puntos de vida.
+DETAILS_67	Restau. SP al matar
+DETAILS_TOOLTIP_67	Restauración de SP al matar: cuando matas a un enemigo, aumentan tus puntos de maná.
+DETAILS_68	EXP doble
+DETAILS_TOOLTIP_68	Probabilidad de obtener experiencia doble: aumenta la probabilidad de conseguir una bonificación de EXP cuando derrotas a tu enemigo.
+DETAILS_69	Yang doble
+DETAILS_TOOLTIP_69	Probabilidad de obtener el doble de Yang: aumenta tu probabilidad de recibir la cantidad doble de maná.
+DETAILS_70	Probabilidad botín
+DETAILS_TOOLTIP_70	Probabilidad de obtener objetos: aumenta la probabilidad de conseguir el doble de objetos.
+DETAILS_CATE_6	Boni. especiales
+DETAILS_71	Valor de ataque
+DETAILS_TOOLTIP_71	Aumenta tu valor de ataque.
+DETAILS_72	Defensa
+DETAILS_TOOLTIP_72	Aumenta tu valor de defensa.
+DETAILS_73	EXP
+DETAILS_TOOLTIP_73	Incrementa la ganancia de experiencia.
+DETAILS_74	Probabilidad botín
+DETAILS_TOOLTIP_74	Probabilidad de botín de objetos: aumenta la probabilidad de conseguir objetos.
+DETAILS_75	Yang doble
+DETAILS_TOOLTIP_75	Probabilidad de botín de Yang: aumenta tu probabilidad de conseguir más Yang.
+STAT_PICK_TITLE_CON	Vitalidad
+STAT_PICK_TITLE_INT	Inteligencia
+STAT_PICK_TITLE_STR	Fuerza
+STAT_PICK_TITLE_DEX	Destreza
+SKILL_MAX_UP_HINT	Shift + click: subir hasta Master
+REMOVE_AFFECT_QUESTION	¿Quieres desactivar %s?
+REFINE_FAST_UPGRADE	Mejora rápida

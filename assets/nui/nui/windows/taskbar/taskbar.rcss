@@ -383,6 +383,37 @@ progress.taskbar-orb
 .taskbar-orb--2 { left: 26dp; }
 .taskbar-orb--3 { left: 47dp; }
 .taskbar-orb--4 { left: 68dp; }
+/* NOVA-200: frozen EXP (anti-EXP on). The orbs' liquid and rim turn blue, a
+   frost wash lies over the well, and the percent follows; the press that
+   switches it is on the whole well. Skins that draw their own orbs keep the
+   wash (skins/classic sizes it to the legacy points). */
+.taskbar-exp.is-frozen
+{
+	border-color: var(--gauge-blue);
+}
+.taskbar-exp.is-frozen .taskbar-orb-glass
+{
+	border-color: var(--gauge-blue);
+	decorator: radial-gradient(circle at 38% 26%, var(--sheen) 0%, var(--sheen-clear) 38%),
+		linear-gradient(0deg, var(--gauge-blue) 0%, var(--gauge-blue) var(--orb-level), var(--sheen-clear) var(--orb-level), var(--sheen-clear) 100%);
+}
+.taskbar-exp.is-frozen .taskbar-exp__pct
+{
+	color: var(--gauge-blue);
+}
+.taskbar-exp__frost
+{
+	display: block;
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+	right: 3dp;
+	bottom: 3dp;
+	border-radius: 9999dp;
+	background-color: var(--gauge-blue);
+	opacity: 0.18;
+	pointer-events: none;
+}
 /* The EXP percent beside the orbs, where there is room (below). */
 .taskbar-exp__pct
 {

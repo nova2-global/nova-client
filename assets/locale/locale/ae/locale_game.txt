@@ -1389,3 +1389,164 @@ COSTUME_PREVIEW_HINT	اضغط %s: معاينة على شخصيتك
 DESTROY_ITEM_WARNING	هل أنت متأكد من أنك تريد تدمير هذا العنصر بشكل دائم؟
 ITEM_SPLIT_ALL	تقسيم الكل
 SHOP_MARK_SELL_HINT	Tab + نقرة: تحديد للبيع
+CONFIRM_LEVEL_UP_QUESTION	هل تريد الوصول إلى المستوى %d؟ قد تُغلق أمامك الزنزانات ذات الحد الأقصى للمستوى.
+ANTI_EXP_FREEZE_HINT	انقر: تجميد الخبرة
+ANTI_EXP_FROZEN_HINT	الخبرة مجمدة. انقر: إلغاء التجميد
+DETAILS_TITLE	التفاصيل
+DETAILS_CATE_1	ضرر/دفاع
+DETAILS_1	قوي ضد نصف البشر
+DETAILS_TOOLTIP_1	قوي ضد نصف البشر: تلحق ضرر أكبر بنصف البشر.
+DETAILS_2	مقاومة نصف البشر
+DETAILS_TOOLTIP_2	مقاومة نصف البشر: يقلل من الضرر الذي تتعرض له عند مهاجمتك من نصف البشر.
+DETAILS_3	قوي ضد الغيلان
+DETAILS_TOOLTIP_3	قوي ضد الغيلان: يرفع من قيمة الضر ضد الغيلان.
+DETAILS_4	قوي ضد الزومبي
+DETAILS_TOOLTIP_4	قوي ضد الزومبي: يرفع من قيمة الضر ضد الزومبي.
+DETAILS_5	قوي ضد الوحوش
+DETAILS_TOOLTIP_5	قوي ضد الوحوش: يرفع من قيمة الضر ضد الوحوش.
+DETAILS_ELEMENTAL	Strong vs Elementals
+DETAILS_TOOLTIP_ELEMENTAL	Strong against Elementals: Deals heavier damage to elementals.
+DETAILS_BOSS	Strong vs Bosses
+DETAILS_TOOLTIP_BOSS	Strong against Bosses: Deals heavier damage to bosses.
+DETAILS_STONE	Strong vs Stones
+DETAILS_TOOLTIP_METIN	Strong against Metin Stone: Deals heavier damage to metin stones.
+DETAILS_7	قوي ضد الحيوانات
+DETAILS_TOOLTIP_7	قوي ضد الحيوانات: يرفع من قيمة الضر ضد الحيوانات.
+DETAILS_8	ق.ض. الطائفة السرية
+DETAILS_TOOLTIP_8	قوي ضد الطائفة السرية: يرفع من قيمة الضر ضد الطائفة السرية.
+DETAILS_9	قوي ضد الشيطان
+DETAILS_TOOLTIP_9	قوي ضد الشيطان: يرفع من قيمة الضر ضد الشياطين.
+DETAILS_12	قيمة الهجوم
+DETAILS_TOOLTIP_12	يرفع قيمة الهجوم الخاصة بك.
+DETAILS_13	قيمة الدفاع
+DETAILS_TOOLTIP_13	يرفع من قيمة الدفاع الخاصة بك.
+DETAILS_14	معدل الضرر
+DETAILS_TOOLTIP_14	يرفع من قيمة معدل الضرر الذي تسببه أثناء الهجوم.
+DETAILS_15	مقاومة معدل الضرر
+DETAILS_TOOLTIP_15	مقاومة معدل الضرر: يقلل من قيمة معدل الضرر الذي تتعرض له أثناء الهجوم.
+DETAILS_16	أضرار المهارة
+DETAILS_TOOLTIP_16	يرفع من قيمة أضرار المهارة.
+DETAILS_17	مقاومة المهارة.
+DETAILS_TOOLTIP_17	مقاومة أضرار المهارة: يقلل من قيمة أضرار المهارة التي تتعرض لها عند الهجوم.
+DETAILS_18	هجوم سحري/جسدي
+DETAILS_TOOLTIP_18	يرفع من قيمة الهجوم الجسدي والسحري.
+DETAILS_19	هجوم سحري
+DETAILS_TOOLTIP_19	يرفع من قيمة الضرر الذي تلحقه لخصومك عند إستخدام هجوم سحري.
+DETAILS_20	فرصة الضربة الحرجة
+DETAILS_TOOLTIP_20	يرفع من فرص تحقيق إصابة حرجة.
+DETAILS_21	ضربة خارقة
+DETAILS_TOOLTIP_21	فرصة تحقيق ضربة خارقة: يرفع من فرص تحقيق ضربة خارقة.
+DETAILS_22	م. الضربات الحرجة
+DETAILS_TOOLTIP_22	مقاومة الإصابة الحرجة: يقلل من الضرر الذي تتعرض له عند تعرضك لإصابة حرجة.
+DETAILS_23	م. الضربات الخارقة
+DETAILS_TOOLTIP_23	مقاومة الضربة الخارقة: يقلل من الضرر الذي تتعرض له عند إصابتك بضربة خارقة.
+DETAILS_CATE_2	علاوات العناصر
+DETAILS_76	مقاومة السحر
+DETAILS_TOOLTIP_76	يقلل من الضرر الذي يلحقه الخصم عند تعرضك لهجوم سحري.
+DETAILS_24	مقاومة البرق
+DETAILS_TOOLTIP_24	يقلل من الضرر الذي تتسبب به وحوش معينة.
+DETAILS_25	مقاومة الثلج
+DETAILS_TOOLTIP_25	يقلل من الضرر الذي تتسبب به وحوش معينة.
+DETAILS_26	مقاومة الظلام
+DETAILS_TOOLTIP_26	مقاومة الظلام: يقلل من الضرر الذي تتسبب به وحوش معينة.
+DETAILS_27	مقاومة النار
+DETAILS_TOOLTIP_27	يقلل من الضرر الذي تتسبب به وحوش معينة.
+DETAILS_28	مقاومة الرياح
+DETAILS_TOOLTIP_28	يقلل من الضرر الذي تتسبب به وحوش معينة.
+DETAILS_29	مقاومة الأرض
+DETAILS_TOOLTIP_29	يقلل من الضرر الذي تتسبب به وحوش معينة.
+DETAILS_77	كسر السّحر
+DETAILS_TOOLTIP_77	يقلل من مقاومة السحر لدى خصومك.
+DETAILS_30	قوة البرق
+DETAILS_TOOLTIP_30	يرفع من الضرر الذي تسببه بقوة الضوء.
+DETAILS_31	قوة الجليد
+DETAILS_TOOLTIP_31	يرفع من الضرر الذي تسببه بقوة الجليد.
+DETAILS_32	قوة الظلام
+DETAILS_TOOLTIP_32	يرفع من الضرر الذي تسببه بقوة الظلام.
+DETAILS_33	قوة النار
+DETAILS_TOOLTIP_33	يرفع من الضرر الذي تسببه بقوة النار.
+DETAILS_34	قوة الرياح
+DETAILS_TOOLTIP_34	يرفع من الضرر الذي تسببه بقوة الرياح.
+DETAILS_35	قوة الأرض
+DETAILS_TOOLTIP_35	يرفع من الضرر الذي تسببه بقوة الأرض.
+DETAILS_CATE_3	علاوات الطبقات
+DETAILS_36	قوي ضد المحارب
+DETAILS_TOOLTIP_36	قوي ضد المحارب: يرفع من قيمة الضر ضد المحاربين.
+DETAILS_37	قوي ضد النينجا
+DETAILS_TOOLTIP_37	قوي ضد النينجا: يرفع من قيمة الضر ضد النينجا.
+DETAILS_38	قوي ضد السورا
+DETAILS_TOOLTIP_38	قوي ضد السورا: يرفع من قيمة الضر ضد السورا.
+DETAILS_39	قوي ضد الشامان
+DETAILS_TOOLTIP_39	قوي ضد الشامان: يرفع من قيمة الضر ضد الشامان.
+DETAILS_41	دفاع ضد المحارب
+DETAILS_TOOLTIP_41	مقاومة هجمات المحارب: يقلل من الضرر الذي يسببه هجوم المحارب.
+DETAILS_42	دفاع ضد النينجا
+DETAILS_TOOLTIP_42	مقاومة هجمات نينجا: يقلل من الضرر الذي يسببه هجوم النينجا.
+DETAILS_43	دفاع ضد السورا
+DETAILS_TOOLTIP_43	مقاومة هجمات السورا: يقلل من الضرر الذي يسببه هجوم السورا.
+DETAILS_44	دفاع ضد الشامان
+DETAILS_TOOLTIP_44	مقاومة هجمات الشامان: يقلل من الضرر الذي يسببه هجوم الشامان.
+DETAILS_CATE_4	علاوات السلاح
+DETAILS_46	الدفاع السيفي
+DETAILS_TOOLTIP_46	يقلل من الضرر الذي يسببه السيف.
+DETAILS_47	دفاع سيف اليدين
+DETAILS_TOOLTIP_47	يقلل من الضرر الذي يسببه سيف اليدين.
+DETAILS_48	دفاع خنجري
+DETAILS_TOOLTIP_48	يقلل من الضرر الذي يسببه الخنجر.
+DETAILS_50	دفاع جرسي
+DETAILS_TOOLTIP_50	يقلل من الضرر الذي يسببه الجرس.
+DETAILS_51	دفاع مروحي
+DETAILS_TOOLTIP_51	يقلل من الضرر الذي تسببه المروحة.
+DETAILS_52	مقاومة السهم
+DETAILS_TOOLTIP_52	يقلل من الضرر الذي يسببه القوس.
+DETAILS_CATE_5	علاوات أخرى
+DETAILS_53	فُرص الإغماء
+DETAILS_TOOLTIP_53	يرفع من فرص التسبب بإغماء للخصم.
+DETAILS_54	فرص التبطيء
+DETAILS_TOOLTIP_54	يرفع من فرص التسبب بإبطاء للخصم.
+DETAILS_55	فرصة التسمم
+DETAILS_TOOLTIP_55	يرفع من فرص التسبب بتسمم للخصم.
+DETAILS_56	مقاومة السموم
+DETAILS_TOOLTIP_56	يقلل من الضرر الذي يسببه السم.
+DETAILS_59	سرقة نقاط الحياة
+DETAILS_TOOLTIP_59	سرقة نقاط الحياة من خصمك عند قيامك بضربه.
+DETAILS_60	سرقة نقاط الأسلوب
+DETAILS_TOOLTIP_60	سرقة نقاط الأسلوب من خصمك عند قيامك بضربه.
+DETAILS_61	إستعادة نقاط الحياة
+DETAILS_TOOLTIP_61	يرفع من سرعة إستعادة نقاط الحياة.
+DETAILS_62	إستعادة نقاط الأسلوب
+DETAILS_TOOLTIP_62	يرفع من سرعة إستعادة نقاط الأسلوب.
+DETAILS_63	صد الهجوم الجسدي
+DETAILS_TOOLTIP_63	فرصة صَد الهجوم عن قرب: ترفع من فرصة صد الهجوم عن قرب.
+DETAILS_64	تفادي الهجوم السهمي
+DETAILS_TOOLTIP_64	فرص تفادي الهجوم بالسهام: ترفع من فرص تفادي هجوم بالسهام من الوحوش.
+DETAILS_65	عكس الهجوم الجسدي
+DETAILS_TOOLTIP_65	فرصُ عكس ضربات الهجمات عن قرب: ترفع من فرص عكس ضربات الهجمات عن قرب إلى الخصم.
+DETAILS_66	إ.ن.ح عند القتل
+DETAILS_TOOLTIP_66	إستعادة نقاط الحياة أثناء القتال: عند قيامك بقتل الخصم، فإن نقاط حياتك تزداد.
+DETAILS_67	إ.ن.أ عند القتل
+DETAILS_TOOLTIP_67	إستعادة نقاط الأسلوب أثناء القتال: عند قيامك بقتل الخصم، فإن نقاط أسلوبك تزداد.
+DETAILS_68	مضاعفة الخبرة EXP
+DETAILS_TOOLTIP_68	فرصة مضاعفة الخبرة EXP: ترفع من فرصة الحصول على علاوة خبرة مضاعفة عند قيامك بقتل الخصم.
+DETAILS_69	مضاعفة اليانغ
+DETAILS_TOOLTIP_69	فرصة إسقاط ضعف كمية اليانغ: ترفع من فرصة الحصول على ضعف كمية اليانغ عند قيامك بقتل الخصم.
+DETAILS_70	فرصة الإسقاط
+DETAILS_TOOLTIP_70	فرصة إسقاط الأدوات: ترفع من فرصة الحصول على أدوات مضاعفة عند قيامك بقتل الخصم.
+DETAILS_CATE_6	علاوات خاصة
+DETAILS_71	قيمة الهجوم
+DETAILS_TOOLTIP_71	يرفع قيمة الهجوم الخاصة بك.
+DETAILS_72	دفاع
+DETAILS_TOOLTIP_72	يرفع من قيمة الدفاع الخاصة بك.
+DETAILS_73	خبرة EXP
+DETAILS_TOOLTIP_73	يرفع من جمع نقاط الخبرة.
+DETAILS_74	فرصة الإسقاط
+DETAILS_TOOLTIP_74	فرص إسقاط الأشياء: ترفع من فرص سلب الأشياء.
+DETAILS_75	مضاعفة اليانغ
+DETAILS_TOOLTIP_75	فرص إسقاط اليانغ: ترفع من فرص الحصول على يانغ مضاعف.
+STAT_PICK_TITLE_CON	قوة الحياة
+STAT_PICK_TITLE_INT	ذكاء
+STAT_PICK_TITLE_STR	قوة
+STAT_PICK_TITLE_DEX	المناورة
+SKILL_MAX_UP_HINT	Shift + click: رفع حتى مستوى السيد
+REMOVE_AFFECT_QUESTION	هل تريد تعطيل %s؟
+REFINE_FAST_UPGRADE	ترقية سريعة

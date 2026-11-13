@@ -31,6 +31,7 @@ import uiScriptLocale
 import wndMgr
 
 import nui
+import nui_form_proxies
 import nui_hud
 import nui_limits
 import nui_proxies
@@ -78,6 +79,13 @@ class _RefineBoard(nui_hud.RaisesOnPress, nui.Window):
 		if button == 0:
 			self._owner.titleBar.close()
 
+	@nui.on("fast_press")
+	def on_fast_press(self, button):
+		"""The fast upgrade box (NOVA-198): legacy's CheckBox flips on a left press."""
+		self.raise_for(button)
+		if button == 0:
+			self._owner.fastRefineCheck.click()
+
 
 class _Dialog(object):
 	"""What both refine dialogs share: the board on demand, the model, the
@@ -94,7 +102,8 @@ class _Dialog(object):
 		self._limits = nui_limits.current()
 		self._state = {"variant": self.VARIANT, "prob_text": "", "prob_shown": False, "cost_text": "", "cost_shown": False,
 		               "item_icon": "", "item_cells": 0, "materials": [], "lines": [],
-		               "min_w": nui_tooltip.uiToolTip.ToolTip.TOOL_TIP_WIDTH}
+		               "min_w": nui_tooltip.uiToolTip.ToolTip.TOOL_TIP_WIDTH,
+		               "fast_checked": False, "fast_shown": False}
 		self._place = None
 		self.loaded = False
 		self.demand = None
@@ -227,7 +236,19 @@ class RefineDialogNew(_Dialog, uiRefine.RefineDialogNew):
 		self.itemImage = nui_proxies.ImageProxy(lambda path: self._set(item_icon=nui_slots.icon_source(path)))
 
 		self.titleBar.SetCloseEvent(ui.__mem_func__(self.CancelRefine))
+
+		# NOVA-198: the fast upgrade box (the document lays out its row).
+		checkBox = nui_form_proxies.CheckBoxProxy(self._on_fast_check)
+		checkBox.SetTextInfo(localeInfo.REFINE_FAST_UPGRADE)
+		checkBox.SetEvent(ui.__mem_func__(self.OnToggleFastRefine), "ON_CHECK")
+		checkBox.SetEvent(ui.__mem_func__(self.OnToggleFastRefine), "ON_UNCHECK")
+		checkBox.Show()
+		self.fastRefineCheck = checkBox
+
 		self.isLoaded = True
+
+	def _on_fast_check(self, box):
+		self._set(fast_checked=bool(box.checked), fast_shown=bool(box.shown))
 
 	def Open(self, targetItemPos, nextGradeItemVnum, cost, prob, type):
 		self._set(materials=[], item_cells=0)
@@ -249,7 +270,7 @@ class RefineDialogNew(_Dialog, uiRefine.RefineDialogNew):
 		over the UI, and the document lays itself out. NovaUI never runs in a
 		right-to-left locale, so legacy's mirrored board is left out."""
 		newWidth = self.toolTip.GetWidth() + 60
-		newHeight = self.dialogHeight + 79 - 8
+		newHeight = self.dialogHeight + 79 - 8 + self.FAST_REFINE_ROW
 		self.board.SetSize(newWidth, newHeight)
 		self.toolTip.SetPosition(15 + 35, 38)
 		self.titleBar.SetWidth(newWidth - 15)

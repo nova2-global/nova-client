@@ -1841,6 +1841,10 @@
 				"base": true
 			}
 		],
-		"quest_hover": 1
+		"quest_hover": 1,
+		"details_expand": true,
+		"details_minimize": false,
+		"details_panel": [],
+		"details_rows": []
 	}
 }

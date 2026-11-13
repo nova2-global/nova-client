@@ -1,6 +1,6 @@
-/* The affect icons' modern look (the mockup's Affects board): a row of the
-   legacy icons from the top left, each framed, with the time left under a
-   timed one and a modern tooltip that opens below. Classic (the legacy
+/* The affect icons' modern look (the mockup's Affects board): two rows of
+   the legacy icons from the top left (NOVA-218), each framed, with the time
+   left under a timed one and a modern tooltip that opens below. Classic (the legacy
    step and scale, the legacy thin board tooltip and the outlined name under
    a skill affect): skins/classic/windows/affects.rcss. */
 
@@ -9,13 +9,32 @@ body.affects
 	focus: none;
 	tab-index: none;
 }
-.affects__row
+/* NOVA-218: the two rows, the skills over the items. A row of the first
+   draws over the second, so its tooltips, which open downward, stay on top. */
+.affects__rows
 {
 	position: absolute;
 	left: 10dp;
 	top: 10dp;
 	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+.affects__row
+{
+	position: relative;
+	z-index: 1;
+	display: flex;
 	flex-direction: row;
+}
+.affects__row--items
+{
+	z-index: 0;
+}
+/* Under a row with icons: clear of their time pills. */
+.affects__row--below
+{
+	margin-top: 18dp;
 }
 /* The repeated slot around each icon (it binds nothing). */
 .affects__slot

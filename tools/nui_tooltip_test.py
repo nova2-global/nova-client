@@ -961,5 +961,24 @@ class SkillBookWithoutASkill(unittest.TestCase):
             self.assertTrue(titles and titles[0].startswith("Sword Spin"), titles)
 
 
+
+class SkillMaxUpHint(unittest.TestCase):
+    """NOVA-196: SkillToolTip.AppendSkillMaxUpHint, which the character window
+    calls after SetSkillNew on a job skill whose plus button shows: one line
+    under the skill's data, the hint (SKILL_MAX_UP_HINT), last; the NovaUI
+    skill tooltip records the same line from the same rule."""
+
+    def test_the_corpus_runs_the_hint_and_both_sides_end_with_it(self):
+        cases = [case for case in corpus()["cases"] if case["id"] == "skill-max-up-hint"]
+        self.assertEqual(len(cases), 1)
+        run = corpus_tool.ParityRun(dict(corpus(), cases=cases))
+        _, (legacy, error), (novaui, novaui_error) = run.results[0][:3]
+        self.assertIsNone(error)
+        self.assertIsNone(novaui_error)
+        self.assertEqual(novaui, legacy)
+        texts = [row[1] for row in legacy[0] if row[0] == "text"]
+        self.assertEqual(texts[-1], "Shift + click: raise up to Master")
+        self.assertNotIn(texts[-1], texts[:-1])
+
 if __name__ == "__main__":
     unittest.main()

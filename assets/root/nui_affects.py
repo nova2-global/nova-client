@@ -18,9 +18,10 @@ values that change without an event, an auto potion's remainder and the
 dragon soul decks' shortest remaining time, are read once per hover
 (icon_over), where legacy read them every frame.
 
-Every icon is an entry of the model's `icons` list, in the legacy order:
-the lover's heart while shown, the horse, then the affects in the order
-they came. The affect tooltips are NovaUI tooltips (spec D18): a title and
+Every icon is an entry of one of the model's two rows, in the legacy order
+(NOVA-218, uiAffectShower.AffectRow): `icons`, the premium icon, the
+lover's heart while shown, the horse, then the skill affects; `items`, the
+potions and item bonuses; the affects of each row sorted by affect. The affect tooltips are NovaUI tooltips (spec D18): a title and
 a line, or the name alone under the icon (the legacy text line, `label`)."""
 
 import weakref
@@ -48,6 +49,9 @@ _LOVE_FILES = uiAffectShower.LovePointImage.FILE_DICT
 _LOVE_PATH = uiAffectShower.LovePointImage.FILE_PATH
 _HORSE_FILES = uiAffectShower.HorseImage.FILE_DICT
 _INFINITE_ITEMS = uiAffectShower.AffectImage.INFINITE_AFFECT_ITEM_VNUM
+# NOVA-197: the support buffs a left press offers to remove (legacy's list,
+# equal to the server's REMOVABLE_SKILL_BUFFS).
+REMOVABLE_SKILL_BUFFS = uiAffectShower.REMOVABLE_SKILL_BUFFS
 
 _live = weakref.WeakSet()  # the facades a locale change refreshes
 
@@ -102,7 +106,7 @@ class AffectBoard(nui.Window):
 		nui.Window.__init__(self)
 
 	def initial_model(self):
-		return {"icons": [], "open_key": -1}
+		return {"icons": [], "items": [], "open_key": -1}
 
 	@nui.on("icon_over")
 	def on_icon_over(self, key):
@@ -135,6 +139,7 @@ class AffectShower(object):
 		self.lover = None       # {"name", "point", "shown"}
 		self.premium = None     # {"tier", "end"} while a premium tier shows (Wave 5, NOVA-11)
 		self.premiumQuestion = None
+		self.removeQuestion = None  # (the dialog, the affect, the skill vnum) while a removal is asked (NOVA-197)
 		self.dsTimeCache = {}   # (slot, vnum) -> {"remainSec", "endTime"}, as AffectImage keeps it
 		if not nui_hud.has_engine():
 			return
@@ -152,6 +157,7 @@ class AffectShower(object):
 
 	def nui_discard(self):
 		self._nui_discarded = True
+		self._close_remove_question()
 		_live.discard(self)
 		board, self.board = self.board, None
 		if board is not None:
@@ -204,12 +210,15 @@ class AffectShower(object):
 		self.lover = None
 		self.affects = {}
 		self.pending = {}
+		self._close_remove_question()
 		self._arrange()
 
 	def ClearAffects(self):
 		"""On death: the skill affects go, the others stay."""
 		self.affects = dict((key, record) for key, record in self.affects.items() if not record["skill"])
 		self.pending = {}
+		if self.removeQuestion and self.removeQuestion[1] not in self.affects:
+			self._close_remove_question()
 		self._arrange()
 
 	def BINARY_NEW_AddAffect(self, type, pointIdx, value, duration, affFlag=0):
@@ -319,8 +328,14 @@ class AffectShower(object):
 
 	def nui_icon_press(self, key, button):
 		"""A left press on the premium icon asks whether to turn the premium
-		time back into a scroll, as legacy's (OnMouseLeftButtonDown)."""
-		if key != PREMIUM_KEY or button != 0 or not self.premium:
+		time back into a scroll, as legacy's (OnMouseLeftButtonDown); on a
+		support buff's icon, whether to remove it (NOVA-197)."""
+		if button != 0:
+			return
+		if key != PREMIUM_KEY:
+			self._ask_remove_skill_affect(key)
+			return
+		if not self.premium:
 			return
 		import uiCommon
 		self._close_premium_question()
@@ -343,6 +358,38 @@ class AffectShower(object):
 		if self.premiumQuestion:
 			self.premiumQuestion.Close()
 		self.premiumQuestion = None
+
+	## NOVA-197 (OLD uiAffectShower.py:415-448): a support buff's removal,
+	## as legacy's AffectShower asks it: one question at a time, gone when its
+	## affect ends or the window goes, gone before the command is sent.
+	def _ask_remove_skill_affect(self, affect):
+		record = self.affects.get(affect)
+		if record is None or not record["skill"]:
+			return
+		skill_index = player.AffectIndexToSkillIndex(affect)
+		if skill_index not in REMOVABLE_SKILL_BUFFS:
+			return
+		import uiCommon
+		self._close_remove_question()
+		dialog = uiCommon.QuestionDialog()
+		dialog.SetText(localeInfo.REMOVE_AFFECT_QUESTION % skill.GetSkillName(skill_index))
+		dialog.SetWidth(350)
+		dialog.SetAcceptEvent(ui.__mem_func__(self._accept_remove_question))
+		dialog.SetCancelEvent(ui.__mem_func__(self._close_remove_question))
+		dialog.Open()
+		self.removeQuestion = (dialog, affect, skill_index)
+
+	def _accept_remove_question(self):
+		if not self.removeQuestion:
+			return
+		skill_index = self.removeQuestion[2]
+		self._close_remove_question()
+		net.SendChatPacket("/remove_skill_affect %d" % skill_index)
+
+	def _close_remove_question(self):
+		question, self.removeQuestion = self.removeQuestion, None
+		if question:
+			question[0].Close()
 
 	def SetPlayTime(self, playTime):
 		self.serverPlayTime = playTime
@@ -391,6 +438,8 @@ class AffectShower(object):
 
 	def _remove(self, affect):
 		self.affects.pop(affect, None)
+		if self.removeQuestion and self.removeQuestion[1] == affect:
+			self._close_remove_question()
 
 	def _horse_state(self, level, health, battery):
 		"""HorseImage.SetState: the grade, health and rest lines and the art
@@ -536,7 +585,10 @@ class AffectShower(object):
 		return entry
 
 	def _icons(self):
-		icons = []
+		"""The two rows (NOVA-218, uiAffectShower.AffectRow): the status
+		icons and the skill affects, then the potions and item bonuses; the
+		affects of each row sorted by affect, as legacy arranges them."""
+		icons, items = [], []
 		if self.premium:
 			tier = self.premium["tier"]
 			icons.append({"key": PREMIUM_KEY, "kind": "premium",
@@ -553,13 +605,16 @@ class AffectShower(object):
 			icons.append({"key": HORSE_KEY, "kind": "horse", "image": self.horse["image"], "small": True,
 			              "title": "", "line": "\n".join(_text(line) for line in self.horse["lines"]), "end": 0.0,
 			              "clocked": False, "label": False})
-		for record in self.affects.values():
-			icons.append(self._entry(record))
-		return icons
+		rows = (icons, items)
+		for affect in sorted(self.affects):
+			record = self.affects[affect]
+			rows[uiAffectShower.AffectRow(affect, record["skill"])].append(self._entry(record))
+		return icons, items
 
 	def _arrange(self):
 		if self.board is not None:
-			self.board.set(icons=self._icons())
+			icons, items = self._icons()
+			self.board.set(icons=icons, items=items)
 
 
 localeInfo.RegisterReloadCallback(_on_locale_reload)

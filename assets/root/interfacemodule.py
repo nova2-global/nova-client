@@ -1476,6 +1476,11 @@ class Interface(object):
 	def AppendMaterialToRefineDialog(self, vnum, count):
 		self.dlgRefineNew.AppendMaterial(vnum, count)
 
+	## NOVA-198: RefineSuceeded and RefineFailed, for the fast upgrade.
+	def OnRefineResult(self, succeeded):
+		if self.dlgRefineNew:
+			self.dlgRefineNew.OnRefineResult(succeeded)
+
 	## Show & Hide
 	def ShowDefaultWindows(self):
 		self.wndTaskBar.Show()

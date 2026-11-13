@@ -6,7 +6,9 @@
 			{"key": -11, "kind": "horse", "image": "d:/ymir work/ui/pattern/horsestate/31.dds", "small": true,
 			 "title": "", "line": "Battle Horse\nFull", "end": 0.0, "clocked": false, "label": false},
 			{"key": 14, "kind": "affect", "image": "d:/ymir work/ui/skill/warrior/jeongwi_03.sub", "small": true,
-			 "title": "Berserk", "line": "", "end": 0.0, "clocked": true, "label": true},
+			 "title": "Berserk", "line": "", "end": 0.0, "clocked": true, "label": true}
+		],
+		"items": [
 			{"key": 11, "kind": "affect", "image": "d:/ymir work/ui/skill/common/affect/Increase_Move_Speed.sub", "small": true,
 			 "title": "Moving speed raised", "line": "", "end": 3726.0, "clocked": true, "label": false},
 			{"key": 500, "kind": "affect", "image": "d:/ymir work/ui/skill/common/affect/exp_bonus.sub", "small": true,

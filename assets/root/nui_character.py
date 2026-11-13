@@ -98,6 +98,96 @@ def art_of(windows_path):
 	return dict((key, folder + name) for key, name in ART)
 
 
+# NOVA-207: the details panel's row hint, a plain tooltip as wide as legacy's.
+DETAILS_TOOLTIP_WIDTH = 220
+
+
+class _DetailsPanel(object):
+	"""NOVA-207: the details panel as legacy's character window holds it
+	(uiCharacterDetails.CharacterDetailsWindow's methods), drawn as the side
+	panel of this window's document: its rows (characterdetails.lines, the
+	values player.GetStatus of their points) are the model's details_rows
+	while it shows and an empty list otherwise (details_panel [1] or [], so
+	RmlUi updates no row while it is closed). A row's hover shows legacy's
+	row tooltip (characterdetails.show_tooltip) on the PlainToolTip facade
+	while the tooltips flag is on, legacy's tooltip otherwise."""
+
+	def __init__(self, owner):
+		import characterdetails
+		self._owner = nui_hud.keep_weakly(owner)
+		self._table = characterdetails
+		self.lines = characterdetails.lines(localeInfo)
+		self.values = [""] * len(self.lines)
+		self.toolTip = _details_tooltip()
+		self.toolTip.HideToolTip()
+		self.shown = False
+		self.closeEvent = None
+
+	def _rows(self):
+		return [{"index": index, "head": line["head"], "label": nui.plain_text(line["label"]), "value": value}
+		        for index, (line, value) in enumerate(zip(self.lines, self.values))]
+
+	def _publish(self):
+		if self.shown:
+			self._owner._set(details_panel=[1], details_rows=self._rows())
+		else:
+			self._owner._set(details_panel=[], details_rows=[])
+
+	def SetCloseEvent(self, event):
+		self.closeEvent = event
+
+	def AdjustPosition(self, x, y):
+		"""The panel is a part of the document, so it moves with it."""
+
+	def SetTop(self):
+		"""Raised with the document."""
+
+	def IsShow(self):
+		return self.shown
+
+	def Show(self):
+		self.shown = True
+		self._publish()
+
+	def Hide(self):
+		if self.toolTip:
+			self.toolTip.HideToolTip()
+		if self.shown:
+			self.shown = False
+			self._publish()
+
+	def Refresh(self):
+		self.values = [self._table.value_text(line, player.GetStatus) for line in self.lines]
+		if self.shown:
+			self._publish()
+
+	def ShowLineToolTip(self, index):
+		if self.toolTip and self.shown and 0 <= index < len(self.lines):
+			self._table.show_tooltip(self.toolTip, self.lines[index])
+
+	def HideLineToolTip(self):
+		if self.toolTip:
+			self.toolTip.HideToolTip()
+
+	def Destroy(self):
+		self.Hide()
+		self.closeEvent = None
+		self.toolTip = None
+
+
+def _details_tooltip():
+	"""The panel's row tooltip: NovaUI's plain tooltip while the tooltips flag
+	is on (as the window's own four, D6), legacy's otherwise."""
+	if nui_windows.use("tooltips")[0]:
+		try:
+			import nui_item_tooltip
+			return nui_item_tooltip.PlainToolTip(DETAILS_TOOLTIP_WIDTH)
+		except Exception as error:
+			nui_windows.note_failure("tooltips", "the character details' tooltip (%s)" % type(error).__name__)
+	import uiToolTip
+	return uiToolTip.ToolTip(DETAILS_TOOLTIP_WIDTH)
+
+
 class _GroupButtonProxy(nui_proxies.ButtonProxy):
 	"""A skill group button (a radio button): it keeps its place, since
 	legacy moves the riding button between the second and third column."""
@@ -164,6 +254,22 @@ class _CharacterBoard(nui_hud.RaisesOnPress, nui.Window):
 	@nui.on("stat_out")
 	def on_stat_out(self, kind, key):
 		self._owner._stat_button(kind, key, False)
+
+	# --- the details panel (NOVA-207) ---------------------------------------------------
+
+	@nui.on("details_press")
+	def on_details_press(self, which, button):
+		self.raise_for(button)
+		if button == 0:
+			self._owner._press_details(str(which))
+
+	@nui.on("details_over")
+	def on_details_over(self, index):
+		self._owner._details_hover(int(index), True)
+
+	@nui.on("details_out")
+	def on_details_out(self, index):
+		self._owner._details_hover(int(index), False)
 
 	@nui.on("name_over")
 	def on_name_over(self):
@@ -415,6 +521,9 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 			"quest_scroll_shown": False, "quest_scroll_pos": 0.0,
 			# The quest row whose icon or text the pointer is over (the row's hover look).
 			"quest_hover": -1,
+			# NOVA-207: the details panel's toggle (the expand or the minimize
+			# button legacy shows), the panel ([1] while open) and its rows.
+			"details_expand": False, "details_minimize": False, "details_panel": [], "details_rows": [],
 		}
 		for _, key in STATUS_TEXTS:
 			state[key] = ""
@@ -465,8 +574,9 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 	def _empty_board(self, board):
 		"""V-2b: the hidden kept board holds no panel and no tab strip (RmlUi
 		updates every element of a loaded document each frame); _restore_board
-		sets the strip and the shown tab's panel again at the next show."""
-		board.set(tabs_on=[], **dict((key, []) for key in PANELS.values()))
+		sets the strip and the shown tab's panel again at the next show. The
+		details panel's rows go with it (NOVA-207)."""
+		board.set(tabs_on=[], details_panel=[], details_rows=[], **dict((key, []) for key in PANELS.values()))
 
 	def _keep_board(self, board):
 		"""Legacy's window keeps the place it was dragged to (D10): the board's
@@ -490,6 +600,22 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 		def write(proxy):
 			self._set(**{key: proxy.IsShow()})
 		return write
+
+	def _CharacterWindow__MakeDetailsButtons(self):
+		"""NOVA-207: legacy's expand and minimize buttons as proxies; the board
+		shows the one legacy shows (details_expand, details_minimize)."""
+		buttons = []
+		for key, event in (("details_expand", self._CharacterWindow__OpenDetails),
+		                   ("details_minimize", self._CharacterWindow__CloseDetails)):
+			button = nui_proxies.ButtonProxy(self._on_stat_button(key))
+			button.SetEvent(ui.__mem_func__(event))
+			buttons.append(button)
+		buttons[0].Show()
+		buttons[1].Hide()
+		return tuple(buttons)
+
+	def _CharacterWindow__MakeDetailsWindow(self):
+		return _DetailsPanel(self)
 
 	def _on_name(self, text):
 		self._set(name=nui.plain_text(text))
@@ -759,6 +885,21 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 			return
 		button.Down()
 		button.click()
+
+	def _press_details(self, which):
+		"""The panel's toggle, or its header's close: legacy's button event."""
+		button = {"expand": self.detailsExpandButton, "minimize": self.detailsMinimizeButton}.get(which)
+		if button is not None and button.IsShow():
+			button.click()
+
+	def _details_hover(self, index, over):
+		panel = self.detailsWindow
+		if panel is None:
+			return
+		if over:
+			panel.ShowLineToolTip(index)
+		else:
+			panel.HideLineToolTip()
 
 	def _press_stat(self, button):
 		if button is not None and button.IsShow():

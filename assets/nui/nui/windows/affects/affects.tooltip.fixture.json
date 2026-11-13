@@ -22,7 +22,9 @@
 				"end": 0.0,
 				"clocked": true,
 				"label": true
-			},
+			}
+		],
+		"items": [
 			{
 				"key": 11,
 				"kind": "affect",

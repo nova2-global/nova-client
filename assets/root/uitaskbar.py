@@ -298,6 +298,10 @@ class TaskBar(ui.ScriptWindow):
 	GAUGE_WIDTH = 95
 	GAUGE_HEIGHT = 13
 
+	# NOVA-200: the EXP gauge is the anti-EXP switch; frozen tints its points.
+	antiExpOn = False
+	ANTI_EXP_TINT = (0.55, 0.8, 1.0, 1.0)
+
 	QUICKPAGE_NUMBER_FILENAME = [
 		"d:/ymir work/ui/game/taskbar/1.sub",
 		"d:/ymir work/ui/game/taskbar/2.sub",
@@ -583,6 +587,7 @@ class TaskBar(ui.ScriptWindow):
 		self.mpGaugeBoard=self.GetChild("SPGauge_Board")
 		self.stGaugeBoard=self.GetChild("STGauge_Board")
 		self.expGaugeBoard=self.GetChild("EXP_Gauge_Board")
+		self.expGaugeBoard.OnMouseLeftButtonUp = ui.__mem_func__(self.__OnClickExpGauge)
 		
 		#giftbox object
 		wndGiftBox = GiftBox()
@@ -848,7 +853,20 @@ class TaskBar(ui.ScriptWindow):
 				self.expGauge[FullCount].Show()
 
 		#####
-		self.tooltipEXP.SetText("%s : %.2f%%" % (localeInfo.TASKBAR_EXP, float(curPoint) / max(1, float(maxPoint)) * 100))
+		hint = localeInfo.ANTI_EXP_FROZEN_HINT if self.antiExpOn else localeInfo.ANTI_EXP_FREEZE_HINT
+		self.tooltipEXP.SetText("%s : %.2f%% (%s)" % (localeInfo.TASKBAR_EXP, float(curPoint) / max(1, float(maxPoint)) * 100, hint))
+
+	## NOVA-200: a press on the EXP gauge asks the server to flip anti-EXP;
+	## its answer (AntiExpState) comes back through SetAntiExp.
+	def __OnClickExpGauge(self):
+		net.SendChatPacket("/anti_exp")
+
+	def SetAntiExp(self, on):
+		self.antiExpOn = bool(on)
+		(r, g, b, a) = self.ANTI_EXP_TINT if self.antiExpOn else (1.0, 1.0, 1.0, 1.0)
+		for point in self.expGauge or ():
+			wndMgr.SetDiffuseColor(point.hWnd, r, g, b, a)
+		self.SetExperience(player.GetStatus(player.EXP), player.GetStatus(player.NEXT_EXP))
 	
 		
 	## QuickSlot

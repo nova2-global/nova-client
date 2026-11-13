@@ -284,6 +284,8 @@
 		"tip_inventory": "@ui.TASKBAR_INVENTORY",
 		"tip_messenger": "@ui.TASKBAR_MESSENGER",
 		"tip_prev_page": "@ui.TASKBAR_PREV_QUICKSLOT",
-		"tip_next_page": "@ui.TASKBAR_NEXT_QUICKSLOT"
+		"tip_next_page": "@ui.TASKBAR_NEXT_QUICKSLOT",
+		"exp_frozen": false,
+		"exp_hint": "@game.ANTI_EXP_FREEZE_HINT"
 	}
 }

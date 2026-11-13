@@ -20,7 +20,9 @@ puts the page's syswiki link (wiki_link) where the player types, through
 Interface.PasteWikiLink.
 
 Nothing runs per frame: the search is the field's change event, and the retry
-and the give-up are two hidden nui-countdowns (retry_at, timeout_at). The
+and the give-up are two hidden nui-countdowns (retry_at, timeout_at); a third
+(preview_check_at, NOVA-259) runs only while the client makes a preview's
+model off the frame, which shows a plain box until the model fades in. The
 board exists only while the window shows; the tabs and their histories stay
 with the window. NOVA-139's text pages (nui_wiki_pages.py)
 are a page kind of their own, KIND_PAGE, whose rows sit in the tree after
@@ -52,6 +54,25 @@ HOVER_PREVIEW = "wiki_hover"
 # this long, and not while the wheel turns (modelpreview.SetDwell): a list
 # scrolled under a still pointer changes the row every few frames (r39).
 HOVER_DWELL_MS = 180
+# NOVA-259: the previews' models are made off the frame (modelpreview.
+# SetBackground: the loader thread reads their files, the client parses one a
+# step and makes one model a step) and with their race's wait motions only
+# (modelpreview.SetWaitOnly), since the wiki plays nothing else. r46: an item
+# on a player race other than the player's made the race's every motion in
+# one frame, 320 to 340 ms (35 GR2s, its 30 emotions among them); r47: a
+# costume on the player's own race cost 21 ms of the frame that opened the
+# wiki. A preview whose model is not made yet stays plain (its view clear: no
+# text, no icon) and the model fades in once made (wiki.rcss, is-loading: the
+# dungeon manager's late boss fade, 0.15 s).
+# Each is one flag, for a client without the calls or a test of the old way.
+BACKGROUND_PREVIEWS = True
+WAIT_ONLY_PREVIEWS = True
+# Seconds between two looks at a preview whose model the client still makes
+# (the hidden preview_check_at clock, armed only while one does).
+PREVIEW_POLL = 0.1
+# Where a preview is (_preview_state): its model shows, the client still
+# makes it, or there is nothing to show (no model, or its part has no mesh).
+READY, LOADING, BLANK = "ready", "loading", "blank"
 
 # EWikiKind and EWikiStatus (nova-protocol's wiki_packets.h).
 KIND_ITEM, KIND_MOB = 0, 1
@@ -318,8 +339,10 @@ def _wearer_race(item_module):
 # modelpreview.GetState's meshes orders them. A model is made even when the
 # file its part names is not in the pack (tools/model_gaps.py), and draws
 # nothing there; the page then shows the icon, with no zoom mark and no
-# viewer. A preview that waits (the hover's dwell) has no meshes yet: it is
-# not judged, but an item or mob a page found empty is not hovered again.
+# viewer. A preview that waits (the hover's dwell, a background request) has
+# no meshes yet: it is judged once its model is made (NOVA-259: the
+# preview_check_at clock), and an item or mob found empty is not hovered
+# again.
 MESH_BODY, MESH_WEAPON, MESH_HAIR, MESH_SASH = 0, 1, 2, 3
 _NO_MESH = set()  # (kind, vnum, race) whose part draws nothing
 
@@ -336,23 +359,39 @@ def _plan_part(plan):
 	return MESH_BODY
 
 
-def _draws(preview, name, part, key):
-	"""The preview's model has a mesh in `part`; True when the client cannot
-	say (an exe before NOVA-177, or a request still waiting)."""
+def _preview_state(preview, name, part, key):
+	"""Where the preview `name` is: LOADING while its request waits (the
+	client makes the model over its next steps), BLANK when the request
+	ended with no model or its model has no mesh in `part` (that key goes in
+	_NO_MESH), else READY; READY too when the client cannot say (an exe
+	before NOVA-177)."""
 	get_state = getattr(preview, "GetState", None)
 	if get_state is None:
-		return True
+		return READY
 	try:
 		state = get_state(name)
 	except Exception:
-		return True
-	meshes = state.get("meshes") if isinstance(state, dict) else None
-	if meshes is None or state.get("pending") or not state.get("has_model"):
-		return True
-	if meshes[part]:
-		return True
+		return READY
+	if not isinstance(state, dict):
+		return READY
+	if state.get("pending"):
+		return LOADING
+	if "has_model" in state and not state.get("has_model"):
+		return BLANK
+	meshes = state.get("meshes")
+	if meshes is None or meshes[part]:
+		return READY
 	_NO_MESH.add(key)
-	return False
+	return BLANK
+
+
+def _prepare(preview, name):
+	"""Makes `name` a background, wait-only preview (NOVA-259), as far as the
+	client has the calls; before every Select, since Clear forgets both."""
+	for call, on in (("SetBackground", BACKGROUND_PREVIEWS), ("SetWaitOnly", WAIT_ONLY_PREVIEWS)):
+		function = getattr(preview, call, None)
+		if on and function is not None:
+			function(name, True)
 
 
 class _WikiBoard(nui_hud.RaisesOnPress, nui.Window):
@@ -598,6 +637,11 @@ class _WikiBoard(nui_hud.RaisesOnPress, nui.Window):
 	def on_timeout_fire(self):
 		self._owner.timeout_fire()
 
+	# NOVA-259: a model the client makes over its next steps.
+	@nui.on("preview_check")
+	def on_preview_check(self):
+		self._owner.preview_check()
+
 
 def _home():
 	return (None, None)
@@ -730,6 +774,7 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 	_viewer_zoom = 1.0
 	_viewer_grab_x = None    # the drag's last pointer x, in px
 	_viewer_on_stage = False # the press on the model still bubbles to the backdrop
+	_waiting = None          # NOVA-259: {preview name: (part, key)} whose model loads
 
 	def __init__(self):
 		self.nui_begin()
@@ -747,6 +792,7 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 			self._active = 0
 			self._recent = []        # (kind, vnum), the last page shown first
 			self._crumbs = []        # the trail's locations, None for a label only
+			self._waiting = {}       # the previews whose model the client still makes
 			self.nui_end()
 		except Exception:
 			self.nui_discard()
@@ -795,6 +841,13 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 			"menu_y": 0.0,
 			"model_view": False,
 			"hover_view": False,
+			# NOVA-259: a preview whose model the client still makes shows
+			# nothing (its view clear, then the model fades in), and the
+			# clock that looks again at it.
+			"model_loading": False,
+			"hover_loading": False,
+			"viewer_loading": False,
+			"preview_check_at": 0.0,
 			# The equipment list's class filter ({"i", "id", "label", "on"};
 			# none: not an equipment list).
 			"classes": [],
@@ -921,7 +974,7 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 		self._hover_shown = False
 		self._hover_key = None
 		if self.__dict__.get("_state") and self._state.get("hover_view"):
-			self.nui_set(hover_view=False)
+			self.nui_set(hover_view=False, hover_loading=False)
 		self.close_menu()
 		nui_facade.Facade.Hide(self)
 
@@ -1511,7 +1564,7 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 		self._stop_preview(PREVIEW)
 		self._preview_shown = False
 		self.nui_set(page_state="", page_kind="", page_vnum=0, page_name="", page_sub="", page_icon="",
-		             page_common=False, model_view=False, origins=[], chest=[], refine=[], drops=[],
+		             page_common=False, model_view=False, model_loading=False, origins=[], chest=[], refine=[], drops=[],
 		             retry_at=0.0, timeout_at=0.0, **pages.initial_model())
 
 	def _select(self, kind, vnum):
@@ -1628,60 +1681,132 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 	def _show_preview(self, kind, vnum, name=PREVIEW):
 		"""One preview on the page and one on hover (the scope's default):
 		mobs by their vnum, items by preview_of. An item with no drawable
-		model, or a race the client cannot make, shows its icon."""
+		model, or a race the client cannot make, shows its icon. A model the
+		client still makes (NOVA-259) leaves the view clear until it is made
+		(preview_check), then fades in."""
 		preview = None if kind == KIND_PAGE else _modelpreview()
-		shown = False
+		where, watch = BLANK, None
 		if preview is not None:
 			if name == HOVER_PREVIEW and hasattr(preview, "SetDwell"):
 				preview.SetDwell(name, HOVER_DWELL_MS)
-			shown = self._select_model(preview, name, kind, vnum)
-			if shown:
+			where, watch = self._select_model(preview, name, kind, vnum)
+			if where != BLANK:
 				preview.Show(name, True)
+		shown, loading = where != BLANK, where == LOADING
 		if name == PREVIEW:
 			self._preview_shown = shown
-			self.nui_set(model_view=shown)
+			self.nui_set(model_view=shown, model_loading=loading)
 		else:
 			self._hover_key = (kind, vnum)
-			self._set_hover_view(shown)
+			self._set_hover_view(shown, loading)
 		if not shown and preview is not None:
 			preview.Show(name, False)
+		self._watch(name, watch if loading else None)
 
 	@staticmethod
 	def _select_model(preview, name, kind, vnum):
 		"""Puts the model of a page in the preview `name`: a mob by its vnum,
-		an item by preview_of (its race, and the parts it is worn with).
-		False when there is none to show, or when the part the page is about
-		has no mesh to draw (NOVA-177: its file is not in the pack)."""
+		an item by preview_of, its race wearing the item's parts, in one
+		Select (NOVA-259: one model, made off the frame; before, a model of
+		the bare race and then SetParts). (where, (part, key)): BLANK when
+		there is none to show, or when the part the page is about has no mesh
+		to draw (NOVA-177: its file is not in the pack), LOADING while the
+		client makes it, else READY."""
 		if kind == KIND_MOB:
 			key, part = (kind, vnum, vnum), MESH_BODY
 			if key in _NO_MESH:
-				return False
+				return BLANK, None
+			_prepare(preview, name)
 			shown = bool(preview.Select(name, vnum))
 		else:
 			plan = preview_of(vnum)
 			if plan is None:
-				return False
+				return BLANK, None
 			key, part = (kind, vnum, plan[1]), _plan_part(plan)
 			if key in _NO_MESH:
-				return False
-			shown = bool(preview.Select(name, plan[1]))
-			if shown and plan[0] == "parts":
-				shown = bool(preview.SetParts(name, *plan[2]))
-		return shown and _draws(preview, name, part, key)
+				return BLANK, None
+			_prepare(preview, name)
+			look = tuple(plan[2]) if plan[0] == "parts" else ()
+			shown = bool(preview.Select(name, plan[1], *look))
+		if not shown:
+			return BLANK, None
+		return _preview_state(preview, name, part, key), (part, key)
+
+	def _watch(self, name, watch):
+		"""Looks at the preview `name` again at the clock's end while the
+		client makes its model (watch: its (part, key)); None stops looking."""
+		waiting = self.__dict__.get("_waiting")
+		if waiting is None:
+			return
+		if watch is None:
+			waiting.pop(name, None)
+		else:
+			waiting[name] = watch
+		if not self.__dict__.get("_state"):
+			return
+		armed = self._state.get("preview_check_at", 0.0) > 0
+		if waiting and not armed:
+			self.nui_set(preview_check_at=nui.now() + PREVIEW_POLL)
+		elif not waiting and armed:
+			self.nui_set(preview_check_at=0.0)
+
+	def preview_check(self):
+		"""The preview_check_at clock's end: each preview whose model was
+		being made shows it now (it fades in: its loading flag goes), or, when
+		the client made none or its part has no mesh, falls back as it would
+		have at once (the page's icon, no hover box, no viewer). The clock
+		runs again while one is still being made."""
+		waiting = self.__dict__.get("_waiting")
+		if not waiting or not self.__dict__.get("_state"):
+			return
+		preview = _modelpreview()
+		for name, (part, key) in list(waiting.items()):
+			where = _preview_state(preview, name, part, key) if preview is not None else BLANK
+			if where == LOADING:
+				continue
+			del waiting[name]
+			self._settle(preview, name, where)
+		self.nui_set(preview_check_at=nui.now() + PREVIEW_POLL if waiting else 0.0)
+
+	def _settle(self, preview, name, where):
+		"""A preview whose model the client was making is READY or BLANK."""
+		blank = where == BLANK
+		if name == PREVIEW:
+			if blank:
+				self._preview_shown = False
+				self.nui_set(model_view=False, model_loading=False)
+			else:
+				self.nui_set(model_loading=False)
+		elif name == HOVER_PREVIEW:
+			self._set_hover_view(not blank, False)
+		elif name == VIEWER_PREVIEW:
+			if blank:
+				self.close_viewer()
+				return
+			self.nui_set(viewer_loading=False)
+		if blank and preview is not None:
+			preview.Show(name, False)
 
 	# --- the model viewer -------------------------------------------------------------
 
 	def open_viewer(self):
 		"""The page's model, larger, over the content area: the same model
 		(race, parts, hair, sash) in the viewer's own preview, turning at
-		the natural distance. The page's small view rests meanwhile."""
+		the natural distance. The page's small view rests meanwhile. Not
+		while the page's own model is still being made (its view is clear
+		then, with no zoom mark). The viewer makes a model of its own from the
+		files the page's loaded, a step or two later (NOVA-259: the stage
+		stays plain meanwhile, then the model fades in)."""
 		if self._viewer or not self._preview_shown or self._current is None or self._current[0] == KIND_PAGE:
+			return
+		if self._state.get("model_loading"):
 			return
 		preview = _modelpreview()
 		if preview is None:
 			return
 		kind, vnum = self._current
-		if not self._select_model(preview, VIEWER_PREVIEW, kind, vnum):
+		where, watch = self._select_model(preview, VIEWER_PREVIEW, kind, vnum)
+		if where == BLANK:
 			preview.Clear(VIEWER_PREVIEW)
 			return
 		self._viewer = True
@@ -1695,7 +1820,8 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 		preview.Show(VIEWER_PREVIEW, True)
 		preview.Show(PREVIEW, False)
 		self._hide_tip()
-		self.nui_set(viewer=True, viewer_name=self._page_name(kind, vnum))
+		self.nui_set(viewer=True, viewer_name=self._page_name(kind, vnum), viewer_loading=where == LOADING)
+		self._watch(VIEWER_PREVIEW, watch if where == LOADING else None)
 
 	def close_viewer(self):
 		"""The close button, Escape, a press outside the model, a new page,
@@ -1706,13 +1832,14 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 		self._viewer_plan = None
 		self._viewer_grab_x = None
 		self._viewer_on_stage = False
+		self._watch(VIEWER_PREVIEW, None)
 		preview = _modelpreview()
 		if preview is not None:
 			preview.Clear(VIEWER_PREVIEW)
 			if self._preview_shown:
 				preview.Show(PREVIEW, True)
 		if self.__dict__.get("_state"):
-			self.nui_set(viewer=False, viewer_name="")
+			self.nui_set(viewer=False, viewer_name="", viewer_loading=False)
 
 	def _viewer_call(self, call, *args):
 		"""A viewer call the client may not have (an exe before r4)."""
@@ -1787,23 +1914,33 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 	def _stop_preview(self, name):
 		if not self.__dict__.get("_state"):
 			return
+		self._watch(name, None)
 		preview = _modelpreview()
 		if preview is not None:
 			preview.Show(name, False)
 
 	def _clear_previews(self):
+		self._watch(PREVIEW, None)
+		self._watch(HOVER_PREVIEW, None)
 		preview = _modelpreview()
 		if preview is not None:
 			preview.Clear(PREVIEW)
 			preview.Clear(HOVER_PREVIEW)
 
-	def _set_hover_view(self, shown):
+	def _set_hover_view(self, shown, loading=False):
 		"""hover_view only when it changes: each change adds or removes the
-		hover nui-view element."""
+		hover nui-view element. hover_loading (NOVA-259) likewise: the box
+		shows plain while its model is being made."""
 		shown = bool(shown)
+		loading = shown and bool(loading)
 		self._hover_shown = shown
+		changes = {}
 		if bool(self._state.get("hover_view")) != shown:
-			self.nui_set(hover_view=shown)
+			changes["hover_view"] = shown
+		if bool(self._state.get("hover_loading")) != loading:
+			changes["hover_loading"] = loading
+		if changes:
+			self.nui_set(**changes)
 
 	def over_row(self, index):
 		"""RmlUi 6.3 bubbles mouseover, so a row can report the pointer more

@@ -376,7 +376,7 @@ class Tabs(QolTest):
         self.press(world, window, "tab_press", 0, LEFT)
         self.assertEqual(self.model(window)["page_vnum"], SWORD)
         self.assertTrue(self.model(window)["can_back"])
-        self.assertIn(("Select", "wiki", 0), calls, "the page's preview follows the tab")
+        self.assertIn(("Select", "wiki", 0, 0, SWORD, 0, 0), calls, "the page's preview follows the tab")
         self.press(world, window, "tab_press", 1, LEFT)
         self.assertEqual(self.model(window)["page_vnum"], WOLF)
 

@@ -320,7 +320,7 @@ class ExtraInventoryWindow(uiExtraInventory.ExtraInventoryWindow):
 		wndItem = nui_form_proxies.TypedSlotWindowProxy(
 			range(limits.EXTRA_INVENTORY_PAGE_SIZE), self._on_cells, cols=limits.EXTRA_INVENTORY_COLUMNS,
 			rows=limits.EXTRA_INVENTORY_ROWS, positions=self._cell_position, window=limits.WINDOW_EXTRA_INVENTORY,
-			slot_type=limits.SLOT_TYPE_EXTRA_INVENTORY, marks=True)
+			slot_type=limits.SLOT_TYPE_EXTRA_INVENTORY, marks=True, glows=True)
 
 		self.inventoryTab = [nui_proxies.ButtonProxy() for _ in range(limits.EXTRA_INVENTORY_COSTUME_PAGE_COUNT)]
 		self.categoryTab = [nui_proxies.ButtonProxy() for _ in range(limits.EXTRA_INVENTORY_CATEGORY_COUNT)]

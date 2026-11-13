@@ -45,10 +45,10 @@ class TypedSlotWindowProxy(nui_slots.SlotWindowProxy):
 	them, nui_slots.MARK_KEYS)."""
 
 	def __init__(self, slot_numbers, on_refresh, cols=None, rows=None, positions=None, window=None, slot_type=None,
-	             marks=False):
+	             marks=False, glows=False):
 		self.slot_type = slot_type
 		nui_slots.SlotWindowProxy.__init__(self, slot_numbers, on_refresh, cols=cols, rows=rows, positions=positions,
-		                                   window=window, marks=marks)
+		                                   window=window, marks=marks, glows=glows)
 
 	def _slot_type(self):
 		slot_type = self.slot_type

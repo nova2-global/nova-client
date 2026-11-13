@@ -34,7 +34,7 @@ WAVE3B = ["inventory", "tooltips", "refine", "attach-metin", "select-item"]
 # sash and aura windows (NOVA-20, NOVA-23) and Wave 7's chest-drop preview
 # (NOVA-18).
 WAVE6_ITEMS = ["sash", "aura"]
-ITEMS = WAVE3B + ["extra-inventory"] + WAVE6_ITEMS + ["chest-drop", "wiki"]
+ITEMS = WAVE3B + ["extra-inventory"] + WAVE6_ITEMS + ["chest-drop", "costume-preview", "wiki"]
 # Wave 7 (NOVA-43): the switchbot joins the items group, after Wave 6's sash
 # and aura.
 WAVE7_ITEMS = ["switchbot"]
@@ -965,6 +965,20 @@ if __name__ == "__main__":
 
 # --- Wave 7 (NOVA-18) --------------------------------------------------------------------------
 
+
+
+class CostumePreviewWindow(WindowsTest):
+    """Wave 10 (NOVA-202): the costume preview popup is the id
+    "costume-preview", on by default, in the items group, its document on
+    demand; before the maintenance countdown, which stays last."""
+
+    def test_the_id_is_on_by_default_in_the_items_group_before_maintenance(self):
+        ids = [window_id for window_id, _ in self.m.WINDOWS]
+        self.assertLess(ids.index("costume-preview"), ids.index("maintenance"))
+        self.assertIs(dict(self.m.WINDOWS)["costume-preview"], True)
+        self.assertEqual([group for group, members in self.m.GROUPS.items()
+                          if "costume-preview" in members and group != "all"], ["items"])
+        self.assertIn(("costume-preview", ("costume-preview",)), self.m.ON_DEMAND_DOCUMENTS)
 
 class Wave7ChestDrop(WindowsTest):
     """The wiki browser (NOVA-42) is the id "wiki", on by default, in the

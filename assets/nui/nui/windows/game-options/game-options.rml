@@ -156,6 +156,15 @@
 				<button id="go-keys-open" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--keys-open" data-event-mousedown="keypage('open', ev.button)"><span class="go-choice__label">@ui.KEYBIND_OPEN</span></button>
 			</div>
 		</div>
+		<!-- NOVA-188: a newly received item glows until hovered (legacy's row
+		     under the Keyboard row; OLD's "item_mark"). -->
+		<div class="go-row go-row--new-item">
+			<span class="go-label go-label--new-item">@ui.OPTION_NEW_ITEM_HIGHLIGHT</span>
+			<div class="go-choices">
+				<button id="go-new-item-1" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--new-item-1" data-class-is-selected="new_item_glow" data-event-mousedown="choose('new_item_glow', 1, ev.button)"><span class="go-choice__label">@ui.OPTION_SALESTEXT_VIEW_ON</span></button>
+				<button id="go-new-item-0" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--new-item-0" data-class-is-selected="!new_item_glow" data-event-mousedown="choose('new_item_glow', 0, ev.button)"><span class="go-choice__label">@ui.OPTION_SALESTEXT_VIEW_OFF</span></button>
+			</div>
+		</div>
 		</div>
 		<!-- NOVA-121: the keys page (keybindings.Page): the sections and their
 		     actions, each with its key and its second key. A left press on a

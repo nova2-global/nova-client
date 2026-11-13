@@ -115,6 +115,11 @@ body, body.theme-dark
 	--slot-unusable: #ff6f6a59;
 	--slot-unavailable: #000000a6;
 	--accent-glow: #a594ff8c;
+	--glow-red: #ff5a52;
+	--glow-blue: #5b8dff;
+	--glow-yellow: #ffd84a;
+	--glow-cyan: #23e0d8;
+	--glow-violet: #c28bff;
 	--tip-bg: #00000082;
 	--tip-title: #f2d39b;
 	--tip-special: #a8e6bf;
@@ -230,6 +235,11 @@ body.theme-light
 	--slot-unusable: #c4322b40;
 	--slot-unavailable: #15171c40;
 	--accent-glow: #5a45e64d;
+	--glow-red: #d02a22;
+	--glow-blue: #2a5fd6;
+	--glow-yellow: #b88400;
+	--glow-cyan: #0a8f88;
+	--glow-violet: #7a3fd0;
 	--tip-bg: #00000082;
 	--tip-title: #f2d39b;
 	--tip-special: #a8e6bf;
@@ -345,6 +355,11 @@ body.theme-classic
 	--slot-unusable: #ff000080;
 	--slot-unavailable: #00000080;
 	--accent-glow: #ffc80066;
+	--glow-red: #ff3030;
+	--glow-blue: #3070ff;
+	--glow-yellow: #ffe040;
+	--glow-cyan: #03fce3;
+	--glow-violet: #c080ff;
 	--tip-bg: #0d0c0b;
 	--tip-title: #f1e6c0;
 	--tip-special: #ffc700;

@@ -1,0 +1,20 @@
+<rml>
+<head>
+	<!-- The costume preview popup (NOVA-202; legacy uicostumepreview.py
+	     CostumePreview). Holding the preview key (the "show names" action, Alt
+	     by default) over a costume in a shop, the exchange, the cube or the
+	     shop search shows the player's own model wearing it: the model preview
+	     "costume" (CPythonModelPreview, drawn into the view model-costume)
+	     over the costume's name. costume_preview.py decides when it shows and
+	     where (beside the item tooltip); controller
+	     assets/root/nui_costume_preview.py. A tooltip-like board: it takes no
+	     pointer and no focus. -->
+	<title>costume-preview</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="costume-preview.rcss"/>
+</head>
+<body template="nui" id="costume-preview" class="nui-board nui-board--tooltip nui-fx cpv" data-model="costume_preview">
+	<div class="cpv__well"><nui-view id="cpv-view" class="cpv__view" name="model-costume" hover="none"></nui-view></div>
+	<span id="cpv-name" class="cpv__name">{{ name }}</span>
+</body>
+</rml>

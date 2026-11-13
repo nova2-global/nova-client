@@ -1290,3 +1290,7 @@ SHOP_TEXT_OR	ή
 SHOP_BUY_COUNT_TITLE	Ποσότητα αγοράς (μέγ. %d)
 DO_YOU_BUY_WITH_ITEM	Θέλεις να αγοράσεις %s για %s;
 SHOP_BULK_BUY_HINT	Shift + click: αγορά πολλών
+SEARCH_IN_SHOPS	Ctrl + click: αναζήτηση στα καταστήματα
+SEARCH_IN_WIKI	Shift + right-click: άνοιγμα στο wiki
+MOVE_FROM_SAFEBOX_TO_INVENTORY	Right-click: μετακίνηση στο απόθεμα
+COSTUME_PREVIEW_HINT	Κράτα %s: προεπισκόπηση στον χαρακτήρα σου

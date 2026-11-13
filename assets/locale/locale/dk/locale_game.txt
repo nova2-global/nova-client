@@ -1290,3 +1290,7 @@ SHOP_TEXT_OR	eller
 SHOP_BUY_COUNT_TITLE	Antal at købe (maks. %d)
 DO_YOU_BUY_WITH_ITEM	Vil du købe %s for %s?
 SHOP_BULK_BUY_HINT	Shift + click: køb flere
+SEARCH_IN_SHOPS	Ctrl + click: søg i butikkerne
+SEARCH_IN_WIKI	Shift + right-click: åbn i wikien
+MOVE_FROM_SAFEBOX_TO_INVENTORY	Right-click: flyt til inventaret
+COSTUME_PREVIEW_HINT	Hold %s: se på din karakter

@@ -1236,6 +1236,9 @@ EXPECTED_SITES = {
                            ("make", "chest-drop", "uiChestDrop.ChestDropWindow", "nui_chest_drop.ChestDropWindow"),
                            # Wave 8 (NOVA-42): the wiki browser, no legacy window.
                            ("make", "wiki", "uiWiki.UnavailableWindow", "nui_wiki.WikiWindow"),
+                           # Wave 10 (NOVA-202): the costume preview popup.
+                           ("make", "costume-preview", "uiCostumePreview.CostumePreview",
+                            "nui_costume_preview.CostumePreview"),
                            ("make", "shop-search", "uiSearchShop.SearchShopWindow", "nui_shop_search.SearchShopWindow"),
                            ("make", "offline-shop-log", "uiOfflineShopLog.OfflineShopLogWindow",
                             "nui_offline_shop_log.OfflineShopLogWindow"),

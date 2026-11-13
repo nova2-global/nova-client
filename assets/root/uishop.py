@@ -13,6 +13,7 @@ import uiCommon
 import mouseModule
 import localeInfo
 import constInfo
+import costume_preview
 
 ###################################################################################################
 ## Barter rows and bulk buys at an NPC shop (NOVA-83; OLD uiShop.py:1043-1110). Each choice is a
@@ -22,6 +23,10 @@ import constInfo
 
 ## Shift + click on an NPC shop item asks how many (OLD: left Shift only; either Shift here).
 BULK_BUY = True
+# NOVA-194 (Eddy, 2026-11-12; OLD uiShop.py:1095-1100): an NPC shop's gold-only
+# buy of one row under this price goes through with no question. The server
+# checks every buy as before.
+NO_CONFIRM_BELOW = 1000000000
 BULK_BUY_KEYS = ("DIK_LSHIFT", "DIK_RSHIFT")
 ## The client's own constants where it has them, else these (the server's caps).
 BARTER_COST_MAX = 4          # shop.BARTER_COST_MAX: the costs of a row
@@ -629,9 +634,27 @@ class ShopDialog(ui.ScriptWindow):
 			return
 		self.__AskBuy(pos)
 
+	def BuysWithoutQuestion(self, pos, count=1):
+		"""NOVA-194: an NPC shop's row on a gold tab, with no item costs, bought once (not a
+		multi-buy) for less than NO_CONFIRM_BELOW yang. A player's or offline shop, a barter
+		row, a secondary coin tab and a dear row still ask."""
+		if count != 1 or self.isOfflineShop or shop.IsPrivateShop():
+			return False
+		if GetBarterCosts(pos):
+			return False
+		tab = pos // shop.SHOP_SLOT_COUNT
+		if shop.GetTabCoinType(tab) != shop.SHOP_COIN_TYPE_GOLD:
+			return False
+		return 0 <= shop.GetItemPrice(pos) < NO_CONFIRM_BELOW
+
 	def __AskBuy(self, pos, count=1):
 		"""Asks to buy `count` rows of `pos`: the item, the total, and for a barter row every
-		cost and the yang (when above 0) times the count (NOVA-83)."""
+		cost and the yang (when above 0) times the count (NOVA-83). A cheap NPC buy asks
+		nothing (NOVA-194)."""
+		if self.BuysWithoutQuestion(pos, count):
+			net.SendShopBuyPacket(pos)
+			return
+
 		itemIndex = shop.GetItemID(pos)
 		itemPrice = shop.GetItemPrice(pos)
 		itemCount = shop.GetItemCount(pos)
@@ -763,6 +786,8 @@ class ShopDialog(ui.ScriptWindow):
 		constInfo.SET_HOVERED_CHEST(shop.GetItemID(slotIndex))
 		if mouseModule.mouseController.isAttached():
 			return
+		## Alt over a costume shows it on the player (NOVA-202; OLD :1154).
+		costume_preview.hover(shop.GetItemID(slotIndex))
 
 		if 0 != self.tooltipItem:
 			if shop.SHOP_COIN_TYPE_GOLD == shop.GetTabCoinType(self.tabIdx):
@@ -772,6 +797,7 @@ class ShopDialog(ui.ScriptWindow):
 	def OverOutItem(self):
 		self.hoveredSlot = -1
 		constInfo.SET_HOVERED_CHEST(0)
+		costume_preview.leave()
 		if 0 != self.tooltipItem:
 			self.tooltipItem.HideToolTip()
 
@@ -1168,6 +1194,7 @@ class ShopDialog(ui.ScriptWindow):
 			return
 		## Y1's uiToolTip.ItemToolTip.SetOfflineShopItem (o-cli bug 2): the view's or the panel's
 		## item, with the owner's key hints.
+		costume_preview.hover(shop.GetOfflineShopItemID(slot))
 		setOfflineShopItem = getattr(self.tooltipItem, "SetOfflineShopItem", None)
 		if setOfflineShopItem:
 			setOfflineShopItem(slot)

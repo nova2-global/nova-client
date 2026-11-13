@@ -8,7 +8,8 @@
    65, 90, 115 and 140 (the block toggles' two rows), 165, 190, 215, 240,
    265 and 290 (the pickup filter's two rows, NOVA-50), 315 (hide shops,
    NOVA-9), 340 (sashes, NOVA-20), 365 (hide buffi, NOVA-38), 390 and 415
-   (the mob info, NOVA-40) and 440 (Keyboard, NOVA-121; the board 483 tall). Labels are centered over their art as
+   (the mob info, NOVA-40), 440 (Keyboard, NOVA-121) and 465 (new items,
+   NOVA-188; the board 508 tall). Labels are centered over their art as
    legacy's text lines are, a wider one overflowing both ends. The choice in
    effect and a blocked request show the down art. The PvP hints are legacy
    button tooltips: outlined text above the button, without a board. */
@@ -16,7 +17,7 @@
 body.skin-classic.game-options
 {
 	width: 300dp;
-	height: 483dp;
+	height: 508dp;
 	min-width: 0;
 }
 /* z-index: the legacy rows below are positioned boxes placed from the
@@ -55,7 +56,7 @@ body.skin-classic.game-options .game-options__titlebar .nui-window__close
 body.skin-classic.game-options .game-options__body
 {
 	position: relative;
-	height: 483dp;
+	height: 508dp;
 	padding: 0;
 }
 body.skin-classic.game-options .go-row,
@@ -93,6 +94,7 @@ body.skin-classic.game-options .go-label--mob-level { top: 392dp; }
 body.skin-classic.game-options .go-label--mob-ai { top: 417dp; }
 /* The Keyboard row (NOVA-121; legacy's KEYBOARD_ROW_Y 440, the board 483). */
 body.skin-classic.game-options .go-label--keys { top: 442dp; }
+body.skin-classic.game-options .go-label--new-item { top: 467dp; }
 
 body.skin-classic.game-options .go-choice
 {
@@ -157,6 +159,8 @@ body.skin-classic.game-options .go-choice--mob-level-0 { left: 155dp; top: 390dp
 body.skin-classic.game-options .go-choice--mob-ai-1 { left: 90dp; top: 415dp; }
 body.skin-classic.game-options .go-choice--mob-ai-0 { left: 155dp; top: 415dp; }
 body.skin-classic.game-options .go-choice--keys-open { left: 90dp; top: 440dp; }
+body.skin-classic.game-options .go-choice--new-item-1 { left: 90dp; top: 465dp; }
+body.skin-classic.game-options .go-choice--new-item-0 { left: 155dp; top: 465dp; }
 
 /* The PvP choices on the small art; the choice in effect shows its down art,
    under the pointer too. */

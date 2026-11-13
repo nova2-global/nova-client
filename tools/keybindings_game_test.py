@@ -109,7 +109,9 @@ class Game(unittest.TestCase):
 		             "keybindings": self.kb, "interfaceModule": self.interfaceModule,
 		             "constInfo": types.SimpleNamespace(SET_ITEM_QUESTION_DIALOG_STATUS=lambda value: None),
 		             "uiPrivateShopBuilder": types.SimpleNamespace(IsBuildingPrivateShop=lambda: False),
-		             "ui": types.SimpleNamespace(__mem_func__=lambda f: f)}
+		             "ui": types.SimpleNamespace(__mem_func__=lambda f: f),
+		             # NOVA-202: the show names key also holds the costume preview.
+		             "costume_preview": types.SimpleNamespace(key=lambda held: None)}
 		window = compiled(namespace)()
 		window.interface = support.Recording("interface", log, wndWeb=None)
 		window.interface.wndDragonSoul = support.Recording("wndDragonSoul", log)

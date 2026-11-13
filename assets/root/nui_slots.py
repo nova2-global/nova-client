@@ -770,6 +770,18 @@ _DEFAULT_COVER = "d:/ymir work/ui/public/slot_cover_button_01.sub"
 # with it.
 CLEARED_STATES = {"locked": False, "disabled": False, "in_use": False, "unusable_ontop": False}
 
+# NOVA-188: the tint of an active cell, by name ("" the untinted glow; red,
+# blue, yellow, cyan, violet), in every cell of a grid made with glows=True.
+GLOW_KEY = "glow"
+
+
+def glow_name(color):
+	"""The name of an ActivateSlot color (item_glow.GLOW_NAMES); "" for 0."""
+	if not color:
+		return ""
+	import item_glow
+	return item_glow.glow_name(color)
+
 
 def _pick_up_style():
 	return getattr(wndMgr, "SLOT_STYLE_PICK_UP", 1)
@@ -812,6 +824,9 @@ class SlotWindowProxy(object):
 	refine=True opts the grid in to the refine level: SetItemSlot reads it
 	(refine_level) and every cell carries REFINE_KEY.
 
+	glows=True (NOVA-188) opts the grid in to the active glow's tint:
+	ActivateSlot(slot, color) keeps it, and every cell carries GLOW_KEY.
+
 	Wave 4b: the four mark calls of CSlotWindow (SetCantMouseEventSlot,
 	SetCanMouseEventSlot, SetUnusableSlotOnTopWnd, SetUsableSlotOnTopWnd)
 	set and clear a slot's in-use and unusable marks; SetItemSlot (any set of
@@ -823,12 +838,13 @@ class SlotWindowProxy(object):
 	flush() (or nui_slots.flush_marks()) pushes its cells."""
 
 	def __init__(self, slot_numbers, on_refresh, cols=None, rows=None, positions=None, window=None, refine=False,
-	             marks=False):
+	             marks=False, glows=False):
 		self.on_refresh = on_refresh
 		self.positions = positions
 		self.window = window
 		self.refine = bool(refine)
 		self.marks = bool(marks)
+		self.glows = bool(glows)
 		self.dirty = False
 		self.use_mode = False
 		self.usable = False
@@ -853,7 +869,7 @@ class SlotWindowProxy(object):
 			record = self._slots[slot] = {"kind": "", "vnum": 0, "count": "", "icon": "", "w": 1, "h": 1,
 			                              "active": False, "locked": False, "disabled": False, "cd": (0.0, 0.0),
 			                              "cover_art": "", "unavailable": False, "always_cover": False,
-			                              "refine": 0, "in_use": False, "unusable_ontop": False}
+			                              "refine": 0, "in_use": False, "unusable_ontop": False, GLOW_KEY: ""}
 		return record
 
 	def _holds(self, slot):
@@ -861,7 +877,7 @@ class SlotWindowProxy(object):
 
 	def _clear(self, record):
 		record.update({"kind": "", "vnum": 0, "count": "", "icon": "", "w": 1, "h": 1, "active": False,
-		               "cd": (0.0, 0.0), "refine": 0})
+		               "cd": (0.0, 0.0), "refine": 0, GLOW_KEY: ""})
 		record.update(CLEARED_STATES)
 
 	def _mark_dirty(self):
@@ -890,7 +906,7 @@ class SlotWindowProxy(object):
 		if self.refine:
 			record["refine"] = refine_level(vnum)
 		if not same:
-			record.update({"active": False, "cd": (0.0, 0.0)})
+			record.update({"active": False, "cd": (0.0, 0.0), GLOW_KEY: ""})
 
 	def SetSkillSlotNew(self, slot, skill_index, grade, level):
 		if not self._holds(slot):
@@ -937,13 +953,17 @@ class SlotWindowProxy(object):
 		for record in self._slots.values():
 			self._clear(record)
 
-	def ActivateSlot(self, slot):
+	def ActivateSlot(self, slot, color=0):
 		if self._holds(slot):
-			self._record(int(slot))["active"] = True
+			record = self._record(int(slot))
+			record["active"] = True
+			record[GLOW_KEY] = glow_name(color)
 
 	def DeactivateSlot(self, slot):
 		if self._holds(slot):
-			self._record(int(slot))["active"] = False
+			record = self._record(int(slot))
+			record["active"] = False
+			record[GLOW_KEY] = ""
 
 	def SetUseMode(self, flag):
 		self.use_mode = bool(flag)
@@ -1153,6 +1173,11 @@ class SlotWindowProxy(object):
 				shown = record is not None and bool(record["kind"]) and not cells[index].get("covered")
 				for key in MARK_KEYS:
 					cells[index][key] = shown and bool(record[key])
+		if self.glows:
+			for index, slot in enumerate(self.slot_numbers):
+				record = self._slots.get(slot)
+				lit = record is not None and record["active"] and not cells[index].get("covered")
+				cells[index][GLOW_KEY] = record[GLOW_KEY] if lit else ""
 		return cells
 
 	def cells(self):
@@ -1693,8 +1718,8 @@ class FullSlotWindowProxy(SlotWindowProxy):
 		for record in self._slots.values():
 			self._clear_full(record)
 
-	def ActivateSlot(self, slot):
-		SlotWindowProxy.ActivateSlot(self, slot)
+	def ActivateSlot(self, slot, color=0):
+		SlotWindowProxy.ActivateSlot(self, slot, color)
 		if self._holds(slot):
 			entry = self._store.get(self._ACTIVE_KEY, {}).get(int(slot))
 			if entry is not None:

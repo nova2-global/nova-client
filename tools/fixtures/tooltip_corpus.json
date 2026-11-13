@@ -27,7 +27,7 @@
 		},
 		"uitooltip": {
 			"path": "assets/root/uitooltip.py",
-			"sha256": "9d9524c23a6c4029b7d566bc68f48aa168db20fd85bf473bbd848141f0d496af"
+			"sha256": "8d7c0bbd2e5af0467d49c4dfc3942463ec9fedfe082b8d428e32ee386a75f538"
 		}
 	},
 	"items": {
@@ -36023,6 +36023,114 @@
 			"attrs": [],
 			"pos": 90,
 			"safebox_open": true
+		},
+		{
+			"id": "hints-search-wiki",
+			"context": "SetInventoryItem",
+			"vnum": 27001,
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"sockets": [
+				0,
+				0,
+				0,
+				0
+			],
+			"attrs": [],
+			"shortcuts": [
+				"search",
+				"wiki"
+			]
+		},
+		{
+			"id": "hints-extra-search-wiki",
+			"context": "SetInventoryItem",
+			"vnum": 41001,
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"sockets": [
+				0,
+				0,
+				0,
+				0
+			],
+			"attrs": [],
+			"window": "EXTRA_INVENTORY",
+			"pos": 900,
+			"shortcuts": [
+				"search",
+				"wiki"
+			]
+		},
+		{
+			"id": "hints-safebox-open-none",
+			"context": "SetInventoryItem",
+			"vnum": 27001,
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"sockets": [
+				0,
+				0,
+				0,
+				0
+			],
+			"attrs": [],
+			"safebox_open": true,
+			"shortcuts": [
+				"search",
+				"wiki"
+			]
+		},
+		{
+			"id": "hints-safebox-item",
+			"context": "SetSafeBoxItem",
+			"vnum": 27001,
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"sockets": [
+				0,
+				0,
+				0,
+				0
+			],
+			"attrs": [],
+			"safebox_open": true,
+			"any_cell": true
+		},
+		{
+			"id": "hints-costume-preview",
+			"context": "SetShopItem",
+			"vnum": 41001,
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"sockets": [
+				0,
+				0,
+				0,
+				0
+			],
+			"attrs": [],
+			"hovered_costume": 41001,
+			"shop": {
+				"open": true,
+				"private": false,
+				"price": 5000
+			}
 		},
 		{
 			"id": "skill-none",

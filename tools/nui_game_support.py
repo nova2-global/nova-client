@@ -274,7 +274,7 @@ class LegacySlots(LegacyWidget):
     def SetSlotCoolTime(self, index, cool_time, elapsed=0.0):
         self._cell(index)["cool"] = (cool_time, elapsed) if cool_time else None
 
-    def ActivateSlot(self, index):
+    def ActivateSlot(self, index, color=0):
         self._cell(index)["active"] = True
 
     def DeactivateSlot(self, index):
@@ -1327,6 +1327,8 @@ class Game(object):
         modules["systemSetting"].IsSoftwareCursor = lambda: False
         modules["systemSetting"].GetUINuiWindows = lambda: "+hud"
         modules["systemSetting"].IsUINuiLogin = lambda: 0
+        # NOVA-188: the new item glow's option, on as CPythonSystem's default.
+        modules["systemSetting"].IsShowNewItemHighlight = lambda: 1
         nuigame = Recording("nuigame", log)
         modules["nuigame"] = nuigame if self.engine else None
         self._wave2b_modules(modules)
@@ -1619,6 +1621,14 @@ class Game(object):
         # the world's file (Game.files).
         if name not in ("datacache", "keybindings") and "keybindings" not in self.modules:
             self.load("keybindings", "keybindings.py")
+        # Wave 10's item helpers (NOVA-188, 192, 202), which the item windows,
+        # the tooltip, the options and game.py import: fresh for each world,
+        # once constInfo is loaded (item_glow imports it).
+        if name not in ITEM_HELPERS and name not in ("datacache", "keybindings", "constInfo") \
+                and "constInfo" in self.modules:
+            for needed in ITEM_HELPERS:
+                if needed not in self.modules:
+                    self.load(needed, needed + ".py")
         # The wiki imports its text pages (NOVA-139): the page format and the
         # page store come first unless the test loaded its own.
         for needed in WIKI_PAGE_MODULES if name == "nui_wiki" else ():
@@ -2257,6 +2267,11 @@ def _client_values(table, module):
 WAVE3B_DIALOG_MODULES = ("uiCommon", "uiPickMoney", "uiRefine", "uiAttachMetin")
 
 
+# Wave 10: modules Game.load puts into every world before the windows that
+# import them (item_glow imports constInfo, so it comes after it).
+ITEM_HELPERS = ("item_shortcuts", "item_glow", "costume_preview")
+
+
 class LegacySlotWindow(object):
     """ui.SlotWindow and ui.GridSlotWindow as the C++ CSlotWindow keeps them
     (P14 spec 6.0): the slots a uiscript or ArrangeSlot made, what legacy set
@@ -2337,15 +2352,23 @@ class LegacySlotWindow(object):
             slot.update({"vnum": 0, "count": 0, "active": False, "locked": False, "disabled": False, "in_use": False,
                          "unusable_ontop": False})
 
-    def ActivateSlot(self, index):
+    def ActivateSlot(self, index, color=0):
         slot = self._slot(index)
         if slot is not None:
             slot["active"] = True
+            slot["glow"] = int(color)
 
     def DeactivateSlot(self, index):
         slot = self._slot(index)
         if slot is not None:
             slot["active"] = False
+            slot["glow"] = 0
+
+    def glows(self):
+        """{slot: color} of the active slots that hold an item (NOVA-188: the
+        tint wndMgr.ActivateSlot was given; 0 the untinted glow)."""
+        return dict((index, slot.get("glow", 0)) for index, slot in self.slots.items()
+                    if slot["vnum"] and slot["active"])
 
     def SetCoverButton(self, index, up="", over="", down="", disable="", left=False, right=True):
         slot = self._slot(index)

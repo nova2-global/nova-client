@@ -1,0 +1,40 @@
+/* The costume preview popup's modern look: a tooltip board holding a
+   sunken well with the model (164 x 196dp) over the costume's name, one
+   line, centered. It never takes the pointer or the focus. Classic (the
+   legacy thin board, legacy's 180 x 240 popup): skins/classic/windows/
+   costume-preview.rcss. */
+
+body.cpv
+{
+	focus: none;
+	pointer-events: none;
+	width: 180dp;
+	box-sizing: border-box;
+	padding: var(--space-2);
+}
+.cpv__well
+{
+	display: block;
+	box-sizing: border-box;
+	height: 196dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-sm);
+	background-color: var(--surface-sunken);
+}
+.cpv__view
+{
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+.cpv__name
+{
+	display: block;
+	margin-top: var(--space-2);
+	font-size: var(--font-sm);
+	color: var(--text);
+	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+}

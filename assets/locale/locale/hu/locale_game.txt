@@ -1290,3 +1290,7 @@ SHOP_TEXT_OR	vagy
 SHOP_BUY_COUNT_TITLE	Vásárolandó mennyiség (max. %d)
 DO_YOU_BUY_WITH_ITEM	Szeretnél %s-t vásárolni %s-ért?
 SHOP_BULK_BUY_HINT	Shift + click: több vásárlása
+SEARCH_IN_SHOPS	Ctrl + click: keresés a boltokban
+SEARCH_IN_WIKI	Shift + right-click: megnyitás a wikiben
+MOVE_FROM_SAFEBOX_TO_INVENTORY	Right-click: áthelyezés a leltárba
+COSTUME_PREVIEW_HINT	%s nyomva tartva: előnézet a karaktereden

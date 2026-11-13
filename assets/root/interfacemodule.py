@@ -47,6 +47,8 @@ import uiselectitem
 import uiGemShop
 import uiChestDrop
 import uiWiki
+import uiCostumePreview
+import costume_preview
 import uiSash
 ## The advanced pet's windows (NOVA-24).
 import uiPet
@@ -71,6 +73,8 @@ import uiScriptLocale
 import event
 import localeInfo
 import nui_windows
+import item_glow
+import item_shortcuts
 
 IsQBHide = 0
 # nova-protocol offline_shop_packets.h EOfflineShopCG: the builder's CREATE;
@@ -111,6 +115,7 @@ class Interface(object):
 		self.wndGemShop = None
 		self.wndChestDrop = None
 		self.wndWiki = None
+		self.wndCostumePreview = None
 		self.wndSashCombine = None
 		self.wndSashAbsorption = None
 		## The advanced pet's windows (NOVA-24; OLD interfaceModule.py:392-398).
@@ -295,6 +300,13 @@ class Interface(object):
 		# window: uiWiki.UnavailableWindow stands in when NovaUI cannot run.
 		self.wndWiki = nui_windows.make("wiki", uiWiki.UnavailableWindow, "nui_wiki.WikiWindow")
 		self.wndWiki.Hide()
+		# The costume preview popup (NOVA-202): Alt over a costume in a shop,
+		# the exchange, the cube or the shop search.
+		self.wndCostumePreview = nui_windows.make("costume-preview", uiCostumePreview.CostumePreview,
+		                                          "nui_costume_preview.CostumePreview")
+		costume_preview.set_popup(self.wndCostumePreview)
+		# Shift + right-click opens an item in it, and the tooltips say so (NOVA-192).
+		item_shortcuts.set_wiki(getattr(self.wndWiki, "AVAILABLE", True))
 		# Its Link button pastes a page's link where the player types.
 		self.wndWiki.SetPasteLinkEvent(ui.__mem_func__(self.PasteWikiLink))
 
@@ -739,6 +751,11 @@ class Interface(object):
 	################################
 
 	def Close(self):
+		## The "new item" glows end with the game phase (NOVA-188), and so do
+		## the item shortcuts' switches (NOVA-192).
+		item_glow.forget_all()
+		item_shortcuts.reset()
+
 		if self.dlgWhisperWithoutTarget:
 			self.dlgWhisperWithoutTarget.Destroy()
 			del self.dlgWhisperWithoutTarget
@@ -857,6 +874,11 @@ class Interface(object):
 		if self.wndWiki:
 			self.wndWiki.Destroy()
 			self.wndWiki = None
+
+		costume_preview.set_popup(None)
+		if self.wndCostumePreview:
+			self.wndCostumePreview.Destroy()
+			self.wndCostumePreview = None
 
 		if self.wndSashCombine:
 			self.wndSashCombine.Destroy()
@@ -1245,7 +1267,11 @@ class Interface(object):
 	def OnOfflineShopConfig(self):
 		import shop
 		config = shop.GetConfig()
-		self.wndInventory.ShowOfflineShopButtons(isinstance(config, dict) and bool(config.get("enabled")))
+		enabled = isinstance(config, dict) and bool(config.get("enabled"))
+		self.wndInventory.ShowOfflineShopButtons(enabled)
+		# Ctrl + click searches the shops from both inventories, and the
+		# tooltips say so (NOVA-192, NOVA-193).
+		item_shortcuts.set_shop_search(enabled)
 
 	# GC HIDE_SHOPS: the game options show the server's state (M5); a window
 	# made later reads it when it is made.
@@ -1688,6 +1714,11 @@ class Interface(object):
 		if player.DRAGON_SOUL_INVENTORY == inven_type:
 			if app.ENABLE_DRAGON_SOUL_SYSTEM:
 				self.wndDragonSoul.HighlightSlot(inven_pos)
+		## A newly received item of the inventory or the special inventory
+		## glows until hovered (NOVA-188; OLD interfaceModule.py:2965-2978).
+		## The C++ refreshes both inventories right after this call.
+		elif inven_type in (player.INVENTORY, getattr(player, "EXTRA_INVENTORY", -1)):
+			item_glow.mark_new(inven_type, inven_pos)
 
 	def DragonSoulGiveQuilification(self):
 		self.DRAGON_SOUL_IS_QUALIFIED = True

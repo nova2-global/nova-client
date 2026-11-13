@@ -1290,3 +1290,7 @@ SHOP_TEXT_OR	of
 SHOP_BUY_COUNT_TITLE	Aantal te kopen (max. %d)
 DO_YOU_BUY_WITH_ITEM	Wil je %s voor %s kopen?
 SHOP_BULK_BUY_HINT	Shift + click: meerdere kopen
+SEARCH_IN_SHOPS	Ctrl + click: zoeken in de winkels
+SEARCH_IN_WIKI	Shift + right-click: openen in de wiki
+MOVE_FROM_SAFEBOX_TO_INVENTORY	Right-click: naar de inventaris verplaatsen
+COSTUME_PREVIEW_HINT	Houd %s ingedrukt: bekijk op je personage

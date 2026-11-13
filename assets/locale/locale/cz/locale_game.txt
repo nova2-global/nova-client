@@ -1290,3 +1290,7 @@ SHOP_TEXT_OR	nebo
 SHOP_BUY_COUNT_TITLE	Počet ke koupi (max. %d)
 DO_YOU_BUY_WITH_ITEM	Chceš koupit %s za %s?
 SHOP_BULK_BUY_HINT	Shift + click: koupit více kusů
+SEARCH_IN_SHOPS	Ctrl + click: hledat v obchodech
+SEARCH_IN_WIKI	Shift + right-click: otevřít ve wiki
+MOVE_FROM_SAFEBOX_TO_INVENTORY	Right-click: přesunout do inventáře
+COSTUME_PREVIEW_HINT	Podržte %s: náhled na vaší postavě

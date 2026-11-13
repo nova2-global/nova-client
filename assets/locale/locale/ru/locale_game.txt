@@ -1290,3 +1290,7 @@ SHOP_TEXT_OR	или
 SHOP_BUY_COUNT_TITLE	Количество для покупки (макс. %d)
 DO_YOU_BUY_WITH_ITEM	Хотите купить %s за %s?
 SHOP_BULK_BUY_HINT	Shift + click: купить несколько
+SEARCH_IN_SHOPS	Ctrl + click: искать в магазинах
+SEARCH_IN_WIKI	Shift + right-click: открыть в вики
+MOVE_FROM_SAFEBOX_TO_INVENTORY	Right-click: переместить в инвентарь
+COSTUME_PREVIEW_HINT	Удерживайте %s: примерить на персонажа

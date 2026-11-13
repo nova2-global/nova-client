@@ -27,6 +27,7 @@
 		],
 		"mob_level": true,
 		"mob_ai": true,
+		"new_item_glow": true,
 		"key_rows": [
 			{
 				"kind": "section",

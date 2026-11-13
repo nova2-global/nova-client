@@ -1,0 +1,24 @@
+/* Classic skin overlay of nui/windows/costume-preview/costume-preview.rml:
+   legacy's popup (uicostumepreview.py CostumePreview) at 100%, 1dp to the
+   legacy pixel: the thin board (classic.rcss, nui-board--tooltip), 180 x
+   240, the model view 6 px in from its edges and the name in the last 20 px,
+   centered, outlined as legacy's text. */
+
+body.skin-classic.cpv
+{
+	width: 180dp;
+	height: 240dp;
+	padding: 6dp 6dp 0 6dp;
+}
+.skin-classic .cpv__well
+{
+	height: 208dp;
+	border-width: 0;
+	background-color: transparent;
+}
+.skin-classic .cpv__name
+{
+	margin-top: 0;
+	line-height: 20dp;
+	font-effect: outline(1dp var(--classic-text-outline));
+}

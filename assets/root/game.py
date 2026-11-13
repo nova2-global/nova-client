@@ -63,6 +63,7 @@ import nui_windows
 import musicInfo
 import debugInfo
 import stringCommander
+import costume_preview
 
 from _weakref import proxy
 
@@ -1530,6 +1531,9 @@ class GameWindow(ui.ScriptWindow):
 		self.ShowNameFlag = True
 		self.playerGauge.EnableShowAlways()
 		player.SetQuickPage(self.quickSlotPageIndex+1)
+		## The same key over a costume in a shop, the exchange, the cube or the
+		## shop search previews it on the player (NOVA-202).
+		costume_preview.key(True)
 
 	# ADD_ALWAYS_SHOW_NAME
 	def __IsShowName(self):
@@ -1547,6 +1551,7 @@ class GameWindow(ui.ScriptWindow):
 		self.ShowNameFlag = False
 		self.playerGauge.DisableShowAlways()
 		player.SetQuickPage(self.quickSlotPageIndex)
+		costume_preview.key(False)
 
 	def ShowMouseImage(self):
 		self.interface.ShowMouseImage()

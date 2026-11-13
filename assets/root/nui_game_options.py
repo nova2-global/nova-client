@@ -44,6 +44,7 @@ import shop
 import systemSetting
 import uiGameOption
 import uiPrivateShopBuilder
+import item_glow
 
 import nui
 import nui_hud
@@ -96,7 +97,7 @@ class GameOptionsBoard(nui.Window):
 		return {"name_color": 0, "target_board": 0, "pk_mode": 0, "block": 0, "blocked": [False] * BLOCK_COUNT,
 		        "view_chat": True, "always_show_name": True, "show_damage": True, "sales_text": True,
 		        "pickup": [True] * PICKUP_COUNT, "hide_shops": False, "show_sash": True, "hide_buffi": False,
-		        "mob_level": True, "mob_ai": True, "page": "main", "key_rows": [], "notice": ""}
+		        "mob_level": True, "mob_ai": True, "new_item_glow": True, "page": "main", "key_rows": [], "notice": ""}
 
 	@nui.on("choose")
 	def on_choose(self, what, value, button):
@@ -202,6 +203,7 @@ class OptionDialog(nui_hud.LayoutCalls):
 		        "show_damage": bool(systemSetting.IsShowDamage()), "sales_text": bool(systemSetting.IsShowSalesText()),
 		        "pickup": self.pickup(), "hide_shops": _hide_shops(), "show_sash": _show_sash(), "hide_buffi": _hide_buffi(),
 		        "mob_level": bool(systemSetting.IsShowMobLevel()), "mob_ai": bool(systemSetting.IsShowMobAIFlag()),
+		        "new_item_glow": item_glow.enabled(),
 		        "page": self.page, "key_rows": self.key_rows(), "notice": nui.plain_text(self.keyPage.notice_text())}
 
 	def key_rows(self):
@@ -383,6 +385,8 @@ class OptionDialog(nui_hud.LayoutCalls):
 			return int(bool(systemSetting.IsShowMobLevel()))
 		if what == "mob_ai":
 			return int(bool(systemSetting.IsShowMobAIFlag()))
+		if what == "new_item_glow":
+			return int(item_glow.enabled())
 		return None
 
 	def nui_choose(self, what, value):
@@ -431,6 +435,12 @@ class OptionDialog(nui_hud.LayoutCalls):
 		elif what == "mob_ai" and value in (0, 1):
 			systemSetting.SetShowMobAIFlag(value)
 			self._set(mob_ai=bool(systemSetting.IsShowMobAIFlag()))
+		elif what == "new_item_glow" and value in (0, 1) and hasattr(systemSetting, "SetShowNewItemHighlight"):
+			# NOVA-188 (legacy's row: uiGameOption.__OnClickNewItemButton).
+			systemSetting.SetShowNewItemHighlight(value)
+			if not value:
+				item_glow.forget_all()
+			self._set(new_item_glow=item_glow.enabled())
 		elif what == "hide_buffi" and value in (0, 1):
 			# Legacy's row (uiGameOption.__OnClickHideBuffiButton): 0 shows the
 			# buffi, 1 hides them; the server answers with GC::BUFFI_HIDE.

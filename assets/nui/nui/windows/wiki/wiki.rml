@@ -13,8 +13,9 @@
 	     views "model-wiki" and "model-wiki-hover") and the rows the server
 	     sent: where an item comes from, a chest's contents, refine costs, a
 	     mob's drops. Every list scrolls in a viewport of a fixed height, so
-	     nothing runs out of the window. The two hidden nui-countdowns retry
-	     a request and give up on an answer; nothing runs per frame. The
+	     nothing runs out of the window. The hidden nui-countdowns retry a
+	     request, give up on an answer and look again at a model being made
+	     (NOVA-259); nothing runs per frame. The
 	     document exists only while the window shows. A text page (NOVA-139,
 	     nui_wiki_pages.py, its sheet wiki-pages.rcss) takes the list's room
 	     too: its blocks are model data drawn by fixed markup, never markup
@@ -44,6 +45,9 @@
 	<div class="nui-window__body wiki__body">
 		<nui-countdown class="wiki__clock" format="none" data-if="retry_at > 0" data-attr-end="retry_at" data-event-countdownend="retry_fire()"/>
 		<nui-countdown class="wiki__clock" format="none" data-if="timeout_at > 0" data-attr-end="timeout_at" data-event-countdownend="timeout_fire()"/>
+		<!-- NOVA-259: while the client makes a preview's model (over its next
+		     steps, off the frame), the window looks again at this clock's end. -->
+		<nui-countdown class="wiki__clock" format="none" data-if="preview_check_at > 0" data-attr-end="preview_check_at" data-event-countdownend="preview_check()"/>
 		<div class="wiki__bar">
 			<button id="wiki-back" class="nui-button nui-button--ghost nui-button--icon nui-anim wiki__nav"
 			        data-attrif-disabled="!can_back" data-event-mousedown="back_press(ev.button)"><span
@@ -146,10 +150,13 @@
 			<div class="wiki__page" data-if="!home">
 				<div class="wiki__state" data-if="page_state == ''">@game.WIKI_PICK</div>
 				<div class="wiki__page-head" data-if="page_state != '' &amp;&amp; page_state != 'text'">
-					<div id="wiki-preview" class="wiki__preview" data-class-is-zoomable="model_view" data-event-mousedown="preview_press(ev.button)">
-						<nui-view class="wiki__view" name="model-wiki" hover="none" data-if="model_view"></nui-view>
+					<!-- NOVA-259: while its model is being made the view is clear and
+					     the box plain (no text, no icon, no zoom mark); the model then
+					     fades in (is-loading, wiki.rcss). -->
+					<div id="wiki-preview" class="wiki__preview" data-class-is-zoomable="model_view &amp;&amp; !model_loading" data-event-mousedown="preview_press(ev.button)">
+						<nui-view class="wiki__view nui-anim" name="model-wiki" hover="none" data-if="model_view" data-class-is-loading="model_loading"></nui-view>
 						<div class="wiki__well wiki__preview-well" data-if="!model_view"><img class="wiki__icon" data-if="page_icon != ''" data-attr-src="page_icon"/></div>
-						<span class="wiki__zoom-mark" data-if="model_view"><span class="nui-glyph nui-glyph--search"><span
+						<span class="wiki__zoom-mark" data-if="model_view &amp;&amp; !model_loading"><span class="nui-glyph nui-glyph--search"><span
 							class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
 					</div>
 					<div class="wiki__head-text">
@@ -244,7 +251,8 @@
 						</div>
 					</div>
 				</div>
-				<div class="wiki__hover-preview" data-if="hover_view"><nui-view class="wiki__view wiki__view--hover" name="model-wiki-hover" hover="none"></nui-view></div>
+				<div class="wiki__hover-preview" data-if="hover_view"><nui-view class="wiki__view wiki__view--hover nui-anim" name="model-wiki-hover" hover="none"
+				     data-class-is-loading="hover_loading"></nui-view></div>
 			</div>
 			<!-- The model viewer (r4): a press on the page's preview shows its
 			     model over the content area, in its own view (model-wiki-viewer).
@@ -262,7 +270,8 @@
 				<div id="wiki-viewer-stage" class="wiki__stage" data-event-mousedown="viewer_stage_press(ev.button)"
 				     data-event-dragstart="viewer_grab(ev.mouse_x)" data-event-drag="viewer_drag(ev.mouse_x)"
 				     data-event-dragend="viewer_drop()" data-event-mousescroll="viewer_wheel(ev.wheel_delta_y)"
-				     data-event-dblclick="viewer_reset()"><nui-view class="wiki__viewer-view" name="model-wiki-viewer" hover="none"></nui-view></div>
+				     data-event-dblclick="viewer_reset()"><nui-view class="wiki__viewer-view nui-anim" name="model-wiki-viewer" hover="none"
+				     data-class-is-loading="viewer_loading"></nui-view></div>
 			</div>
 		</div>
 	</div>

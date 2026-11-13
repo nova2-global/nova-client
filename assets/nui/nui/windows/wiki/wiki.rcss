@@ -608,14 +608,17 @@ body.wiki
 }
 /* NOVA-259: while the client makes a preview's model (off the frame, over
    its next steps) the view is clear, so the box stays plain: no text, no
-   icon. Once made, the model fades in; going back to loading is at once. */
+   icon. Once made, the model fades in with the dungeon manager's late boss
+   fade (NOVA-256: 0.15 s, linear-in-out); going back to loading is at once.
+   A transition, not that keyframe animation: the wiki's view stays in the
+   document from page to page, and each new loading must fade again. */
 .wiki__view.is-loading, .wiki__viewer-view.is-loading
 {
 	opacity: 0;
 }
 .wiki__view.nui-anim, .wiki__viewer-view.nui-anim
 {
-	transition: opacity 0.15s cubic-out;
+	transition: opacity 0.15s linear-in-out;
 }
 .wiki__view.is-loading.nui-anim, .wiki__viewer-view.is-loading.nui-anim
 {

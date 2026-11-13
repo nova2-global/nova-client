@@ -62,7 +62,8 @@ HOVER_DWELL_MS = 180
 # one frame, 320 to 340 ms (35 GR2s, its 30 emotions among them); r47: a
 # costume on the player's own race cost 21 ms of the frame that opened the
 # wiki. A preview whose model is not made yet stays plain (its view clear: no
-# text, no icon) and the model fades in once made (wiki.rcss, is-loading).
+# text, no icon) and the model fades in once made (wiki.rcss, is-loading: the
+# dungeon manager's late boss fade, 0.15 s).
 # Each is one flag, for a client without the calls or a test of the old way.
 BACKGROUND_PREVIEWS = True
 WAIT_ONLY_PREVIEWS = True

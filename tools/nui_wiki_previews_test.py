@@ -459,7 +459,7 @@ class TheMarkup(unittest.TestCase):
 		self.assertIn("opacity: 0;", hidden.group(1))
 		fade = re.search(r"\.wiki__view\.nui-anim, \.wiki__viewer-view\.nui-anim\s*\{([^}]*)\}", rcss)
 		self.assertIsNotNone(fade)
-		self.assertIn("transition: opacity 0.15s", fade.group(1))
+		self.assertIn("transition: opacity 0.15s linear-in-out;", fade.group(1), "the dungeon manager's late boss fade")
 
 
 if __name__ == "__main__":

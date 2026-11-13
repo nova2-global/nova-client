@@ -146,5 +146,42 @@ class Lifecycle(SearchShopTest):
         self.assertEqual(set(w4.fixture_keys(window, "shop-search")), set(w4.board(window).model))
 
 
+
+class FieldKeys(unittest.TestCase):
+    """Enter and Escape in the board's two fields. RmlUi's key events carry
+    key codes (nui.KEY_RETURN and so on); the handler compared them to names
+    such as "RETURN", so neither key ever did anything."""
+
+    def field_keys(self, field, key_name, fire_name):
+        world = SearchWorld(True)
+        world.perks.add(PERK)
+        world.results = list(results())
+        window = world.search_window()
+        with world, w4.quiet():
+            window.Open()
+            window.RefreshItems()
+            module = sys.modules["nui_shop_search"]
+            fired = []
+            owner = {("search", "fire_return"): window.inputName, ("search", "fire_escape"): window.inputName,
+                     ("filter", "Apply"): window.filterWnd, ("filter", "fire_escape"): window.filterWnd.inputValue}
+            setattr(owner[(field, fire_name)], fire_name, lambda: fired.append(fire_name) or True)
+            element = module.SEARCH_FIELD if field == "search" else module.FILTER_FIELD
+            kept = w4.board(window).key(element, getattr(module.nui, key_name))
+        return kept, fired
+
+    def test_enter_in_the_name_field_searches(self):
+        self.assertEqual(self.field_keys("search", "KEY_RETURN", "fire_return"), (True, ["fire_return"]))
+
+    def test_the_numpad_enter_in_the_name_field_searches(self):
+        self.assertEqual(self.field_keys("search", "KEY_NUMPADENTER", "fire_return"), (True, ["fire_return"]))
+
+    def test_enter_in_the_price_field_applies_the_filter(self):
+        self.assertEqual(self.field_keys("filter", "KEY_RETURN", "Apply"), (True, ["Apply"]))
+
+    def test_escape_in_each_field_is_that_field_s(self):
+        self.assertEqual(self.field_keys("search", "KEY_ESCAPE", "fire_escape"), (True, ["fire_escape"]))
+        self.assertEqual(self.field_keys("filter", "KEY_ESCAPE", "fire_escape"), (True, ["fire_escape"]))
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -627,12 +627,12 @@ class SearchShopWindow(nui_facade.Facade, uiSearchShop.SearchShopWindow):
 			self.suggestionList.Hide()
 
 	def _field_key(self, field_id, key):
-		if key in ("RETURN", "NUMPADENTER", "KP_ENTER"):
+		if key in (nui.KEY_RETURN, nui.KEY_NUMPADENTER):
 			if field_id == SEARCH_FIELD:
 				return self.inputName.fire_return()
 			if field_id == FILTER_FIELD:
 				return self.filterWnd.Apply()
-		if key == "ESCAPE":
+		if key == nui.KEY_ESCAPE:
 			if field_id == FILTER_FIELD:
 				return self.filterWnd.inputValue.fire_escape()
 			return self.inputName.fire_escape()

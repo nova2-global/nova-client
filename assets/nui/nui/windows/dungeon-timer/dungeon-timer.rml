@@ -71,6 +71,10 @@
 			        data-event-mousedown="arrow_press('next', ev.button)"><span class="nui-glyph nui-glyph--chevron-right"><span
 				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 			<p class="dungeon-timer__empty" data-if="empty != ''">{{ empty }}</p>
+			<!-- NOVA-256: while a shown card's boss still loads (the client makes it over the
+			     steps after the open), the controller looks again at this clock's end. -->
+			<nui-countdown class="dungeon-timer__hidden-clock" format="none" data-if="previews_check > 0"
+			               data-attr-end="previews_check" data-event-countdownend="previews_ready()"/>
 		</div>
 		<div class="nui-panel dungeon-timer__pane">
 			<div class="dungeon-timer__col dungeon-timer__col--details">

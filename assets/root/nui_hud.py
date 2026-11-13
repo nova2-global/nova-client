@@ -553,14 +553,17 @@ class KeptBoard(OnDemand):
 	the board only while it shows, so a window's model writes while hidden
 	stay in its state and restore() sets them at the next show, as with
 	OnDemand. probe() makes and destroys a board, as OnDemand's: nothing is
-	loaded before the first open. destroy() (the window's Destroy, at the
-	phase's end) unloads it. The callbacks are held weakly when they are
-	bound methods."""
+	loaded before the first open; with keep_probe (NOVA-256: the dungeon
+	manager, whose window's making probes it anyway) the probe's board is
+	kept instead, emptied and hidden, so even the first open loads nothing.
+	destroy() (the window's Destroy, at the phase's end) unloads it. The
+	callbacks are held weakly when they are bound methods."""
 
-	def __init__(self, make, restore=None, keep=None, empty=None):
+	def __init__(self, make, restore=None, keep=None, empty=None, keep_probe=False):
 		OnDemand.__init__(self, make, restore, keep)
 		self._empty = _weak_fn(empty)
 		self._kept = None
+		self._keep_probe = bool(keep_probe)
 
 	def loaded(self):
 		"""True while the board exists, shown or kept hidden."""
@@ -574,7 +577,19 @@ class KeptBoard(OnDemand):
 		board = self._board or self._kept
 		if board is not None:
 			return bool(board._doc)
-		return OnDemand.probe(self)
+		if not self._keep_probe:
+			return OnDemand.probe(self)
+		board = self._new()
+		if board is None:
+			return False
+		if not board._doc:
+			board.destroy()
+			return False
+		if self._empty is not None:
+			self._empty(board)
+		board.hide()
+		self._kept = board
+		return True
 
 	def show(self):
 		board = self._kept

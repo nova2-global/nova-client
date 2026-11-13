@@ -257,6 +257,18 @@ class Timer(unittest.TestCase):
         self.assertIsNone(window.itemSlot.events["over_in"])
 
 
+class BossPreview(unittest.TestCase):
+    def test_the_frame_s_boss_is_a_background_preview(self):
+        """NOVA-256: the boss loads off the frame (the client reads and parses its files over the
+        steps after Select); the frame shows nothing until it is made."""
+        world = dts.World(False, preview="background")
+        opened_timer(world)
+        mp = world.game.modules["modelpreview"]
+        self.assertIn(("SetBackground", "dungeon_boss", True), mp.calls)
+        self.assertIn(("Select", "dungeon_boss", 1095), mp.calls)
+        self.assertLess(mp.calls.index(("SetBackground", "dungeon_boss", True)), mp.calls.index(("Select", "dungeon_boss", 1095)))
+
+
 class Drops(unittest.TestCase):
     def test_the_drops_button_asks_once_and_rows_fill_the_panel(self):
         world = legacy_world()

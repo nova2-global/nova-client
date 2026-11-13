@@ -613,6 +613,12 @@ class TimerWindow(ui.ScriptWindow):
 		view.SetPosition(x, y)
 		view.SetSize(width, height)
 		view.SetRenderTarget(BOSS_PREVIEW)
+		# NOVA-256: the boss is made off the frame (the client reads its files on its loader thread and
+		# parses them one a step); the frame shows nothing until then. A client without it makes it
+		# inside Select, as before.
+		set_background = getattr(model_preview(), "SetBackground", None)
+		if set_background is not None:
+			set_background(BOSS_PREVIEW, True)
 		return view
 
 	def __ShowBossModel(self, race):

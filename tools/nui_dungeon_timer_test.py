@@ -132,15 +132,30 @@ class Bosses(unittest.TestCase):
         self.assertEqual(len(selects), before + 1, "only the card that came into view is new")
         self.assertEqual(selects[-1][1], "dungeon_boss_3")
 
-    def test_closing_clears_every_preview_that_was_made(self):
+    def test_closing_hides_every_preview_and_keeps_it_for_the_next_open(self):
+        # NOVA-256: r46 cleared them at each close and made the five bosses again at each open.
+        world, window, _ = opened(preview=True)
+        selects = len([c for c in self.previews(world) if c[0] == "Select"])
+        with world.game, w4.quiet():
+            w4.press(window, "close_press", 0)
+        self.assertFalse([c for c in self.previews(world) if c[0] == "Clear"], "nothing cleared at a close")
+        hidden = [c[1] for c in self.previews(world)[-5:] if c[0] == "Show" and c[2] is False]
+        self.assertEqual(sorted(hidden), ["dungeon_boss_%d" % i for i in (0, 1, 2, 5, 6)])
+        with world.game, w4.quiet():
+            window.Open()
+        self.assertEqual(len([c for c in self.previews(world) if c[0] == "Select"]), selects, "no boss asked for again")
+        self.assertIn(("Show", "dungeon_boss_0", True), self.previews(world)[-10:])
+        self.assertEqual([c["view"] for c in model(window)["cards"]], [True, True, True, False, True, True])
+
+    def test_destroy_clears_every_preview_that_was_made(self):
         world, window, _ = opened(preview=True)
         with world.game, w4.quiet():
             w4.press(window, "close_press", 0)
-        cleared = [c for c in self.previews(world) if c[0] == "Clear"]
-        self.assertEqual(sorted(c[1] for c in cleared), ["dungeon_boss_%d" % i for i in (0, 1, 2, 5, 6)])
+        closed = len(self.previews(world))
         with world.game, w4.quiet():
-            window.Open()
-        self.assertIn(("Select", "dungeon_boss_0", 1095), self.previews(world)[-15:], "selected again after the clear")
+            window.Destroy()
+        cleared = [c for c in self.previews(world)[closed:] if c[0] == "Clear" and c[1].startswith("dungeon_boss_")]
+        self.assertEqual(sorted(c[1] for c in cleared), ["dungeon_boss_%d" % i for i in (0, 1, 2, 5, 6)])
 
     def test_a_race_without_a_model_shows_the_monogram(self):
         world, window, _ = opened(preview=True, select_ok=False)
@@ -202,6 +217,164 @@ class Bosses(unittest.TestCase):
     def test_the_old_single_preview_is_not_used(self):
         world, window, _ = opened(preview=True)
         self.assertFalse([c for c in self.previews(world) if c[1] == "dungeon_boss"])
+
+
+class BackgroundBosses(unittest.TestCase):
+    """NOVA-256: no boss is made in the open's frame. The previews are background previews
+    (modelpreview.SetBackground): Select answers at once, the client makes each model over the
+    next steps, front card first, and a card shows its monogram until its own boss is made."""
+
+    def previews(self, world):
+        return world.game.modules["modelpreview"]
+
+    def poll(self, world, window):
+        """The previews_check clock's end, as the board sends it."""
+        self.assertGreater(model(window)["previews_check"], 0.0, "the clock runs while a boss loads")
+        with world.game, w4.quiet():
+            w4.fire(window, "previews_ready")
+
+    def views(self, window):
+        return dict((c["idx"], c["view"]) for c in model(window)["cards"])
+
+    def test_every_boss_is_asked_as_a_background_preview_and_none_shows_at_the_open(self):
+        world, window, _ = opened(preview="background")
+        calls = self.previews(world).calls
+        selects = [c[1] for c in calls if c[0] == "Select"]
+        self.assertEqual(selects, ["dungeon_boss_%d" % i for i in (0, 1, 6, 2, 5)], "the front card first, then the nearest")
+        for name in selects:
+            self.assertLess(calls.index(("SetBackground", name, True)), calls.index(("Select", name, window.nui_race(int(name[-1])))))
+        self.assertEqual(self.views(window), {0: False, 1: False, 2: False, 3: False, 5: False, 6: False}, "monograms while they load")
+        self.assertGreater(model(window)["previews_check"], 0.0)
+
+    def test_each_card_shows_its_boss_once_the_client_made_it(self):
+        world, window, _ = opened(preview="background")
+        mp = self.previews(world)
+        self.assertEqual(mp.step(), "dungeon_boss_0")
+        self.poll(world, window)
+        self.assertEqual(self.views(window), {0: True, 1: False, 2: False, 3: False, 5: False, 6: False})
+        self.assertGreater(model(window)["previews_check"], 0.0, "it looks again while the others load")
+        while mp.step():
+            pass
+        self.poll(world, window)
+        self.assertEqual(self.views(window), {0: True, 1: True, 2: True, 3: False, 5: True, 6: True})
+        self.assertEqual(model(window)["previews_check"], 0.0, "no clock once every shown boss is made")
+        selects = [c for c in mp.calls if c[0] == "Select"]
+        self.assertEqual(len(selects), 5, "a boss is asked for once")
+
+    def test_a_close_keeps_the_bosses_and_a_reopen_shows_them_at_once(self):
+        world, window, _ = opened(preview="background")
+        mp = self.previews(world)
+        while mp.step():
+            pass
+        self.poll(world, window)
+        with world.game, w4.quiet():
+            w4.press(window, "close_press", 0)
+        self.assertFalse([c for c in mp.calls if c[0] == "Clear"])
+        self.assertFalse(any(mp.shown.values()), "every boss hidden")
+        with world.game, w4.quiet():
+            window.Open()
+        self.assertEqual(self.views(window), {0: True, 1: True, 2: True, 3: False, 5: True, 6: True})
+        self.assertEqual(len([c for c in mp.calls if c[0] == "Select"]), 5, "none asked again")
+        self.assertEqual(model(window)["previews_check"], 0.0)
+
+    def test_a_boss_still_loading_at_the_close_comes_at_the_next_open(self):
+        world, window, _ = opened(preview="background")
+        mp = self.previews(world)
+        mp.step()
+        with world.game, w4.quiet():
+            w4.press(window, "close_press", 0)
+        self.assertIsNone(mp.step(), "a hidden card's boss waits")
+        with world.game, w4.quiet():
+            window.Open()
+        self.assertEqual(self.views(window)[0], True)
+        self.assertEqual(self.views(window)[1], False)
+        while mp.step():
+            pass
+        self.poll(world, window)
+        self.assertEqual(self.views(window), {0: True, 1: True, 2: True, 3: False, 5: True, 6: True})
+
+    def test_a_card_never_shows_another_dungeon_s_boss(self):
+        world, window, _ = opened(preview="background")
+        mp = self.previews(world)
+        while mp.step():
+            pass
+        mp.models["dungeon_boss_2"] = 1095  # what a wrong model would answer
+        self.poll(world, window)
+        views = self.views(window)
+        self.assertFalse(views[2], "a model of another race is never shown")
+        self.assertTrue(views[0])
+
+    def test_a_boss_that_makes_no_model_keeps_the_monogram_and_is_not_asked_again(self):
+        world = dts.World(True, preview="background")
+        world.rank()
+        window = world.timer()
+        world.game.modules["modelpreview"].fail.add(window.nui_race(1))
+        world.game.state.now = 100.0
+        with world.game, w4.quiet():
+            window.Open()
+        mp = self.previews(world)
+        while mp.step():
+            pass
+        self.poll(world, window)
+        self.assertEqual(self.views(window), {0: True, 1: False, 2: True, 3: False, 5: True, 6: True})
+        self.assertTrue(card(window, 1)["mono"], "the card shows its monogram")
+        press(world, window, "arrow_press", "next", 0)
+        self.assertEqual(len([c for c in mp.calls if c[0] == "Select" and c[1] == "dungeon_boss_1"]), 1)
+
+    def test_a_turn_brings_in_a_card_whose_boss_loads_meanwhile(self):
+        world, window, _ = opened(preview="background")
+        mp = self.previews(world)
+        while mp.step():
+            pass
+        self.poll(world, window)
+        press(world, window, "arrow_press", "next", 0)
+        self.assertEqual(card(window, 3)["slot"], "r2")
+        self.assertFalse(card(window, 3)["view"], "its monogram while it loads")
+        self.assertTrue(card(window, 1)["view"])
+        self.assertEqual(mp.step(), "dungeon_boss_3")
+        self.poll(world, window)
+        self.assertTrue(card(window, 3)["view"])
+
+    def test_the_board_is_loaded_with_the_window_and_kept_hidden_and_empty(self):
+        world = dts.World(True, preview="background")
+        world.rank()
+        window = world.timer()
+        kept = window.demand.kept()
+        self.assertIsNotNone(kept, "the window's making keeps its board")
+        self.assertFalse(kept.is_visible())
+        world.game.state.now = 100.0
+        with world.game, w4.quiet():
+            window.Open()
+        self.assertIs(w4.board(window), kept, "the open loads no document")
+        self.assertTrue(model(window)["cards"])
+        with world.game, w4.quiet():
+            w4.press(window, "close_press", 0)
+        self.assertIs(window.demand.kept(), kept)
+        for key in ("cards", "drops_items", "filter_chips"):
+            self.assertEqual(kept.model[key], [], key)
+        for key in ("go_end", "drops_retry", "drops_timeout", "previews_check"):
+            self.assertEqual(kept.model[key], 0.0, key)
+        with world.game, w4.quiet():
+            window.Destroy()
+        self.assertFalse(kept._doc, "Destroy unloads it")
+
+    def test_hide_before_init_and_destroy_twice_survive(self):
+        # ui.Window.__init__ calls Hide before __init__ has set anything (the r34 trap).
+        world = dts.World(True, preview="background")
+        with world.game:
+            import nui_dungeon_timer
+            bare = nui_dungeon_timer.TimerWindow.__new__(nui_dungeon_timer.TimerWindow)
+            bare._TimerWindow__HideBossModel()
+            bare._clear_previews()
+
+    def test_a_late_look_while_hidden_runs_no_clock(self):
+        world, window, _ = opened(preview="background")
+        board = w4.board(window)
+        with world.game, w4.quiet():
+            w4.press(window, "close_press", 0)
+            board.fire("previews_ready")
+        self.assertEqual(board.model["previews_check"], 0.0)
+        self.assertEqual(window._state["previews_check"], 0.0)
 
 
 class Hiding(unittest.TestCase):

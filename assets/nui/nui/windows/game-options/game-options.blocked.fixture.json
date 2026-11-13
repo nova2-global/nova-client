@@ -691,6 +691,12 @@
 			}
 		],
 		"page": "main",
-		"notice": "Click a key, then press the new one. Esc cancels, Backspace clears."
+		"notice": "Click a key, then press the new one. Esc cancels, Backspace clears.",
+		"searching": false,
+		"results": [],
+		"found": "",
+		"found_end": 0.0,
+		"yang_text": false,
+		"country_flags": false
 	}
 }

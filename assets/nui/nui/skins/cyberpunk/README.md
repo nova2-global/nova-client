@@ -316,6 +316,9 @@ The palette (every color of the `dark` palette's keys) and the skin's own tokens
 | `--gauge-pink` | `#e9ff3b` |
 | `--gauge-purple` | `#e9ff3b` |
 | `--gauge-blue` | `#2e9bff` |
+| `--gauge-trail` | `#ff9a3c` |
+| `--gauge-poison` | `#3bffb0` |
+| `--gauge-burn` | `#e9ff3b` |
 | `--cooldown-shade` | `#020108a6` |
 | `--slot-disabled` | `#ff3d7159` |
 | `--slot-locked` | `#0000008c` |

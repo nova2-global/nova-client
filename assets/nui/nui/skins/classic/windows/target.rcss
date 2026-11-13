@@ -5,7 +5,27 @@
    right edge, y 17 (legacy sizes the board 200 + 7 per letter; here it is as
    wide as the name needs); with buttons it is 65 tall, the small thin
    buttons 68dp apart at y 33, centered (legacy makes it 75dp per button,
-   at least 150). The close button is 30dp from the right edge, y 13. */
+   at least 150). The close button is 30dp from the right edge, y 13.
+   Wave 10 (legacy uitarget.py): the gauge's bar is the legacy green while
+   the target is poisoned, yellow while it burns, and the damage trail is
+   the legacy orange bar over its empty part (NOVA-208; the three bars are
+   gauge_red.tga turned on the hue wheel, as the legacy blue, pink and
+   purple are); a metin stone's board is 54 tall with the queue hint
+   centered at y 33 (NOVA-216); the archer gauge is code-drawn in the
+   legacy colors (OLD's archergauge art is not in NEW's packs; NOVA-209). */
+
+@decorator target-gauge-green : nui-repeat-box
+{
+	center-image: "d:/ymir work/ui/pattern/gauge_green.tga";
+}
+@decorator target-gauge-yellow : nui-repeat-box
+{
+	center-image: "d:/ymir work/ui/pattern/gauge_yellow.tga";
+}
+@decorator target-gauge-orange : nui-repeat-box
+{
+	center-image: "d:/ymir work/ui/pattern/gauge_orange.tga";
+}
 
 /* Legacy's whole name and the legacy gauge in the head; none of the modern
    head's badge, title and percent, nor its HP bar or a player's head. */
@@ -13,9 +33,10 @@ body.skin-classic.target .target-board__name
 {
 	display: inline;
 }
-body.skin-classic.target progress.target-board__hp
+body.skin-classic.target .target-board__hp-box
 {
 	display: block;
+	height: 8dp;
 }
 body.skin-classic.target .target-board__badge,
 body.skin-classic.target .target-board__title,
@@ -67,9 +88,72 @@ body.skin-classic.target .target-board--hp .target-board__name
 {
 	margin-right: 2dp;
 }
-body.skin-classic.target .target-board__hp
+body.skin-classic.target .target-board__hp-box
 {
 	margin-top: 4dp;
+}
+/* NOVA-208: the legacy bars by the target's state, and the trail over the
+   empty slot, inset 12dp at both ends as the bar is. */
+body.skin-classic.target progress.target-board__hp.is-poisoned fill
+{
+	decorator: target-gauge-green;
+}
+body.skin-classic.target progress.target-board__hp.is-burning fill
+{
+	decorator: target-gauge-yellow;
+}
+body.skin-classic.target .target-board__trail-track
+{
+	display: block;
+	position: absolute;
+	left: 12dp;
+	right: 12dp;
+	top: 0;
+	height: 8dp;
+}
+body.skin-classic.target .target-board__trail
+{
+	bottom: auto;
+	height: 8dp;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: target-gauge-orange;
+}
+/* NOVA-216: a metin stone's queue hint, centered under the name and the
+   gauge, the board as wide as it needs. */
+body.skin-classic.target .target-board--hint
+{
+	height: 54dp;
+}
+body.skin-classic.target .target-board__hint
+{
+	margin: 0;
+	padding: 0 18dp;
+	color: var(--classic-label-white);
+	font-size: var(--font-md);
+	white-space: nowrap;
+	font-effect: outline(1dp var(--classic-text-outline));
+}
+/* NOVA-209: the archer gauge in the legacy colors, square, its edge the
+   legacy separator gray. */
+body.skin-classic.target progress.target-arrow__gauge
+{
+	border-color: var(--classic-separator);
+	border-radius: 0;
+	background-color: var(--classic-slot-fill);
+}
+body.skin-classic.target progress.target-arrow__gauge fill
+{
+	border-radius: 0;
+	background-color: var(--classic-arrow-fill);
+}
+body.skin-classic.target .target-arrow__mark
+{
+	background-color: var(--classic-button-text);
+}
+body.skin-classic.target .target-arrow__tip
+{
+	font-weight: normal;
 }
 body.skin-classic.target .target-board__close
 {

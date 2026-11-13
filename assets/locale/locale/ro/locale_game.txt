@@ -1458,3 +1458,21 @@ STAT_PICK_TITLE_DEX	Dexteritate
 SKILL_MAX_UP_HINT	Shift + click: crește până la Maestru
 REMOVE_AFFECT_QUESTION	Vrei să dezactivezi %s?
 REFINE_FAST_UPGRADE	Îmbunătățire rapidă
+ATLAS_MARK_WIKI_HINT	Click pentru a deschide wiki-ul
+METIN_QUEUE_ADDED	[Coadă Metin] Piatra a fost adăugată în coadă.
+METIN_QUEUE_REMOVED	[Coadă Metin] Piatra a fost scoasă din coadă.
+METIN_QUEUE_FULL	[Coadă Metin] Coada ta de atac este plină.
+METIN_QUEUE_PREMIUM_HINT	[Coadă Metin] Cu un abonament premium poți adăuga mai multe pietre.
+AUTO_SHOUT_TOOLTIP	Strigăt automat
+AUTO_SHOUT_TITLE	Strigăt automat
+AUTO_SHOUT_DESC	Repetă strigătul tău la fiecare 30 s (16 s cu premium).
+AUTO_SHOUT_MESSAGE	Mesaj
+AUTO_SHOUT_STATUS_OFF	Oprit
+AUTO_SHOUT_STATUS_WAITING	Pornire...
+AUTO_SHOUT_STATUS_ON	Pornit
+AUTO_SHOUT_NEXT	Următorul strigăt în
+AUTO_SHOUT_START	Pornește
+AUTO_SHOUT_STOP	Oprește
+AUTO_SHOUT_NO_MESSAGE	Scrie mai întâi un mesaj pentru strigătul automat.
+TARGET_ARROW_DAMAGE	%s daune de săgeată
+TARGET_METIN_QUEUE_HINT	Shift + clic dreapta: adaugă în coada de atac

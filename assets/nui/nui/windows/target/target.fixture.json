@@ -13,6 +13,14 @@
 		"hp_values": "",
 		"element": 0,
 		"element_name": "",
-		"show_info": false
+		"show_info": false,
+		"trail": 0,
+		"trail_snap": true,
+		"poisoned": false,
+		"burning": false,
+		"arrow_percent": 0,
+		"arrow_pre": "",
+		"arrow_post": " arrow damage",
+		"hint": ""
 	}
 }

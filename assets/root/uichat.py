@@ -48,6 +48,16 @@ def SetShoutColorIndex(index):
 	global SHOUT_COLOR_INDEX
 	SHOUT_COLOR_INDEX = index
 
+## NOVA-204: a shout the player sent is the character's auto-shout message
+## (autoshout.py). A host without the module (the tools' stand-ins of other
+## windows) records nothing.
+def RememberShout(text):
+	try:
+		import autoshout
+	except ImportError:
+		return
+	autoshout.remember_shout(text)
+
 def SignedColor(color):
 	## The packed color wndMgr.SetColor reads into a C long (as
 	## grp.GenerateColor gives it): the palette's ARGB with its top bit set
@@ -351,8 +361,11 @@ class ChatLine(ui.EditLine):
 			## NOVA-11: the picked color goes with this shout only.
 			net.SendChatPacket(text, type, GetShoutColorIndex())
 			SetShoutColorIndex(0)
+			RememberShout(text)
 		else:
 			net.SendChatPacket(text, type)
+			if chat.CHAT_TYPE_SHOUT == type:
+				RememberShout(text)
 		
 	def __SendPartyChatPacket(self, text):
 
@@ -522,6 +535,9 @@ class ChatLine(ui.EditLine):
 class ChatInputSet(ui.Window):
 
 	CHAT_OUTLINE_COLOR = grp.GenerateColor(1.0, 1.0, 1.0, 1.0)
+	## NOVA-204: room the owner keeps right of the input for a button of its
+	## own (the chat window's auto-shout button; the log's none).
+	rightReserve = 0
 
 	def __init__(self):
 		ui.Window.__init__(self)
@@ -673,7 +689,7 @@ class ChatInputSet(ui.Window):
 		self.chatLine.SetUserMax(max)
 
 	def RefreshPosition(self):
-		shift = self.__GetChatLineLeft() - 57
+		shift = self.__GetChatLineLeft() - 57 + self.rightReserve
 		if app.IsRTL():
 			self.chatLine.SetSize(self.GetWidth() - 93 - shift, 18)
 		else:
@@ -700,6 +716,8 @@ class ChatWindow(ui.Window):
 
 	EDIT_LINE_HEIGHT = 25
 	CHAT_WINDOW_WIDTH = 600
+	# NOVA-204: the room the input keeps for the auto-shout button.
+	AUTO_SHOUT_BUTTON_ROOM = 25
 	
 	class ChatBackBoard(ui.Window):
 		def __init__(self):
@@ -763,7 +781,20 @@ class ChatWindow(ui.Window):
 		chatInputSet.SetEscapeEvent(ui.__mem_func__(self.CloseChat))
 		chatInputSet.SetReturnEvent(ui.__mem_func__(self.CloseChat))
 		chatInputSet.SetSize(550, 25)
+		chatInputSet.rightReserve = self.AUTO_SHOUT_BUTTON_ROOM
 		self.chatInputSet = chatInputSet
+
+		## NOVA-204: the auto-shout window's button, left of the send button
+		## (OLD uiChat.py:840-848, OLD's art; NEW's send button took OLD's
+		## place, so the input is AUTO_SHOUT_BUTTON_ROOM shorter).
+		btnAutoShout = ui.Button()
+		btnAutoShout.SetParent(self)
+		btnAutoShout.SetUpVisual("d:/ymir work/ui/game/taskbar/Open_Chat_Log_Button_01.sub")
+		btnAutoShout.SetOverVisual("d:/ymir work/ui/game/taskbar/Open_Chat_Log_Button_02.sub")
+		btnAutoShout.SetDownVisual("d:/ymir work/ui/game/taskbar/Open_Chat_Log_Button_03.sub")
+		btnAutoShout.SetToolTipText(localeInfo.AUTO_SHOUT_TOOLTIP)
+		btnAutoShout.Hide()
+		self.btnAutoShout = btnAutoShout
 
 		btnSendWhisper = ui.Button()
 		btnSendWhisper.SetParent(self)
@@ -848,6 +879,7 @@ class ChatWindow(ui.Window):
 
 		self.btnSendWhisper = 0
 		self.btnChatLog = 0
+		self.btnAutoShout = 0
 		self.btnChatSizing = 0
 
 	################
@@ -880,6 +912,9 @@ class ChatWindow(ui.Window):
 		self.btnChatLog.SetPosition(self.GetWidth() - 25, 2)
 		self.btnChatLog.Show()
 
+		self.btnAutoShout.SetPosition(self.GetWidth() - 100, 2)
+		self.btnAutoShout.Show()
+
 		self.chatInputSet.Open()
 		self.chatInputSet.SetTop()
 		self.SetTop()
@@ -902,6 +937,7 @@ class ChatWindow(ui.Window):
 		self.chatInputSet.Close()
 		self.btnSendWhisper.Hide()
 		self.btnChatLog.Hide()
+		self.btnAutoShout.Hide()
 		self.btnChatSizing.Hide()
 		
 		self.Refresh()
@@ -911,6 +947,9 @@ class ChatWindow(ui.Window):
 
 	def SetOpenChatLogEvent(self, event):
 		self.btnChatLog.SetEvent(event)
+
+	def SetAutoShoutEvent(self, event):
+		self.btnAutoShout.SetEvent(event)
 
 	def IsEditMode(self):
 		if chat.BOARD_STATE_EDIT == self.boardState:

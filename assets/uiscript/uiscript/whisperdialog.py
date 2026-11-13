@@ -188,6 +188,21 @@ window = {
 					"over_image" : "d:/ymir work/ui/public/small_button_02.sub",
 					"down_image" : "d:/ymir work/ui/public/small_button_03.sub",
 				},
+				## The add-friend button (NOVA-203, OLD whisperdialog.py:160-168):
+				## OLD's icon left of the block button.
+				{
+					"name" : "friendbutton",
+					"type" : "button",
+
+					"x" : 280 - 108,
+					"y" : 10,
+
+					"tooltip_text" : uiScriptLocale.MESSENGER_ADD_FRIEND,
+
+					"default_image" : "d:/ymir work/ui/game/windows/messenger_add_friend_01.sub",
+					"over_image" : "d:/ymir work/ui/game/windows/messenger_add_friend_02.sub",
+					"down_image" : "d:/ymir work/ui/game/windows/messenger_add_friend_03.sub",
+				},
 
 				## ScrollBar
 				{

@@ -744,3 +744,41 @@ KEYBIND_EMOTION_9	Emoție 9
 OPTION_NEW_ITEM_HIGHLIGHT	Noi
 DESTROY	Distruge
 STORAGE_TITLE	Depozitare
+OPTION_YANG_TEXT	Jurnal Yang
+OPTION_COUNTRY_FLAGS	Steaguri
+OPTION_SEARCH_HINT	Caută opțiuni
+OPTION_SEARCH_NONE	Nicio opțiune nu se potrivește.
+OPTION_BGM	Muzică de fundal
+KEYBIND_WIKI	Wiki
+OPTION_KEYWORDS_NAME_COLOR	nume culoare regat imperiu
+OPTION_KEYWORDS_TARGET_BOARD	țintă meniu inamic
+OPTION_KEYWORDS_PK	pvp luptă pace ostil breaslă liber
+OPTION_KEYWORDS_BLOCK	blocare schimb grup breaslă șoaptă prieten cerere
+OPTION_KEYWORDS_VIEW_CHAT	chat bulă
+OPTION_KEYWORDS_ALWAYS_NAME	nume mereu
+OPTION_KEYWORDS_DAMAGE	daune lovitură numere
+OPTION_KEYWORDS_SALES	magazin firmă vânzare
+OPTION_KEYWORDS_PICKUP	ridicare pradă filtru obiecte poțiuni
+OPTION_KEYWORDS_SHOPS	magazine offline negustor
+OPTION_KEYWORDS_SASH	eșarfă umăr costum
+OPTION_KEYWORDS_BUFFI	buffi însoțitor sprijin
+OPTION_KEYWORDS_MOB_LEVEL	monstru nivel info
+OPTION_KEYWORDS_MOB_AI	monstru agresiv stea
+OPTION_KEYWORDS_KEYS	taste tastatură scurtătură
+OPTION_KEYWORDS_YANG	yang aur bani ridicare mesaj
+OPTION_KEYWORDS_FLAGS	steag țară națiune limbă
+OPTION_KEYWORDS_SOUND	sunet efecte volum
+OPTION_KEYWORDS_MUSIC	muzică volum
+OPTION_KEYWORDS_BGM	muzică fundal melodie
+OPTION_KEYWORDS_CAMERA	cameră zoom distanță departe aproape
+OPTION_KEYWORDS_FOG	ceață distanță vizibilitate
+OPTION_KEYWORDS_TILING	grafică
+OPTION_KEYWORDS_FOV	câmp vizual unghi
+OPTION_KEYWORDS_SNOW	zăpadă ninsoare vreme crăciun
+OPTION_KEYWORDS_FPS	fps cadre contor performanță
+OPTION_KEYWORDS_TIPS	sfaturi indiciu ajutor
+OPTION_KEYWORDS_THEME	temă aspect stil întunecat luminos clasic
+OPTION_KEYWORDS_SCALE	scară mărime interfață
+OPTION_KEYWORDS_MOTION	mișcare animație
+OPTION_KEYWORDS_EFFECTS	efecte estompare umbră
+OPTION_KEYWORDS_COLORS	culori accent panou opacitate

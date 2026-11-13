@@ -25,7 +25,9 @@
 	     (nui_hud.EscapeProxy). The theme, scale, swatch and opacity choices
 	     are repeated in a bare wrapper, so their own bindings read the item
 	     from a child (the scale list shrinks when a custom percent goes). A
-	     swatch is a chip colored from the model (data-style---swatch). -->
+	     swatch is a chip colored from the model (data-style---swatch). The
+	     search field above the rows (NOVA-213) lists matching rows; a
+	     result highlights its row (is-found) for a moment. -->
 	<title>system-options</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="system-options.rcss"/>
@@ -40,31 +42,49 @@
 		<button id="so-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim" data-event-mousedown="act('close', ev.button)">&#215;</button>
 	</div>
 	<div class="nui-window__body system-options__body">
-		<div class="so-legacy">
-			<div class="so-row so-row--sound">
+		<!-- NOVA-213: the search (settings_index): the field, its results over
+		     the rows while it holds text (a list of fixed height that
+		     scrolls), and the timer that ends a found row's highlight. The
+		     rows under the results are hidden while it shows, so no press
+		     reaches them. The field takes the focus (the body takes none). -->
+		<div class="so-search">
+			<input type="text" id="so-search" class="nui-input so-search__field" maxlength="32" placeholder="@ui.OPTION_SEARCH_HINT"
+			       data-event-mousedown="search_press(ev.button)" data-event-change="search(ev.value, ev.linebreak)"/>
+			<div class="nui-list so-results" data-if="searching">
+				<div id="so-result-list" class="nui-list__viewport so-results__list">
+					<div class="nui-list__item nui-anim so-result" data-for="r : results" data-attr-id="'so-result-' + r.id"
+					     data-event-mousedown="goto(r.id, ev.button)"><span class="so-result__label">{{ r.label }}</span><span
+						class="so-result__where">{{ r.where }}</span></div>
+					<div class="so-results__none" data-if="results.size == 0">@ui.OPTION_SEARCH_NONE</div>
+				</div>
+			</div>
+			<nui-countdown class="so-found-timer" format="none" data-attr-end="found_end" data-event-countdownend="found_done()"/>
+		</div>
+		<div class="so-legacy" data-class-so-under-results="searching">
+			<div class="so-row so-row--sound" data-class-is-found="found == 'sound'">
 				<span class="so-label so-label--sound">@ui.OPTION_SOUND</span>
 				<input id="so-sound" type="range" class="nui-slider so-slider so-slider--sound" min="0" max="100" step="1"
 					data-attr-value="sound_volume" data-event-change="sound(ev.value)"/>
 				<span id="so-sound-value" class="so-value">{{ sound_volume }}%</span>
 			</div>
-			<div class="so-row so-row--music">
+			<div class="so-row so-row--music" data-class-is-found="found == 'music'">
 				<span class="so-label so-label--music">@ui.OPTION_MUSIC</span>
 				<input id="so-music" type="range" class="nui-slider so-slider so-slider--music" min="0" max="100" step="1"
 					data-attr-value="music_volume" data-event-change="music(ev.value)"/>
 				<span id="so-music-value" class="so-value">{{ music_volume }}%</span>
 			</div>
-			<div class="so-row so-row--bgm">
+			<div class="so-row so-row--bgm" data-class-is-found="found == 'bgm'">
 				<button id="so-music-change" class="nui-button nui-button--medium nui-anim so-choice so-choice--middle so-music-change" data-event-mousedown="act('change_music', ev.button)"><span class="so-choice__label">@ui.OPTION_MUSIC_CHANGE</span></button>
 				<span id="so-music-file" class="so-music-file">{{ music_file }}</span>
 			</div>
-			<div class="so-row so-row--camera">
+			<div class="so-row so-row--camera" data-class-is-found="found == 'camera'">
 				<span class="so-label so-label--camera">@ui.OPTION_CAMERA_DISTANCE</span>
 				<div class="so-choices">
 					<button id="so-camera-0" class="nui-button nui-button--medium nui-anim so-choice so-choice--middle so-choice--camera-0" data-class-is-selected="camera == 0" data-event-mousedown="choose('camera', 0, ev.button)"><span class="so-choice__label">@ui.OPTION_CAMERA_DISTANCE_SHORT</span></button>
 					<button id="so-camera-1" class="nui-button nui-button--medium nui-anim so-choice so-choice--middle so-choice--camera-1" data-class-is-selected="camera == 1" data-event-mousedown="choose('camera', 1, ev.button)"><span class="so-choice__label">@ui.OPTION_CAMERA_DISTANCE_LONG</span></button>
 				</div>
 			</div>
-			<div class="so-row so-row--fog">
+			<div class="so-row so-row--fog" data-class-is-found="found == 'fog'">
 				<span class="so-label so-label--fog">@ui.OPTION_FOG</span>
 				<div class="so-choices">
 					<button id="so-fog-0" class="nui-button nui-button--medium nui-anim so-choice so-choice--small so-choice--fog-0" data-class-is-selected="fog == 0" data-event-mousedown="choose('fog', 0, ev.button)"><span class="so-choice__label">@ui.OPTION_FOG_DENSE</span></button>
@@ -72,7 +92,7 @@
 					<button id="so-fog-2" class="nui-button nui-button--medium nui-anim so-choice so-choice--small so-choice--fog-2" data-class-is-selected="fog == 2" data-event-mousedown="choose('fog', 2, ev.button)"><span class="so-choice__label">@ui.OPTION_FOG_LIGHT</span></button>
 				</div>
 			</div>
-			<div class="so-row so-row--tiling">
+			<div class="so-row so-row--tiling" data-class-is-found="found == 'tiling'">
 				<span class="so-label so-label--tiling">@ui.OPTION_TILING</span>
 				<div class="so-choices">
 					<button id="so-tiling-0" class="nui-button nui-button--medium nui-anim so-choice so-choice--small so-choice--tiling-0" data-class-is-selected="tiling == 0" data-event-mousedown="choose('tiling', 0, ev.button)"><span class="so-choice__label">@ui.OPTION_TILING_CPU</span></button>
@@ -83,7 +103,7 @@
 			<!-- The field of view (NOVA-116): whole degrees over the client's
 			     range (systemSetting.FIELD_OF_VIEW_MIN to MAX, pinned by
 			     nui_sys_test.FieldOfView). -->
-			<div class="so-row so-row--fov">
+			<div class="so-row so-row--fov" data-class-is-found="found == 'fov'">
 				<span id="so-fov-label" class="so-label so-label--fov">@ui.OPTION_FIELD_OF_VIEW</span>
 				<input id="so-fov" type="range" class="nui-slider so-slider so-slider--fov" min="30" max="120" step="1"
 					data-attr-value="fov" data-event-change="fov(ev.value)"/>
@@ -91,21 +111,21 @@
 			</div>
 			<!-- Snowfall, the FPS counter and tips (NOVA-118): OLD's On and
 			     Off pairs (0 is On), player_options.set_option. -->
-			<div class="so-row so-row--snow">
+			<div class="so-row so-row--snow" data-class-is-found="found == 'snow'">
 				<span id="so-snow-label" class="so-label so-label--snow">@ui.OPTION_SNOWFALL</span>
 				<div class="so-choices">
 					<button id="so-snow-0" class="nui-button nui-button--medium nui-anim so-choice so-choice--middle so-choice--snow-0" data-class-is-selected="snow == 0" data-event-mousedown="choose('snow', 0, ev.button)"><span class="so-choice__label">@ui.NUI_SYSTEM_OPTIONS_ON</span></button>
 					<button id="so-snow-1" class="nui-button nui-button--medium nui-anim so-choice so-choice--middle so-choice--snow-1" data-class-is-selected="snow == 1" data-event-mousedown="choose('snow', 1, ev.button)"><span class="so-choice__label">@ui.NUI_SYSTEM_OPTIONS_OFF</span></button>
 				</div>
 			</div>
-			<div class="so-row so-row--fps">
+			<div class="so-row so-row--fps" data-class-is-found="found == 'fps'">
 				<span id="so-fps-label" class="so-label so-label--fps">@ui.OPTION_FPS_COUNTER</span>
 				<div class="so-choices">
 					<button id="so-fps-0" class="nui-button nui-button--medium nui-anim so-choice so-choice--middle so-choice--fps-0" data-class-is-selected="fps == 0" data-event-mousedown="choose('fps', 0, ev.button)"><span class="so-choice__label">@ui.NUI_SYSTEM_OPTIONS_ON</span></button>
 					<button id="so-fps-1" class="nui-button nui-button--medium nui-anim so-choice so-choice--middle so-choice--fps-1" data-class-is-selected="fps == 1" data-event-mousedown="choose('fps', 1, ev.button)"><span class="so-choice__label">@ui.NUI_SYSTEM_OPTIONS_OFF</span></button>
 				</div>
 			</div>
-			<div class="so-row so-row--tips">
+			<div class="so-row so-row--tips" data-class-is-found="found == 'tips'">
 				<span id="so-tips-label" class="so-label so-label--tips">@ui.OPTION_TIPS</span>
 				<div class="so-choices">
 					<button id="so-tips-0" class="nui-button nui-button--medium nui-anim so-choice so-choice--middle so-choice--tips-0" data-class-is-selected="tips == 0" data-event-mousedown="choose('tips', 0, ev.button)"><span class="so-choice__label">@ui.NUI_SYSTEM_OPTIONS_ON</span></button>
@@ -113,16 +133,16 @@
 				</div>
 			</div>
 		</div>
-		<div id="so-interface" class="so-interface" data-if="interface">
+		<div id="so-interface" class="so-interface" data-if="interface" data-class-so-under-results="searching">
 			<div class="so-heading"><span class="so-heading__text">@ui.OPTION_INTERFACE</span><span class="so-heading__rule"></span></div>
-			<div class="so-row so-row--theme">
+			<div class="so-row so-row--theme" data-class-is-found="found == 'theme'">
 				<span class="so-label so-label--theme">@ui.THEME_TITLE</span>
 				<div class="so-choices so-choices--wrap">
 					<span class="so-slot" data-for="t : themes"><button class="nui-button nui-button--medium nui-anim so-choice so-choice--theme"
 						data-attr-id="'so-theme-' + t.id" data-class-is-selected="t.id == theme" data-event-mousedown="choose_theme(t.id, ev.button)">{{ t.label }}</button></span>
 				</div>
 			</div>
-			<div class="so-row so-row--scale">
+			<div class="so-row so-row--scale" data-class-is-found="found == 'scale'">
 				<span class="so-label so-label--scale">@ui.OPTION_UI_SCALE</span>
 				<div class="so-choices so-choices--wrap">
 					<span class="so-slot" data-for="s : scales"><button class="nui-button nui-anim so-choice so-choice--scale"
@@ -130,7 +150,7 @@
 						class="so-auto-percent" data-if="s.id == 'auto'"> {{ auto_percent }}%</span></button></span>
 				</div>
 			</div>
-			<div class="so-row so-row--motion">
+			<div class="so-row so-row--motion" data-class-is-found="found == 'motion'">
 				<!-- RmlUi makes no click in a document that takes no focus
 				     (Context::ProcessMouseButtonUp clicks only a focusable
 				     element), so this label cannot forward one to its checkbox:
@@ -147,7 +167,7 @@
 				<span id="so-motion-state" class="so-state" data-if="reduced_motion">@ui.NUI_SYSTEM_OPTIONS_ON</span><span
 					id="so-motion-state-off" class="so-state" data-if="!reduced_motion">@ui.NUI_SYSTEM_OPTIONS_OFF</span>
 			</div>
-			<div class="so-row so-row--effects">
+			<div class="so-row so-row--effects" data-class-is-found="found == 'effects'">
 				<!-- On and disabled while the device draws no effects (the
 				     note says why); a press then does nothing. -->
 				<label id="so-effects-toggle" class="nui-toggle so-effects" data-event-mousedown="flip_effects(ev.button)">
@@ -161,7 +181,7 @@
 					id="so-effects-state-off" class="so-state" data-if="!reduced_effects">@ui.NUI_SYSTEM_OPTIONS_OFF</span>
 				<span id="so-effects-note" class="so-note" data-if="!effects_available">@ui.OPTION_UI_EFFECTS_UNAVAILABLE</span>
 			</div>
-			<div id="so-colors" class="so-colors" data-if="size(color_slots) > 0">
+			<div id="so-colors" class="so-colors" data-if="size(color_slots) > 0" data-class-is-found="found == 'colors'">
 				<div class="so-heading"><span class="so-heading__text">@ui.OPTION_UI_COLORS</span><span class="so-heading__rule"></span></div>
 				<div class="so-color-slot" data-for="c : color_slots">
 					<div class="so-row so-row--color" data-class-so-row--overlay="c.slot == 'overlay'">

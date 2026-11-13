@@ -1,0 +1,26 @@
+{
+	"target": {
+		"name": "Lv.25 Metin of Sorrow",
+		"title": "Metin of Sorrow",
+		"level": 25,
+		"hp": 0.88,
+		"show_hp": true,
+		"buttons": [],
+		"exchange_at": -1,
+		"in_range": false,
+		"portrait": "",
+		"subtitle": "",
+		"hp_values": "",
+		"element": 0,
+		"element_name": "",
+		"show_info": true,
+		"trail": 88,
+		"trail_snap": true,
+		"poisoned": false,
+		"burning": false,
+		"arrow_percent": 0,
+		"arrow_pre": "",
+		"arrow_post": " arrow damage",
+		"hint": "Shift + right-click: add to the attack queue"
+	}
+}

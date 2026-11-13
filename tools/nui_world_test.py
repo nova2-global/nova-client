@@ -1307,7 +1307,8 @@ class Documents(unittest.TestCase):
                 self.assertIn('id="%s"' % element_id, document, "%s#%s" % (window, element_id))
         self.assertIn('<nui-view id="minimap-view" name="minimap" class="minimap__view nui-fx nui-interactive"/>',
                       read(os.path.join(WINDOWS, "minimap", "minimap.rml")))
-        self.assertIn('<nui-view id="atlas-view" name="atlas" class="atlas__view nui-interactive"/>',
+        # NOVA-206: the atlas view also sends a press (map_press).
+        self.assertIn('<nui-view id="atlas-view" name="atlas" class="atlas__view nui-interactive"\n',
                       read(os.path.join(WINDOWS, "atlas", "atlas.rml")))
 
     def test_every_body_draws_below_the_legacy_ui_layer_and_takes_no_focus(self):

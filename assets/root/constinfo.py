@@ -114,8 +114,16 @@ def GET_FOG_LEVEL_INDEX():
 
 ########################
 
+# The camera distance the player chose is saved (NOVA-212; OLD
+# constInfo.py:340-360): the game start applies the saved choice, and a
+# choice in either system options window saves it (SAVED_OPTIONS below).
 def SET_DEFAULT_CAMERA_MAX_DISTANCE():
 	global CAMERA_MAX_DISTANCE
+	index = GET_SAVED_OPTION(OPTION_CAMERA_ZOOM)
+	if 0 <= index < len(CAMERA_MAX_DISTANCE_LIST):
+		CAMERA_MAX_DISTANCE = CAMERA_MAX_DISTANCE_LIST[index]
+	else:
+		CAMERA_MAX_DISTANCE = CAMERA_MAX_DISTANCE_LIST[0]
 	app.SetCameraMaxDistance(CAMERA_MAX_DISTANCE)
 
 def SET_CAMERA_MAX_DISTANCE_INDEX(index):
@@ -127,6 +135,7 @@ def SET_CAMERA_MAX_DISTANCE_INDEX(index):
 		CAMERA_MAX_DISTANCE=CAMERA_MAX_DISTANCE_LIST[0]
 
 	app.SetCameraMaxDistance(CAMERA_MAX_DISTANCE)
+	SET_SAVED_OPTION(OPTION_CAMERA_ZOOM, GET_CAMERA_MAX_DISTANCE_INDEX())
 
 def GET_CAMERA_MAX_DISTANCE_INDEX():
 	global CAMERA_MAX_DISTANCE
@@ -359,3 +368,88 @@ def SET_HOVERED_CHEST(itemVnum):
 def GET_HOVERED_CHEST():
 	return HOVERED_CHEST
 
+
+########################
+## The options the client saves in its own file (NOVA-211, NOVA-212,
+## NOVA-215), as config/keys.cfg and config/mouse.cfg: CPythonSystem's
+## metin2.cfg keeps only the keys its C++ knows. One line per option,
+## `name<TAB>value`, every option written; a line this version does not read
+## is skipped, and a missing or broken file is the defaults. A change is
+## saved at once (SET_SAVED_OPTION); a file that cannot be written keeps the
+## choice for the session. The defaults wait for Eddy:
+## - yang_text: the "You have received N Yang." line (game.py OnPickMoney), on;
+## - country_flags: the flag beside player names, on (C++ draws it while
+##   chrmgr.SetShowLanguageFlag is on; the game start applies the saved
+##   choice, a change applies at once);
+## - camera_zoom: the camera distance's index in CAMERA_MAX_DISTANCE_LIST.
+SAVED_OPTIONS_PATH = "config/game_options.cfg"
+SAVED_OPTIONS_HEADER = "# Game options (NOVA-211, 212, 215): name<TAB>value."
+OPTION_YANG_TEXT = "yang_text"
+OPTION_COUNTRY_FLAGS = "country_flags"
+OPTION_CAMERA_ZOOM = "camera_zoom"
+SAVED_OPTION_DEFAULTS = {OPTION_YANG_TEXT: 1, OPTION_COUNTRY_FLAGS: 1, OPTION_CAMERA_ZOOM: 0}
+SAVED_OPTION_NAMES = (OPTION_YANG_TEXT, OPTION_COUNTRY_FLAGS, OPTION_CAMERA_ZOOM)
+# The opener of the file (tests put one over memory); None is the disk.
+SAVED_OPTIONS_OPEN = None
+_savedOptions = None
+
+def _saved_options_open(path, mode="r"):
+	"""The file on disk: the client's open() (system.py) answers a name the
+	asset store also has with a pack file, which has no `with`."""
+	if SAVED_OPTIONS_OPEN is not None:
+		return SAVED_OPTIONS_OPEN(path, mode)
+	import builtins
+	return getattr(builtins, "old_open", open)(path, mode)
+
+def _read_saved_options():
+	values = dict(SAVED_OPTION_DEFAULTS)
+	try:
+		with _saved_options_open(SAVED_OPTIONS_PATH, "r") as handle:
+			text = handle.read()
+	except Exception:
+		return values
+	for line in text.split("\n"):
+		fields = line.strip("\r").split("\t")
+		if len(fields) != 2 or fields[0] not in values:
+			continue
+		try:
+			values[fields[0]] = int(fields[1])
+		except ValueError:
+			pass
+	return values
+
+def RELOAD_SAVED_OPTIONS():
+	"""Reads the file again at the next use (tests; a new client reads it once)."""
+	global _savedOptions
+	_savedOptions = None
+
+def GET_SAVED_OPTION(name):
+	"""The option's saved value (an int); KeyError for an unknown name."""
+	global _savedOptions
+	if _savedOptions is None:
+		_savedOptions = _read_saved_options()
+	return _savedOptions[name]
+
+def SET_SAVED_OPTION(name, value):
+	"""Keeps and saves the value, then applies it (the country flags); False
+	when it is the value in effect already."""
+	value = int(value)
+	if GET_SAVED_OPTION(name) == value:
+		return False
+	_savedOptions[name] = value
+	lines = [SAVED_OPTIONS_HEADER] + ["%s\t%d" % (key, _savedOptions[key]) for key in SAVED_OPTION_NAMES]
+	try:
+		with _saved_options_open(SAVED_OPTIONS_PATH, "w") as handle:
+			handle.write("\n".join(lines) + "\n")
+	except Exception:
+		pass
+	if name == OPTION_COUNTRY_FLAGS:
+		SET_DEFAULT_COUNTRY_FLAGS()
+	return True
+
+def SET_DEFAULT_COUNTRY_FLAGS():
+	"""The saved country flag choice to C++ (NOVA-215); an exe without the
+	flag draws none."""
+	setter = getattr(chrmgr, "SetShowLanguageFlag", None)
+	if setter is not None:
+		setter(bool(GET_SAVED_OPTION(OPTION_COUNTRY_FLAGS)))

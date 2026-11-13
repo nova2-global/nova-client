@@ -20,7 +20,16 @@ legacy place in the Escape chain (nui_hud.EscapeProxy, shown with it).
 
 The modern looks give a player target a head of its own (player_head): the
 portrait of its race and a "class · guild" line, read when the board opens
-for it. Another player's level has no getter, so that head has no level."""
+for it. Another player's level has no getter, so that head has no level.
+
+Wave 10 (qol-social): the HP bar's damage trail (NOVA-208) is two model
+keys, trail (the HP percent its right edge goes to, a class) and trail_snap
+(the class that takes its transition away): a drop keeps the transition,
+so the sheet drains the trail over 0.75 s from the HP before it, and a
+rise or a new target snaps it. The bar's tint follows the feeds
+target.poisoned and target.burning, the archer gauge (NOVA-209) the feed
+target.arrow_percent, all with no Python; a metin stone's board shows the
+attack queue hint (NOVA-216, uiTarget.MetinQueueHint)."""
 
 import weakref
 
@@ -59,6 +68,17 @@ FACES = {0: "icon/face/warrior_m.tga", 1: "icon/face/assassin_w.tga", 2: "icon/f
          6: "icon/face/sura_w.tga", 7: "icon/face/shaman_m.tga"}
 JOB_NAMES = {0: "JOB_WARRIOR", 1: "JOB_ASSASSIN", 2: "JOB_SURA", 3: "JOB_SHAMAN"}
 NO_GUILD_NAME = "Noname"   # guild.GetGuildName's answer for a guild whose name the client lacks
+
+
+def arrow_text_parts():
+	"""The arrow damage line's locale text around its number
+	(TARGET_ARROW_DAMAGE, "%s arrow damage"): (before, after), so the
+	document writes the number the feed gives between them."""
+	text = nui_hud.locale_text("TARGET_ARROW_DAMAGE")
+	if "%s" not in text:
+		return "", (" " + text) if text else ""
+	before, after = text.split("%s", 1)
+	return before, after
 
 
 def _keep(owner):
@@ -102,7 +122,8 @@ class TargetBoardBoard(nui.Window):
 
 	DOCUMENT = DOCUMENT
 	MODEL = "target"
-	FEEDS = {"in_range": "target.in_range"}
+	FEEDS = {"in_range": "target.in_range", "arrow_percent": "target.arrow_percent",
+	         "poisoned": "target.poisoned", "burning": "target.burning"}
 
 	def __init__(self, owner):
 		self._owner = _keep(owner)
@@ -111,7 +132,8 @@ class TargetBoardBoard(nui.Window):
 	def initial_model(self):
 		return {"name": "", "title": "", "level": 0, "hp": 0.0, "show_hp": False, "buttons": [], "exchange_at": -1,
 		        "in_range": False, "portrait": "", "subtitle": "", "hp_values": "", "element": 0, "element_name": "",
-		        "show_info": False}
+		        "show_info": False, "trail": 0, "trail_snap": True, "poisoned": False, "burning": False,
+		        "arrow_percent": 0, "arrow_pre": "", "arrow_post": "", "hint": ""}
 
 	@nui.on("press")
 	def on_press(self, button_id, button):
@@ -221,6 +243,12 @@ class TargetBoard(object):
 		self.element = 0
 		self.vnum = 0
 		self.infoBoard = None
+		# Wave 10: the damage trail, the metin stone hint and the arrow
+		# damage line's text around its number.
+		self.trail = 0
+		self.trailSnap = True
+		self.hint = ""
+		self.arrowText = arrow_text_parts()
 		if not nui_hud.has_engine():
 			return
 		try:
@@ -388,6 +416,9 @@ class TargetBoard(object):
 		self.hpValues = ""
 		self.element = 0
 		self.vnum = 0
+		self.trail = 0
+		self.trailSnap = True
+		self.hint = ""
 		if self.infoBoard:
 			self.infoBoard.Close()
 		self._sync()
@@ -411,6 +442,7 @@ class TargetBoard(object):
 		self.SetTargetName(nameFront + name)
 		# NOVA-40: the info button of a monster (uiTarget.TargetBoard.SetEnemyVID).
 		self.vnum = uiTargetInfo.race_of_vid(vid)
+		self.hint = nui.plain_text(uiTarget.MetinQueueHint(self.vnum))
 		self._sync()
 
 	def GetTargetVID(self):
@@ -427,8 +459,16 @@ class TargetBoard(object):
 		self._sync()
 
 	def SetHP(self, hpPercentage, actualHP=0, maxHP=0):
-		self.hpShown = True
+		shown, self.hpShown = self.hpShown, True
 		self.hp = min(1.0, max(0.0, float(hpPercentage) / 100.0))
+		# NOVA-208: a drop drains (the sheet's transition), a rise or the
+		# first HP of a target snaps; the same HP leaves a drain running.
+		percent = int(round(self.hp * 100))
+		if not shown or percent > self.trail:
+			self.trailSnap = True
+		elif percent < self.trail:
+			self.trailSnap = False
+		self.trail = percent
 		self.hpValues = (nui_numbers.group(int(max(actualHP, 0))) + " / " + nui_numbers.group(int(maxHP))) if maxHP > 0 else ""
 		self._sync()
 
@@ -701,4 +741,5 @@ class TargetBoard(object):
 		               hp=self.hp, show_hp=self.hpShown, buttons=buttons, exchange_at=exchange_at,
 		               portrait=self.nuiPortrait, subtitle=self.nuiSubtitle, hp_values=self.hpValues,
 		               element=self.element, element_name=nui_hud.locale_text(element_key) if element_key else "",
-		               show_info=bool(self.vnum))
+		               show_info=bool(self.vnum), trail=self.trail, trail_snap=self.trailSnap, hint=self.hint,
+		               arrow_pre=self.arrowText[0], arrow_post=self.arrowText[1])

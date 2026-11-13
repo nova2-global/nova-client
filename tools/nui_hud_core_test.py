@@ -1289,6 +1289,8 @@ EXPECTED_SITES = {
                            # NOVA-25: the dungeon manager and the dungeon ranking.
                            ("make", "dungeon-timer", "uiTimerWindow.TimerWindow", "nui_dungeon_timer.TimerWindow"),
                            ("make", "dungeon-rank", "uiDungeonRank.DungeonRankWindow", "nui_dungeon_rank.DungeonRankWindow"),
+                           # NOVA-204: the auto-shout window, made at its first open.
+                           ("make", "auto-shout", "uiAutoShout.AutoShoutWindow", "nui_auto_shout.AutoShoutWindow"),
                            ("make", "quest", "uiQuest.QuestDialog", "nui_quest.QuestDialog"),
                            ("make", "guild-war", "uiGuild.GuildWarScoreBoard", "nui_guild_war.GuildWarScoreBoard"),
                            ("make", "shop-signs", "uiPrivateShopBuilder.PrivateShopTitleBar", "nui_shop_signs.ShopSign"),

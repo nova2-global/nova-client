@@ -27,6 +27,10 @@ body.skin-cyberpunk.login .login-acc
 {
 	border-radius: 0;
 }
+body.skin-cyberpunk.login .login-acc__key
+{
+	border-radius: 0;
+}
 body.skin-cyberpunk.login .login-acc.is-selected
 {
 	border-color: var(--border);

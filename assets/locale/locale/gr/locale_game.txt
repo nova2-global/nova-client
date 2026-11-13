@@ -1458,3 +1458,21 @@ STAT_PICK_TITLE_DEX	Ευκινησία
 SKILL_MAX_UP_HINT	Shift + click: αύξηση έως Master
 REMOVE_AFFECT_QUESTION	Θέλεις να απενεργοποιήσεις το %s;
 REFINE_FAST_UPGRADE	Γρήγορη αναβάθμιση
+ATLAS_MARK_WIKI_HINT	Κάντε κλικ για να ανοίξει το wiki
+METIN_QUEUE_ADDED	[Ουρά Metin] Η πέτρα προστέθηκε στην ουρά.
+METIN_QUEUE_REMOVED	[Ουρά Metin] Η πέτρα αφαιρέθηκε από την ουρά.
+METIN_QUEUE_FULL	[Ουρά Metin] Η ουρά επίθεσής σου είναι γεμάτη.
+METIN_QUEUE_PREMIUM_HINT	[Ουρά Metin] Με συνδρομή premium μπορείς να βάλεις περισσότερες πέτρες στην ουρά.
+AUTO_SHOUT_TOOLTIP	Αυτόματη κραυγή
+AUTO_SHOUT_TITLE	Αυτόματη κραυγή
+AUTO_SHOUT_DESC	Επαναλαμβάνει την κραυγή σου κάθε 30 δ. (16 δ. με premium).
+AUTO_SHOUT_MESSAGE	Μήνυμα
+AUTO_SHOUT_STATUS_OFF	Ανενεργό
+AUTO_SHOUT_STATUS_WAITING	Εκκίνηση...
+AUTO_SHOUT_STATUS_ON	Ενεργό
+AUTO_SHOUT_NEXT	Επόμενη κραυγή σε
+AUTO_SHOUT_START	Έναρξη
+AUTO_SHOUT_STOP	Διακοπή
+AUTO_SHOUT_NO_MESSAGE	Γράψε πρώτα ένα μήνυμα για την αυτόματη κραυγή.
+TARGET_ARROW_DAMAGE	%s ζημιά βέλους
+TARGET_METIN_QUEUE_HINT	Shift + δεξί κλικ: προσθήκη στην ουρά επίθεσης

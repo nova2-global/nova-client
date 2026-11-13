@@ -110,6 +110,10 @@ class WindowBase(object):
     def _LoginWindow__OnClickExitButton(self):
         self.exited += 1
 
+    def _LoginWindow__ShowSlotKeys(self, show):
+        """NOVA-205's legacy key list (nui_login_test.SlotKeyList tests it)."""
+        self.slot_keys_shown = show
+
 
 COMPILED = ("_LoginWindow__RefreshServerList", "_LoginWindow__OnSelectServer", "_LoginWindow__RequestServerStateList",
             "_LoginWindow__RefreshServerStateList", "_LoginWindow__OpenServerBoard", "_LoginWindow__OpenLoginBoard",

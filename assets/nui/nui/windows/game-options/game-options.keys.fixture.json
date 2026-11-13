@@ -691,6 +691,12 @@
 				"cap2": false,
 				"changed": false
 			}
-		]
+		],
+		"searching": false,
+		"results": [],
+		"found": "",
+		"found_end": 0.0,
+		"yang_text": true,
+		"country_flags": true
 	}
 }

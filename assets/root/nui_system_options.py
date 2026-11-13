@@ -42,7 +42,16 @@ options on first use, as legacy's: the default theme first, then every
 BGM/*.mp3 file; OK hands the selected name to the options' select event,
 and its popups are uiCommon.PopupDialog (the dialog kit's facade with the
 dialogs flag on, the legacy one with the G5 stopgap otherwise) instead of
-legacy's private copy."""
+legacy's private copy.
+
+The camera choice is saved (NOVA-212: constInfo.SET_CAMERA_MAX_DISTANCE_INDEX
+saves it in config/game_options.cfg, and the game start restores it).
+
+The search field (NOVA-213) lists the rows of settings_index that match
+what the player types (the colors only while the theme offers them); a left
+press on a result (or Enter, the first one) highlights its row for
+settings_index.FOUND_SECONDS (a nui-countdown timer ends it) and empties the
+field."""
 
 import colorsys
 
@@ -62,8 +71,10 @@ import nui_hud
 import nui_music_list
 import nui_theme_picker
 import player_options
+import settings_index
 
 DOCUMENT = "nui/windows/system-options/system-options.rml"
+SEARCH_FIELD = "so-search"
 MUSIC_FILENAME_MAX_LEN = 25   # uisystemoption.py:17
 FILE_NAME_LEN = 20            # uiselectmusic.py:6
 SCALE_CHOICES = (75, 100, 125, 150, 175, 200)
@@ -173,6 +184,26 @@ class OptionBoard(nui.Window):
 		if button == 0:
 			self._owner.nui_reset_colors()
 
+	# NOVA-213: the search field, its results and the highlight's timer. The
+	# body takes no focus, so the field asks for its own.
+	@nui.on("search_press")
+	def on_search_press(self, button):
+		if button == 0:
+			self.focus(SEARCH_FIELD)
+
+	@nui.on("search")
+	def on_search(self, text, linebreak=False):
+		self._owner.nui_search(text, linebreak)
+
+	@nui.on("goto")
+	def on_goto(self, option_id, button):
+		if button == 0:
+			self._owner.nui_goto(option_id)
+
+	@nui.on("found_done")
+	def on_found_done(self):
+		self._owner.nui_found_done()
+
 
 class OptionDialog(nui_hud.LayoutCalls):
 	"""uiSystemOption.OptionDialog on NovaUI (SystemDialog.systemOptionDlg)."""
@@ -192,6 +223,9 @@ class OptionDialog(nui_hud.LayoutCalls):
 		self.loaded = False
 		self.colorsAdjusted = False   # the last color the player set made the resolve adjust a token
 		self.colorsUnsaved = False    # the hue slider's drag applied colors it has not saved yet
+		# NOVA-213: the row a search result highlights, until found_end.
+		self.found = ""
+		self.foundEnd = 0.0
 		self.__SetCurTilingMode()
 		if not nui_hud.has_engine():
 			return
@@ -229,7 +263,8 @@ class OptionDialog(nui_hud.LayoutCalls):
 		        "fov": 30, "fov_min": 30, "fov_max": 120, "snow": 1, "fps": 1, "tips": 0,
 		        "interface": True, "themes": [], "theme": "", "scales": [], "scale": 0, "auto_percent": 100,
 		        "reduced_motion": False, "reduced_effects": False, "effects_available": False,
-		        "color_slots": [], "accent_hue": 0, "colors_adjusted": False}
+		        "color_slots": [], "accent_hue": 0, "colors_adjusted": False,
+		        "searching": False, "results": [], "found": "", "found_end": 0.0}
 
 	def _music_file(self):
 		"""uisystemoption.py:119-122."""
@@ -301,7 +336,8 @@ class OptionDialog(nui_hud.LayoutCalls):
 		         "music_volume": int(round(systemSetting.GetMusicVolume() * 100)),
 		         "music_file": self._music_file() if self.musicFileText is None else self.musicFileText,
 		         "camera": constInfo.GET_CAMERA_MAX_DISTANCE_INDEX(), "fog": systemSetting.GetFogLevel(),
-		         "tiling": self.tilingMode, "interface": True}
+		         "tiling": self.tilingMode, "interface": True,
+		         "searching": False, "results": [], "found": self.found, "found_end": self.foundEnd}
 		model.update(self._field_of_view_model())
 		model.update(self._player_options_model())
 		model.update(self._interface_model())
@@ -353,6 +389,9 @@ class OptionDialog(nui_hud.LayoutCalls):
 
 	def Hide(self):
 		self.nui_hue_done()
+		# A search's highlight ends with the window (NOVA-213).
+		self.found = ""
+		self.foundEnd = 0.0
 		if self.escapeProxy is not None:
 			self.escapeProxy.hide()
 		if self.demand is not None:
@@ -650,6 +689,42 @@ class OptionDialog(nui_hud.LayoutCalls):
 		board = self._board()
 		if board is not None:
 			board.center()
+
+
+	# --- the search (NOVA-213) ----------------------------------------------------------
+
+	def _searchable(self):
+		"""The rows the window shows now: the colors only while the theme
+		offers color slots."""
+		ids = set(option.id for option in settings_index.options(settings_index.SYSTEM))
+		if not nui.get_color_slots():
+			ids.discard("colors")
+		return ids
+
+	def nui_search(self, text, linebreak=False):
+		"""The field's text: its matches; Enter opens the first one."""
+		results = settings_index.result_rows(text, settings_index.SYSTEM, _plain, self._searchable())
+		self._set(searching=bool((text or "").strip()), results=results)
+		if linebreak and results:
+			self.nui_goto(results[0]["id"])
+
+	def nui_goto(self, option_id):
+		"""A result: its row highlighted for a moment, the field emptied."""
+		option = settings_index.OPTION.get(option_id)
+		if option is None or option.window != settings_index.SYSTEM or option_id not in self._searchable():
+			return
+		self.found = option_id
+		self.foundEnd = nui.now() + settings_index.FOUND_SECONDS
+		self._set(found=self.found, found_end=self.foundEnd, searching=False, results=[])
+		board = self._board()
+		if board is not None:
+			board.set_value(SEARCH_FIELD, "")
+
+	def nui_found_done(self):
+		"""The highlight's time is over."""
+		self.found = ""
+		self.foundEnd = 0.0
+		self._set(found="", found_end=0.0)
 
 
 class FileListDialog(nui_hud.LayoutCalls):

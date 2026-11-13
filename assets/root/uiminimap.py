@@ -24,6 +24,9 @@ def AtlasMarkTexts():
 		"dead": localeInfo.BOSS_INFO_DEAD,
 		"respawn_in": localeInfo.BOSS_INFO_RESPAWN,
 		"period": localeInfo.ATLAS_MARK_RESPAWN_TIME,
+		# NOVA-206: the press hint, which C++ appends as the last line once
+		# its HoverDetail reads this key (an older exe ignores it).
+		"wiki": localeInfo.ATLAS_MARK_WIKI_HINT,
 	}
 
 def SetAtlasMarkTexts():
@@ -38,6 +41,33 @@ def AtlasMarkHover():
 	if not getter:
 		return ""
 	return getter()
+
+# NOVA-206 (OLD uiMiniMap.py:167-205): the vnum of the boss or metin stone
+# mark at an atlas point, 0 for anything else. GetAtlasInfo hits the mark (and
+# sets the one GetAtlasMarkHover answers for); its place, divided by 100 as
+# GetAtlasInfo hands it over, finds the mark in miniMap.GetAtlasMarks.
+# OLD looked the vnum up by the mob's name; the place is the mark's own.
+def AtlasMarkVnumAt(x, y):
+	getMarks = getattr(miniMap, "GetAtlasMarks", None)
+	if not getMarks:
+		return 0
+	info = miniMap.GetAtlasInfo(x, y)
+	if not info[0] or not AtlasMarkHover():
+		return 0
+	(cellX, cellY) = (info[2], info[3])
+	for mark in getMarks():
+		(vnum, markX, markY) = (mark[5], mark[6], mark[7])
+		if int(markX) // 100 == cellX and int(markY) // 100 == cellY:
+			return vnum
+	return 0
+
+# The hover's last line on a mark while a press opens its page: legacy's
+# own, unless C++ already ended the mark's lines with it.
+def WithWikiHint(detail):
+	hint = localeInfo.ATLAS_MARK_WIKI_HINT
+	if not detail or detail.split("\n")[-1] == hint:
+		return detail
+	return detail + "\n" + hint
 
 class MapTextToolTip(ui.Window):
 	# NOVA-129: a boss or stone mark's hover has several lines ("\n"), each
@@ -125,6 +155,7 @@ class AtlasWindow(ui.ScriptWindow):
 		self.AtlasMainWindow = None
 		self.mapName = ""
 		self.board = 0
+		self.openWikiMobEvent = None
 
 		ui.ScriptWindow.__init__(self)
 
@@ -156,6 +187,9 @@ class AtlasWindow(ui.ScriptWindow):
 
 		self.AtlasMainWindow = self.AtlasRenderer()
 		self.board.SetCloseEvent(self.Hide)
+		# NOVA-206: a left click on a boss or stone mark opens its wiki page
+		# (the release, as legacy's buttons click).
+		self.board.SetOnMouseLeftButtonUpEvent(ui.__mem_func__(self.OnAtlasPress))
 		self.AtlasMainWindow.SetParent(self.board)
 		self.AtlasMainWindow.SetPosition(7, 30)
 		self.tooltipInfo.SetParent(self.board)
@@ -174,6 +208,7 @@ class AtlasWindow(ui.ScriptWindow):
 		self.tooltipInfo = None
 		self.infoGuildMark = None
 		self.board = None
+		self.openWikiMobEvent = None
 
 	def OnUpdate(self):
 
@@ -205,6 +240,8 @@ class AtlasWindow(ui.ScriptWindow):
 		# NOVA-129: a boss or stone mark's kind and level, state and respawn
 		# time, under the name line.
 		detail = AtlasMarkHover()
+		if detail and self.openWikiMobEvent:
+			detail = WithWikiHint(detail)
 		if detail:
 			text += "\n" + detail
 		self.tooltipInfo.SetText(text)
@@ -220,6 +257,18 @@ class AtlasWindow(ui.ScriptWindow):
 			self.infoGuildMark.SetIndex(dwGuildID)
 			self.infoGuildMark.SetPosition(mouseX - x - textWidth - 18 - 5, mouseY - y)
 			self.infoGuildMark.Show()
+
+	## NOVA-206: the Interface's OpenWikiMob, through the minimap.
+	def SetOpenWikiMobEvent(self, event):
+		self.openWikiMobEvent = event
+
+	def OnAtlasPress(self):
+		if not self.openWikiMobEvent:
+			return
+		(mouseX, mouseY) = wndMgr.GetMousePosition()
+		vnum = AtlasMarkVnumAt(mouseX, mouseY)
+		if vnum:
+			self.openWikiMobEvent(vnum)
 
 	def Hide(self):
 		if self.AtlasMainWindow:
@@ -592,6 +641,10 @@ class MiniMap(ui.ScriptWindow):
 			return
 		if not self.AtlasWindow.IsShow():
 			self.AtlasWindow.Show()
+
+	# NOVA-206: the event a press on an atlas mark calls with its vnum.
+	def SetOpenWikiMobEvent(self, event):
+		self.AtlasWindow.SetOpenWikiMobEvent(event)
 
 	def ToggleAtlasWindow(self):
 		if not miniMap.IsAtlas():

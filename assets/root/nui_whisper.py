@@ -11,7 +11,10 @@ store), choosing a partner (and asking for its details at once), minimizing
 to an edge button and closing (the Interface's), the GM look, the links, the
 scroll and the size rule are legacy's code, and so are the block button
 (NOVA-47: Block or Unblock as the client's list says, the packet and the
-other label at once) and the partner's details (NOVA-48: the online or
+other label at once), the add-friend button (NOVA-203: shown for a
+partner who is not a friend and no GM, the friend request and the button
+gone at once, refreshed by the Interface when the friend list changes) and
+the partner's details (NOVA-48: the online or
 offline mark and the language flag the server's answer shows,
 SetTargetDetails; game.py asks every two seconds).
 
@@ -93,7 +96,7 @@ POOL_BOUND = 4
 POOL = nui_hud.BoardPool("whisper", POOL_BOUND)
 # What a waiting board shows: nothing of any conversation.
 EMPTY = {"lines_on": [], "feed_key": 0, "target": "", "gm": False, "editing_target": False, "accept_shown": False,
-         "block_shown": False, "blocked": False, "online_shown": False, "online": False, "flag_shown": False,
+         "block_shown": False, "blocked": False, "friend_shown": False, "online_shown": False, "online": False, "flag_shown": False,
          "flag_src": ""}
 
 
@@ -194,6 +197,12 @@ class _WhisperBoard(nui_hud.Pooled, nui_hud.RaisesOnPress, nui.Window):
 		if button == 0:
 			self._owner.blockButton.click()
 
+	@nui.on("friend_press")
+	def on_friend_press(self, button):
+		self.raise_for(button)
+		if button == 0:
+			self._owner.friendButton.click()
+
 	@nui.on("input_change")
 	def on_input_change(self, value):
 		self._owner._input_changed(value)
@@ -279,6 +288,9 @@ class WhisperDialog(nui_facade.Facade, uiWhisper.WhisperDialog):
 			# the partner is on the block list.
 			"block_shown": False,
 			"blocked": False,
+			# The add-friend button (NOVA-203): shown for a partner who is
+			# not a friend and no GM.
+			"friend_shown": False,
 			# The partner's details (NOVA-48): the online or offline mark and
 			# the language flag (a rooted path), once the server answered.
 			"online_shown": False,
@@ -333,6 +345,11 @@ class WhisperDialog(nui_facade.Facade, uiWhisper.WhisperDialog):
 		if block is None:
 			return
 		self.nui_set(block_shown=bool(block.shown), blocked=block.text == uiScriptLocale.UNBLOCK_PLAYER)
+
+	def _on_friend(self, button=None):
+		friend = getattr(self, "friendButton", None)
+		if friend is not None:
+			self.nui_set(friend_shown=bool(friend.shown))
 
 	def _on_online_image(self, path):
 		self.nui_set(online=path == uiWhisper.WhisperDialog.ONLINE_IMAGE)
@@ -399,6 +416,7 @@ class WhisperDialog(nui_facade.Facade, uiWhisper.WhisperDialog):
 		self.gamemasterMark.on_show = self._on_gm
 		# The block button and the partner's details (NOVA-47, NOVA-48).
 		self.blockButton = nui_proxies.ButtonProxy(self._on_block)
+		self.friendButton = nui_proxies.ButtonProxy(self._on_friend)
 		self.online = nui_proxies.ImageProxy(self._on_online_image)
 		self.online.on_show = self._on_online_shown
 		self.flag = nui_proxies.ImageProxy(self._on_flag_image)
@@ -424,6 +442,8 @@ class WhisperDialog(nui_facade.Facade, uiWhisper.WhisperDialog):
 		self.acceptButton.SetEvent(ui.__mem_func__(self.AcceptTarget))
 		self.blockButton.SetEvent(ui.__mem_func__(self.BlockPlayer))
 		self.blockButton.Hide()
+		self.friendButton.SetEvent(ui.__mem_func__(self.AddFriend))
+		self.friendButton.Hide()
 		self.online.Hide()
 		self.flag.Hide()
 

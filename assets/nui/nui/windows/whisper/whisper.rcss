@@ -5,8 +5,8 @@
    partner's name in the title bar (or the partner
    field and OK, before a partner is chosen), the partner's online mark (a
    dot, --success online, --text-muted offline) and language flag once the
-   server answered (NOVA-48), a GM badge for a game master, Block or Unblock
-   (NOVA-47), minimize and close; the lines on the overlay well (the chat's
+   server answered (NOVA-48), a GM badge for a game master, add friend
+   (NOVA-203), Block or Unblock (NOVA-47), minimize and close; the lines on the overlay well (the chat's
    dark ground, so the chat colors read in both themes), wrapped at its
    width, the newest at the bottom, the scroll range inside its right edge;
    the two-row input (its placeholder while empty) and Send in a raised
@@ -132,6 +132,32 @@ body.whisper
 	display: block;
 	width: 16dp;
 	height: 16dp;
+}
+/* Add friend (NOVA-203): the messenger's person with an accent plus at its
+   lower right, in an icon button as minimize's. */
+.whisper__friend
+{
+	position: relative;
+	width: 24dp;
+	height: 24dp;
+	border-radius: 7dp;
+	line-height: 22dp;
+}
+.whisper__friend-glyph
+{
+	pointer-events: none;
+}
+.whisper__friend-badge
+{
+	position: absolute;
+	right: 1dp;
+	bottom: 2dp;
+	pointer-events: none;
+	transform: scale(0.6);
+}
+.whisper__friend .whisper__friend-badge, .whisper__friend:hover .whisper__friend-badge
+{
+	--glyph-ink: var(--accent);
 }
 /* Block or Unblock (NOVA-47): a compact ghost text button in the small
    type, one line, so the partner's name keeps its room. */

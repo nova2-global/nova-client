@@ -1458,3 +1458,21 @@ STAT_PICK_TITLE_DEX	Smidighed
 SKILL_MAX_UP_HINT	Shift + click: hæv op til Mester
 REMOVE_AFFECT_QUESTION	Vil du deaktivere %s?
 REFINE_FAST_UPGRADE	Hurtig opgradering
+ATLAS_MARK_WIKI_HINT	Klik for at åbne wikien
+METIN_QUEUE_ADDED	[Metin-kø] Stenen er nu i din angrebskø.
+METIN_QUEUE_REMOVED	[Metin-kø] Stenen er fjernet fra din angrebskø.
+METIN_QUEUE_FULL	[Metin-kø] Din angrebskø er fuld.
+METIN_QUEUE_PREMIUM_HINT	[Metin-kø] Med premium kan du sætte flere sten i kø.
+AUTO_SHOUT_TOOLTIP	Auto-råb
+AUTO_SHOUT_TITLE	Auto-råb
+AUTO_SHOUT_DESC	Gentager dit råb hvert 30. sek. (16 sek. med premium).
+AUTO_SHOUT_MESSAGE	Besked
+AUTO_SHOUT_STATUS_OFF	Fra
+AUTO_SHOUT_STATUS_WAITING	Starter...
+AUTO_SHOUT_STATUS_ON	Til
+AUTO_SHOUT_NEXT	Næste råb om
+AUTO_SHOUT_START	Start
+AUTO_SHOUT_STOP	Stop
+AUTO_SHOUT_NO_MESSAGE	Skriv først en besked til auto-råbet.
+TARGET_ARROW_DAMAGE	%s pileskade
+TARGET_METIN_QUEUE_HINT	Shift + højreklik: føj til angrebskøen

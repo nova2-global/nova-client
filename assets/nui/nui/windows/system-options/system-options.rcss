@@ -382,3 +382,87 @@ body.system-options
 {
 	flex: 1 1 auto;
 }
+
+/* NOVA-213: the search field above the rows, and its results laid over the
+   rows below it while it holds text: a raised panel, a list of fixed height
+   that scrolls (a row's label, then its section muted). The field takes the
+   focus (the body has focus: none, which it inherits). A found row takes
+   the accent's edge and soft fill until its timer ends. */
+.so-search
+{
+	display: block;
+	position: relative;
+	margin-bottom: 8dp;
+}
+.so-search__field
+{
+	display: block;
+	width: 100%;
+	focus: auto;
+	tab-index: auto;
+}
+.so-results
+{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 34dp;
+	z-index: 2;
+	padding: 4dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-lg);
+	background-color: var(--surface-raised);
+}
+.so-results__list
+{
+	height: 196dp;
+}
+.so-result
+{
+	height: 28dp;
+	tab-index: none;
+}
+.so-result__label
+{
+	flex: 1 1 auto;
+	color: var(--text);
+	font-size: var(--font-md);
+	white-space: nowrap;
+	pointer-events: none;
+}
+.so-result__where
+{
+	flex: 0 0 auto;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	white-space: nowrap;
+	pointer-events: none;
+}
+.so-results__none
+{
+	display: block;
+	padding: 6dp 8dp;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+}
+/* The rows keep their place under the results but hide, so no press
+   reaches a row the results cover. */
+.so-legacy.so-under-results, .so-interface.so-under-results
+{
+	visibility: hidden;
+}
+.so-found-timer
+{
+	display: none;
+}
+/* No border of its own: a row without one would move by it. */
+.so-row.is-found, .so-colors.is-found
+{
+	border-radius: var(--radius-lg);
+	background-color: var(--selection);
+}
+.so-row.is-found .so-label
+{
+	color: var(--accent);
+}

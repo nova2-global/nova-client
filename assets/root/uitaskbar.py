@@ -29,7 +29,8 @@ def QuickSlotKey(index):
 	quickslot cell `index` (0-7)."""
 	bindings = keybindings.current()
 	action = QUICKSLOT_ACTIONS[index]
-	keepsArt = bindings.get(action, 0) == keybindings.ACTION[action].defaults[0]
+	default = keybindings.ACTION[action].defaults[0]
+	keepsArt = default != 0 and bindings.get(action, 0) == default
 	return (keybindings.badge(action, bindings), keepsArt)
 
 def ButtonToolTip(text, button):

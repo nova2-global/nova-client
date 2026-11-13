@@ -1550,3 +1550,21 @@ STAT_PICK_TITLE_DEX	المناورة
 SKILL_MAX_UP_HINT	Shift + click: رفع حتى مستوى السيد
 REMOVE_AFFECT_QUESTION	هل تريد تعطيل %s؟
 REFINE_FAST_UPGRADE	ترقية سريعة
+ATLAS_MARK_WIKI_HINT	انقر لفتح الويكي
+METIN_QUEUE_ADDED	[قائمة الميتن] تمت إضافة الحجر إلى قائمة الهجوم.
+METIN_QUEUE_REMOVED	[قائمة الميتن] تمت إزالة الحجر من قائمة الهجوم.
+METIN_QUEUE_FULL	[قائمة الميتن] قائمة الهجوم ممتلئة.
+METIN_QUEUE_PREMIUM_HINT	[قائمة الميتن] العضوية المميزة تتيح لك إضافة المزيد من الأحجار.
+AUTO_SHOUT_TOOLTIP	النداء التلقائي
+AUTO_SHOUT_TITLE	النداء التلقائي
+AUTO_SHOUT_DESC	يكرر نداءك كل 30 ثانية (16 ثانية مع البريميوم).
+AUTO_SHOUT_MESSAGE	الرسالة
+AUTO_SHOUT_STATUS_OFF	متوقف
+AUTO_SHOUT_STATUS_WAITING	جارٍ البدء...
+AUTO_SHOUT_STATUS_ON	يعمل
+AUTO_SHOUT_NEXT	النداء التالي بعد
+AUTO_SHOUT_START	ابدأ
+AUTO_SHOUT_STOP	أوقف
+AUTO_SHOUT_NO_MESSAGE	اكتب رسالة للنداء التلقائي أولاً.
+TARGET_ARROW_DAMAGE	%s ضرر السهام
+TARGET_METIN_QUEUE_HINT	Shift + نقرة يمين: إضافة إلى قائمة الهجوم

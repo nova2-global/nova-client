@@ -1458,3 +1458,21 @@ STAT_PICK_TITLE_DEX	Destreza
 SKILL_MAX_UP_HINT	Shift + click: subir hasta Master
 REMOVE_AFFECT_QUESTION	¿Quieres desactivar %s?
 REFINE_FAST_UPGRADE	Mejora rápida
+ATLAS_MARK_WIKI_HINT	Haz clic para abrir la wiki
+METIN_QUEUE_ADDED	[Cola de Metin] El Metin se ha añadido a la cola.
+METIN_QUEUE_REMOVED	[Cola de Metin] El Metin ha sido eliminado de la cola.
+METIN_QUEUE_FULL	[Cola de Metin] Has alcanzado el tamaño máximo de la cola.
+METIN_QUEUE_PREMIUM_HINT	[Cola de Metin] Con Premium puedes añadir más Metin a la cola.
+AUTO_SHOUT_TOOLTIP	Grito automático
+AUTO_SHOUT_TITLE	Grito automático
+AUTO_SHOUT_DESC	Repite tu grito cada 30 s (16 s con premium).
+AUTO_SHOUT_MESSAGE	Mensaje
+AUTO_SHOUT_STATUS_OFF	Apagado
+AUTO_SHOUT_STATUS_WAITING	Iniciando...
+AUTO_SHOUT_STATUS_ON	Activo
+AUTO_SHOUT_NEXT	Próximo grito en
+AUTO_SHOUT_START	Iniciar
+AUTO_SHOUT_STOP	Detener
+AUTO_SHOUT_NO_MESSAGE	Escribe primero un mensaje para el grito automático.
+TARGET_ARROW_DAMAGE	%s daño de flecha
+TARGET_METIN_QUEUE_HINT	Mayús + clic derecho: añadir a la cola de ataque

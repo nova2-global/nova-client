@@ -744,3 +744,41 @@ KEYBIND_EMOTION_9	Emoção 9
 OPTION_NEW_ITEM_HIGHLIGHT	Itens novos
 DESTROY	Destruir
 STORAGE_TITLE	Armazenamento
+OPTION_YANG_TEXT	Registro de Yang
+OPTION_COUNTRY_FLAGS	Bandeiras
+OPTION_SEARCH_HINT	Buscar opções
+OPTION_SEARCH_NONE	Nenhuma opção encontrada.
+OPTION_BGM	Música de fundo
+KEYBIND_WIKI	Wiki
+OPTION_KEYWORDS_NAME_COLOR	nome cor reino império
+OPTION_KEYWORDS_TARGET_BOARD	alvo menu inimigo
+OPTION_KEYWORDS_PK	pvp combate paz hostil guilda livre
+OPTION_KEYWORDS_BLOCK	bloquear troca grupo guilda sussurro amigo pedido
+OPTION_KEYWORDS_VIEW_CHAT	chat balão conversa
+OPTION_KEYWORDS_ALWAYS_NAME	nome sempre
+OPTION_KEYWORDS_DAMAGE	dano golpe números
+OPTION_KEYWORDS_SALES	loja placa venda
+OPTION_KEYWORDS_PICKUP	pegar saque filtro itens poções
+OPTION_KEYWORDS_SHOPS	lojas offline mercador
+OPTION_KEYWORDS_SASH	faixa ombro traje
+OPTION_KEYWORDS_BUFFI	buffi companheiro suporte
+OPTION_KEYWORDS_MOB_LEVEL	monstro nível info
+OPTION_KEYWORDS_MOB_AI	monstro agressivo estrela
+OPTION_KEYWORDS_KEYS	teclas teclado atalho
+OPTION_KEYWORDS_YANG	yang ouro dinheiro pegar mensagem
+OPTION_KEYWORDS_FLAGS	bandeira país nação idioma
+OPTION_KEYWORDS_SOUND	som efeitos volume
+OPTION_KEYWORDS_MUSIC	música volume
+OPTION_KEYWORDS_BGM	música fundo canção
+OPTION_KEYWORDS_CAMERA	câmera zoom distância longe perto
+OPTION_KEYWORDS_FOG	neblina distância visão
+OPTION_KEYWORDS_TILING	gráficos
+OPTION_KEYWORDS_FOV	campo de visão ângulo
+OPTION_KEYWORDS_SNOW	neve nevasca clima natal
+OPTION_KEYWORDS_FPS	fps quadros contador desempenho
+OPTION_KEYWORDS_TIPS	dicas sugestão ajuda
+OPTION_KEYWORDS_THEME	tema aparência estilo escuro claro clássico
+OPTION_KEYWORDS_SCALE	escala tamanho interface
+OPTION_KEYWORDS_MOTION	movimento animação
+OPTION_KEYWORDS_EFFECTS	efeitos desfoque sombra
+OPTION_KEYWORDS_COLORS	cores destaque painel opacidade

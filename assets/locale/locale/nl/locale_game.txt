@@ -1458,3 +1458,21 @@ STAT_PICK_TITLE_DEX	Behendigheid
 SKILL_MAX_UP_HINT	Shift + click: verhogen tot Meester
 REMOVE_AFFECT_QUESTION	Wil je %s uitschakelen?
 REFINE_FAST_UPGRADE	Snel upgraden
+ATLAS_MARK_WIKI_HINT	Klik om de wiki te openen
+METIN_QUEUE_ADDED	[Metin-wachtrij] De steen staat nu in de wachtrij.
+METIN_QUEUE_REMOVED	[Metin-wachtrij] De steen is uit de wachtrij gehaald.
+METIN_QUEUE_FULL	[Metin-wachtrij] Je wachtrij is vol.
+METIN_QUEUE_PREMIUM_HINT	[Metin-wachtrij] Met premium kun je meer stenen in de wachtrij zetten.
+AUTO_SHOUT_TOOLTIP	Automatisch roepen
+AUTO_SHOUT_TITLE	Automatisch roepen
+AUTO_SHOUT_DESC	Herhaalt je roep elke 30 s (16 s met premium).
+AUTO_SHOUT_MESSAGE	Bericht
+AUTO_SHOUT_STATUS_OFF	Uit
+AUTO_SHOUT_STATUS_WAITING	Starten...
+AUTO_SHOUT_STATUS_ON	Aan
+AUTO_SHOUT_NEXT	Volgende roep over
+AUTO_SHOUT_START	Starten
+AUTO_SHOUT_STOP	Stoppen
+AUTO_SHOUT_NO_MESSAGE	Typ eerst een bericht voor het automatisch roepen.
+TARGET_ARROW_DAMAGE	%s pijlschade
+TARGET_METIN_QUEUE_HINT	Shift + rechtsklik: toevoegen aan de aanvalswachtrij

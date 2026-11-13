@@ -611,7 +611,9 @@ class Fixtures(unittest.TestCase):
         facade = module.TargetBoard()
         keys = self.entry_keys(facade, "buttons", lambda f: f.ShowDefaultButton())
         self.check(module.TargetBoardBoard, "target", ("mob", "player"), owner=object(), entries={"buttons": keys})
-        self.assertEqual(module.TargetBoardBoard.FEEDS, {"in_range": "target.in_range"})
+        # Wave 10 (qol-social): the archer gauge and the bar's tint follow feeds too.
+        self.assertEqual(module.TargetBoardBoard.FEEDS, {"in_range": "target.in_range", "arrow_percent": "target.arrow_percent",
+                                                         "poisoned": "target.poisoned", "burning": "target.burning"})
 
     def test_the_party_fixtures_match_the_model_and_the_entries_the_facade_writes(self):
         module = self.world.module("nui_party")

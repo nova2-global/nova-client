@@ -743,3 +743,41 @@ KEYBIND_EMOTION_9	Emotie 9
 OPTION_NEW_ITEM_HIGHLIGHT	Nieuw
 DESTROY	Vernietigen
 STORAGE_TITLE	Bewaring
+OPTION_YANG_TEXT	Yang-log
+OPTION_COUNTRY_FLAGS	Vlaggen
+OPTION_SEARCH_HINT	Opties zoeken
+OPTION_SEARCH_NONE	Geen optie gevonden.
+OPTION_BGM	Achtergrondmuziek
+KEYBIND_WIKI	Wiki
+OPTION_KEYWORDS_NAME_COLOR	naam kleur rijk
+OPTION_KEYWORDS_TARGET_BOARD	doel menu vijand
+OPTION_KEYWORDS_PK	pvp gevecht vrede vijandig gilde vrij
+OPTION_KEYWORDS_BLOCK	blokkeren handel groep gilde fluisteren vriend verzoek
+OPTION_KEYWORDS_VIEW_CHAT	chat ballon
+OPTION_KEYWORDS_ALWAYS_NAME	naam altijd
+OPTION_KEYWORDS_DAMAGE	schade treffer getallen
+OPTION_KEYWORDS_SALES	winkel bord verkoop
+OPTION_KEYWORDS_PICKUP	oppakken buit filter voorwerpen drankjes
+OPTION_KEYWORDS_SHOPS	winkels offline handelaar
+OPTION_KEYWORDS_SASH	sjerp schouder kostuum
+OPTION_KEYWORDS_BUFFI	buffi metgezel ondersteuning
+OPTION_KEYWORDS_MOB_LEVEL	monster niveau info
+OPTION_KEYWORDS_MOB_AI	monster agressief ster
+OPTION_KEYWORDS_KEYS	toetsen toetsenbord sneltoets
+OPTION_KEYWORDS_YANG	yang goud geld oppakken bericht
+OPTION_KEYWORDS_FLAGS	vlag land natie taal
+OPTION_KEYWORDS_SOUND	geluid effecten volume
+OPTION_KEYWORDS_MUSIC	muziek volume
+OPTION_KEYWORDS_BGM	muziek achtergrond nummer
+OPTION_KEYWORDS_CAMERA	camera zoom afstand ver dichtbij
+OPTION_KEYWORDS_FOG	mist zichtafstand
+OPTION_KEYWORDS_TILING	grafisch
+OPTION_KEYWORDS_FOV	gezichtsveld hoek
+OPTION_KEYWORDS_SNOW	sneeuw sneeuwval weer kerst
+OPTION_KEYWORDS_FPS	fps beelden teller prestaties
+OPTION_KEYWORDS_TIPS	tips hint hulp
+OPTION_KEYWORDS_THEME	thema uiterlijk stijl donker licht klassiek
+OPTION_KEYWORDS_SCALE	schaal grootte interface
+OPTION_KEYWORDS_MOTION	beweging animatie
+OPTION_KEYWORDS_EFFECTS	effecten vervaging schaduw
+OPTION_KEYWORDS_COLORS	kleuren accent paneel dekking

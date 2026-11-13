@@ -1,7 +1,10 @@
 {
-	"$comment": "Golden cases of this window (tools/check_nui_snapshots.py).",
+	"$comment": "Golden cases of this window (tools/check_nui_snapshots.py), and split: a stack's split with the Split all box ticked (NOVA-190).",
 	"cases": [
 		{"page": "pick-money", "themes": "all",
+		 "scales": [["100", "1", "640x360"], ["150", "1.5", "960x540"], ["200", "2", "1280x720"]],
+		 "fixture": true, "roots": [], "time": null},
+		{"page": "pick-money", "variant": "split", "themes": "all",
 		 "scales": [["100", "1", "640x360"], ["150", "1.5", "960x540"], ["200", "2", "1280x720"]],
 		 "fixture": true, "roots": [], "time": null}
 	]

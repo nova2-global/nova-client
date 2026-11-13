@@ -1294,3 +1294,6 @@ SEARCH_IN_SHOPS	Ctrl + click: keresés a boltokban
 SEARCH_IN_WIKI	Shift + right-click: megnyitás a wikiben
 MOVE_FROM_SAFEBOX_TO_INVENTORY	Right-click: áthelyezés a leltárba
 COSTUME_PREVIEW_HINT	%s nyomva tartva: előnézet a karaktereden
+DESTROY_ITEM_WARNING	Biztos, hogy véglegesen el akarod pusztítani ezt a tárgyat?
+ITEM_SPLIT_ALL	Összes felosztása
+SHOP_MARK_SELL_HINT	Tab + kattintás: megjelölés eladásra

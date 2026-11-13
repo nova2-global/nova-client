@@ -9,6 +9,8 @@
 		"warn_line": 0,
 		"check_on": false,
 		"check_text": "",
-		"checked": false
+		"checked": false,
+		"middle_on": false,
+		"middle_label": ""
 	}
 }

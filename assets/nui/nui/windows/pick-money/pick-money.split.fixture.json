@@ -1,0 +1,9 @@
+{
+	"pick_money": {
+		"title": "@game.PICK_ITEM_TITLE",
+		"max": 6,
+		"limit": " / 200",
+		"split_on": true,
+		"split_checked": true
+	}
+}

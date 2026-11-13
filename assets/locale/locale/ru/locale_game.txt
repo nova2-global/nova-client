@@ -1294,3 +1294,6 @@ SEARCH_IN_SHOPS	Ctrl + click: искать в магазинах
 SEARCH_IN_WIKI	Shift + right-click: открыть в вики
 MOVE_FROM_SAFEBOX_TO_INVENTORY	Right-click: переместить в инвентарь
 COSTUME_PREVIEW_HINT	Удерживайте %s: примерить на персонажа
+DESTROY_ITEM_WARNING	Вы уверены, что хотите навсегда уничтожить этот предмет?
+ITEM_SPLIT_ALL	Разделить всё
+SHOP_MARK_SELL_HINT	Tab + щелчок: отметить для продажи

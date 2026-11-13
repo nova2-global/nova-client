@@ -1386,3 +1386,6 @@ SEARCH_IN_SHOPS	Ctrl + click: البحث في المتاجر
 SEARCH_IN_WIKI	Shift + right-click: فتح في الويكي
 MOVE_FROM_SAFEBOX_TO_INVENTORY	Right-click: نقل إلى الجرد
 COSTUME_PREVIEW_HINT	اضغط %s: معاينة على شخصيتك
+DESTROY_ITEM_WARNING	هل أنت متأكد من أنك تريد تدمير هذا العنصر بشكل دائم؟
+ITEM_SPLIT_ALL	تقسيم الكل
+SHOP_MARK_SELL_HINT	Tab + نقرة: تحديد للبيع

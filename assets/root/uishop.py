@@ -74,6 +74,142 @@ def GetBarterCostText(costs, isAll, times=1):
 	return (" %s " % localeInfo.SHOP_TEXT_OR).join(parts)
 
 ###################################################################################################
+## Mark to sell at an NPC shop (NOVA-187; OLD ENABLE_MARK_SELL, uiShop.py:1817-1873, uiInventory.py:
+## 1533-1541, 2661-2703, uiExtraInventory.py:989-1029). While an NPC shop is open, the mark key and
+## a left press mark or unmark an item of the inventory or the special inventory; marked cells
+## glow, cannot be used, used on another item or picked (so neither moved nor dropped), and the
+## shop's board shows their total and sells them all. One store for both inventories and both UIs,
+## keyed by (window, cell) with the vnum at mark time: a cell whose vnum changed is no longer
+## marked. The total is the current items' price by the shop's sell rule (SellPriceOf). Each
+## choice is a default Eddy is to confirm.
+
+MARK_SELL_CONFIRM = False          # no question before "Sell" (OLD)
+MARK_SELL_BOARD_ALWAYS = False     # the board shows only while something is marked (OLD: on Sell)
+MARK_SELL_KEY = "DIK_TAB"          # app.DIK_TAB, read at the press (OLD)
+## OLD's slot effect color 0xFFDF00, as the legacy icon's diffuse color (NEW's slot window has no
+## colored slot effect).
+MARK_SELL_COLOR = (1.0, 0xDF / 255.0, 0.0, 1.0)
+NO_MARK_COLOR = (1.0, 1.0, 1.0, 1.0)
+
+_sellMarks = {}            # (window, cell) -> vnum at mark time
+_sellMarkShop = None       # weakref to the NPC shop dialog while marks are on
+_sellMarkRefresh = {}      # window -> the refresh of the window whose cells glow
+
+def SellPriceOf(vnum, count):
+	"""What the NPC pays for `count` of `vnum` (the server's rule: a fifth of the item's sell
+	price per item; a 1-gold item counts its price as items per gold). Selects the item."""
+	item.SelectItem(vnum)
+	itemPrice = item.GetISellItemPrice()
+	if item.Is1GoldItem():
+		return count // itemPrice // 5 if itemPrice else 0
+	return itemPrice * max(1, count) // 5
+
+def _ItemAt(window, cell):
+	if window == player.INVENTORY:
+		return player.GetItemIndex(cell), player.GetItemCount(cell)
+	return player.GetItemIndex(window, cell), player.GetItemCount(window, cell)
+
+def IsSellMarkActive():
+	return _sellMarkShop is not None and _sellMarkShop() is not None
+
+def IsSellMarkKeyPressed():
+	"""The mark key is down while an NPC shop is open."""
+	if not IsSellMarkActive():
+		return False
+	key = getattr(app, MARK_SELL_KEY, None)
+	return isinstance(key, int) and bool(app.IsPressed(key))
+
+def IsSellMarked(window, cell):
+	"""Whether (window, cell) is marked and still holds the item it was marked with."""
+	vnum = _sellMarks.get((window, cell))
+	return bool(vnum) and _ItemAt(window, cell)[0] == vnum
+
+def GetSellMarkColor(window, cell):
+	return MARK_SELL_COLOR if IsSellMarked(window, cell) else NO_MARK_COLOR
+
+def GetSellMarks():
+	"""[(window, cell, vnum, count)] of the marks whose cell still holds its item, in mark order."""
+	marks = []
+	for (window, cell), vnum in list(_sellMarks.items()):
+		(currentVnum, count) = _ItemAt(window, cell)
+		if currentVnum == vnum and count > 0:
+			marks.append((window, cell, vnum, count))
+	return marks
+
+def HasSellMarks():
+	return len(GetSellMarks()) > 0
+
+def GetSellMarkTotal():
+	return sum(SellPriceOf(vnum, count) for (window, cell, vnum, count) in GetSellMarks())
+
+def ToggleSellMark(window, cell, refresh=None):
+	"""Marks or unmarks (window, cell) while an NPC shop is open: True when it changed. An item
+	the NPC does not buy (ANTIFLAG_SELL, read from the cell's own window) is not marked."""
+	if not IsSellMarkActive():
+		return False
+	if refresh is not None:
+		_sellMarkRefresh[window] = refresh
+	if IsSellMarked(window, cell):
+		del _sellMarks[(window, cell)]
+	else:
+		(vnum, count) = _ItemAt(window, cell)
+		if not vnum:
+			return False
+		item.SelectItem(vnum)
+		if item.IsAntiFlag(item.ANTIFLAG_SELL):
+			return False
+		_sellMarks[(window, cell)] = vnum
+	_RefreshSellMarks()
+	return True
+
+def BeginSellMarks(shopDialog):
+	"""An NPC shop opened: marks may be made, and its board shows them."""
+	global _sellMarkShop
+	import weakref
+	_sellMarkShop = weakref.ref(shopDialog)
+
+def EndSellMarks():
+	"""A shop closed or another shop opened: the marks go."""
+	global _sellMarkShop
+	hadMarks = len(_sellMarks) > 0
+	shopDialog = _sellMarkShop() if _sellMarkShop is not None else None
+	_sellMarkShop = None
+	_sellMarks.clear()
+	if hadMarks:
+		_RefreshWindows()
+	if shopDialog is not None:
+		shopDialog.RefreshSellMarkBoard()
+
+def SellMarkedItems():
+	"""Sells every marked item still in its cell, at its full count (one sell each; the server
+	checks each), then drops the marks."""
+	marks = GetSellMarks()
+	_sellMarks.clear()
+	for (window, cell, vnum, count) in marks:
+		net.SendShopSellPacketNew(cell, count, window)
+	if marks:
+		snd.PlaySound("sound/ui/money.wav")
+	_RefreshSellMarks()
+
+def RefreshSellMarkBoard():
+	"""The open NPC shop's board shows the marks' current total (an inventory refresh changes
+	it when a marked stack changed)."""
+	shopDialog = _sellMarkShop() if _sellMarkShop is not None else None
+	if shopDialog is not None:
+		shopDialog.RefreshSellMarkBoard()
+
+def _RefreshWindows():
+	for refresh in list(_sellMarkRefresh.values()):
+		try:
+			refresh()
+		except ReferenceError:
+			pass
+
+def _RefreshSellMarks():
+	_RefreshWindows()
+	RefreshSellMarkBoard()
+
+###################################################################################################
 ## Shop
 class ShopDialog(ui.ScriptWindow):
 
@@ -271,6 +407,8 @@ class ShopDialog(ui.ScriptWindow):
 	def Open(self, vid, multiPage=False):
 		"""multiPage: the offline shop of the NPC `vid` (GC VIEW; Interface.OpenOfflineShopDialog),
 		in pages of 10 x 8; else NEW's NPC or private shop."""
+		## Another shop opening drops the marks of the last one (NOVA-187).
+		EndSellMarks()
 		if multiPage:
 			self.OpenOfflineShopView(vid, True)
 			return
@@ -341,6 +479,9 @@ class ShopDialog(ui.ScriptWindow):
 		## An NPC shop marks the items it does not buy (NOVA-13; OLD uiShop.py:670-673).
 		if not isPrivateShop:
 			self.__SetOnTopWindow(player.ON_TOP_WND_SHOP)
+			## Its items may be marked to sell (NOVA-187).
+			BeginSellMarks(self)
+			self.RefreshSellMarkBoard()
 
 	## The tradable icon (NOVA-13; OLD uiShop.py:1365-1370)
 	def BindInterface(self, interface):
@@ -377,9 +518,56 @@ class ShopDialog(ui.ScriptWindow):
 		self.tooltipItem.HideToolTip()
 		self.Hide()
 		self.__SetOnTopWindow(player.ON_TOP_WND_NONE)
+		EndSellMarks()
 
 	def GetIndexFromSlotPos(self, slotPos):
 		return self.tabIdx * shop.SHOP_SLOT_COUNT + slotPos
+
+	## The mark board (NOVA-187; OLD uiShop.py MarkWindow, uiscript markwindow.py): 173 x 70 under
+	## the shop, the marks' total and "Sell". It shows while the NPC shop is open and something is
+	## marked (MARK_SELL_BOARD_ALWAYS: always). Class defaults, since ui.Window.__init__ may run a
+	## subclass's Hide before our __init__.
+	sellMarkBoard = None
+	sellMarkQuestion = None
+
+	def RefreshSellMarkBoard(self):
+		shown = IsSellMarkActive() and self.IsShow() and (MARK_SELL_BOARD_ALWAYS or HasSellMarks())
+		if not shown:
+			if self.sellMarkBoard:
+				self.sellMarkBoard.Hide()
+			return
+		if not self.sellMarkBoard:
+			self.sellMarkBoard = SellMarkBoard(ui.__mem_func__(self.SellMarkedItems))
+		self.sellMarkBoard.SetTotal(GetSellMarkTotal())
+		(x, y) = self.GetGlobalPosition()
+		self.sellMarkBoard.Open(x, y + self.GetHeight())
+
+	def OnMoveWindow(self, x, y):
+		if self.sellMarkBoard and self.sellMarkBoard.IsShow():
+			self.sellMarkBoard.SetPosition(x, y + self.GetHeight())
+
+	def SellMarkedItems(self):
+		"""The board's Sell: every marked item at once (MARK_SELL_CONFIRM: after a question
+		naming how many and their total)."""
+		if not MARK_SELL_CONFIRM:
+			SellMarkedItems()
+			return
+		import uiScriptLocale
+		question = uiCommon.QuestionDialog()
+		question.SetText(localeInfo.DO_YOU_SELL_ITEM(uiScriptLocale.SHOP_SELL, len(GetSellMarks()), GetSellMarkTotal()))
+		question.SetAcceptEvent(ui.__mem_func__(self.AcceptSellMarked))
+		question.SetCancelEvent(ui.__mem_func__(self.CloseSellMarkQuestion))
+		question.Open()
+		self.sellMarkQuestion = question
+
+	def AcceptSellMarked(self):
+		self.CloseSellMarkQuestion()
+		SellMarkedItems()
+
+	def CloseSellMarkQuestion(self):
+		if self.sellMarkQuestion:
+			self.sellMarkQuestion.Close()
+		self.sellMarkQuestion = None
 		
 	def OnClickTabButton(self, idx):
 		self.tabIdx = idx
@@ -475,12 +663,7 @@ class ShopDialog(ui.ScriptWindow):
 			# if player.IsValuableItem(itemtype, attachedSlotPos):
 			if player.IsValuableItem(attachedSlotPos):
 
-				itemPrice = item.GetISellItemPrice()
-
-				if item.Is1GoldItem():
-					itemPrice = attachedCount // itemPrice // 5
-				else:
-					itemPrice = itemPrice * max(1, attachedCount) // 5
+				itemPrice = SellPriceOf(itemIndex, attachedCount)
 
 				itemName = item.GetItemName()
 
@@ -511,12 +694,7 @@ class ShopDialog(ui.ScriptWindow):
 				self.popup = popup
 				return
 
-			itemPrice = item.GetISellItemPrice()
-
-			if item.Is1GoldItem():
-				itemPrice = attachedCount // itemPrice // 5
-			else:
-				itemPrice = itemPrice * max(1, attachedCount) // 5
+			itemPrice = SellPriceOf(itemIndex, attachedCount)
 
 			itemName = item.GetItemName()
 
@@ -1670,3 +1848,40 @@ class OfflineShopWindow(ui.ScriptWindow):
 			self.signInputBoard.Close()
 		self.signInputBoard = None
 		return True
+
+
+class SellMarkBoard(ui.ScriptWindow):
+	"""The mark board under the NPC shop (NOVA-187; OLD uiShop.py:1820-1873, uiscript
+	markwindow.py without its image hint): the marks' total and Sell, whose tooltip names the
+	mark key."""
+
+	def __init__(self, sellEvent):
+		ui.ScriptWindow.__init__(self)
+		self.priceText = None
+		self.sellButton = None
+		try:
+			pyScrLoader = ui.PythonScriptLoader()
+			pyScrLoader.LoadScriptFile(self, "uiscript/markwindow.py")
+			self.priceText = self.GetChild("Money")
+			self.sellButton = self.GetChild("SellMarkedButton")
+		except:
+			import exception
+			exception.Abort("SellMarkBoard.LoadWindow.BindObject")
+		self.sellButton.SetEvent(sellEvent)
+		self.sellButton.SetToolTipText(localeInfo.SHOP_MARK_SELL_HINT)
+
+	def __del__(self):
+		ui.ScriptWindow.__del__(self)
+
+	def SetTotal(self, total):
+		self.priceText.SetText(localeInfo.NumberToMoneyString(total))
+
+	def Open(self, x, y):
+		self.SetPosition(x, y)
+		self.Show()
+		self.SetTop()
+
+	def Destroy(self):
+		self.ClearDictionary()
+		self.priceText = None
+		self.sellButton = None

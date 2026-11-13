@@ -853,6 +853,7 @@ What the color roles mean:
 | `--classic-separator-shadow` | classic | `#111111` |
 | `--classic-text-outline` | classic | `#000000` |
 | `--classic-disabled-tint` | classic | `#8c8c8cff` |
+| `--classic-sell-mark-tint` | classic | `#ffdf00ff` |
 | `--classic-disabled-text` | classic | `#6e6e6e` |
 | `--classic-key-text` | classic | `#000000` |
 | `--classic-label-white` | classic | `#ffffff` |

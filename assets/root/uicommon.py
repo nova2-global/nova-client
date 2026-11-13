@@ -569,6 +569,52 @@ class CheckQuestionDialog(QuestionDialog):
 	def IsChecked(self):
 		return bool(self.checkBox) and self.checkBox.GetCheckStatus()
 
+class QuestionDialog3(QuestionDialog):
+	"""The question with a third button between accept and cancel (NOVA-189,
+	NOVA-201; OLD uiCommon.py:500-556 QuestionDialogItem and its uiscript
+	questiondialogitem.py: accept at x -60 of the center, the third button at
+	0, cancel at +60). The item drop question's Destroy and the inventory's
+	storage choice. The third button has no text or event until the caller
+	sets them. With the dialogs flag on, the kit's
+	(nui_dialog_question.QuestionDialog3)."""
+
+	BUTTON_X = 60
+
+	def __init__(self):
+		LegacyQuestionDialog.__init__(self)
+		middleButton = ui.Button()
+		middleButton.SetParent(self.board)
+		middleButton.SetUpVisual("d:/ymir work/ui/public/middle_button_01.sub")
+		middleButton.SetOverVisual("d:/ymir work/ui/public/middle_button_02.sub")
+		middleButton.SetDownVisual("d:/ymir work/ui/public/middle_button_03.sub")
+		middleButton.SetWindowHorizontalAlignCenter()
+		middleButton.Show()
+		self.middleButton = middleButton
+		self.__PlaceButtons(self.BUTTON_Y)
+
+	def __del__(self):
+		LegacyQuestionDialog.__del__(self)
+
+	def __PlaceButtons(self, buttonY):
+		self.acceptButton.SetPosition(-self.BUTTON_X, buttonY)
+		self.middleButton.SetPosition(0, buttonY)
+		self.cancelButton.SetPosition(self.BUTTON_X, buttonY)
+
+	def SetText(self, text):
+		"""Legacy's, then the three buttons under the text's lines."""
+		LegacyQuestionDialog.SetText(self, text)
+		extraLines = len(getattr(self.textLine, "extraLines", ()))
+		self.__PlaceButtons(self.BUTTON_Y + extraLines * self.LINE_HEIGHT + 10)
+
+	def SetMiddleText(self, text):
+		self.middleButton.SetText(text)
+
+	def SetMiddleEvent(self, event):
+		self.middleButton.SetEvent(event)
+
+	def SAFE_SetMiddleEvent(self, event):
+		self.middleButton.SAFE_SetEvent(event)
+
 # NovaUI dialog kit (nui_dialog_*.py, flag "dialogs"): with the flag on these
 # names make the NovaUI dialogs; with it off, the legacy classes above. The
 # legacy subclasses above call their bases through these Legacy names, since
@@ -593,3 +639,6 @@ MoneyInputDialog = nui_windows.factory("dialogs", LegacyMoneyInputDialog, "nui_d
 ## draws the box too now, so they follow the dialogs flag as the others do.
 BulkMoneyInputDialog = nui_windows.factory("dialogs", LegacyBulkMoneyInputDialog, "nui_dialog_money.BulkMoneyInputDialog")
 CheckQuestionDialog = nui_windows.factory("dialogs", LegacyCheckQuestionDialog, "nui_dialog_question.CheckQuestionDialog")
+## The question with a third button (NOVA-189, NOVA-201).
+LegacyQuestionDialog3 = QuestionDialog3
+QuestionDialog3 = nui_windows.factory("dialogs", LegacyQuestionDialog3, "nui_dialog_question.QuestionDialog3")

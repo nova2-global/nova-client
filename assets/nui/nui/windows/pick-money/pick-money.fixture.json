@@ -2,6 +2,8 @@
 	"pick_money": {
 		"title": "@ui.PICK_MONEY_TITLE",
 		"max": 6,
-		"limit": " / 250"
+		"limit": " / 250",
+		"split_on": false,
+		"split_checked": false
 	}
 }

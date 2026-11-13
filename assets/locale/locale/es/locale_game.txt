@@ -1294,3 +1294,6 @@ SEARCH_IN_SHOPS	Ctrl + click: buscar en las tiendas
 SEARCH_IN_WIKI	Shift + right-click: abrir en la wiki
 MOVE_FROM_SAFEBOX_TO_INVENTORY	Right-click: mover al inventario
 COSTUME_PREVIEW_HINT	Mantén %s: ver en tu personaje
+DESTROY_ITEM_WARNING	¿Estás seguro de que quieres destruir este artículo de forma permanente?
+ITEM_SPLIT_ALL	Dividir todo
+SHOP_MARK_SELL_HINT	Tab + clic: marcar para vender

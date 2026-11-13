@@ -1294,3 +1294,6 @@ SEARCH_IN_SHOPS	Ctrl + click: αναζήτηση στα καταστήματα
 SEARCH_IN_WIKI	Shift + right-click: άνοιγμα στο wiki
 MOVE_FROM_SAFEBOX_TO_INVENTORY	Right-click: μετακίνηση στο απόθεμα
 COSTUME_PREVIEW_HINT	Κράτα %s: προεπισκόπηση στον χαρακτήρα σου
+DESTROY_ITEM_WARNING	Είστε βέβαιοι ότι θέλετε να καταστρέψετε οριστικά αυτό το αντικείμενο;
+ITEM_SPLIT_ALL	Διαίρεση όλων
+SHOP_MARK_SELL_HINT	Tab + κλικ: σήμανση για πώληση

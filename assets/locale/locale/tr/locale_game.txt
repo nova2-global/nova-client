@@ -1294,3 +1294,6 @@ SEARCH_IN_SHOPS	Ctrl + click: dükkanlarda ara
 SEARCH_IN_WIKI	Shift + right-click: wikide aç
 MOVE_FROM_SAFEBOX_TO_INVENTORY	Right-click: envantere taşı
 COSTUME_PREVIEW_HINT	%s basılı tut: karakterinde önizle
+DESTROY_ITEM_WARNING	Bu eşyayı kalıcı olarak yok etmek istediğinden emin misin?
+ITEM_SPLIT_ALL	Hepsini böl
+SHOP_MARK_SELL_HINT	Tab + tıklama: satmak için işaretle

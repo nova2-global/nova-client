@@ -1294,3 +1294,6 @@ SEARCH_IN_SHOPS	Ctrl + click: søg i butikkerne
 SEARCH_IN_WIKI	Shift + right-click: åbn i wikien
 MOVE_FROM_SAFEBOX_TO_INVENTORY	Right-click: flyt til inventaret
 COSTUME_PREVIEW_HINT	Hold %s: se på din karakter
+DESTROY_ITEM_WARNING	Er du sikker på, at du vil ødelægge denne genstand permanent?
+ITEM_SPLIT_ALL	Del alle
+SHOP_MARK_SELL_HINT	Tab + klik: markér til salg

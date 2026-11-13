@@ -1294,3 +1294,6 @@ SEARCH_IN_SHOPS	Ctrl + click: zoeken in de winkels
 SEARCH_IN_WIKI	Shift + right-click: openen in de wiki
 MOVE_FROM_SAFEBOX_TO_INVENTORY	Right-click: naar de inventaris verplaatsen
 COSTUME_PREVIEW_HINT	Houd %s ingedrukt: bekijk op je personage
+DESTROY_ITEM_WARNING	Weet je zeker dat je dit item definitief wilt vernietigen?
+ITEM_SPLIT_ALL	Alles splitsen
+SHOP_MARK_SELL_HINT	Tab + klik: markeren om te verkopen

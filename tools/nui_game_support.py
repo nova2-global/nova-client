@@ -2338,6 +2338,8 @@ class LegacySlotWindow(object):
         slot = self._slot(index)
         if slot is None:
             return
+        # The icon's diffuse color (the sell marks' gold, NOVA-187), by cell.
+        self.__dict__.setdefault("colors", {})[int(index)] = color
         if not vnum:
             self.ClearSlot(index)
             return
@@ -2501,12 +2503,14 @@ class LegacyDialog(object):
     def Open(self, *args):
         self.opened = args
         self.is_open = True
+        self.split_all = False
         self._log("Open", *(tuple(self.texts) + (self.title,) + args))
 
     def Close(self):
         if self.is_open:
             self._log("Close")
         self.is_open = False
+        self.item_mode = False
 
     def Hide(self):
         self.is_open = False
@@ -2536,6 +2540,48 @@ class LegacyDialog(object):
     def cancel(self):
         if self.cancel_event:
             self.cancel_event()
+
+    # QuestionDialog3's third button (NOVA-189, NOVA-201): middle() presses it;
+    # the button labels a caller sets.
+    accept_text = cancel_text = None
+    middle_text = ""
+    middle_event = None
+
+    def SetMiddleText(self, text):
+        self.middle_text = text
+
+    def SetAcceptText(self, text):
+        self.accept_text = text
+
+    def SetCancelText(self, text):
+        self.cancel_text = text
+
+    def SetMiddleEvent(self, event):
+        self.middle_event = event
+
+    def middle(self):
+        if self.middle_event:
+            self.middle_event()
+
+    # uiPickMoney's "Split all" box (NOVA-190): SetItemMode shows it, Open
+    # unchecks it, Close hides it; tick() ticks it.
+    item_mode = False
+    split_all = False
+
+    def SetItemMode(self):
+        self.item_mode = True
+        self.split_all = False
+        self._log("SetItemMode")
+
+    def SetMoneyMode(self):
+        self.item_mode = False
+        self.split_all = False
+
+    def IsSplitAll(self):
+        return self.item_mode and self.split_all
+
+    def tick(self):
+        self.split_all = not self.split_all
 
 
 class LegacyDialogWindow(object):
@@ -2818,6 +2864,8 @@ def _wave3b_modules(game):
 
     game.put("uiCommon", module_of("uiCommon", QuestionDialog=dialog("uiCommon", "QuestionDialog"),
                                    QuestionDialog2=dialog("uiCommon", "QuestionDialog2"),
+                                   # The question with a third button (NOVA-189, NOVA-201).
+                                   QuestionDialog3=dialog("uiCommon", "QuestionDialog3"),
                                    PopupDialog=dialog("uiCommon", "PopupDialog")))
     game.put("uiPickMoney", module_of("uiPickMoney", PickMoneyDialog=dialog("uiPickMoney", "PickMoneyDialog")))
     game.put("uiRefine", module_of("uiRefine", RefineDialog=window("uiRefine.RefineDialog"),

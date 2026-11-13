@@ -1,0 +1,15 @@
+{
+	"dialog_question": {
+		"lines": [
+			"Do you want to drop Red Potion (S) 10?"
+		],
+		"accept_label": "@ui.YES",
+		"cancel_label": "@ui.NO",
+		"warn_line": -1,
+		"check_on": false,
+		"check_text": "",
+		"checked": false,
+		"middle_on": true,
+		"middle_label": "@ui.DESTROY"
+	}
+}

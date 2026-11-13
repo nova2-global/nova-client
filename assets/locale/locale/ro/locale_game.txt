@@ -1294,3 +1294,6 @@ SEARCH_IN_SHOPS	Ctrl + click: caută în magazine
 SEARCH_IN_WIKI	Shift + right-click: deschide în wiki
 MOVE_FROM_SAFEBOX_TO_INVENTORY	Right-click: mută în inventar
 COSTUME_PREVIEW_HINT	Ține %s: previzualizare pe personajul tău
+DESTROY_ITEM_WARNING	Ești sigur că vrei să distrugi definitiv acest obiect?
+ITEM_SPLIT_ALL	Împarte tot
+SHOP_MARK_SELL_HINT	Tab + clic: marchează pentru vânzare

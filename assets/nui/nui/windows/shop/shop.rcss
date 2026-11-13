@@ -340,3 +340,44 @@ body.shop.shop--offline
 {
 	margin-right: var(--space-1);
 }
+
+/* NOVA-187: the mark board under the window while an NPC shop holds sell
+   marks: the total in a sunken well with the coin, Sell (primary) and the
+   mark key's hint. */
+.shop-marks
+{
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 100%;
+	margin-top: 6dp;
+	padding: 10dp 12dp;
+	gap: var(--space-2);
+}
+.shop-marks__total
+{
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	min-height: 34dp;
+	padding: 6dp 10dp;
+	gap: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 7dp;
+	background-color: var(--surface-sunken);
+}
+.shop-marks__money
+{
+	margin-left: auto;
+	white-space: nowrap;
+}
+.shop-marks__hint
+{
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	text-align: center;
+}

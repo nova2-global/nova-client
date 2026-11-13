@@ -13,8 +13,8 @@
 	     rows keep legacy's order and calls: the sound and music sliders, the
 	     background music and its Change button (the music list), the camera
 	     distance, the fog and the tiling choices with Apply, the field of
-	     view slider (NOVA-116), and the snowfall, FPS counter and tips
-	     choices (NOVA-118). The Interface
+	     view slider (NOVA-116), the snowfall, FPS counter and tips
+	     choices (NOVA-118), and the frame rate limit (NOVA-214). The Interface
 	     section applies each choice at once and saves it (nui.set_theme,
 	     set_scale_percent, set_reduced_motion); the scale is a row of
 	     choices, not a slider, so the window does not rescale under a drag
@@ -130,6 +130,23 @@
 				<div class="so-choices">
 					<button id="so-tips-0" class="nui-button nui-button--medium nui-anim so-choice so-choice--middle so-choice--tips-0" data-class-is-selected="tips == 0" data-event-mousedown="choose('tips', 0, ev.button)"><span class="so-choice__label">@ui.NUI_SYSTEM_OPTIONS_ON</span></button>
 					<button id="so-tips-1" class="nui-button nui-button--medium nui-anim so-choice so-choice--middle so-choice--tips-1" data-class-is-selected="tips == 1" data-event-mousedown="choose('tips', 1, ev.button)"><span class="so-choice__label">@ui.NUI_SYSTEM_OPTIONS_OFF</span></button>
+				</div>
+			</div>
+			<!-- The frame rate limit (NOVA-214): the value between a previous
+			     and a next button, one of systemSetting.MAX_FPS_CHOICES per
+			     press, held at both ends (the button there disabled); no row
+			     on an exe without it. The arrows are glyphs; classic hides
+			     them and shows legacy's "<" and ">" on the small art. -->
+			<div class="so-row so-row--frame-rate" data-if="frame_rate_on" data-class-is-found="found == 'frame_rate'">
+				<span id="so-frame-rate-label" class="so-label so-label--frame-rate">@ui.OPTION_FRAME_RATE</span>
+				<div class="so-stepper">
+					<button id="so-frame-rate-prev" class="nui-button nui-button--icon nui-anim so-step so-step--prev" data-attrif-disabled="frame_rate_first" data-event-mousedown="frame_rate(-1, ev.button)"><span
+						class="nui-glyph nui-glyph--chevron-left"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+						class="so-step__text">&lt;</span></button>
+					<span id="so-frame-rate-value" class="so-step-value">{{ frame_rate_label }}</span>
+					<button id="so-frame-rate-next" class="nui-button nui-button--icon nui-anim so-step so-step--next" data-attrif-disabled="frame_rate_last" data-event-mousedown="frame_rate(1, ev.button)"><span
+						class="nui-glyph nui-glyph--chevron-right"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+						class="so-step__text">&gt;</span></button>
 				</div>
 			</div>
 		</div>

@@ -780,3 +780,6 @@ OPTION_KEYWORDS_SCALE	skalierung größe oberfläche
 OPTION_KEYWORDS_MOTION	bewegung animation
 OPTION_KEYWORDS_EFFECTS	effekte unschärfe schatten
 OPTION_KEYWORDS_COLORS	farben akzent fenster deckkraft
+OPTION_FRAME_RATE	Bildrate
+OPTION_FRAME_RATE_UNLIMITED	Unbegrenzt
+OPTION_FRAME_RATE_VSYNC	VSync

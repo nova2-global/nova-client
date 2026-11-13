@@ -781,3 +781,6 @@ OPTION_KEYWORDS_SCALE	schaal grootte interface
 OPTION_KEYWORDS_MOTION	beweging animatie
 OPTION_KEYWORDS_EFFECTS	effecten vervaging schaduw
 OPTION_KEYWORDS_COLORS	kleuren accent paneel dekking
+OPTION_FRAME_RATE	Framerate
+OPTION_FRAME_RATE_UNLIMITED	Onbeperkt
+OPTION_FRAME_RATE_VSYNC	VSync

@@ -1536,6 +1536,31 @@ class Layers(unittest.TestCase):
                 self.assertEqual(layers, [], "%s: ui.Window's default layer, UI" % node.name)
 
 
+class LegacyBarEasing(unittest.TestCase):
+    """NOVA-214: rendering runs more often than updates once the frame rate is
+    uncapped, so the legacy chat's board eases its height a tenth per update
+    (OnUpdate), not per render, and keeps 60 Hz's speed at any frame rate."""
+
+    @staticmethod
+    def methods():
+        tree = ast.parse(read(os.path.join(ROOT, "uichat.py")))
+        chat = next(node for node in tree.body if isinstance(node, ast.ClassDef) and node.name == "ChatWindow")
+        return {item.name: item for item in chat.body if isinstance(item, ast.FunctionDef)}
+
+    @staticmethod
+    def eases(method):
+        return [node for node in ast.walk(method) if isinstance(node, ast.AugAssign)
+                and isinstance(node.target, ast.Attribute) and node.target.attr == "curHeightBar"]
+
+    def test_the_bar_eases_in_on_update_and_on_render_only_draws_it(self):
+        methods = self.methods()
+        self.assertEqual(self.eases(methods["OnRender"]), [], "no easing per render")
+        easing = self.eases(methods["OnUpdate"])
+        self.assertEqual(len(easing), 1)
+        self.assertEqual(ast.unparse(easing[0]), "self.curHeightBar += (self.heightBar - self.curHeightBar) // 10",
+                         "unchanged otherwise")
+
+
 # --- shared content pieces ------------------------------------------------------------------------
 
 class SharedPieces(unittest.TestCase):

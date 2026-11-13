@@ -781,3 +781,6 @@ OPTION_KEYWORDS_SCALE	échelle taille interface
 OPTION_KEYWORDS_MOTION	mouvement animation
 OPTION_KEYWORDS_EFFECTS	effets flou ombre
 OPTION_KEYWORDS_COLORS	couleurs accent panneau opacité
+OPTION_FRAME_RATE	Limite FPS
+OPTION_FRAME_RATE_UNLIMITED	Illimité
+OPTION_FRAME_RATE_VSYNC	VSync

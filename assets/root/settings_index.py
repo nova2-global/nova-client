@@ -81,6 +81,7 @@ OPTIONS = (
 	Option("snow", SYSTEM, "OPTION_SNOWFALL", "Snowfall", "snow snowfall weather christmas xmas"),
 	Option("fps", SYSTEM, "OPTION_FPS_COUNTER", "FPS Counter", "fps frames counter performance"),
 	Option("tips", SYSTEM, "OPTION_TIPS", "Tips", "tips tip hint help notice"),
+	Option("frame_rate", SYSTEM, "OPTION_FRAME_RATE", "Frame rate", "frame rate fps limit cap vsync unlimited refresh smooth"),
 	Option("theme", SYSTEM, "THEME_TITLE", "Theme", "theme skin look style dark light classic cyberpunk",
 	       "OPTION_INTERFACE"),
 	Option("scale", SYSTEM, "OPTION_UI_SCALE", "Scale", "scale size zoom interface ui", "OPTION_INTERFACE"),

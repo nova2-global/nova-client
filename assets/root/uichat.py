@@ -1047,13 +1047,15 @@ class ChatWindow(ui.Window):
 			if systemSetting.IsViewChat():
 				chat.Update(self.chatID)
 
+		# NOVA-214: a tenth per update, not per render, so the bar eases at the
+		# same speed at any frame rate.
+		if self.curHeightBar != self.heightBar:
+			self.curHeightBar += (self.heightBar - self.curHeightBar) // 10
+
 	def OnRender(self):
 		if chat.GetVisibleLineCount(self.chatID) != self.visibleLineCount:
 			self.visibleLineCount = chat.GetVisibleLineCount(self.chatID)
 			self.Refresh()
-
-		if self.curHeightBar != self.heightBar:
-			self.curHeightBar += (self.heightBar - self.curHeightBar) // 10
 
 		if self.boardState == chat.BOARD_STATE_EDIT:
 			grp.SetColor(self.BOARD_MIDDLE_COLOR)

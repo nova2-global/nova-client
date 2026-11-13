@@ -781,3 +781,6 @@ OPTION_KEYWORDS_SCALE	scale size zoom interface ui
 OPTION_KEYWORDS_MOTION	motion animation reduced
 OPTION_KEYWORDS_EFFECTS	effects blur shadow reduced
 OPTION_KEYWORDS_COLORS	colors colour accent panel opacity highlight
+OPTION_FRAME_RATE	Frame rate
+OPTION_FRAME_RATE_UNLIMITED	Unlimited
+OPTION_FRAME_RATE_VSYNC	VSync

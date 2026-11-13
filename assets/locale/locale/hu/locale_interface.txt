@@ -781,3 +781,6 @@ OPTION_KEYWORDS_SCALE	méretezés méret felület
 OPTION_KEYWORDS_MOTION	mozgás animáció
 OPTION_KEYWORDS_EFFECTS	effektek elmosás árnyék
 OPTION_KEYWORDS_COLORS	színek kiemelés panel átlátszóság
+OPTION_FRAME_RATE	FPS-korlát
+OPTION_FRAME_RATE_UNLIMITED	Korlátlan
+OPTION_FRAME_RATE_VSYNC	VSync

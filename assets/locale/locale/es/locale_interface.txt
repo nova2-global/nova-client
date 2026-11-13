@@ -782,3 +782,6 @@ OPTION_KEYWORDS_SCALE	escala tamaño interfaz
 OPTION_KEYWORDS_MOTION	movimiento animación
 OPTION_KEYWORDS_EFFECTS	efectos desenfoque sombra
 OPTION_KEYWORDS_COLORS	colores acento panel opacidad
+OPTION_FRAME_RATE	Límite de FPS
+OPTION_FRAME_RATE_UNLIMITED	Ilimitado
+OPTION_FRAME_RATE_VSYNC	VSync

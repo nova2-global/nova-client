@@ -10,7 +10,7 @@
    places, the Interface section under it on legacy art):
    skins/classic/windows/system-options.rcss. */
 
-/* The sheet's own place frames the window in its 590 x 1200dp snapshots;
+/* The sheet's own place frames the window in its 590 x 1250dp snapshots;
    the facade's center() replaces it in the client. The window is never
    taller than the screen (about 500dp: 999 px at 200% on a 900 px screen):
    the title bar stays and the rows scroll. 99vh leaves room for the border
@@ -166,6 +166,49 @@ body.system-options
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+/* The frame rate limit (NOVA-214): the value on a sunken cell between the
+   previous and next buttons, filling the row as the choices above do. The
+   arrows are glyphs; the "<" and ">" text is classic's (its overlay shows it
+   and hides the glyphs). */
+.so-stepper
+{
+	display: flex;
+	flex-direction: row;
+	flex: 1 1 auto;
+	align-items: center;
+	gap: 6dp;
+}
+.so-step
+{
+	display: block;
+	flex: 0 0 auto;
+	width: 34dp;
+	height: 26dp;
+	line-height: 24dp;
+}
+.so-step__text
+{
+	display: none;
+}
+.so-step-value
+{
+	display: block;
+	flex: 1 1 auto;
+	box-sizing: border-box;
+	height: 26dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-lg);
+	background-color: var(--surface-sunken);
+	color: var(--text);
+	font-size: var(--font-sm);
+	font-weight: bold;
+	line-height: 24dp;
+	text-align: center;
+	white-space: nowrap;
+	pointer-events: none;
 }
 
 /* The scale choices are short labels ("75%"), in a tighter button. */

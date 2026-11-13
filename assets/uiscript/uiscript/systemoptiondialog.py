@@ -15,7 +15,7 @@ window = {
 	"y" : 0,
 
 	"width" : 305,
-	"height" : 330,
+	"height" : 355,
 
 	"children" :
 	(
@@ -27,7 +27,7 @@ window = {
 			"y" : 0,
 
 			"width" : 305,
-			"height" : 330,
+			"height" : 355,
 
 			"children" :
 			(
@@ -396,6 +396,58 @@ window = {
 					"default_image" : ROOT_PATH + "Middle_Button_01.sub",
 					"over_image" : ROOT_PATH + "Middle_Button_02.sub",
 					"down_image" : ROOT_PATH + "Middle_Button_03.sub",
+				},
+
+				## The frame rate limit (NOVA-214): the value between a previous
+				## and a next button (the small art) in the sliders' span, 110 to
+				## 285; uisystemoption.py steps through the client's choices.
+				{
+					"name" : "frame_rate_name",
+					"type" : "text",
+
+					"x" : 30,
+					"y" : 310+2,
+
+					"text" : uiScriptLocale.OPTION_FRAME_RATE,
+				},
+
+				{
+					"name" : "frame_rate_prev",
+					"type" : "button",
+
+					"x" : 110,
+					"y" : 310,
+
+					"text" : "<",
+
+					"default_image" : ROOT_PATH + "small_button_01.sub",
+					"over_image" : ROOT_PATH + "small_button_02.sub",
+					"down_image" : ROOT_PATH + "small_button_03.sub",
+				},
+
+				{
+					"name" : "frame_rate_value",
+					"type" : "text",
+
+					"x" : 198,
+					"y" : 310+2,
+
+					"text_horizontal_align" : "center",
+					"text" : "",
+				},
+
+				{
+					"name" : "frame_rate_next",
+					"type" : "button",
+
+					"x" : 242,
+					"y" : 310,
+
+					"text" : ">",
+
+					"default_image" : ROOT_PATH + "small_button_01.sub",
+					"over_image" : ROOT_PATH + "small_button_02.sub",
+					"down_image" : ROOT_PATH + "small_button_03.sub",
 				},
 
 				## 그림자

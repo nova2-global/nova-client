@@ -782,3 +782,6 @@ OPTION_KEYWORDS_SCALE	scară mărime interfață
 OPTION_KEYWORDS_MOTION	mișcare animație
 OPTION_KEYWORDS_EFFECTS	efecte estompare umbră
 OPTION_KEYWORDS_COLORS	culori accent panou opacitate
+OPTION_FRAME_RATE	Limită FPS
+OPTION_FRAME_RATE_UNLIMITED	Nelimitat
+OPTION_FRAME_RATE_VSYNC	VSync

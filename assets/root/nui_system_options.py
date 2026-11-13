@@ -17,7 +17,9 @@ net.ExitGame; Close puts the tiling choice back to the one in effect; the
 field of view slider (NOVA-116) systemSetting.SetPOV with a whole degree,
 saved at exit as the volumes; snowfall, the FPS counter and tips (NOVA-118)
 player_options.set_option, On (0) and Off (1) as legacy's pairs, saved at
-exit too. The
+exit too; the frame rate limit (NOVA-214) player_options.set_max_fps, one
+choice per press of the previous or next button, no row on an exe without
+it. The
 Interface section is new: the theme (nui.set_theme), the UI scale (a row of
 choices, D12: auto, 75 to 200 percent, and a saved percent outside them as
 one more choice; nui.set_scale_percent), reduced motion
@@ -137,6 +139,11 @@ class OptionBoard(nui.Window):
 	@nui.on("fov")
 	def on_fov(self, value):
 		self._owner.nui_field_of_view(value)
+
+	@nui.on("frame_rate")
+	def on_frame_rate(self, step, button):
+		if button == 0:
+			self._owner.nui_frame_rate(step)
 
 	@nui.on("choose_theme")
 	def on_choose_theme(self, theme_id, button):
@@ -261,6 +268,8 @@ class OptionDialog(nui_hud.LayoutCalls):
 	def empty_model():
 		return {"sound_volume": 0, "music_volume": 0, "music_file": "", "camera": 0, "fog": 0, "tiling": 0,
 		        "fov": 30, "fov_min": 30, "fov_max": 120, "snow": 1, "fps": 1, "tips": 0,
+		        "frame_rate": 60, "frame_rate_label": "60", "frame_rate_on": False, "frame_rate_first": True,
+		        "frame_rate_last": False,
 		        "interface": True, "themes": [], "theme": "", "scales": [], "scale": 0, "auto_percent": 100,
 		        "reduced_motion": False, "reduced_effects": False, "effects_available": False,
 		        "color_slots": [], "accent_hue": 0, "colors_adjusted": False,
@@ -340,6 +349,7 @@ class OptionDialog(nui_hud.LayoutCalls):
 		         "searching": False, "results": [], "found": self.found, "found_end": self.foundEnd}
 		model.update(self._field_of_view_model())
 		model.update(self._player_options_model())
+		model.update(self._frame_rate_model())
 		model.update(self._interface_model())
 		model.update(self._colors_model())
 		return model
@@ -354,6 +364,16 @@ class OptionDialog(nui_hud.LayoutCalls):
 	def _player_options_model():
 		"""NOVA-118's rows: 0 is On, 1 is Off, as legacy's pairs."""
 		return dict((key, 0 if player_options.is_on(option) else 1) for key, option in PLAYER_OPTIONS)
+
+	@staticmethod
+	def _frame_rate_model():
+		"""The frame rate limit (NOVA-214): its value and label ("@ui." keys for
+		Unlimited and VSync), whether the exe has it, and whether it is the
+		first or the last choice (the previous or next button then disabled)."""
+		value, choices = player_options.max_fps(), player_options.max_fps_choices()
+		return {"frame_rate": value, "frame_rate_label": player_options.max_fps_label(value, lambda key: "@ui." + key),
+		        "frame_rate_on": player_options.has_max_fps(), "frame_rate_first": value == choices[0],
+		        "frame_rate_last": value == choices[-1]}
 
 	def _board(self):
 		return self.demand.board() if self.demand is not None else None
@@ -496,6 +516,21 @@ class OptionDialog(nui_hud.LayoutCalls):
 			return
 		board.set(fov=degrees)
 		systemSetting.SetPOV(float(degrees))
+
+	def nui_frame_rate(self, step):
+		"""The previous (-1) or next (1) button: one choice on, as legacy's
+		buttons; a press past an end, a step that is no number and an exe
+		without the limit do nothing."""
+		try:
+			step = int(step)
+		except (TypeError, ValueError):
+			return
+		if step not in (-1, 1) or not player_options.has_max_fps():
+			return
+		value = player_options.max_fps()
+		chosen = player_options.max_fps_step(value, step)
+		if chosen != value and player_options.set_max_fps(chosen):
+			self._set(**self._frame_rate_model())
 
 	def nui_act(self, what):
 		if what == "close":
@@ -695,10 +730,13 @@ class OptionDialog(nui_hud.LayoutCalls):
 
 	def _searchable(self):
 		"""The rows the window shows now: the colors only while the theme
-		offers color slots."""
+		offers color slots, the frame rate only with an exe that has it
+		(NOVA-214)."""
 		ids = set(option.id for option in settings_index.options(settings_index.SYSTEM))
 		if not nui.get_color_slots():
 			ids.discard("colors")
+		if not player_options.has_max_fps():
+			ids.discard("frame_rate")
 		return ids
 
 	def nui_search(self, text, linebreak=False):

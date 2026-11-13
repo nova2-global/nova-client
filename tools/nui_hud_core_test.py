@@ -1709,6 +1709,38 @@ class KeptBoardTest(unittest.TestCase):
         self.assertTrue(facade.demand.probe(), "a kept board answers for itself")
         self.assertEqual(log.count("make"), 2)
 
+    def test_a_kept_probe_s_board_waits_hidden_and_emptied_for_the_first_open(self):
+        # NOVA-256: the dungeon manager's making probes its board anyway; it stays, so even the
+        # session's first open loads no document.
+        facade, log = self.kept()
+        demand = self.hud.KeptBoard(facade.make, facade.restore, facade.keep, facade.empty, keep_probe=True)
+        facade.demand = demand
+        self.assertTrue(demand.probe())
+        self.assertEqual(log, ["make", "empty"])
+        board = demand.kept()
+        self.assertIs(board, facade.boards[0])
+        self.assertTrue(board._doc)
+        self.assertFalse(board.is_visible())
+        self.assertTrue(demand.loaded())
+        self.assertIsNone(demand.board())
+        self.assertEqual(board.model["cells_on"], [])
+        self.assertTrue(demand.probe(), "a kept board answers for itself")
+        self.assertTrue(demand.show())
+        self.assertIs(demand.board(), board)
+        self.assertEqual(log, ["make", "empty", "restore"], "the first open loads nothing")
+        self.assertEqual(board.model["cells_on"], [1])
+        demand.destroy()
+        self.assertFalse(board._doc)
+        self.assertEqual(self.world.game.loaded_documents(), [])
+
+    def test_a_kept_probe_whose_document_fails_keeps_nothing(self):
+        facade, log = self.kept()
+        demand = self.hud.KeptBoard(facade.make, facade.restore, facade.keep, facade.empty, keep_probe=True)
+        self.world.game.state.failing.add("nui/windows/test/test.rml")
+        self.assertFalse(demand.probe())
+        self.assertIsNone(demand.kept())
+        self.assertFalse(demand.loaded())
+
 
 class PooledBoardTest(unittest.TestCase):
     """nui_hud.BoardPool and PooledBoard (P18): the boards of a window made

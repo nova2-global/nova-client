@@ -125,19 +125,16 @@ body.dungeon-timer
 .dungeon-timer__card--l2 .dungeon-timer__view { transform: scale(0.47); }
 .dungeon-timer__card--r3 .dungeon-timer__view,
 .dungeon-timer__card--l3 .dungeon-timer__view { transform: scale(0.34); }
-.dungeon-timer__mono
+/* NOVA-256: a boss made after its card showed (not warmed in time) fades in; a card without its
+   boss shows its plain background, no placeholder. */
+.dungeon-timer__view--fade.nui-anim
 {
-	position: absolute;
-	left: 0;
-	right: 0;
-	top: 50%;
-	margin-top: -20dp;
-	height: 40dp;
-	line-height: 40dp;
-	color: var(--text-muted);
-	font-size: 28dp;
-	font-weight: bold;
-	text-align: center;
+	animation: 0.15s linear-in-out dungeon-timer-view-in;
+}
+@keyframes dungeon-timer-view-in
+{
+	from { opacity: 0; }
+	to { opacity: 1; }
 }
 .dungeon-timer__badge
 {

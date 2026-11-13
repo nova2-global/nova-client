@@ -268,6 +268,20 @@ class BossPreview(unittest.TestCase):
         self.assertIn(("Select", "dungeon_boss", 1095), mp.calls)
         self.assertLess(mp.calls.index(("SetBackground", "dungeon_boss", True)), mp.calls.index(("Select", "dungeon_boss", 1095)))
 
+    def test_the_window_warms_every_dungeon_s_boss_when_it_is_loaded(self):
+        """NOVA-256: the legacy window warms them too (modelpreview.SetWarm), so its one preview
+        is made from files already loaded when a dungeon is chosen; Destroy clears them."""
+        world = dts.World(False, preview="background")
+        window = world.timer()
+        mp = world.game.modules["modelpreview"]
+        warmed = [c[1] for c in mp.calls if c[0] == "SetWarm" and c[2]]
+        self.assertEqual(sorted(warmed), ["dungeon_boss_%d" % i for i in NEW_DUNGEONS])
+        self.assertEqual(warmed[0], "dungeon_boss_0", "the first dungeon first")
+        with world.game, w4.quiet():
+            window.Destroy()
+        cleared = set(c[1] for c in mp.calls if c[0] == "Clear")
+        self.assertTrue(set(warmed) <= cleared)
+
 
 class Drops(unittest.TestCase):
     def test_the_drops_button_asks_once_and_rows_fill_the_panel(self):

@@ -44,6 +44,19 @@ PET_SUMMONED_SOCKET = 3
 PET_PREVIEW_INVENTORY = 3
 
 
+# NOVA-183: OLD's toggle items (ITEM_TOGGLE, NEW's ItemData.h) and the socket
+# the server sets while one is on (OLD uiInventory.py:1461-1467). Named here,
+# as the pet's, so that every test world runs this module.
+TOGGLE_ITEM_TYPE = 37
+TOGGLE_ON_SOCKET = 3
+
+
+def IsToggleItem(vnum):
+	"""True for an ITEM_TOGGLE item: a pet, a mount, an effect tag or a buff."""
+	item.SelectItem(vnum)
+	return item.GetItemType() == TOGGLE_ITEM_TYPE
+
+
 def GetPetItemSubType(vnum):
 	"""The advanced pet subtype of an item, or -1 for any other item."""
 	item.SelectItem(vnum)
@@ -1010,6 +1023,15 @@ class InventoryWindow(ui.ScriptWindow):
 			## uiInventory.py:1476-1479: the server sets its socket 3).
 			elif constInfo.IS_FAKEBUFF_ITEM(itemVnum):
 				if player.METIN_SOCKET_MAX_NUM > 3 and 0 != player.GetItemMetinSocket(slotNumber, 3):
+					self.wndItem.ActivateSlot(i)
+				else:
+					self.wndItem.DeactivateSlot(i)
+
+			## A toggle item that is on: its pet or mount out, its tag worn, its
+			## buff active (NOVA-183; OLD uiInventory.py:1461-1467). NOVA-188
+			## colors it later; OLD tinted buffs red and the rest cyan.
+			elif IsToggleItem(itemVnum):
+				if 0 != player.GetItemMetinSocket(slotNumber, TOGGLE_ON_SOCKET):
 					self.wndItem.ActivateSlot(i)
 				else:
 					self.wndItem.DeactivateSlot(i)

@@ -23,8 +23,9 @@ Nothing runs per frame: the search is the field's change event, and the retry
 and the give-up are two hidden nui-countdowns (retry_at, timeout_at); a third
 (preview_check_at, NOVA-259) runs only while the client makes a preview's
 model off the frame, which shows a plain box until the model fades in. The
-board exists only while the window shows; the tabs and their histories stay
-with the window. NOVA-139's text pages (nui_wiki_pages.py)
+board is loaded once, at the window's making (the probe, during the phase
+change), and kept hidden and emptied between opens (NOVA-263: an open loads
+no document); the tabs and their histories stay with the window. NOVA-139's text pages (nui_wiki_pages.py)
 are a page kind of their own, KIND_PAGE, whose rows sit in the tree after
 the browser's categories.
 
@@ -73,6 +74,19 @@ PREVIEW_POLL = 0.1
 # Where a preview is (_preview_state): its model shows, the client still
 # makes it, or there is nothing to show (no model, or its part has no mesh).
 READY, LOADING, BLANK = "ready", "loading", "blank"
+# NOVA-263: the board is kept, hidden and emptied (nui_hud.KeptBoard), from
+# the window's making on: the probe that making runs anyway (during the phase
+# change) loads the document once, and no open loads it again (r48: the open
+# spent 8.3 to 10.5 ms in wiki.rml). False keeps it from the first open on.
+KEEP_BOARD_FROM_PROBE = True
+# The lists and clocks a kept hidden board holds none of (RmlUi updates every
+# loaded document each frame); the next show sets them again from the state.
+_EMPTY_BOARD = {
+	"tree": [], "list": [], "quick": [], "recent": [], "tabs": [], "crumbs": [], "menu": [], "classes": [],
+	"origins": [], "chest": [], "refine": [], "drops": [], "tp_blocks": [], "tp_decor": [], "tp_view": [],
+	"model_view": False, "hover_view": False, "viewer": False,
+	"retry_at": 0.0, "timeout_at": 0.0, "preview_check_at": 0.0, "tp_open_at": 0.0,
+}
 
 # EWikiKind and EWikiStatus (nova-protocol's wiki_packets.h).
 KIND_ITEM, KIND_MOB = 0, 1
@@ -956,6 +970,18 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 		self._show_window()
 		self._go(self._page_location(path))
 		return True
+
+	def nui_demand(self):
+		"""NOVA-263: the board is kept, hidden and emptied, between opens,
+		from the window's making on (KEEP_BOARD_FROM_PROBE)."""
+		return nui_hud.KeptBoard(self._make_board, self._restore_board, self._keep_board, self._empty_board,
+		                         keep_probe=KEEP_BOARD_FROM_PROBE)
+
+	@staticmethod
+	def _empty_board(board):
+		"""The kept hidden board holds no list, view or clock (_EMPTY_BOARD);
+		_restore_board sets the window's state again at the next show."""
+		board.set(**_EMPTY_BOARD)
 
 	def Destroy(self):
 		self.close_viewer()

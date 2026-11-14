@@ -30,6 +30,17 @@ import nui_slots
 
 DOCUMENT = "nui/windows/select-skill/select-skill.rml"
 KEY = "select-skill"
+# NOVA-263 (r48: showing the window and its preview took one 33 ms frame, of which 11.2 ms made the
+# model and 6.0 ms loaded the document):
+# - the preview's model is made off the frame (modelpreview.SetBackground; every motion, since it
+#   casts skills): the view stays clear (a plain ring), then the model fades in, as the wiki's do;
+#   a hidden nui-countdown (preview_check_at) looks again every PREVIEW_POLL seconds while it loads;
+# - for a character that has not chosen its skill group yet (the only one the server opens the
+#   window for), the board the window's making loads is kept, hidden and emptied, so the open
+#   loads no document. KEEP_BOARD_UNTIL_CHOSEN False loads it at each open, as before.
+BACKGROUND_PREVIEW = True
+KEEP_BOARD_UNTIL_CHOSEN = True
+PREVIEW_POLL = 0.1
 CONTENT = "select-skill-content"
 # The idle state: no side active, no skill hovered.
 IDLE = {"active_group": 0, "hover_group": 0, "hover_slot": -1, "caption_name": "", "caption_tag": ""}
@@ -52,6 +63,29 @@ def skill_text(vnum):
 	except Exception:
 		tag = ""
 	return (str(name).strip(), str(tag).strip())
+
+
+def skill_group():
+	"""The character's skill group (net.GetMainActorSkillGroup, known from the loading screen on;
+	0: not chosen), None when the client cannot say."""
+	try:
+		import net
+		return int(net.GetMainActorSkillGroup())
+	except Exception:
+		return None
+
+
+def _preview_pending():
+	"""The preview's request still waits for its model (GetState's pending)."""
+	preview = uiSelectSkill.model_preview()
+	get_state = getattr(preview, "GetState", None) if preview is not None else None
+	if get_state is None:
+		return False
+	try:
+		state = get_state(uiSelectSkill.PREVIEW)
+	except Exception:
+		return False
+	return bool(state.get("pending")) if isinstance(state, dict) else False
 
 
 def plays_like(job, group):
@@ -107,6 +141,11 @@ class _SelectSkillBoard(nui_hud.RaisesOnPress, nui.Window):
 	def on_side_over(self, group):
 		self._owner.nui_side(int(group))
 
+	# NOVA-263: the preview's model, made over the client's next steps.
+	@nui.on("preview_check")
+	def on_preview_check(self):
+		self._owner.preview_check()
+
 	def nui_content_out(self, event):
 		"""RmlUi has no mouseleave: the content element's own mouseout (a child's bubbles here too,
 		with the child as its target) is the pointer leaving the content area."""
@@ -133,6 +172,7 @@ class SelectSkillWindow(nui_facade.Facade, uiSelectSkill.SelectSkillWindow):
 	KEY = KEY
 	BOARD = _SelectSkillBoard
 	PLACE = "center"
+	BACKGROUND_PREVIEW = BACKGROUND_PREVIEW
 
 	# ui.Window.__init__ calls Hide before these exist.
 	_group_events = None
@@ -150,6 +190,10 @@ class SelectSkillWindow(nui_facade.Facade, uiSelectSkill.SelectSkillWindow):
 		model = {
 			"groups": [self._group(1), self._group(2)],
 			"model_view": False,
+			# NOVA-263: the model is still being made (the view clear), and the clock that looks
+			# again at it.
+			"preview_loading": False,
+			"preview_check_at": 0.0,
 			# P15 F-2: nui_slots.ATTACH_RIGHT (the ring's nui-attach-right).
 			"attach_right": bool(getattr(nui_slots, "ATTACH_RIGHT", False)),
 		}
@@ -158,6 +202,48 @@ class SelectSkillWindow(nui_facade.Facade, uiSelectSkill.SelectSkillWindow):
 
 	def _group(self, group):
 		return {"group": group, "name": "", "plays": "", "choose": "", "cells": []}
+
+	def nui_demand(self):
+		"""NOVA-263: a character without a skill group keeps the board the window's making loads,
+		hidden and emptied (KEEP_BOARD_UNTIL_CHOSEN), so the open loads no document; any other
+		loads it at an open, as before (the server opens the window for the first only)."""
+		keep = KEEP_BOARD_UNTIL_CHOSEN and skill_group() == 0
+		return nui_hud.KeptBoard(self._make_board, self._restore_board, self._keep_board, self._empty_board,
+		                         keep_probe=keep)
+
+	def _empty_board(self, board):
+		"""A kept hidden board holds no skill and no view and runs no clock (RmlUi updates every
+		loaded document each frame); _restore_board sets them again at the next show."""
+		board.set(groups=[self._group(1), self._group(2)], model_view=False, preview_loading=False,
+		          preview_check_at=0.0)
+
+	# --- the preview's model, made off the frame (NOVA-263) -----------------------------
+
+	def _PreviewAsked(self):
+		"""After every Select, motion and show: while the request waits, the view is clear and the
+		clock looks again."""
+		self._watch_preview(_preview_pending())
+
+	def _watch_preview(self, loading):
+		armed = self._state.get("preview_check_at", 0.0) > 0
+		values = {}
+		if bool(self._state.get("preview_loading")) != loading:
+			values["preview_loading"] = loading
+		if loading and not armed:
+			values["preview_check_at"] = nui.now() + PREVIEW_POLL
+		elif not loading and armed:
+			values["preview_check_at"] = 0.0
+		if values:
+			self.nui_set(**values)
+
+	def preview_check(self):
+		"""The preview_check_at clock's end: a model still being made keeps the view clear and the
+		clock running; a made one gets its camera and hovered skill back and fades in."""
+		if _preview_pending():
+			self.nui_set(preview_check_at=nui.now() + PREVIEW_POLL)
+			return
+		self._PreviewMade()
+		self.nui_set(preview_loading=False, preview_check_at=0.0)
 
 	def _set_group(self, group, **values):
 		groups = [dict(entry) for entry in self._state["groups"]]

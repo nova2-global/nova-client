@@ -94,6 +94,10 @@ class SelectSkillWindow(ui.ScriptWindow):
 	previewShown = False
 	# The skill motion the preview was last set to (None: not set since it showed).
 	previewMotion = None
+	# NOVA-263: the model is made off the frame (modelpreview.SetBackground): the loader thread
+	# reads its files and the client makes it over its next steps. The NovaUI window does (it
+	# shows a plain ring, then fades the model in); this legacy window makes it inside Select.
+	BACKGROUND_PREVIEW = False
 
 	def __init__(self):
 		ui.ScriptWindow.__init__(self)
@@ -211,6 +215,9 @@ class SelectSkillWindow(ui.ScriptWindow):
 		body, weapon = SKILL_INDEX_DICT[player.GetJob()][row]
 		gear = (player.GetRace(), body, weapon, hair_part(), sash_part())
 		if gear != self.previewGear:
+			set_background = getattr(preview, "SetBackground", None) if self.BACKGROUND_PREVIEW else None
+			if set_background is not None:
+				set_background(PREVIEW, True)
 			preview.Select(PREVIEW, *gear)
 			preview.SetEye(PREVIEW, PREVIEW_EYE[0], PREVIEW_EYE[1])
 			self.previewGear = gear
@@ -221,6 +228,21 @@ class SelectSkillWindow(ui.ScriptWindow):
 			self.previewMotion = motion
 		preview.Show(PREVIEW, True)
 		self.previewShown = True
+		self._PreviewAsked()
+
+	def _PreviewAsked(self):
+		"""The preview was asked for (an open, a hover): a window that makes its model off the
+		frame watches for it (NOVA-263); this one shows it at once."""
+
+	def _PreviewMade(self):
+		"""A model made off the frame: its camera and the skill hovered meanwhile go on it, since
+		the request's end puts the race's camera and the wait back (NOVA-263)."""
+		preview = model_preview()
+		if preview is None:
+			return
+		preview.SetEye(PREVIEW, PREVIEW_EYE[0], PREVIEW_EYE[1])
+		if self.previewMotion:
+			preview.SetSkillMotion(PREVIEW, self.previewMotion)
 
 	def __StopPreview(self):
 		if not self.previewShown:

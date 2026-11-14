@@ -258,6 +258,25 @@ body.select-skill
 	height: 298dp;
 	pointer-events: none;
 }
+/* NOVA-263: while the client makes the model (off the frame) the view is clear, so the ring
+   stays plain; once made, the model fades in with the wiki's and the dungeon manager's curve
+   (0.15 s, linear-in-out); going back to loading is at once. */
+.select-skill__view.is-loading
+{
+	opacity: 0;
+}
+.select-skill__view.nui-anim
+{
+	transition: opacity 0.15s linear-in-out;
+}
+.select-skill__view.is-loading.nui-anim
+{
+	transition: none;
+}
+.select-skill__clock
+{
+	display: none;
+}
 .select-skill__mark
 {
 	--glyph-ink: var(--text-muted);

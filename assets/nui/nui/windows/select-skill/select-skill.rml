@@ -31,6 +31,10 @@
 			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 	</div>
 	<div class="nui-window__body select-skill__body">
+		<!-- NOVA-263: while the preview's model is being made, the window looks again at this
+		     clock's end; nothing runs per frame. -->
+		<nui-countdown class="select-skill__clock" format="none" data-if="preview_check_at > 0"
+		               data-attr-end="preview_check_at" data-event-countdownend="preview_check()"/>
 		<div id="select-skill-content" class="select-skill__content">
 			<div id="select-skill-side-1" class="nui-panel select-skill__side select-skill__side--1"
 			     data-class-is-active="active_group == 1" data-class-is-dim="active_group == 2"
@@ -59,7 +63,10 @@
 						<div class="select-skill__arc nui-anim" data-class-is-active="active_group == 2"></div>
 					</div>
 					<div class="select-skill__core">
-						<nui-view class="select-skill__view" name="model-select-skill" hover="none" data-if="model_view"></nui-view>
+						<!-- NOVA-263: while the client makes the model the view is clear (a plain ring),
+						     then the model fades in (is-loading, select-skill.rcss). -->
+						<nui-view class="select-skill__view nui-anim" name="model-select-skill" hover="none" data-if="model_view"
+						          data-class-is-loading="preview_loading"></nui-view>
 						<span class="nui-glyph nui-glyph--sword select-skill__mark" data-if="!model_view"><span
 							class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span>
 					</div>

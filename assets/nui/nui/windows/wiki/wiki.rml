@@ -16,7 +16,8 @@
 	     nothing runs out of the window. The hidden nui-countdowns retry a
 	     request, give up on an answer and look again at a model being made
 	     (NOVA-259); nothing runs per frame. The
-	     document exists only while the window shows. A text page (NOVA-139,
+	     document loads once, at the window's making, and stays, hidden and
+	     emptied, between opens (NOVA-263). A text page (NOVA-139,
 	     nui_wiki_pages.py, its sheet wiki-pages.rcss) takes the list's room
 	     too: its blocks are model data drawn by fixed markup, never markup
 	     from the page, and one level of blocks repeats inside notes and

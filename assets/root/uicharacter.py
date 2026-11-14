@@ -20,6 +20,26 @@ SHOW_ONLY_ACTIVE_SKILL = False
 SHOW_LIMIT_SUPPORT_SKILL_LIST = []
 HIDE_SUPPORT_SKILL_POINT = True
 
+## NOVA-196: Shift + press on a job skill's plus raises it level by level to its master
+## level on the server (/skillup <vnum> max). Default, Eddy to confirm.
+SKILL_UP_MAX_ARGUMENT = "max"
+
+## NOVA-207: the expand and minimize buttons of the bonus details panel (OLD
+## uiCharacter.py:380-388, its classic art), at OLD's place on the board.
+DETAILS_BUTTON_POSITION = (240, 120)
+DETAILS_EXPAND_ART = "d:/ymir work/ui/game/belt_inventory/btn_minimize_%s.tga"
+DETAILS_MINIMIZE_ART = "d:/ymir work/ui/game/belt_inventory/btn_expand_%s.tga"
+
+
+def _IsKeyHeld(*keyNames):
+	"""Whether one of the keys (app.DIK_* names) is held; a name the exe does
+	not define counts as not held."""
+	for keyName in keyNames:
+		key = getattr(app, keyName, None)
+		if key is not None and app.IsPressed(key):
+			return True
+	return False
+
 FACE_IMAGE_DICT = {
 	playerSettingModule.RACE_WARRIOR_M	: "icon/face/warrior_m.tga",
 	playerSettingModule.RACE_WARRIOR_W	: "icon/face/warrior_w.tga",
@@ -43,6 +63,7 @@ class CharacterWindow(ui.ScriptWindow):
 	SKILL_GROUP_NAME_DICT = {}
 	STAT_DESCRIPTION = {}
 	STAT_MINUS_DESCRIPTION = ""
+	STAT_PICK_TITLE = {}
 
 	@staticmethod
 	def _RebuildLocaleStrings():
@@ -59,6 +80,13 @@ class CharacterWindow(ui.ScriptWindow):
 			"DEX" : localeInfo.STAT_TOOLTIP_DEX,
 		}
 		CharacterWindow.STAT_MINUS_DESCRIPTION = localeInfo.STAT_MINUS_DESCRIPTION
+		# NOVA-195: the pick dialog's title, the stat's name.
+		CharacterWindow.STAT_PICK_TITLE = {
+			"HTH" : getattr(localeInfo, "STAT_PICK_TITLE_CON", ""),
+			"INT" : getattr(localeInfo, "STAT_PICK_TITLE_INT", ""),
+			"STR" : getattr(localeInfo, "STAT_PICK_TITLE_STR", ""),
+			"DEX" : getattr(localeInfo, "STAT_PICK_TITLE_DEX", ""),
+		}
 
 	def __init__(self):
 		ui.ScriptWindow.__init__(self)
@@ -135,10 +163,42 @@ class CharacterWindow(ui.ScriptWindow):
 		self.soloEmotionSlot = None
 		self.dualEmotionSlot = None
 
+		# NOVA-195: the pick dialog of the stat points and the stat it spends on.
+		self.statPickDialog = None
+		self.statPickKey = None
+		# NOVA-196: the slots whose plus button shows, by slot window.
+		self.skillPlusButtonSlots = {}
+		# NOVA-207: the details panel, made at the first expand; whether it was
+		# open, so the window's next show opens it again.
+		self.detailsWindow = None
+		self.isDetailsOpen = False
+		self.detailsExpandButton = None
+		self.detailsMinimizeButton = None
+
 	def Show(self):
 		self.__LoadWindow()
 
 		ui.ScriptWindow.Show(self)
+		if self.isDetailsOpen:
+			self.__OpenDetails()
+
+	def Hide(self):
+		# ui.Window.__init__ hides the window before __Initialize has run.
+		dialog = getattr(self, "statPickDialog", None)
+		if dialog and dialog.IsShow():
+			dialog.Close()
+		details = getattr(self, "detailsWindow", None)
+		if details:
+			details.Hide()
+		ui.ScriptWindow.Hide(self)
+
+	def OnTop(self):
+		if self.detailsWindow and self.detailsWindow.IsShow():
+			self.detailsWindow.SetTop()
+
+	def OnMoveWindow(self, x, y):
+		if self.detailsWindow:
+			self.detailsWindow.AdjustPosition(x, y)
 
 	def __LoadScript(self, fileName):
 		pyScrLoader = ui.PythonScriptLoader()
@@ -263,6 +323,55 @@ class CharacterWindow(ui.ScriptWindow):
 			self.questNameList.append(self.GetChild("Quest_Name_0" + str(i)))
 			self.questLastTimeList.append(self.GetChild("Quest_LastTime_0" + str(i)))
 			self.questLastCountList.append(self.GetChild("Quest_LastCount_0" + str(i)))
+
+		(self.detailsExpandButton, self.detailsMinimizeButton) = self.__MakeDetailsButtons()
+
+	def __MakeDetailsButtons(self):
+		"""NOVA-207: the expand button that opens the details panel and the
+		minimize button that closes it, on the board (made here, so the
+		right-to-left uiscript needs no change)."""
+		board = self.GetChild("board")
+		buttons = []
+		for (art, event) in ((DETAILS_EXPAND_ART, self.__OpenDetails), (DETAILS_MINIMIZE_ART, self.__CloseDetails)):
+			button = ui.Button()
+			button.SetParent(board)
+			button.SetPosition(*DETAILS_BUTTON_POSITION)
+			button.SetUpVisual(art % "normal")
+			button.SetOverVisual(art % "over")
+			button.SetDownVisual(art % "down")
+			button.SetEvent(ui.__mem_func__(event))
+			buttons.append(button)
+		buttons[0].Show()
+		buttons[1].Hide()
+		return tuple(buttons)
+
+	def __MakeDetailsWindow(self):
+		import uiCharacterDetails
+		return uiCharacterDetails.CharacterDetailsWindow()
+
+	def __OpenDetails(self):
+		if not self.detailsWindow:
+			self.detailsWindow = self.__MakeDetailsWindow()
+			self.detailsWindow.SetCloseEvent(ui.__mem_func__(self.__CloseDetails))
+		(x, y) = self.GetGlobalPosition()
+		self.detailsWindow.AdjustPosition(x, y)
+		self.detailsWindow.Refresh()
+		self.detailsWindow.Show()
+		self.detailsWindow.SetTop()
+		self.isDetailsOpen = True
+		self.detailsExpandButton.Hide()
+		self.detailsMinimizeButton.Show()
+
+	def __CloseDetails(self):
+		if self.detailsWindow:
+			self.detailsWindow.Hide()
+		self.isDetailsOpen = False
+		self.detailsMinimizeButton.Hide()
+		self.detailsExpandButton.Show()
+
+	def __RefreshDetails(self):
+		if self.detailsWindow and self.detailsWindow.IsShow():
+			self.detailsWindow.Refresh()
 
 	def __SetSkillSlotEvent(self):
 		for skillPageValue in list(self.skillPageDict.values()):
@@ -406,6 +515,13 @@ class CharacterWindow(ui.ScriptWindow):
 		self.SetState("STATUS")
 
 	def Destroy(self):
+		if self.statPickDialog:
+			if self.statPickDialog.IsShow():
+				self.statPickDialog.Close()
+			self.statPickDialog.Destroy()
+		if self.detailsWindow:
+			self.detailsWindow.Destroy()
+
 		self.ClearDictionary()
 
 		self.__Initialize()
@@ -420,11 +536,44 @@ class CharacterWindow(ui.ScriptWindow):
 		self.toolTipSkill = toolTipSkill
 
 	def __OnClickStatusPlusButton(self, statusKey):
-		try:
-			statusPlusCommand=self.statusPlusCommandDict[statusKey]
+		"""NOVA-195: a press opens the pick dialog for the free points; with
+		Ctrl held it spends one point at once, as before."""
+		statusPlusCommand = self.statusPlusCommandDict.get(statusKey)
+		if statusPlusCommand is None:
+			dbg.TraceError("CharacterWindow.__OnClickStatusPlusButton KeyError: %s" % statusKey)
+			return
+
+		freePoints = player.GetStatus(player.STAT)
+		if freePoints <= 0:
+			return
+
+		if _IsKeyHeld("DIK_LCONTROL", "DIK_RCONTROL"):
 			net.SendChatPacket(statusPlusCommand)
-		except KeyError as msg:
-			dbg.TraceError("CharacterWindow.__OnClickStatusPlusButton KeyError: %s", msg)
+			return
+
+		self.__OpenStatPickDialog(statusKey, freePoints)
+
+	def __OpenStatPickDialog(self, statusKey, freePoints):
+		if not self.statPickDialog:
+			import uiPickMoney
+			self.statPickDialog = uiPickMoney.PickMoneyDialog()
+			self.statPickDialog.LoadDialog()
+			self.statPickDialog.SetAcceptEvent(ui.__mem_func__(self.__OnAcceptStatPick))
+
+		self.statPickKey = statusKey
+		self.statPickDialog.SetTitleName(self.STAT_PICK_TITLE.get(statusKey, ""))
+		self.statPickDialog.SetMax(len(str(freePoints)))
+		self.statPickDialog.Open(freePoints)
+
+	def __OnAcceptStatPick(self, amount):
+		"""The amount, clamped to the points free now (the server bounds it
+		too), spent on the stat the dialog was opened for."""
+		statusPlusCommand = self.statusPlusCommandDict.get(self.statPickKey)
+		amount = min(int(amount), player.GetStatus(player.STAT))
+		if statusPlusCommand is None or amount <= 0:
+			return
+
+		net.SendChatPacket("%s %d" % (statusPlusCommand, amount))
 
 	def __OnClickStatusMinusButton(self, statusKey):
 		try:
@@ -526,6 +675,7 @@ class CharacterWindow(ui.ScriptWindow):
 		self.__RefreshStatusPlusButtonList()
 		self.__RefreshStatusMinusButtonList()
 		self.RefreshAlignment()
+		self.__RefreshDetails()
 
 		if self.refreshToolTip:
 			self.refreshToolTip()
@@ -638,11 +788,30 @@ class CharacterWindow(ui.ScriptWindow):
 
 			if skillGrade in columnGrades:
 				self.toolTipSkill.SetSkillNew(srcSlotIndex, skillIndex, skillGrade, skillLevel)
+				self.__AppendSkillMaxUpHint(slotNumber, skillIndex)
 			else:
 				self.toolTipSkill.SetSkillOnlyName(srcSlotIndex, skillIndex, columnGrades[0])
 
 		else:
 			self.toolTipSkill.SetSkillNew(srcSlotIndex, skillIndex, skillGrade, skillLevel)
+
+	def __AppendSkillMaxUpHint(self, slotNumber, skillIndex):
+		"""NOVA-196: a job skill whose plus button shows: its tooltip ends with
+		how Shift raises it to the master level."""
+		if not self.__CanRaiseSkillToMax(skillIndex):
+			return
+
+		for shownSlots in list(self.skillPlusButtonSlots.values()):
+			if slotNumber in shownSlots:
+				self.toolTipSkill.AppendSkillMaxUpHint()
+				return
+
+	def __CanRaiseSkillToMax(self, skillIndex):
+		"""Only a job skill rises to its master level at once; the horse
+		skills keep one level a press (the server's rule too)."""
+		if self.PAGE_HORSE == self.curSelectedSkillGroup:
+			return False
+		return skill.SKILL_TYPE_ACTIVE == skill.GetSkillType(skillIndex)
 
 	def OverOutItem(self):
 		if 0 != self.toolTipSkill:
@@ -955,6 +1124,7 @@ class CharacterWindow(ui.ScriptWindow):
 
 		slotWindow = self.skillPageDict[name]
 		slotWindow.HideAllSlotButton()
+		self.skillPlusButtonSlots[id(slotWindow)] = set()
 
 		slotStatType = self.skillPageStatDict[name]
 
@@ -982,17 +1152,21 @@ class CharacterWindow(ui.ScriptWindow):
 				if name == "HORSE":
 					if player.GetStatus(player.LEVEL) >= skill.GetSkillLevelLimit(skillIndex):
 						if skillLevel < 20:
-							slotWindow.ShowSlotButton(self.__GetETCSkillRealSlotIndex(slotIndex))
+							self.__ShowSkillPlusButton(slotWindow, self.__GetETCSkillRealSlotIndex(slotIndex))
 
 				else:
 					if "SUPPORT" == name:
 						if not SHOW_LIMIT_SUPPORT_SKILL_LIST or skillIndex in SHOW_LIMIT_SUPPORT_SKILL_LIST:
 							if self.CanShowPlusButton(skillIndex, skillLevel, statPoint):
-								slotWindow.ShowSlotButton(slotIndex)
+								self.__ShowSkillPlusButton(slotWindow, slotIndex)
 					else:
 						if self.CanShowPlusButton(skillIndex, skillLevel, statPoint):
-							slotWindow.ShowSlotButton(slotIndex)
+							self.__ShowSkillPlusButton(slotWindow, slotIndex)
 					
+
+	def __ShowSkillPlusButton(self, slotWindow, slotIndex):
+		slotWindow.ShowSlotButton(slotIndex)
+		self.skillPlusButtonSlots.setdefault(id(slotWindow), set()).add(slotIndex)
 
 	def RefreshSkillPlusButtonList(self):
 		if self.isLoaded==0:
@@ -1039,7 +1213,12 @@ class CharacterWindow(ui.ScriptWindow):
 		curLevel = player.GetSkillLevel(srcSlotIndex)
 		maxLevel = skill.GetSkillMaxLevel(skillIndex)
 
-		net.SendChatPacket("/skillup " + str(skillIndex))
+		command = "/skillup " + str(skillIndex)
+		# NOVA-196: Shift raises a job skill to its master level.
+		if self.__CanRaiseSkillToMax(skillIndex) and _IsKeyHeld("DIK_LSHIFT", "DIK_RSHIFT"):
+			command += " " + SKILL_UP_MAX_ARGUMENT
+
+		net.SendChatPacket(command)
 
 	## Use Skill
 	def ClickSkillSlot(self, slotIndex):

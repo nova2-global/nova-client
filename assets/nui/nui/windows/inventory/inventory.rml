@@ -34,12 +34,14 @@
 	     window lived in it, so the shop, exchange and safebox windows opened
 	     over it cover it; the belt docks to inv-belt-dock. A left or right
 	     press anywhere on it raises the window (board_press), as legacy's
-	     window manager raised the window under a press. -->
+	     window manager raised the window under a press. The wheel over it
+	     turns the bag's page (wheel, NOVA-185), as legacy's OnScrollWheel. -->
 	<title>inventory</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="inventory.rcss"/>
 </head>
 <body template="nui" id="inventory" class="nui-window nui-fx nui-anim nui-below-legacy-ui inv" data-model="inventory" data-event-mousedown="board_press(ev.button)"
+      data-event-mousescroll="wheel(ev.wheel_delta_y)"
       data-class-inv--table-new="table == 'new'" data-class-inv--table-old="table == 'old'"
       data-class-inv--placed="placed">
 	<div class="nui-window__titlebar inv__titlebar">
@@ -164,11 +166,12 @@
 			<div class="nui-slot nui-anim nui-fx" data-for="c : bag" data-attr-id="'inv-bag-' + it_index"
 			     data-class-is-empty="c.kind == '' &amp;&amp; !c.covered" data-class-is-covered="c.covered"
 			     data-class-is-picked="c.picked" data-class-is-active="c.active"
+			     data-class-is-glow-red="c.glow == 'red'" data-class-is-glow-blue="c.glow == 'blue'" data-class-is-glow-yellow="c.glow == 'yellow'" data-class-is-glow-cyan="c.glow == 'cyan'" data-class-is-glow-violet="c.glow == 'violet'"
 			     data-class-is-target="c.target == 'move'" data-class-is-blocked="c.target == 'blocked'"
 			     data-class-is-usable="c.target == 'usable'" data-class-is-unusable="c.target == 'unusable'"
 			     data-class-nui-slot--h2="c.h == 2" data-class-nui-slot--h3="c.h == 3"
 			     data-class-is-refined="c.count == '' &amp;&amp; c.refine > 0"
-			     data-class-is-in-use="c.in_use" data-class-is-unusable-ontop="c.unusable_ontop"
+			     data-class-is-in-use="c.in_use" data-class-is-unusable-ontop="c.unusable_ontop" data-class-is-sell-marked="c.sell"
 			     data-event-mousedown="bag_press(it_index, ev.button)" data-event-mouseup="bag_release(it_index, ev.button)"
 			     data-event-dblclick="bag_use(it_index)" data-event-mouseover="bag_over(it_index)"
 			     data-event-mouseout="bag_out(it_index)" data-event-nuidrop="bag_drop(it_index)">

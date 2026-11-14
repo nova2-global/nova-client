@@ -124,6 +124,88 @@ class SharedModule(unittest.TestCase):
         self.assertEqual(module.FPS_INTERVAL, 1.0)
 
 
+# --- the frame rate limit (NOVA-214) ----------------------------------------------------------
+
+class FrameRateSetting(types.ModuleType):
+    """systemSetting's NOVA-214 API: GetMaxFPS, SetMaxFPS (anything not a
+    choice becomes 60) and the constants, every set recorded."""
+
+    def __init__(self, value=60, constants=True):
+        types.ModuleType.__init__(self, "systemSetting")
+        self.value = value
+        self.log = []
+        if constants:
+            self.MAX_FPS_CHOICES, self.MAX_FPS_UNLIMITED, self.MAX_FPS_VSYNC = (60, 120, 144, 165, 240, 0, -1), 0, -1
+
+    def GetMaxFPS(self):
+        return self.value
+
+    def SetMaxFPS(self, value):
+        self.log.append(value)
+        self.value = value if value in (60, 120, 144, 165, 240, 0, -1) else 60
+
+
+class FrameRate(unittest.TestCase):
+    """The shared rules of the Frame rate row in both system option windows:
+    the seven choices in the client's display order, a value's label, reading
+    and setting through systemSetting, and an older exe without the API."""
+
+    def test_the_choices_are_the_client_s_seven_in_display_order(self):
+        module = load_player_options(FrameRateSetting())
+        self.assertEqual(module.max_fps_choices(), (60, 120, 144, 165, 240, 0, -1))
+        self.assertEqual((module.MAX_FPS_DEFAULT, module.MAX_FPS_UNLIMITED, module.MAX_FPS_VSYNC), (60, 0, -1))
+        self.assertTrue(module.has_max_fps())
+
+    def test_a_value_s_label_is_its_number_or_its_word(self):
+        module = load_player_options(FrameRateSetting())
+        text = lambda key: "<%s>" % key
+        self.assertEqual([module.max_fps_label(value, text) for value in module.max_fps_choices()],
+                         ["60", "120", "144", "165", "240", "<OPTION_FRAME_RATE_UNLIMITED>", "<OPTION_FRAME_RATE_VSYNC>"])
+
+    def test_the_value_is_the_client_s_and_a_value_that_is_no_choice_reads_as_60(self):
+        setting = FrameRateSetting(144)
+        module = load_player_options(setting)
+        self.assertEqual(module.max_fps(), 144)
+        for value in (-1, 0, 240):
+            setting.value = value
+            self.assertEqual(module.max_fps(), value)
+        for value in (75, -2, 1000):
+            setting.value = value
+            self.assertEqual(module.max_fps(), 60, value)
+
+    def test_set_max_fps_hands_a_choice_to_the_client_and_refuses_the_rest(self):
+        setting = FrameRateSetting()
+        module = load_player_options(setting)
+        self.assertTrue(module.set_max_fps(0))
+        self.assertTrue(module.set_max_fps(-1))
+        self.assertFalse(module.set_max_fps(75))
+        self.assertFalse(module.set_max_fps("144"))
+        self.assertEqual(setting.log, [0, -1])
+        self.assertEqual(module.max_fps(), -1)
+
+    def test_a_step_moves_one_choice_and_stops_at_the_ends(self):
+        module = load_player_options(FrameRateSetting())
+        self.assertEqual(module.max_fps_step(60, 1), 120)
+        self.assertEqual(module.max_fps_step(240, 1), 0, "Unlimited after 240")
+        self.assertEqual(module.max_fps_step(0, 1), -1, "VSync last")
+        self.assertEqual(module.max_fps_step(-1, 1), -1, "no wrap")
+        self.assertEqual(module.max_fps_step(60, -1), 60, "no wrap")
+        self.assertEqual(module.max_fps_step(-1, -1), 0)
+        self.assertEqual(module.max_fps_step(75, 1), 120, "a value that is no choice steps from 60")
+
+    def test_the_constants_default_to_the_documented_ones_when_the_exe_has_only_the_pair(self):
+        module = load_player_options(FrameRateSetting(constants=False))
+        self.assertTrue(module.has_max_fps())
+        self.assertEqual(module.max_fps_choices(), (60, 120, 144, 165, 240, 0, -1))
+
+    def test_an_older_exe_without_the_api_reads_60_and_sets_nothing(self):
+        module = load_player_options(types.ModuleType("systemSetting"))
+        self.assertFalse(module.has_max_fps())
+        self.assertEqual(module.max_fps(), 60)
+        self.assertFalse(module.set_max_fps(144))
+        self.assertEqual(module.max_fps_choices(), (60, 120, 144, 165, 240, 0, -1))
+
+
 # --- game.py --------------------------------------------------------------------------------
 
 GAME_METHODS = ("__XMasSnow_Enable", "__RefreshSnow", "__IsXMasMap", "OnPlayerOptionChanged", "BINARY_SetTipMessage")

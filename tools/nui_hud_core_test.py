@@ -1236,6 +1236,9 @@ EXPECTED_SITES = {
                            ("make", "chest-drop", "uiChestDrop.ChestDropWindow", "nui_chest_drop.ChestDropWindow"),
                            # Wave 8 (NOVA-42): the wiki browser, no legacy window.
                            ("make", "wiki", "uiWiki.UnavailableWindow", "nui_wiki.WikiWindow"),
+                           # Wave 10 (NOVA-202): the costume preview popup.
+                           ("make", "costume-preview", "uiCostumePreview.CostumePreview",
+                            "nui_costume_preview.CostumePreview"),
                            ("make", "shop-search", "uiSearchShop.SearchShopWindow", "nui_shop_search.SearchShopWindow"),
                            ("make", "offline-shop-log", "uiOfflineShopLog.OfflineShopLogWindow",
                             "nui_offline_shop_log.OfflineShopLogWindow"),
@@ -1286,6 +1289,8 @@ EXPECTED_SITES = {
                            # NOVA-25: the dungeon manager and the dungeon ranking.
                            ("make", "dungeon-timer", "uiTimerWindow.TimerWindow", "nui_dungeon_timer.TimerWindow"),
                            ("make", "dungeon-rank", "uiDungeonRank.DungeonRankWindow", "nui_dungeon_rank.DungeonRankWindow"),
+                           # NOVA-204: the auto-shout window, made at its first open.
+                           ("make", "auto-shout", "uiAutoShout.AutoShoutWindow", "nui_auto_shout.AutoShoutWindow"),
                            ("make", "quest", "uiQuest.QuestDialog", "nui_quest.QuestDialog"),
                            ("make", "guild-war", "uiGuild.GuildWarScoreBoard", "nui_guild_war.GuildWarScoreBoard"),
                            ("make", "shop-signs", "uiPrivateShopBuilder.PrivateShopTitleBar", "nui_shop_signs.ShopSign"),
@@ -1703,6 +1708,38 @@ class KeptBoardTest(unittest.TestCase):
         facade.demand.hide()
         self.assertTrue(facade.demand.probe(), "a kept board answers for itself")
         self.assertEqual(log.count("make"), 2)
+
+    def test_a_kept_probe_s_board_waits_hidden_and_emptied_for_the_first_open(self):
+        # NOVA-256: the dungeon manager's making probes its board anyway; it stays, so even the
+        # session's first open loads no document.
+        facade, log = self.kept()
+        demand = self.hud.KeptBoard(facade.make, facade.restore, facade.keep, facade.empty, keep_probe=True)
+        facade.demand = demand
+        self.assertTrue(demand.probe())
+        self.assertEqual(log, ["make", "empty"])
+        board = demand.kept()
+        self.assertIs(board, facade.boards[0])
+        self.assertTrue(board._doc)
+        self.assertFalse(board.is_visible())
+        self.assertTrue(demand.loaded())
+        self.assertIsNone(demand.board())
+        self.assertEqual(board.model["cells_on"], [])
+        self.assertTrue(demand.probe(), "a kept board answers for itself")
+        self.assertTrue(demand.show())
+        self.assertIs(demand.board(), board)
+        self.assertEqual(log, ["make", "empty", "restore"], "the first open loads nothing")
+        self.assertEqual(board.model["cells_on"], [1])
+        demand.destroy()
+        self.assertFalse(board._doc)
+        self.assertEqual(self.world.game.loaded_documents(), [])
+
+    def test_a_kept_probe_whose_document_fails_keeps_nothing(self):
+        facade, log = self.kept()
+        demand = self.hud.KeptBoard(facade.make, facade.restore, facade.keep, facade.empty, keep_probe=True)
+        self.world.game.state.failing.add("nui/windows/test/test.rml")
+        self.assertFalse(demand.probe())
+        self.assertIsNone(demand.kept())
+        self.assertFalse(demand.loaded())
 
 
 class PooledBoardTest(unittest.TestCase):

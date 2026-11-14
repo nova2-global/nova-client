@@ -1288,3 +1288,189 @@ SHOP_TEXT_OR	oder
 SHOP_BUY_COUNT_TITLE	Anzahl kaufen (max. %d)
 DO_YOU_BUY_WITH_ITEM	Möchtest du %s für %s kaufen?
 SHOP_BULK_BUY_HINT	Shift + click: mehrere kaufen
+SEARCH_IN_SHOPS	Ctrl + click: in den Shops suchen
+SEARCH_IN_WIKI	Shift + right-click: im Wiki öffnen
+MOVE_FROM_SAFEBOX_TO_INVENTORY	Right-click: ins Inventar verschieben
+COSTUME_PREVIEW_HINT	%s halten: an deinem Charakter ansehen
+DESTROY_ITEM_WARNING	Bist du sicher, dass du diesen Gegenstand dauerhaft zerstören willst?
+ITEM_SPLIT_ALL	Alles teilen
+SHOP_MARK_SELL_HINT	Tab + Klick: zum Verkauf markieren
+CONFIRM_LEVEL_UP_QUESTION	Willst du Stufe %d erreichen? Dungeons mit Stufengrenze können dir verschlossen werden.
+ANTI_EXP_FREEZE_HINT	Klick: EP einfrieren
+ANTI_EXP_FROZEN_HINT	EP eingefroren. Klick: auftauen
+DETAILS_TITLE	Details
+DETAILS_CATE_1	Schaden/Verteidigung
+DETAILS_1	St. vs. Halbmenschen
+DETAILS_TOOLTIP_1	Stark gegen Halbmenschen: Fügt Halbmenschen größeren Schaden zu.
+DETAILS_2	Wid. vs. Halbmenschen
+DETAILS_TOOLTIP_2	Widerstand gegen Halbmenschen: Verringert den Schaden, den man von Halbmenschen erleidet.
+DETAILS_3	Stark vs. Orks
+DETAILS_TOOLTIP_3	Stärke gegen Orks: Fügt Orks größeren Schaden zu.
+DETAILS_4	Stark vs. Untote
+DETAILS_TOOLTIP_4	Stark gegen Untote: Fügt Untoten größeren Schaden zu.
+DETAILS_5	Stark vs. Monster
+DETAILS_TOOLTIP_5	Stark gegen Monster: Fügt Monstern größeren Schaden zu.
+DETAILS_ELEMENTAL	Stark gegen Elemente
+DETAILS_TOOLTIP_ELEMENTAL	Stark gegen Elemente: Verursacht mehr Schaden an Elementen.
+DETAILS_BOSS	Stark gegen Bosse
+DETAILS_TOOLTIP_BOSS	Stark gegen Bosse: Fügt Bossen größeren Schaden zu.
+DETAILS_STONE	Stark gegen Metins
+DETAILS_TOOLTIP_METIN	Stark gegen Metin Stone: Fügt Metin-Steine größeren Schaden zu.
+DETAILS_7	Stark vs. Tiere
+DETAILS_TOOLTIP_7	Stark gegen Tiere: Fügt Wildtieren größeren Schaden zu.
+DETAILS_8	Stark vs. Esoterische
+DETAILS_TOOLTIP_8	Stark gegen Esoterische: Fügt Esoterischen größeren Schaden zu.
+DETAILS_9	Stark vs. Teufel
+DETAILS_TOOLTIP_9	Stark gegen Teufel: Fügt Teufel größeren Schaden zu.
+DETAILS_12	Angriffswert
+DETAILS_TOOLTIP_12	Erhöht deinen Angriffswert.
+DETAILS_13	Verteidigungswert
+DETAILS_TOOLTIP_13	Erhöht deinen Verteidigungswert.
+DETAILS_14	Durchschnittsschaden
+DETAILS_TOOLTIP_14	Vergrößert den Durchschnittsschaden, den du Gegnern bei einem Angriff zufügst.
+DETAILS_15	Wid. Durchschnittssch.
+DETAILS_TOOLTIP_15	Widerstand gegen Durchschnittsschaden: Verringert den Schaden, den du bei einem Angriff erleidest.
+DETAILS_16	Fertigkeitsschaden
+DETAILS_TOOLTIP_16	Erhöht den Schaden, den eine Fertigkeit verursacht.
+DETAILS_17	Widerstand Fertigkeitssch.
+DETAILS_TOOLTIP_17	Widerstand gegen Fertigkeitsschaden: Verringert den Schaden, der dir durch eine Fertigkeit zugefügt wird.
+DETAILS_18	Magie-/Nahkampfangriff
+DETAILS_TOOLTIP_18	Sowohl der körperliche als auch der magische Angriffswert wird erhöht.
+DETAILS_19	Magischer Angriff
+DETAILS_TOOLTIP_19	Erhöht den Schaden, den du Gegnern durch einen magischen Angriff zufügst.
+DETAILS_20	Krit. Trefferchance
+DETAILS_TOOLTIP_20	Steigert die Chance, einen kritischen Treffer zu erwirken.
+DETAILS_21	Durchb. Treffer
+DETAILS_TOOLTIP_21	Chance auf einen durchbohrenden Treffer: Steigert die Chance, einen durchbohrenden Treffer zu landen.
+DETAILS_22	Wid. krit. Treffer
+DETAILS_TOOLTIP_22	Widerstand gegen kritischen Treffer: Verringert den Schaden, der durch einen kritischen Treffer verusacht wird.
+DETAILS_23	Wid. durchb. Treffer
+DETAILS_TOOLTIP_23	Widerstand gegen durchbohrenden Treffer: Verringert den Schaden, der durch einen durchbohrenden Treffer verusacht wird.
+DETAILS_CATE_2	Elementarboni
+DETAILS_76	Magiewiderstand
+DETAILS_TOOLTIP_76	Verringert den Schaden, den du durch einen magischen Angriff erleidest.
+DETAILS_24	Blitzwiderstand
+DETAILS_TOOLTIP_24	Verringert den Schaden, den man durch bestimmte Monster erleidet.
+DETAILS_25	Wasserwiderstand
+DETAILS_TOOLTIP_25	Verringert den Schaden, den man durch bestimmte Monster erleidet.
+DETAILS_26	Wid. vs. Dunkelheit
+DETAILS_TOOLTIP_26	Widerstand gegen Dunkelheit: Verringert den Schaden, den man durch bestimmte Monster erleidet.
+DETAILS_27	Feuerwiderstand
+DETAILS_TOOLTIP_27	Verringert den Schaden, den man durch bestimmte Monster erleidet.
+DETAILS_28	Windwiderstand
+DETAILS_TOOLTIP_28	Verringert den Schaden, den man durch bestimmte Monster erleidet.
+DETAILS_29	Erdwiderstand
+DETAILS_TOOLTIP_29	Verringert den Schaden, den man durch bestimmte Monster erleidet.
+DETAILS_77	Magiebruch
+DETAILS_TOOLTIP_77	Verringert den Magiewiderstand deines Gegners.
+DETAILS_30	Kraft der Blitze
+DETAILS_TOOLTIP_30	Erhöht den Schaden, den du verursachst, durch die Kraft der Blitze.
+DETAILS_31	Kraft des Wasser
+DETAILS_TOOLTIP_31	Erhöht den Schaden, den du verursachst, durch die Kraft des Wasser.
+DETAILS_32	Kraft der Dunkelheit
+DETAILS_TOOLTIP_32	Erhöht den Schaden, den du verursachst, durch die Kraft der Dunkelheit.
+DETAILS_33	Kraft des Feuers
+DETAILS_TOOLTIP_33	Erhöht den Schaden, den du verursachst, durch die Kraft des Feuers.
+DETAILS_34	Kraft des Windes
+DETAILS_TOOLTIP_34	Erhöht den Schaden, den du verursachst, durch die Kraft des Windes.
+DETAILS_35	Kraft der Erde
+DETAILS_TOOLTIP_35	Erhöht den Schaden, den du verursachst, durch die Kraft der Erde.
+DETAILS_CATE_3	Klassenboni
+DETAILS_36	Stark vs. Krieger
+DETAILS_TOOLTIP_36	Stark gegen Krieger: Fügt Kriegern größeren Schaden zu.
+DETAILS_37	Stark vs. Ninja
+DETAILS_TOOLTIP_37	Stark gegen Ninja: Fügt Ninja größeren Schaden zu.
+DETAILS_38	Stark vs. Sura
+DETAILS_TOOLTIP_38	Stark gegen Sura: Fügt Sura größeren Schaden zu.
+DETAILS_39	Stark vs. Schamanen
+DETAILS_TOOLTIP_39	Stark gegen Schamanen: Fügt Schamanen größeren Schaden zu.
+DETAILS_41	Abwehr vs. Krieger
+DETAILS_TOOLTIP_41	Abwehrchance gegen Kriegerangriffe: Verringert den Schaden, den man durch Krieger erleidet.
+DETAILS_42	Abwehr vs. Ninja
+DETAILS_TOOLTIP_42	Abwehrchance gegen Ninjaangriffe: Verringert den Schaden, den man durch Ninja erleidet.
+DETAILS_43	Abwehr vs. Sura
+DETAILS_TOOLTIP_43	Abwehrchance gegen Suraangriffe: Verringert den Schaden, den man durch Sura erleidet.
+DETAILS_44	Abw. vs. Schamanen
+DETAILS_TOOLTIP_44	Abwehrchance gegen Schamanenangriffe: Verringert den Schaden, den man durch Schamanen erleidet.
+DETAILS_CATE_4	Waffenboni
+DETAILS_46	Schwertverteidigung
+DETAILS_TOOLTIP_46	Verringert den Schaden, der durch ein Schwert verursacht wird.
+DETAILS_47	Zweihandverteidigung
+DETAILS_TOOLTIP_47	Verringert den Schaden, der durch eine Zweihandwaffe verursacht wird.
+DETAILS_48	Dolchverteidigung
+DETAILS_TOOLTIP_48	Verringert den Schaden, der durch einen Dolch verursacht wird.
+DETAILS_50	Glockenverteidigung
+DETAILS_TOOLTIP_50	Verringert den Schaden, der durch eine Glocke verursacht wird.
+DETAILS_51	Fächerverteidigung
+DETAILS_TOOLTIP_51	Verringert den Schaden, der durch einen Fächer verursacht wird.
+DETAILS_52	Pfeilverteidigung
+DETAILS_TOOLTIP_52	Verringert den Schaden, der durch Pfeil und Bogen verursacht wird.
+DETAILS_CATE_5	Sonstige Boni
+DETAILS_53	Ohnmachtschance
+DETAILS_TOOLTIP_53	Steigert die Chance, einen Gegner in Ohnmacht zu versetzen.
+DETAILS_54	Verlangsamungschance
+DETAILS_TOOLTIP_54	Steigert die Chance, einen Gegner zu verlangsamen.
+DETAILS_55	Vergiftungschance
+DETAILS_TOOLTIP_55	Steigert die Chance, einen Gegner zu vergiften.
+DETAILS_56	Giftwiderstand
+DETAILS_TOOLTIP_56	Verringert den Schaden, der durch Gift verursacht wird.
+DETAILS_59	Lebensraub
+DETAILS_TOOLTIP_59	Entzieht deinem Gegner TP, wenn du ihn triffst.
+DETAILS_60	MP-Raub
+DETAILS_TOOLTIP_60	Entzieht deinem Gegner MP, wenn du ihn triffst.
+DETAILS_61	TP-Wiederherstellung
+DETAILS_TOOLTIP_61	Beschleunigt die Regeneration deiner Trefferpunkte.
+DETAILS_62	MP-Wiederherstellung
+DETAILS_TOOLTIP_62	Beschleunigt die Regeneration deiner Manapunkte.
+DETAILS_63	Angriff blocken
+DETAILS_TOOLTIP_63	Chance, Nahkampfangriff abzublocken: Steigert die Chance, einem Nahkampfangriff auszuweichen.
+DETAILS_64	Pfeilangriff ausweichen
+DETAILS_TOOLTIP_64	Chance, Pfeilangriff auszuweichen: Steigert die Chance, einem Pfeil- oder Fernangriff eines Monsters auszuweichen.
+DETAILS_65	Nahkampftr. reflekt.
+DETAILS_TOOLTIP_65	Chance, Nahkampftreffer zu reflektieren: Ein Teil des Nahkampfschadens wird auf den Gegner zurückgeworfen.
+DETAILS_66	TP-Wdsg. beim Töten
+DETAILS_TOOLTIP_66	TP-Wiederherstellung beim Töten: Wenn du einen Gegner tötest, erhöhen sich deine Trefferpunkte.
+DETAILS_67	MP-Wdsg. beim Töten
+DETAILS_TOOLTIP_67	MP-Wiederherstellung beim Töten: Wenn du einen Gegner tötest, erhöhen sich deine Manapunkte.
+DETAILS_68	2-fach EXP
+DETAILS_TOOLTIP_68	Chance, doppelte Erfahrung zu bekommen: Steigert die Chance auf einen EXP-Bonus, wenn du deinen Gegner besiegt hast.
+DETAILS_69	2-fach Yang
+DETAILS_TOOLTIP_69	Chance, eine doppelte Menge Yang fallen zu lassen: Steigert deine Chance, die doppelte Menge Yang zu erhalten.
+DETAILS_70	Dropchance
+DETAILS_TOOLTIP_70	Chance, Gegenstände fallen zu lassen: Steigert die Chance, Gegenstände doppelt zu erbeuten.
+DETAILS_CATE_6	Spezialboni
+DETAILS_71	Angriffswert
+DETAILS_TOOLTIP_71	Erhöht deinen Angriffswert.
+DETAILS_72	Verteidigung
+DETAILS_TOOLTIP_72	Erhöht deinen Verteidigungswert.
+DETAILS_73	EXP
+DETAILS_TOOLTIP_73	Erhöht das Sammeln von Erfahrung.
+DETAILS_74	Dropchance
+DETAILS_TOOLTIP_74	Dropchance von Gegenständen: Steigert deine Chance, Gegenstände zu erbeuten.
+DETAILS_75	2-fach Yang
+DETAILS_TOOLTIP_75	Dropchance Yang: Steigert deine Chance, mehr Yang zu erbeuten.
+STAT_PICK_TITLE_CON	Vitalität
+STAT_PICK_TITLE_INT	Intelligenz
+STAT_PICK_TITLE_STR	Stärke
+STAT_PICK_TITLE_DEX	Beweglichkeit
+SKILL_MAX_UP_HINT	Shift + click: bis Meister erhöhen
+REMOVE_AFFECT_QUESTION	Möchten Sie %s deaktivieren?
+REFINE_FAST_UPGRADE	Schnelles Verbessern
+ATLAS_MARK_WIKI_HINT	Klicken, um das Wiki zu öffnen
+METIN_QUEUE_ADDED	[Metin-Warteschlange] Der Metin wurde zur Warteschlange hinzugefügt.
+METIN_QUEUE_REMOVED	[Metin-Warteschlange] Der Metin wurde aus der Warteschlange entfernt.
+METIN_QUEUE_FULL	[Metin-Warteschlange] Du hast die maximale Warteschlangenlänge erreicht.
+METIN_QUEUE_PREMIUM_HINT	[Metin-Warteschlange] Mit Premium kannst du mehr Metins einreihen.
+AUTO_SHOUT_TOOLTIP	Auto-Ruf
+AUTO_SHOUT_TITLE	Auto-Ruf
+AUTO_SHOUT_DESC	Wiederholt deinen Ruf alle 30 s (16 s mit Premium).
+AUTO_SHOUT_MESSAGE	Nachricht
+AUTO_SHOUT_STATUS_OFF	Aus
+AUTO_SHOUT_STATUS_WAITING	Startet...
+AUTO_SHOUT_STATUS_ON	An
+AUTO_SHOUT_NEXT	Nächster Ruf in
+AUTO_SHOUT_START	Starten
+AUTO_SHOUT_STOP	Stoppen
+AUTO_SHOUT_NO_MESSAGE	Gib zuerst eine Nachricht für den Auto-Ruf ein.
+TARGET_ARROW_DAMAGE	%s Pfeilschaden
+TARGET_METIN_QUEUE_HINT	Umschalt + Rechtsklick: zur Angriffswarteschlange hinzufügen

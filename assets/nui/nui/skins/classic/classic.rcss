@@ -927,6 +927,28 @@
 {
 	display: inline-flex;
 }
+/* NOVA-188: the legacy active loop tinted by the item's kind, as the legacy
+   window tints it (CSlotWindow's per-slot active color; item_glow). */
+.skin-classic .nui-slot.is-glow-red .nui-slot__active img
+{
+	image-color: var(--glow-red);
+}
+.skin-classic .nui-slot.is-glow-blue .nui-slot__active img
+{
+	image-color: var(--glow-blue);
+}
+.skin-classic .nui-slot.is-glow-yellow .nui-slot__active img
+{
+	image-color: var(--glow-yellow);
+}
+.skin-classic .nui-slot.is-glow-cyan .nui-slot__active img
+{
+	image-color: var(--glow-cyan);
+}
+.skin-classic .nui-slot.is-glow-violet .nui-slot__active img
+{
+	image-color: var(--glow-violet);
+}
 .skin-classic .nui-slot.is-active.nui-fx
 {
 	box-shadow: none;

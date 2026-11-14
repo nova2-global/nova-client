@@ -27,6 +27,7 @@
 		],
 		"mob_level": true,
 		"mob_ai": true,
+		"new_item_glow": true,
 		"page": "keys",
 		"notice": "M was on Minimap, which now has I.",
 		"key_rows": [
@@ -690,6 +691,12 @@
 				"cap2": false,
 				"changed": false
 			}
-		]
+		],
+		"searching": false,
+		"results": [],
+		"found": "",
+		"found_end": 0.0,
+		"yang_text": true,
+		"country_flags": true
 	}
 }

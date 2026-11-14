@@ -741,3 +741,47 @@ KEYBIND_EMOTION_6	Emoce 6
 KEYBIND_EMOTION_7	Emoce 7
 KEYBIND_EMOTION_8	Emoce 8
 KEYBIND_EMOTION_9	Emoce 9
+OPTION_NEW_ITEM_HIGHLIGHT	Nové
+DESTROY	Zničit
+STORAGE_TITLE	Úschovna
+OPTION_YANG_TEXT	Záznam Yangů
+OPTION_COUNTRY_FLAGS	Vlajky
+OPTION_SEARCH_HINT	Hledat možnosti
+OPTION_SEARCH_NONE	Žádná možnost neodpovídá.
+OPTION_BGM	Hudba v pozadí
+KEYBIND_WIKI	Wiki
+OPTION_KEYWORDS_NAME_COLOR	jméno barva říše
+OPTION_KEYWORDS_TARGET_BOARD	cíl menu nepřítel
+OPTION_KEYWORDS_PK	pvp boj mír nepřátelský cech volný
+OPTION_KEYWORDS_BLOCK	blokovat obchod skupina cech šeptat přítel žádost
+OPTION_KEYWORDS_VIEW_CHAT	chat bublina
+OPTION_KEYWORDS_ALWAYS_NAME	jméno vždy
+OPTION_KEYWORDS_DAMAGE	poškození zásah čísla
+OPTION_KEYWORDS_SALES	obchod cedule prodej
+OPTION_KEYWORDS_PICKUP	sebrat kořist filtr předměty lektvary
+OPTION_KEYWORDS_SHOPS	obchody offline obchodník
+OPTION_KEYWORDS_SASH	šerpa rameno kostým
+OPTION_KEYWORDS_BUFFI	buffi společník podpora
+OPTION_KEYWORDS_MOB_LEVEL	příšera úroveň info
+OPTION_KEYWORDS_MOB_AI	příšera agresivní hvězda
+OPTION_KEYWORDS_KEYS	klávesy klávesnice zkratka
+OPTION_KEYWORDS_YANG	yang zlato peníze sebrat zpráva
+OPTION_KEYWORDS_FLAGS	vlajka země národ jazyk
+OPTION_KEYWORDS_SOUND	zvuk efekty hlasitost
+OPTION_KEYWORDS_MUSIC	hudba hlasitost
+OPTION_KEYWORDS_BGM	hudba pozadí skladba
+OPTION_KEYWORDS_CAMERA	kamera přiblížení vzdálenost daleko blízko
+OPTION_KEYWORDS_FOG	mlha dohled
+OPTION_KEYWORDS_TILING	grafika
+OPTION_KEYWORDS_FOV	zorné pole úhel
+OPTION_KEYWORDS_SNOW	sníh sněžení počasí vánoce
+OPTION_KEYWORDS_FPS	fps snímky počítadlo výkon
+OPTION_KEYWORDS_TIPS	tipy rada nápověda
+OPTION_KEYWORDS_THEME	motiv vzhled styl tmavý světlý klasický
+OPTION_KEYWORDS_SCALE	měřítko velikost rozhraní
+OPTION_KEYWORDS_MOTION	pohyb animace
+OPTION_KEYWORDS_EFFECTS	efekty rozmazání stín
+OPTION_KEYWORDS_COLORS	barvy akcent panel krytí
+OPTION_FRAME_RATE	Limit FPS
+OPTION_FRAME_RATE_UNLIMITED	Neomezeno
+OPTION_FRAME_RATE_VSYNC	VSync

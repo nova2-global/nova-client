@@ -17,7 +17,11 @@
 	     right press anywhere on it raises the window (board_press). A row
 	     that costs items (NOVA-83, c.barter) carries a small code-drawn mark
 	     at its item's top left in the modern looks; classic hides it, as
-	     legacy draws none. Its tooltip lists the costs. -->
+	     legacy draws none. Its tooltip lists the costs. The mark board
+	     (NOVA-187, uiShop.ShopDialog.RefreshSellMarkBoard) hangs under the
+	     window while an NPC shop holds sell marks: their total and Sell,
+	     which sells them all; modern adds the mark key's hint, classic is
+	     legacy's 173 x 70 board (uiscript markwindow.py). -->
 	<title>shop</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="shop.rcss"/>
@@ -114,6 +118,13 @@
 				        data-if="owner_close_shown" data-event-mousedown="owner_close_press(ev.button)">@ui.OFFLINE_SHOP_BUTTON_CLOSE</button>
 			</div>
 		</div>
+	</div>
+	<div id="shop-marks" class="nui-board nui-fx shop-marks" data-if="mark_shown">
+		<div class="shop-marks__total"><span class="nui-glyph nui-glyph--coin"><span class="nui-glyph__a"></span><span
+			class="nui-glyph__b"></span></span><span class="shop-marks__money">{{ mark_total }}</span></div>
+		<button id="shop-mark-sell" class="nui-button nui-button--medium nui-button--primary nui-anim shop-marks__sell"
+		        data-event-mousedown="mark_sell_press(ev.button)">@ui.SHOP_SELL</button>
+		<p class="shop-marks__hint">@game.SHOP_MARK_SELL_HINT</p>
 	</div>
 </body>
 </rml>

@@ -67,6 +67,9 @@ body, body.theme-dark
 	--gauge-pink: #f5c060;
 	--gauge-purple: #e9a23b;
 	--gauge-blue: #3f86f2;
+	--gauge-trail: #ff9b45;
+	--gauge-poison: #4fcf7d;
+	--gauge-burn: #f2cf3d;
 	--cooldown-shade: #00000080;
 	--slot-disabled: #ff6f6a38;
 	--slot-locked: #0000008c;
@@ -115,6 +118,11 @@ body, body.theme-dark
 	--slot-unusable: #ff6f6a59;
 	--slot-unavailable: #000000a6;
 	--accent-glow: #a594ff8c;
+	--glow-red: #ff5a52;
+	--glow-blue: #5b8dff;
+	--glow-yellow: #ffd84a;
+	--glow-cyan: #23e0d8;
+	--glow-violet: #c28bff;
 	--tip-bg: #00000082;
 	--tip-title: #f2d39b;
 	--tip-special: #a8e6bf;
@@ -182,6 +190,9 @@ body.theme-light
 	--gauge-pink: #d79c19;
 	--gauge-purple: #d98e1d;
 	--gauge-blue: #2f6fe0;
+	--gauge-trail: #f08a2c;
+	--gauge-poison: #2fa85e;
+	--gauge-burn: #e0b514;
 	--cooldown-shade: #00000080;
 	--slot-disabled: #c4322b38;
 	--slot-locked: #15171c66;
@@ -230,6 +241,11 @@ body.theme-light
 	--slot-unusable: #c4322b40;
 	--slot-unavailable: #15171c40;
 	--accent-glow: #5a45e64d;
+	--glow-red: #d02a22;
+	--glow-blue: #2a5fd6;
+	--glow-yellow: #b88400;
+	--glow-cyan: #0a8f88;
+	--glow-violet: #7a3fd0;
 	--tip-bg: #00000082;
 	--tip-title: #f2d39b;
 	--tip-special: #a8e6bf;
@@ -297,6 +313,9 @@ body.theme-classic
 	--gauge-pink: #bc5296;
 	--gauge-purple: #8052bc;
 	--gauge-blue: #5283bc;
+	--gauge-trail: #bc7a40;
+	--gauge-poison: #52bc5a;
+	--gauge-burn: #bcab37;
 	--cooldown-shade: #00000080;
 	--slot-disabled: #ff00004d;
 	--slot-locked: #00000080;
@@ -345,6 +364,11 @@ body.theme-classic
 	--slot-unusable: #ff000080;
 	--slot-unavailable: #00000080;
 	--accent-glow: #ffc80066;
+	--glow-red: #ff3030;
+	--glow-blue: #3070ff;
+	--glow-yellow: #ffe040;
+	--glow-cyan: #03fce3;
+	--glow-violet: #c080ff;
 	--tip-bg: #0d0c0b;
 	--tip-title: #f1e6c0;
 	--tip-special: #ffc700;
@@ -399,9 +423,11 @@ body.skin-classic
 	--classic-separator-shadow: #111111;
 	--classic-text-outline: #000000;
 	--classic-disabled-tint: #8c8c8cff;
+	--classic-sell-mark-tint: #ffdf00ff;
 	--classic-disabled-text: #6e6e6e;
 	--classic-key-text: #000000;
 	--classic-label-white: #ffffff;
+	--classic-arrow-fill: #d18047;
 	--classic-aura-exp-fill: #44aaff;
 	--classic-chat-press: #ffffff4d;
 	--classic-chat-log-fill: #00000077;

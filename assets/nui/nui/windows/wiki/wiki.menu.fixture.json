@@ -295,6 +295,10 @@
 		"page_link": true,
 		"model_view": false,
 		"hover_view": false,
+		"model_loading": false,
+		"hover_loading": false,
+		"viewer_loading": false,
+		"preview_check_at": 0.0,
 		"menu": [
 			{
 				"i": 0,

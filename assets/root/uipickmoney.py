@@ -3,6 +3,7 @@ import wndMgr
 import ui
 import ime
 import app
+import localeInfo
 import nui_windows
 
 # OLD's amounts with a k, m or b suffix (OLD constInfo.py:574-585, read by
@@ -60,6 +61,7 @@ class PickMoneyDialog(ui.ScriptWindow):
 
 	def Destroy(self):
 		self.ClearDictionary()
+		self.splitAllCheckBox = None
 		self.eventAccept = 0
 		self.maxValue = 0
 		self.pickValueEditLine = 0		
@@ -102,12 +104,50 @@ class PickMoneyDialog(ui.ScriptWindow):
 
 		self.unitValue = unitValue
 		self.maxValue = maxValue
+		if self.splitAllCheckBox:
+			self.splitAllCheckBox.SetCheckStatus(False)
 		self.Show()
 		self.SetTop()
 
 	def Close(self):
 		self.pickValueEditLine.KillFocus()
 		self.Hide()
+		self.SetMoneyMode()
+
+	## NOVA-190: the "Split all" box of a stack's split (OLD uiPickMoney.py:
+	## 42-72; ITEM_SPLIT_ALL). SetItemMode before Open shows it, unchecked at
+	## each Open (OLD); Close takes the dialog back to its money layout, so
+	## the dialog's other uses (money, the gacha's count) never show it. The
+	## caller reads IsSplitAll in its accept event.
+	splitAllCheckBox = None
+
+	def SetItemMode(self):
+		if not self.splitAllCheckBox:
+			checkBox = ui.CheckBox()
+			checkBox.SetParent(self.board)
+			checkBox.SetPosition(22, 58)
+			checkBox.SetTextInfo(localeInfo.ITEM_SPLIT_ALL)
+			self.splitAllCheckBox = checkBox
+		self.splitAllCheckBox.SetCheckStatus(False)
+		self.splitAllCheckBox.Show()
+		self.board.SetSize(170, 110)
+		self.SetSize(170, 110)
+		self.acceptButton.SetPosition(170 // 2 - 61 - 5, 78)
+		self.cancelButton.SetPosition(170 // 2 + 5, 78)
+
+	def SetMoneyMode(self):
+		if not self.splitAllCheckBox:
+			return
+		self.splitAllCheckBox.SetCheckStatus(False)
+		self.splitAllCheckBox.Hide()
+		self.board.SetSize(170, 90)
+		self.SetSize(170, 90)
+		self.acceptButton.SetPosition(170 // 2 - 61 - 5, 58)
+		self.cancelButton.SetPosition(170 // 2 + 5, 58)
+
+	def IsSplitAll(self):
+		checkBox = self.splitAllCheckBox
+		return bool(checkBox) and checkBox.IsShow() and bool(checkBox.GetCheckStatus())
 
 	def OnAccept(self):
 

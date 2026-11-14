@@ -151,6 +151,68 @@ body.refine.refine--old
 {
 	color: var(--warning);
 }
+/* The fast upgrade box (NOVA-198): a check box and its label, centered
+   under the materials. */
+.refine__fast-row
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	margin-top: var(--space-3);
+}
+.refine__fast
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding: 2dp 4dp;
+}
+.refine__check
+{
+	display: block;
+	position: relative;
+	flex: 0 0 auto;
+	box-sizing: border-box;
+	width: 18dp;
+	height: 18dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 5dp;
+	background-color: var(--surface-sunken);
+}
+.refine__check.nui-anim
+{
+	transition: border-color 0.1s cubic-out;
+}
+.refine__fast:hover .refine__check
+{
+	border-color: var(--accent);
+}
+.refine__check-mark
+{
+	display: none;
+	position: absolute;
+	left: 4dp;
+	top: 4dp;
+	width: 8dp;
+	height: 4dp;
+	border-width: 0 0 2dp 2dp;
+	border-color: var(--accent);
+	transform: rotate(-45deg);
+	pointer-events: none;
+}
+.refine__fast.is-checked .refine__check-mark
+{
+	display: block;
+}
+.refine__fast-label
+{
+	color: var(--text);
+	font-size: var(--font-sm);
+	white-space: nowrap;
+	pointer-events: none;
+}
 .refine__footer
 {
 	justify-content: center;

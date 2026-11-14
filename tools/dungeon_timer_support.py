@@ -117,6 +117,96 @@ class ModelPreview(object):
         return {"shown": 0, "race": 0, "has_model": 0, "renders": 0, "texels": (0, 0)}
 
 
+class BackgroundModelPreview(ModelPreview):
+    """The modelpreview module with background previews (NOVA-256, SetBackground): a background
+    preview's Select answers 1 at once and its model waits; step() is one client step, which makes
+    the model of the first shown waiting preview, in the order they were asked. A race in `fail`
+    makes no model. GetState says what the client's does: pending, has_model, race."""
+
+    def __init__(self):
+        ModelPreview.__init__(self)
+        self.background = set()
+        self.warm = set()      # SetWarm's: made while hidden too (after the shown ones)
+        self.models = {}       # name -> the race of its model
+        self.waiting = []      # names whose model waits, in the order asked
+        self.asked = {}        # name -> the race it waits for
+        self.shown = {}
+        self.fail = set()
+
+    def SetBackground(self, name, on):
+        self.calls.append(("SetBackground", name, bool(on)))
+        if on:
+            self.background.add(name)
+        else:
+            self.background.discard(name)
+
+    def SetWarmTarget(self, name, width, height):
+        self.calls.append(("SetWarmTarget", name, int(width), int(height)))
+
+    def SetWarm(self, name, on):
+        self.calls.append(("SetWarm", name, bool(on)))
+        if on:
+            self.warm.add(name)
+        else:
+            self.warm.discard(name)
+
+    def Select(self, name, race):
+        self.calls.append(("Select", name, race))
+        if self.models.get(name) == race and name not in self.waiting:
+            return 1
+        if name in self.background:
+            if name not in self.waiting:
+                self.waiting.append(name)
+            self.asked[name] = race
+            return 1
+        if race in self.fail:
+            self.models.pop(name, None)
+            return 0
+        self.models[name] = race
+        return 1
+
+    def Show(self, name, show):
+        ModelPreview.Show(self, name, show)
+        self.shown[name] = bool(show)
+
+    def Clear(self, name):
+        ModelPreview.Clear(self, name)
+        self.models.pop(name, None)
+        self.asked.pop(name, None)
+        self.shown.pop(name, None)
+        self.background.discard(name)
+        self.warm.discard(name)
+        if name in self.waiting:
+            self.waiting.remove(name)
+
+    def step(self):
+        """One client step: the name whose model was made (or failed), or None: the first shown
+        waiting preview, else (no shown one waits) the first warm one."""
+        shown = [name for name in self.waiting if self.shown.get(name)]
+        warm = [name for name in self.waiting if name in self.warm and not self.shown.get(name)]
+        for name in (shown or warm)[:1]:
+            self.waiting.remove(name)
+            race = self.asked.pop(name)
+            if race in self.fail:
+                self.models.pop(name, None)
+            else:
+                self.models[name] = race
+            return name
+        return None
+
+    def GetState(self, name):
+        pending = name in self.waiting
+        race = 0 if pending else self.models.get(name, 0)
+        return {"shown": int(self.shown.get(name, False)), "race": race, "has_model": int(name in self.models and not pending),
+                "pending": int(pending), "renders": 0, "texels": (0, 0)}
+
+
+class ColdBackgroundModelPreview(BackgroundModelPreview):
+    """The r47 client's modelpreview: background previews, no SetWarm (nothing is warmed)."""
+
+    SetWarm = None
+
+
 class RenderTarget(object):
     """ui.RenderTarget (the client's render target widget)."""
 
@@ -202,7 +292,8 @@ class World(w4.World):
         def setup(game):
             install(game)
             if preview:
-                game.modules["modelpreview"] = ModelPreview()
+                kinds = {"background": BackgroundModelPreview, "background-cold": ColdBackgroundModelPreview}
+                game.modules["modelpreview"] = kinds.get(preview, ModelPreview)()
                 game.modules["ui"].RenderTarget = RenderTarget
         w4.World.__init__(self, nui_on, windows=FLAGS, setup=setup, modules=w4.TRADE_MODULES)
         game = self.game

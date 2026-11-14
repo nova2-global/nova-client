@@ -50,6 +50,11 @@
 			data-attr-src="flag_src"/></span>
 		<span id="whisper-gm" class="whisper__gm" data-if="gm"><img class="whisper__gm-mark" data-attr-src="gm_mark_src"/><span
 			class="whisper__gm-badge"></span></span>
+		<button id="whisper-friend" class="nui-button nui-button--ghost nui-button--icon nui-anim nui-has-tooltip whisper__friend" data-if="friend_shown"
+		        data-event-mousedown="friend_press(ev.button)"><span class="nui-glyph nui-glyph--character whisper__friend-glyph"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="nui-glyph nui-glyph--plus whisper__friend-badge"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+			class="nui-tooltip nui-anim whisper__tip">@ui.MESSENGER_ADD_FRIEND</span></button>
 		<button id="whisper-block" class="nui-button nui-button--ghost nui-anim whisper__block" data-if="block_shown"
 		        data-event-mousedown="block_press(ev.button)"><span class="whisper__block-label" data-if="!blocked">@ui.BLOCK_PLAYER</span><span
 			class="whisper__block-label" data-if="blocked">@ui.UNBLOCK_PLAYER</span></button>

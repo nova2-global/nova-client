@@ -741,3 +741,47 @@ KEYBIND_EMOTION_6	Emozione 6
 KEYBIND_EMOTION_7	Emozione 7
 KEYBIND_EMOTION_8	Emozione 8
 KEYBIND_EMOTION_9	Emozione 9
+OPTION_NEW_ITEM_HIGHLIGHT	Nuovi
+DESTROY	Distruggi
+STORAGE_TITLE	Deposito
+OPTION_YANG_TEXT	Registro Yang
+OPTION_COUNTRY_FLAGS	Bandiere
+OPTION_SEARCH_HINT	Cerca opzioni
+OPTION_SEARCH_NONE	Nessuna opzione corrisponde.
+OPTION_BGM	Musica di sottofondo
+KEYBIND_WIKI	Wiki
+OPTION_KEYWORDS_NAME_COLOR	nome colore regno impero
+OPTION_KEYWORDS_TARGET_BOARD	bersaglio menu nemico
+OPTION_KEYWORDS_PK	pvp combattimento pace ostile gilda libero
+OPTION_KEYWORDS_BLOCK	bloccare scambio gruppo gilda sussurro amico richiesta
+OPTION_KEYWORDS_VIEW_CHAT	chat fumetto
+OPTION_KEYWORDS_ALWAYS_NAME	nome sempre
+OPTION_KEYWORDS_DAMAGE	danno colpo numeri
+OPTION_KEYWORDS_SALES	negozio insegna vendita
+OPTION_KEYWORDS_PICKUP	raccogliere bottino filtro oggetti pozioni
+OPTION_KEYWORDS_SHOPS	negozi offline mercante
+OPTION_KEYWORDS_SASH	stola spalla costume
+OPTION_KEYWORDS_BUFFI	buffi compagno supporto
+OPTION_KEYWORDS_MOB_LEVEL	mostro livello info
+OPTION_KEYWORDS_MOB_AI	mostro aggressivo stella
+OPTION_KEYWORDS_KEYS	tasti tastiera scorciatoia
+OPTION_KEYWORDS_YANG	yang oro denaro raccogliere messaggio
+OPTION_KEYWORDS_FLAGS	bandiera paese nazione lingua
+OPTION_KEYWORDS_SOUND	suono effetti volume
+OPTION_KEYWORDS_MUSIC	musica volume
+OPTION_KEYWORDS_BGM	musica sottofondo canzone
+OPTION_KEYWORDS_CAMERA	telecamera zoom distanza lontano vicino
+OPTION_KEYWORDS_FOG	nebbia distanza visiva
+OPTION_KEYWORDS_TILING	grafica
+OPTION_KEYWORDS_FOV	campo visivo angolo
+OPTION_KEYWORDS_SNOW	neve nevicata meteo natale
+OPTION_KEYWORDS_FPS	fps fotogrammi contatore prestazioni
+OPTION_KEYWORDS_TIPS	suggerimenti consiglio aiuto
+OPTION_KEYWORDS_THEME	tema aspetto stile scuro chiaro classico
+OPTION_KEYWORDS_SCALE	scala dimensione interfaccia
+OPTION_KEYWORDS_MOTION	movimento animazione
+OPTION_KEYWORDS_EFFECTS	effetti sfocatura ombra
+OPTION_KEYWORDS_COLORS	colori accento pannello opacità
+OPTION_FRAME_RATE	Limite FPS
+OPTION_FRAME_RATE_UNLIMITED	Illimitato
+OPTION_FRAME_RATE_VSYNC	VSync

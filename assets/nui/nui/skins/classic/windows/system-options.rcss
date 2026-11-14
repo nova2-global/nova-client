@@ -1,17 +1,18 @@
 /* Classic skin overlay of nui/windows/system-options/system-options.rml:
    the legacy system options (uiscript systemoptiondialog.py) at 100%, 1dp
-   to the legacy pixel. The stone board is 305 wide; its legacy part is 307
+   to the legacy pixel. The stone board is 305 wide; its legacy part is 332
    tall above the Interface section, which grows the board downward (legacy
    has no such section: its layout is new, on legacy art). The title bar at
    8, 8 (284 wide) with the title centered over the whole bar and the close
-   button at 266, 3; the labels at x 30 (y 50, 75, 137, 162, 187, 212, and
-   237, 262 and 287 for NOVA-118); the
+   button at 266, 3; the labels at x 30 (y 50, 75, 137, 162, 187, 212,
+   237, 262 and 287 for NOVA-118, and 312 for NOVA-214); the
    sliders at 110, 50, 110, 75 and 110, 210 (the field of view, NOVA-116) (the sliderbar art, 175 x 12, with its 53
    wide cursor); Change at 20, 100 and the file name at 100, 102; the
    camera choices at 110 and 180, y 135 (middle art); the fog choices at
    110, 160 and 210, y 160 and the tiling choices at 110 and 160, y 185
-   (small art); Apply at 210, 185 (middle art). The choice in effect shows
-   the down art. */
+   (small art); Apply at 210, 185 (middle art); the frame rate's previous
+   and next buttons at 110 and 242, y 310 (small art), its value centered
+   on 198 at 312 (NOVA-214). The choice in effect shows the down art. */
 
 /* Legacy's board, in block flow and as tall as its rows: the legacy rows
    are placed from the board's corner, so they cannot scroll with the
@@ -68,10 +69,11 @@ body.skin-classic.system-options .so-legacy
 {
 	display: block;
 	position: relative;
-	height: 307dp;
+	height: 332dp;
 }
 body.skin-classic.system-options .so-legacy .so-row,
-body.skin-classic.system-options .so-legacy .so-choices
+body.skin-classic.system-options .so-legacy .so-choices,
+body.skin-classic.system-options .so-legacy .so-stepper
 {
 	display: block;
 	height: 0;
@@ -96,6 +98,7 @@ body.skin-classic.system-options .so-label--fov { top: 212dp; }
 body.skin-classic.system-options .so-label--snow { top: 237dp; }
 body.skin-classic.system-options .so-label--fps { top: 262dp; }
 body.skin-classic.system-options .so-label--tips { top: 287dp; }
+body.skin-classic.system-options .so-label--frame-rate { top: 312dp; }
 
 body.skin-classic.system-options .so-music-file
 {
@@ -150,6 +153,37 @@ body.skin-classic.system-options .so-choice--fps-0 { left: 110dp; top: 260dp; }
 body.skin-classic.system-options .so-choice--fps-1 { left: 180dp; top: 260dp; }
 body.skin-classic.system-options .so-choice--tips-0 { left: 110dp; top: 285dp; }
 body.skin-classic.system-options .so-choice--tips-1 { left: 180dp; top: 285dp; }
+/* The frame rate limit (NOVA-214): legacy's "<" and ">" on the small art
+   (43 x 21; the icon button's art, its states and its disabled tint from
+   classic.rcss) at 110 and 242, y 310, the value as legacy's text line,
+   centered on 198 at 312 between them. */
+body.skin-classic.system-options .so-step
+{
+	position: absolute;
+	width: 43dp;
+	margin: 0;
+	padding: 0;
+}
+body.skin-classic.system-options .so-step--prev { left: 110dp; top: 310dp; }
+body.skin-classic.system-options .so-step--next { left: 242dp; top: 310dp; }
+body.skin-classic.system-options .so-step__text
+{
+	display: inline;
+}
+body.skin-classic.system-options .so-step-value
+{
+	position: absolute;
+	left: 153dp;
+	top: 312dp;
+	width: 90dp;
+	height: auto;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	font-size: var(--font-md);
+	font-weight: normal;
+	line-height: 14dp;
+}
 
 /* The small art of legacy's fog and tiling choices, and of the Interface
    section's scale choices: the default, over and down art; the choice in
@@ -324,4 +358,60 @@ body.skin-classic.system-options .so-motion .nui-toggle__label,
 body.skin-classic.system-options .so-effects .nui-toggle__label
 {
 	width: auto;
+}
+
+/* The search (NOVA-213, no legacy original): the field under the legacy
+   rows at 20, 336 (under NOVA-214's frame rate row since wave 10's merge)
+   on the legacy edit line's look, the Interface section
+   moved down to make room; its results open downward over the section, on
+   the dark board legacy's lists use, a row every 18. A found row's label
+   takes the gold of legacy's headings until its timer ends. */
+body.skin-classic.system-options .system-options__body
+{
+	position: relative;
+}
+body.skin-classic.system-options .so-search
+{
+	position: absolute;
+	left: 20dp;
+	top: 336dp;
+	width: 265dp;
+	height: 20dp;
+	margin: 0;
+	z-index: 2;
+}
+body.skin-classic.system-options .so-search__field
+{
+	width: 265dp;
+	height: 20dp;
+}
+body.skin-classic.system-options .so-interface
+{
+	margin-top: 30dp;
+}
+body.skin-classic.system-options .so-results
+{
+	top: 24dp;
+	padding: 2dp;
+	border-radius: 0;
+	background-color: var(--surface-raised);
+}
+body.skin-classic.system-options .so-results__list
+{
+	height: 144dp;
+}
+body.skin-classic.system-options .so-result
+{
+	height: 18dp;
+	min-height: 0;
+	padding: 0 4dp;
+	border-radius: 0;
+}
+body.skin-classic.system-options .so-row.is-found
+{
+	background-color: transparent;
+}
+body.skin-classic.system-options .so-row.is-found .so-label
+{
+	color: var(--tip-title);
 }

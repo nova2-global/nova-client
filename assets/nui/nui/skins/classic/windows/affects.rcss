@@ -14,6 +14,11 @@ body.skin-classic.affects .affect
 	width: 25dp;
 	height: 26dp;
 }
+/* NOVA-218: legacy's second row 25 under the first (the icons are 26 tall). */
+body.skin-classic.affects .affects__row--below
+{
+	margin-top: -1dp;
+}
 body.skin-classic.affects .affect__image
 {
 	width: auto;

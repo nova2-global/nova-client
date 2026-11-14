@@ -726,7 +726,8 @@ class Viewer(R4Test):
         self.press(world, window, "preview_press", LEFT)
         viewer = [c[:1] + c[2:] for c in self.calls() if c[0] in ("Select", "SetParts")]
         self.assertEqual(viewer, [c[:1] + c[2:] for c in page])
-        self.assertTrue([c for c in viewer if c[0] == "SetParts"], "a weapon is worn")
+        # NOVA-259: the look comes with the race, in one Select.
+        self.assertEqual(viewer, [("Select", 1, 0, base.SWORD, 0, 0)], "a weapon is worn")
 
     def test_the_viewer_starts_turning_at_the_natural_distance(self):
         world, window = self.viewing()

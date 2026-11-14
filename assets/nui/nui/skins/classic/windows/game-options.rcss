@@ -8,7 +8,12 @@
    65, 90, 115 and 140 (the block toggles' two rows), 165, 190, 215, 240,
    265 and 290 (the pickup filter's two rows, NOVA-50), 315 (hide shops,
    NOVA-9), 340 (sashes, NOVA-20), 365 (hide buffi, NOVA-38), 390 and 415
-   (the mob info, NOVA-40) and 440 (Keyboard, NOVA-121; the board 483 tall). Labels are centered over their art as
+   (the mob info, NOVA-40), 440 (Keyboard, NOVA-121), 465 (new items,
+   NOVA-188), 490 (the yang line, NOVA-211) and 515 (the country flags,
+   NOVA-215; legacy's board 558 tall). The search field (NOVA-213, no
+   legacy original) sits under the rows at 20, 542 on the legacy edit
+   line's look, the board 575 tall; its results open upward over the rows.
+   Labels are centered over their art as
    legacy's text lines are, a wider one overflowing both ends. The choice in
    effect and a blocked request show the down art. The PvP hints are legacy
    button tooltips: outlined text above the button, without a board. */
@@ -16,7 +21,7 @@
 body.skin-classic.game-options
 {
 	width: 300dp;
-	height: 483dp;
+	height: 575dp;
 	min-width: 0;
 }
 /* z-index: the legacy rows below are positioned boxes placed from the
@@ -55,7 +60,7 @@ body.skin-classic.game-options .game-options__titlebar .nui-window__close
 body.skin-classic.game-options .game-options__body
 {
 	position: relative;
-	height: 483dp;
+	height: 575dp;
 	padding: 0;
 }
 body.skin-classic.game-options .go-row,
@@ -93,6 +98,10 @@ body.skin-classic.game-options .go-label--mob-level { top: 392dp; }
 body.skin-classic.game-options .go-label--mob-ai { top: 417dp; }
 /* The Keyboard row (NOVA-121; legacy's KEYBOARD_ROW_Y 440, the board 483). */
 body.skin-classic.game-options .go-label--keys { top: 442dp; }
+body.skin-classic.game-options .go-label--new-item { top: 467dp; }
+/* NOVA-211 and NOVA-215 (legacy's rows at 490 and 515, under NOVA-188's). */
+body.skin-classic.game-options .go-label--yang { top: 492dp; }
+body.skin-classic.game-options .go-label--flags { top: 517dp; }
 
 body.skin-classic.game-options .go-choice
 {
@@ -157,6 +166,12 @@ body.skin-classic.game-options .go-choice--mob-level-0 { left: 155dp; top: 390dp
 body.skin-classic.game-options .go-choice--mob-ai-1 { left: 90dp; top: 415dp; }
 body.skin-classic.game-options .go-choice--mob-ai-0 { left: 155dp; top: 415dp; }
 body.skin-classic.game-options .go-choice--keys-open { left: 90dp; top: 440dp; }
+body.skin-classic.game-options .go-choice--new-item-1 { left: 90dp; top: 465dp; }
+body.skin-classic.game-options .go-choice--new-item-0 { left: 155dp; top: 465dp; }
+body.skin-classic.game-options .go-choice--yang-1 { left: 90dp; top: 490dp; }
+body.skin-classic.game-options .go-choice--yang-0 { left: 155dp; top: 490dp; }
+body.skin-classic.game-options .go-choice--flags-1 { left: 90dp; top: 515dp; }
+body.skin-classic.game-options .go-choice--flags-0 { left: 155dp; top: 515dp; }
 
 /* The PvP choices on the small art; the choice in effect shows its down art,
    under the pointer too. */
@@ -388,4 +403,56 @@ body.skin-classic.game-options .gk-button__label
 	top: 0;
 	text-align: center;
 	pointer-events: none;
+}
+
+/* The search (NOVA-213): the field under the rows, its results opening
+   upward over them on the dark board legacy's lists use, a row every 18
+   (legacy's list rows), the section in the muted ink. A found row's label
+   takes the gold of legacy's headings until its timer ends. */
+body.skin-classic.game-options .go-search
+{
+	position: absolute;
+	left: 20dp;
+	top: 542dp;
+	width: 260dp;
+	height: 20dp;
+	margin: 0;
+}
+body.skin-classic.game-options .go-search__field
+{
+	width: 260dp;
+	height: 20dp;
+}
+body.skin-classic.game-options .go-results
+{
+	top: auto;
+	bottom: 24dp;
+	padding: 2dp;
+	border-radius: 0;
+	border-color: var(--border);
+	background-color: var(--surface-raised);
+}
+body.skin-classic.game-options .go-results__list
+{
+	height: 144dp;
+}
+body.skin-classic.game-options .go-result
+{
+	height: 18dp;
+	min-height: 0;
+	padding: 0 4dp;
+	border-radius: 0;
+}
+body.skin-classic.game-options .go-result__label
+{
+	color: var(--text);
+}
+body.skin-classic.game-options .go-row.is-found
+{
+	border-width: 0;
+	background-color: transparent;
+}
+body.skin-classic.game-options .go-row.is-found .go-label
+{
+	color: var(--tip-title);
 }

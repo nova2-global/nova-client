@@ -11,7 +11,12 @@
 	     feed), where legacy measured it every frame. Nothing takes the
 	     focus, so the buttons act on mousedown; Escape closes the board in
 	     its legacy place in the Escape chain (nui_hud.EscapeProxy). The
-	     classic art is under d:/ymir work/ (assets/ETC). -->
+	     classic art is under d:/ymir work/ (assets/ETC).
+	     Wave 10: the HP bar's orange damage trail drains by a transition
+	     (NOVA-208; trail and trail_snap), its tint follows the feeds
+	     target.poisoned and target.burning, the archer gauge below the
+	     board the feed target.arrow_percent (NOVA-209), and a metin stone's
+	     board shows the attack queue hint (NOVA-216). -->
 	<title>target</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="target.rcss"/>
@@ -19,7 +24,8 @@
 <body template="nui" class="nui-overlay nui-below-legacy-ui target" data-model="target">
 	<div class="target__wrap">
 		<div id="target-board" class="target-board nui-board nui-board--tooltip nui-fx nui-interactive" data-class-target-board--hp="show_hp" data-class-target-board--level="level > 0"
-			data-class-target-board--buttons="size(buttons) > 0" data-class-target-board--player="portrait != ''" data-class-target-board--numbers="hp_values != ''">
+			data-class-target-board--buttons="size(buttons) > 0" data-class-target-board--player="portrait != ''" data-class-target-board--numbers="hp_values != ''"
+			data-class-target-board--hint="hint != ''">
 			<div class="target-board__head">
 				<!-- The modern head: a monster's level in a badge, its name with
 				     its grade, its HP in percent; the HP bar below the head.
@@ -34,8 +40,13 @@
 					data-event-mousedown="info(ev.button)">?</button>
 				<span id="target-values" class="target-board__values" data-if="hp_values != ''">{{ hp_values }}</span>
 				<span id="target-percent" class="target-board__pct" data-if="show_hp">{{ hp * 100 | format(0) }}%</span>
-				<progress id="target-hp" class="nui-gauge nui-gauge--red target-board__hp" direction="right"
-					data-if="show_hp" data-attr-value="hp"/>
+				<!-- Classic's legacy gauge, tinted as the bar below, with the
+				     damage trail over its empty part (the legacy orange art). -->
+				<span class="target-board__hp-box" data-if="show_hp"><progress id="target-hp" class="nui-gauge nui-gauge--red target-board__hp"
+					direction="right" data-attr-value="hp" data-class-is-poisoned="poisoned" data-class-is-burning="burning && !poisoned"/><span
+					class="target-board__trail-track"><span id="target-trail-classic" class="target-board__trail nui-anim"
+					data-attr-class="'target-board__trail nui-anim target-board__trail--' + trail + (trail_snap ? ' is-snap' : '')"
+					data-style---target-hp="(hp * 100) + '%'"></span></span></span>
 			</div>
 			<!-- A player target's modern head, in place of the one above: the
 			     portrait of its race in a round clip, its name over its class
@@ -50,15 +61,23 @@
 			<button id="target-close" class="nui-button nui-button--ghost nui-button--icon nui-anim target-board__close"
 				data-event-mousedown="close(ev.button)"><span class="nui-glyph nui-glyph--close target-board__glyph"><span
 				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
-			<!-- The HP bar: the gauge with its damage chip, a sheen that crosses
-			     the fill once every 4s, the empty part drawn over the sheen, and
-			     ticks at every tenth. -->
+			<!-- The HP bar: the gauge with its damage chip (green while the
+			     target is poisoned, yellow while it burns), a sheen that crosses
+			     the fill once every 4s, the empty part drawn over the sheen, the
+			     orange damage trail from the HP to where it drains, and ticks at
+			     every tenth. -->
 			<div id="target-bar" class="target-board__bar" data-if="show_hp">
-				<progress id="target-hp-bar" class="nui-gauge nui-gauge--red target-board__gauge" direction="right" data-attr-value="hp"/>
+				<progress id="target-hp-bar" class="nui-gauge nui-gauge--red target-board__gauge" direction="right" data-attr-value="hp"
+					data-class-is-poisoned="poisoned" data-class-is-burning="burning && !poisoned"/>
 				<nui-blink class="target-board__sheen-clock" period="4"><span class="target-board__sheen nui-anim"></span></nui-blink>
 				<progress class="target-board__cover" direction="left" data-attr-value="1 - hp"/>
+				<span id="target-trail" class="target-board__trail nui-anim"
+					data-attr-class="'target-board__trail nui-anim target-board__trail--' + trail + (trail_snap ? ' is-snap' : '')"
+					data-style---target-hp="(hp * 100) + '%'"></span>
 				<span class="target-board__ticks"></span>
 			</div>
+			<!-- A metin stone: Shift + right-click queues it (NOVA-216). -->
+			<div id="target-hint" class="target-board__hint" data-if="hint != ''">{{ hint }}</div>
 			<!-- The repeated slot reads only its index and top-level keys: RmlUi
 			     updates a repeated element's own views with the data-for that
 			     removes it, so when the list shrinks they could read an entry
@@ -69,6 +88,13 @@
 						data-event-mousedown="press(b.id, ev.button)"><span class="target-board__label">{{ b.label }}</span></button>
 				</div>
 			</div>
+			<!-- The archer gauge (NOVA-209) below the board while the player
+			     holds a bow and has a target: empty at 80% arrow damage, full
+			     at 120%, a mark at 100%; its tooltip says the bonus. -->
+			<span id="target-arrow" class="target-arrow nui-has-tooltip nui-interactive" data-if="arrow_percent > 0"><progress
+				id="target-arrow-gauge" class="target-arrow__gauge" direction="top" data-attr-value="(arrow_percent - 80) / 40"/><span
+				class="target-arrow__mark"></span><span id="target-arrow-tip" class="nui-tooltip nui-anim target-arrow__tip"
+				data-class-is-up="arrow_percent > 100" data-class-is-down="arrow_percent < 100">{{ arrow_pre }}{{ arrow_percent > 100 ? '+' : (100 > arrow_percent ? '-' : '') }}{{ arrow_percent > 100 ? arrow_percent - 100 : 100 - arrow_percent }}%{{ arrow_post }}</span></span>
 		</div>
 	</div>
 </body>

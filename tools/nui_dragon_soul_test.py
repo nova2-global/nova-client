@@ -337,7 +337,9 @@ INTERFACE_DS = ("DragonSoulActivate", "DragonSoulDeactivate", "Highligt_Item", "
 # game.GameWindow's world drop (game.py OnMouseLeftButtonUp to
 # __SendDropItemPacket), as nui_inventory_test drives it.
 GAME_DROP = ("OnMouseLeftButtonUp", "__PutItem", "__PutMoney", "__DropMoney", "__DropItem", "RequestDropItem",
-             "__SendDropItemPacket")
+             "__SendDropItemPacket",
+             # NOVA-189: RequestDropItem ends the destroy warning too.
+             "destroyQuestionDialog", "__CloseDestroyQuestion")
 
 
 def interface_of(world, qualified=True):

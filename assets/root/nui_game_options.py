@@ -32,7 +32,17 @@ table. A left press on a key cell waits for the next key the game window gets
 (game.py gives keybindings' capture every key first); Escape ends a waiting
 cell before it closes the window, and a hide ends it too. The page stays
 across a hide, as the place does. The window listens to the table, so a
-change made in the legacy dialog shows here."""
+change made in the legacy dialog shows here.
+
+The yang row (NOVA-211) and the country flags row (NOVA-215) set
+constInfo's saved options (config/game_options.cfg, saved at once; the flags
+also reach C++ through chrmgr.SetShowLanguageFlag), as legacy's rows do.
+
+The search field (NOVA-213) lists the rows of settings_index that match
+what the player types; a left press on a result (or Enter, the first one)
+highlights its row for settings_index.FOUND_SECONDS (a nui-countdown timer
+ends it) and empties the field. The field takes the focus on a press, since
+the body takes none."""
 
 import chat
 import constInfo
@@ -44,11 +54,14 @@ import shop
 import systemSetting
 import uiGameOption
 import uiPrivateShopBuilder
+import item_glow
 
 import nui
 import nui_hud
+import settings_index
 
 DOCUMENT = "nui/windows/game-options/game-options.rml"
+SEARCH_FIELD = "go-search"
 BLOCK_COUNT = 6
 # The pickup filter's categories, in systemSetting.PICKUP_FILTER_*'s order
 # (uigameoption.py pickupFilterButtonList): equipment, special, potions, others.
@@ -79,6 +92,15 @@ def _hide_buffi():
 	return bool(uiGameOption.IsHideBuffi())
 
 
+# NOVA-211, NOVA-215: the rows of constInfo's saved options, by model key.
+SAVED_ROWS = {"yang_text": constInfo.OPTION_YANG_TEXT, "country_flags": constInfo.OPTION_COUNTRY_FLAGS}
+
+
+def _saved(name):
+	"""A saved option of constInfo's file (1 or 0) as the row shows it."""
+	return bool(constInfo.GET_SAVED_OPTION(name))
+
+
 class GameOptionsBoard(nui.Window):
 	"""The game options' document and model; its events go to its facade."""
 
@@ -96,7 +118,9 @@ class GameOptionsBoard(nui.Window):
 		return {"name_color": 0, "target_board": 0, "pk_mode": 0, "block": 0, "blocked": [False] * BLOCK_COUNT,
 		        "view_chat": True, "always_show_name": True, "show_damage": True, "sales_text": True,
 		        "pickup": [True] * PICKUP_COUNT, "hide_shops": False, "show_sash": True, "hide_buffi": False,
-		        "mob_level": True, "mob_ai": True, "page": "main", "key_rows": [], "notice": ""}
+		        "mob_level": True, "mob_ai": True, "new_item_glow": True, "page": "main", "key_rows": [], "notice": "",
+		        "yang_text": True, "country_flags": True, "searching": False, "results": [], "found": "",
+		        "found_end": 0.0}
 
 	@nui.on("choose")
 	def on_choose(self, what, value, button):
@@ -133,6 +157,26 @@ class GameOptionsBoard(nui.Window):
 		if button == 0:
 			self._owner.Close()
 
+	# NOVA-213: the search field, its results and the highlight's timer. The
+	# body takes no focus, so the field asks for its own.
+	@nui.on("search_press")
+	def on_search_press(self, button):
+		if button == 0:
+			self.focus(SEARCH_FIELD)
+
+	@nui.on("search")
+	def on_search(self, text, linebreak=False):
+		self._owner.nui_search(text, linebreak)
+
+	@nui.on("goto")
+	def on_goto(self, option_id, button):
+		if button == 0:
+			self._owner.nui_goto(option_id)
+
+	@nui.on("found_done")
+	def on_found_done(self):
+		self._owner.nui_found_done()
+
 
 class OptionDialog(nui_hud.LayoutCalls):
 	"""uiGameOption.OptionDialog on NovaUI (SystemDialog.gameOptionDlg)."""
@@ -152,6 +196,10 @@ class OptionDialog(nui_hud.LayoutCalls):
 		# NOVA-121: the keys page and the table it shows.
 		self.page = "main"
 		self.keyPage = keybindings.Page(self.RefreshKeys)
+		# NOVA-213: the search's results and the row a result highlights.
+		self.results = []
+		self.found = ""
+		self.foundEnd = 0.0
 		keybindings.current().listen(self)
 		if not nui_hud.has_engine():
 			return
@@ -202,7 +250,10 @@ class OptionDialog(nui_hud.LayoutCalls):
 		        "show_damage": bool(systemSetting.IsShowDamage()), "sales_text": bool(systemSetting.IsShowSalesText()),
 		        "pickup": self.pickup(), "hide_shops": _hide_shops(), "show_sash": _show_sash(), "hide_buffi": _hide_buffi(),
 		        "mob_level": bool(systemSetting.IsShowMobLevel()), "mob_ai": bool(systemSetting.IsShowMobAIFlag()),
-		        "page": self.page, "key_rows": self.key_rows(), "notice": nui.plain_text(self.keyPage.notice_text())}
+		        "new_item_glow": item_glow.enabled(),
+		        "page": self.page, "key_rows": self.key_rows(), "notice": nui.plain_text(self.keyPage.notice_text()),
+		        "yang_text": _saved(constInfo.OPTION_YANG_TEXT), "country_flags": _saved(constInfo.OPTION_COUNTRY_FLAGS),
+		        "searching": False, "results": [], "found": self.found, "found_end": self.foundEnd}
 
 	def key_rows(self):
 		"""keybindings.Page's rows, their texts plain (they come from the
@@ -252,6 +303,10 @@ class OptionDialog(nui_hud.LayoutCalls):
 		keyPage = getattr(self, "keyPage", None)
 		if keyPage is not None:
 			keyPage.cancel()
+		# A search and its highlight end with the window (NOVA-213).
+		self.results = []
+		self.found = ""
+		self.foundEnd = 0.0
 		if self.escapeProxy is not None:
 			self.escapeProxy.hide()
 		if self.demand is not None:
@@ -383,6 +438,10 @@ class OptionDialog(nui_hud.LayoutCalls):
 			return int(bool(systemSetting.IsShowMobLevel()))
 		if what == "mob_ai":
 			return int(bool(systemSetting.IsShowMobAIFlag()))
+		if what == "new_item_glow":
+			return int(item_glow.enabled())
+		if what in SAVED_ROWS:
+			return int(_saved(SAVED_ROWS[what]))
 		return None
 
 	def nui_choose(self, what, value):
@@ -431,11 +490,21 @@ class OptionDialog(nui_hud.LayoutCalls):
 		elif what == "mob_ai" and value in (0, 1):
 			systemSetting.SetShowMobAIFlag(value)
 			self._set(mob_ai=bool(systemSetting.IsShowMobAIFlag()))
+		elif what == "new_item_glow" and value in (0, 1) and hasattr(systemSetting, "SetShowNewItemHighlight"):
+			# NOVA-188 (legacy's row: uiGameOption.__OnClickNewItemButton).
+			systemSetting.SetShowNewItemHighlight(value)
+			if not value:
+				item_glow.forget_all()
+			self._set(new_item_glow=item_glow.enabled())
 		elif what == "hide_buffi" and value in (0, 1):
 			# Legacy's row (uiGameOption.__OnClickHideBuffiButton): 0 shows the
 			# buffi, 1 hides them; the server answers with GC::BUFFI_HIDE.
 			net.SendChatPacket("/hide_buffi %d" % value)
 			self.RefreshHideBuffi()
+		elif what in SAVED_ROWS and value in (0, 1):
+			# NOVA-211, NOVA-215 (legacy's rows: uiGameOption.__OnClickSavedOptionButton).
+			constInfo.SET_SAVED_OPTION(SAVED_ROWS[what], value)
+			self._set(**{what: _saved(SAVED_ROWS[what])})
 
 	def __CheckPvPProtectedLevelPlayer(self):
 		if player.GetStatus(player.LEVEL) < constInfo.PVPMODE_PROTECTED_LEVEL:
@@ -474,3 +543,34 @@ class OptionDialog(nui_hud.LayoutCalls):
 			return
 		self.RefreshBlock()
 		net.SendChatPacket("/setblockmode " + str(uiGameOption.blockMode ^ _block_bits()[index]))
+
+	# --- the search (NOVA-213) ----------------------------------------------------------
+
+	def nui_search(self, text, linebreak=False):
+		"""The field's text: its matches; Enter opens the first one."""
+		self.results = settings_index.result_rows(text, settings_index.GAME, nui.plain_text)
+		self._set(searching=bool((text or "").strip()), results=self.results)
+		if linebreak and self.results:
+			self.nui_goto(self.results[0]["id"])
+
+	def nui_goto(self, option_id):
+		"""A result: its row highlighted for a moment (on the main page, where
+		every row of this window is), the field emptied."""
+		option = settings_index.OPTION.get(option_id)
+		if option is None or option.window != settings_index.GAME:
+			return
+		if self.page != "main":
+			self.nui_keypage("back")
+		self.found = option_id
+		self.foundEnd = nui.now() + settings_index.FOUND_SECONDS
+		self.results = []
+		self._set(found=self.found, found_end=self.foundEnd, searching=False, results=[])
+		board = self._board()
+		if board is not None:
+			board.set_value(SEARCH_FIELD, "")
+
+	def nui_found_done(self):
+		"""The highlight's time is over."""
+		self.found = ""
+		self.foundEnd = 0.0
+		self._set(found="", found_end=0.0)

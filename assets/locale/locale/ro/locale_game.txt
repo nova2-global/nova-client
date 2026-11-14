@@ -1290,3 +1290,189 @@ SHOP_TEXT_OR	sau
 SHOP_BUY_COUNT_TITLE	Cantitate de cumpărat (max. %d)
 DO_YOU_BUY_WITH_ITEM	Vrei să cumperi %s pentru %s?
 SHOP_BULK_BUY_HINT	Shift + click: cumpără mai multe
+SEARCH_IN_SHOPS	Ctrl + click: caută în magazine
+SEARCH_IN_WIKI	Shift + right-click: deschide în wiki
+MOVE_FROM_SAFEBOX_TO_INVENTORY	Right-click: mută în inventar
+COSTUME_PREVIEW_HINT	Ține %s: previzualizare pe personajul tău
+DESTROY_ITEM_WARNING	Ești sigur că vrei să distrugi definitiv acest obiect?
+ITEM_SPLIT_ALL	Împarte tot
+SHOP_MARK_SELL_HINT	Tab + clic: marchează pentru vânzare
+CONFIRM_LEVEL_UP_QUESTION	Vrei să atingi nivelul %d? Temnițele cu nivel maxim se pot închide pentru tine.
+ANTI_EXP_FREEZE_HINT	Clic: îngheață EXP
+ANTI_EXP_FROZEN_HINT	EXP înghețat. Clic: dezgheață
+DETAILS_TITLE	Detalii
+DETAILS_CATE_1	Daune/Apărare
+DETAILS_1	Tare vs Jumătate-Om
+DETAILS_TOOLTIP_1	Tare vs Semi-Oameni: Daune mai mari împotriva Semi-Oameni.
+DETAILS_2	Rezist la Jumăt.-Om
+DETAILS_TOOLTIP_2	Rezistenţă vs Semi-Oameni: Reduce daunele primite de la Semi-Oameni.
+DETAILS_3	Tare vs Orci
+DETAILS_TOOLTIP_3	Tare vs Orci: Daune mai mari împotriva orcilor.
+DETAILS_4	Tare vs Vampir
+DETAILS_TOOLTIP_4	Tare vs Vampiri: Daune mai mari împotriva vampirilor.
+DETAILS_5	Tare vs Monstru
+DETAILS_TOOLTIP_5	Tare vs Monştri: Daune mai mari împotriva monştrilor.
+DETAILS_ELEMENTAL	Tare vs elemente
+DETAILS_TOOLTIP_ELEMENTAL	Tare impotriva elementelor: Provoaca daune mari tuturor elementelor.
+DETAILS_BOSS	Tare vs boss
+DETAILS_TOOLTIP_BOSS	Tare vs bosi: Dai mai mult damage in bosi.
+DETAILS_STONE	Tare vs pietre
+DETAILS_TOOLTIP_METIN	Tare vs pietre: Dai mai mult damage in pietrele metin.
+DETAILS_7	Tare vs Animale
+DETAILS_TOOLTIP_7	Tare vs Animale: Daune mai mari împotriva animalelor sălbatice.
+DETAILS_8	Tare vs Esoterici
+DETAILS_TOOLTIP_8	Tare vs Ezoterici: Daune mai mari împotriva ezotericilor.
+DETAILS_9	Tare vs Demon
+DETAILS_TOOLTIP_9	Tare vs Demoni: Daune mai mari împotriva demonilor.
+DETAILS_12	Valoarea Atacului
+DETAILS_TOOLTIP_12	Măreşte valoarea atacului.
+DETAILS_13	Valoarea Apărării
+DETAILS_TOOLTIP_13	Măreşte valoarea apărării.
+DETAILS_14	Pagubă Medie
+DETAILS_TOOLTIP_14	Măreşte paguba medie executată pe inamici în atac.
+DETAILS_15	Rezist. Pagubă Medie
+DETAILS_TOOLTIP_15	Rezistenţă vs pagubă medie: reduce daunele primite în atac.
+DETAILS_16	Pagubă Abilitate
+DETAILS_TOOLTIP_16	Măreşte daunele executate de o abilitate.
+DETAILS_17	Rezistent Pagubă Abilitate
+DETAILS_TOOLTIP_17	Rezistenţă vs pagubă abilitate. Reduce daunele primite de la o abilitate.
+DETAILS_18	Atac Fizic/Magic
+DETAILS_TOOLTIP_18	Măreşte valoarea atacului fizic şi magic.
+DETAILS_19	Atac Magic
+DETAILS_TOOLTIP_19	Măreşte daunele atacului magic executat pe inamici în atac.
+DETAILS_20	Şansă Lovit. Critică
+DETAILS_TOOLTIP_20	Creşte şansa unei lovituri critice.
+DETAILS_21	Lovitură Pătrunzăt.
+DETAILS_TOOLTIP_21	Probabilitate lovitură pătrunzătoare: Creşte şansa de a executa o lovitură pătrunzătoare.
+DETAILS_22	Rezist Lovit. Crit.
+DETAILS_TOOLTIP_22	Rezistenţă vs lovitură critică: Reduce daunele făcute de o lovitură critică.
+DETAILS_23	Rezist Lov. Pătrunz.
+DETAILS_TOOLTIP_23	Rezistenţă vs lovitură pătrunzătoare: Reduce daunele făcute de o lovitură pătrunzătoare.
+DETAILS_CATE_2	Bonus element
+DETAILS_76	Rezistenţă la Magie
+DETAILS_TOOLTIP_76	Reduce daunele primite de la atacul magic.
+DETAILS_24	Rezist. la Fulger
+DETAILS_TOOLTIP_24	Reduce daunele primite de la anumiţi monştri.
+DETAILS_25	Rezist. la Gheaţă
+DETAILS_TOOLTIP_25	Reduce daunele primite de la anumiţi monştri.
+DETAILS_26	Rezist. la Întuneric
+DETAILS_TOOLTIP_26	Rezistenţă la întuneric: Reduce daunele primite de la anumiţi monştri.
+DETAILS_27	Rezist. la Foc
+DETAILS_TOOLTIP_27	Reduce daunele primite de la anumiţi monştri.
+DETAILS_28	Rezist. la Vânt
+DETAILS_TOOLTIP_28	Reduce daunele primite de la anumiţi monştri.
+DETAILS_29	Rezist. la Pământ
+DETAILS_TOOLTIP_29	Reduce daunele primite de la anumiţi monştri.
+DETAILS_77	Anti-Magie
+DETAILS_TOOLTIP_77	Reduce rezistenţa magică a oponenţilor.
+DETAILS_30	Puterea Fulgerului
+DETAILS_TOOLTIP_30	Creşte daunele făcute cu puterea fulgerului.
+DETAILS_31	Puterea Gheţii
+DETAILS_TOOLTIP_31	Creşte daunele făcute cu puterea gheţii.
+DETAILS_32	Puterea Întunecată
+DETAILS_TOOLTIP_32	Creşte daunele făcute cu puterea întunecată.
+DETAILS_33	Puterea Focului
+DETAILS_TOOLTIP_33	Creşte daunele făcute cu puterea focului.
+DETAILS_34	Puterea Vântului
+DETAILS_TOOLTIP_34	Creşte daunele făcute cu puterea vântului.
+DETAILS_35	Puterea Pământului
+DETAILS_TOOLTIP_35	Creşte daunele făcute cu puterea pământului.
+DETAILS_CATE_3	Bonus clasă
+DETAILS_36	Tare vs Războinic
+DETAILS_TOOLTIP_36	Tare vs Războinici: Daune mai mari împotriva războinicilor.
+DETAILS_37	Tare vs Ninja
+DETAILS_TOOLTIP_37	Tare vs Ninja: Daune mai mari împotriva ninja.
+DETAILS_38	Tare vs Sura
+DETAILS_TOOLTIP_38	Tare vs Sura: Daune mai mari împotriva sura.
+DETAILS_39	Tare vs Şaman
+DETAILS_TOOLTIP_39	Tare vs Şamani: Daune mai mari împotriva şamanilor.
+DETAILS_41	Apărare vs Războinic
+DETAILS_TOOLTIP_41	Şansă de apărare la atacurile primite de la războinici: Reduce daunele primite de la războinici.
+DETAILS_42	Apărare vs Ninja
+DETAILS_TOOLTIP_42	Şansă de apărare la atacurile primite de la ninja: Reduce daunele primite de la ninja.
+DETAILS_43	Apărare vs Sura
+DETAILS_TOOLTIP_43	Şansă de apărare la atacurile primite de la sura: Reduce daunele primite de la sura.
+DETAILS_44	Apărare vs Şaman
+DETAILS_TOOLTIP_44	Şansă de apărare la atacurile primite de la şaman: Reduce daunele primite de la şaman.
+DETAILS_CATE_4	Bonus armă
+DETAILS_46	Apărare Sabie
+DETAILS_TOOLTIP_46	Reduce daunele produse de o sabie.
+DETAILS_47	Apărare Două Mâini
+DETAILS_TOOLTIP_47	Reduce daunele produse de o armă două-mâini.
+DETAILS_48	Apărare Pumnal
+DETAILS_TOOLTIP_48	Reduce daunele produse de un pumnal.
+DETAILS_50	Apărare Clopot
+DETAILS_TOOLTIP_50	Reduce daunele produse de un clopot.
+DETAILS_51	Apărare Evantai
+DETAILS_TOOLTIP_51	Reduce daunele produse de un evantai.
+DETAILS_52	Apărare Săgeată
+DETAILS_TOOLTIP_52	Reduce daunele produse de un arc cu săgeţi
+DETAILS_CATE_5	Alte bonusuri
+DETAILS_53	Şansă de Confuzie
+DETAILS_TOOLTIP_53	Creşte şansa de a bate un oponent.
+DETAILS_54	Şansă de Încetinire
+DETAILS_TOOLTIP_54	Creşte şansa de a încetini un oponent.
+DETAILS_55	Şansă de Otrăvire
+DETAILS_TOOLTIP_55	Creşte şansa de a otrăvi un oponent.
+DETAILS_56	Rezistenţă la Otravă
+DETAILS_TOOLTIP_56	Reduce daunele produse de otravă.
+DETAILS_59	Fură PV
+DETAILS_TOOLTIP_59	Fură PV de la oponenţi atunci când îi loveşti.
+DETAILS_60	Fură PM
+DETAILS_TOOLTIP_60	Fură PM de la oponenţi atunci când îi loveşti.
+DETAILS_61	Recuperează PV
+DETAILS_TOOLTIP_61	Măreşte recuperarea punctelor de viaţă.
+DETAILS_62	Recuperează PM
+DETAILS_TOOLTIP_62	Măreşte recuperarea punctelor de magie.
+DETAILS_63	Blochează Atac
+DETAILS_TOOLTIP_63	Şansă de blocare a unui atac fizic: Creşte şansa de a evita un atac fizic.
+DETAILS_64	Evită Atac Săgeţi
+DETAILS_TOOLTIP_64	Şansă de evitare a unui atac cu săgeţi: Creşte şansa de a evita un atac cu săgeţi sau de la distanţă de la un monstru.
+DETAILS_65	Reflectă Atac Fizic
+DETAILS_TOOLTIP_65	Şansă de a reflecta lovituri fizice: O parte dintre daunele fizice de la oponent sunt reflectate către el.
+DETAILS_66	Recup. PV la Ucidere
+DETAILS_TOOLTIP_66	Recuperare PV când omori: Punctele tale de viaţă cresc când omori un oponent.
+DETAILS_67	Recup. PM la Ucidere
+DETAILS_TOOLTIP_67	Recuperare PM când omori: Punctele tale de magie cresc când omori un oponent.
+DETAILS_68	Dublu EXP
+DETAILS_TOOLTIP_68	Şansa de a câştiga experienţă dublă: Creşte şansa de a câştiga bonus de EXP atunci când omori un oponent.
+DETAILS_69	Dublu Yang
+DETAILS_TOOLTIP_69	Şansă la drop dublu Yang: Creşte şansa de a primi de două ori cantiatea de Yang.
+DETAILS_70	Şansă Drop
+DETAILS_TOOLTIP_70	Şansă la drop obiecte: Creşte şansa de a primi de două ori numărul obiectelor.
+DETAILS_CATE_6	Bonus special
+DETAILS_71	Valoarea Atacului
+DETAILS_TOOLTIP_71	Măreşte valoarea atacului.
+DETAILS_72	Valoarea Apărării
+DETAILS_TOOLTIP_72	Măreşte valoarea apărării.
+DETAILS_73	EXP
+DETAILS_TOOLTIP_73	Creşte colectarea de experienţă.
+DETAILS_74	Şansă Drop
+DETAILS_TOOLTIP_74	Şansă drop obiecte: Îţi dublează şansa de a colecta obiecte.
+DETAILS_75	Dublu Yang
+DETAILS_TOOLTIP_75	Şansă drop Yang: Îţi dublează şansa de a colecta mai mult Yang.
+STAT_PICK_TITLE_CON	Vitalitate
+STAT_PICK_TITLE_INT	Inteligență
+STAT_PICK_TITLE_STR	Putere
+STAT_PICK_TITLE_DEX	Dexteritate
+SKILL_MAX_UP_HINT	Shift + click: crește până la Maestru
+REMOVE_AFFECT_QUESTION	Vrei să dezactivezi %s?
+REFINE_FAST_UPGRADE	Îmbunătățire rapidă
+ATLAS_MARK_WIKI_HINT	Click pentru a deschide wiki-ul
+METIN_QUEUE_ADDED	[Coadă Metin] Piatra a fost adăugată în coadă.
+METIN_QUEUE_REMOVED	[Coadă Metin] Piatra a fost scoasă din coadă.
+METIN_QUEUE_FULL	[Coadă Metin] Coada ta de atac este plină.
+METIN_QUEUE_PREMIUM_HINT	[Coadă Metin] Cu un abonament premium poți adăuga mai multe pietre.
+AUTO_SHOUT_TOOLTIP	Strigăt automat
+AUTO_SHOUT_TITLE	Strigăt automat
+AUTO_SHOUT_DESC	Repetă strigătul tău la fiecare 30 s (16 s cu premium).
+AUTO_SHOUT_MESSAGE	Mesaj
+AUTO_SHOUT_STATUS_OFF	Oprit
+AUTO_SHOUT_STATUS_WAITING	Pornire...
+AUTO_SHOUT_STATUS_ON	Pornit
+AUTO_SHOUT_NEXT	Următorul strigăt în
+AUTO_SHOUT_START	Pornește
+AUTO_SHOUT_STOP	Oprește
+AUTO_SHOUT_NO_MESSAGE	Scrie mai întâi un mesaj pentru strigătul automat.
+TARGET_ARROW_DAMAGE	%s daune de săgeată
+TARGET_METIN_QUEUE_HINT	Shift + clic dreapta: adaugă în coada de atac

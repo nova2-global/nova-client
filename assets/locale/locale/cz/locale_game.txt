@@ -1290,3 +1290,189 @@ SHOP_TEXT_OR	nebo
 SHOP_BUY_COUNT_TITLE	Počet ke koupi (max. %d)
 DO_YOU_BUY_WITH_ITEM	Chceš koupit %s za %s?
 SHOP_BULK_BUY_HINT	Shift + click: koupit více kusů
+SEARCH_IN_SHOPS	Ctrl + click: hledat v obchodech
+SEARCH_IN_WIKI	Shift + right-click: otevřít ve wiki
+MOVE_FROM_SAFEBOX_TO_INVENTORY	Right-click: přesunout do inventáře
+COSTUME_PREVIEW_HINT	Podržte %s: náhled na vaší postavě
+DESTROY_ITEM_WARNING	Opravdu chcete tuto položku trvale zničit?
+ITEM_SPLIT_ALL	Rozdělit vše
+SHOP_MARK_SELL_HINT	Tab + klik: označit k prodeji
+CONFIRM_LEVEL_UP_QUESTION	Chceš dosáhnout úrovně %d? Dungeony s omezením úrovně se ti mohou uzavřít.
+ANTI_EXP_FREEZE_HINT	Klik: zmrazit EXP
+ANTI_EXP_FROZEN_HINT	EXP zmrazeny. Klik: rozmrazit
+DETAILS_TITLE	Detaily
+DETAILS_CATE_1	Poškození/Obrana
+DETAILS_1	Síla proti pololidem
+DETAILS_TOOLTIP_1	Silný proti pololidem: dává větší poškození pololidem.
+DETAILS_2	Odol.proti pololidem
+DETAILS_TOOLTIP_2	Odolnost proti pololidem: snižuje poškození, které utržíš od pololidí.
+DETAILS_3	Síla proti Orkům
+DETAILS_TOOLTIP_3	Silný proti Orkům: dává větší poškození Orkům.
+DETAILS_4	Síla proti nemrtvým
+DETAILS_TOOLTIP_4	Síla proti nemrtvým: dává větší poškození nemrtvým.
+DETAILS_5	Síla proti monstrům
+DETAILS_TOOLTIP_5	Síla proti příšerám: dává větší poškození příšerám.
+DETAILS_ELEMENTAL	Strong vs Elementals
+DETAILS_TOOLTIP_ELEMENTAL	Strong against Elementals: Deals heavier damage to elementals.
+DETAILS_BOSS	Strong vs Bosses
+DETAILS_TOOLTIP_BOSS	Strong against Bosses: Deals heavier damage to bosses.
+DETAILS_STONE	Strong vs Stones
+DETAILS_TOOLTIP_METIN	Strong against Metin Stone: Deals heavier damage to metin stones.
+DETAILS_7	Síla proti zvířatům
+DETAILS_TOOLTIP_7	Síla proti zvířatům: zvyšuje poškození divokým zvířatům.
+DETAILS_8	Síla proti esoter.
+DETAILS_TOOLTIP_8	Síla proti ezoterikům: dává větší poškození ezoterikům.
+DETAILS_9	Síla proti ďáblu
+DETAILS_TOOLTIP_9	Síla proti ďáblům: dává větší poškození ďáblům.
+DETAILS_12	Hodnota útoku
+DETAILS_TOOLTIP_12	Zvýší tvou hodnotu útoku.
+DETAILS_13	Hodnota obrany
+DETAILS_TOOLTIP_13	Zvýší tvou hodnotu obrany.
+DETAILS_14	Průměrné poškození
+DETAILS_TOOLTIP_14	Zvyšuje průměrné poškození, které při útoku způsobíš protivníkovi.
+DETAILS_15	Prům. odol. pošk.
+DETAILS_TOOLTIP_15	Odolnost proti průměrnému poškození: snižuje poškození, které utržíš během útoku.
+DETAILS_16	Poškození schopností
+DETAILS_TOOLTIP_16	Zvyšuje poškození způsobené schopností.
+DETAILS_17	Odolnost proti poš. schop.
+DETAILS_TOOLTIP_17	Zvyšuje poškození způsobené schopností.
+DETAILS_18	Útok magií/zbraní
+DETAILS_TOOLTIP_18	Zvyšuje hodnotu fyzického i magického útoku.
+DETAILS_19	Magický útok
+DETAILS_TOOLTIP_19	Zvýší průměrné poškození, které dáváš nepřátelům během útoku.
+DETAILS_20	Šance na krit. zásah
+DETAILS_TOOLTIP_20	Zvýší šanci docílit v boji kritický zásah.
+DETAILS_21	Pronikavý zásah
+DETAILS_TOOLTIP_21	Šance na pronikavý zásah:. zvýší šanci na pronikavý zásah během boje.
+DETAILS_22	Odol. pr. krit. zás.
+DETAILS_TOOLTIP_22	Odolnost proti kritickému zásahu: snižuje poškození od kritického zásahu.
+DETAILS_23	Odol. pr. pron. zás.
+DETAILS_TOOLTIP_23	Odolnost proti pronikavému zásahu: snižuje poškození od pronikavého zásahu.
+DETAILS_CATE_2	Bonus elementálu
+DETAILS_76	Odolnost proti magii
+DETAILS_TOOLTIP_76	Snižuje poškození, které utrpíš od magického útoku.
+DETAILS_24	Odol. proti blesku
+DETAILS_TOOLTIP_24	Snižuje poškození, které ti způsobí některé příšery.
+DETAILS_25	Odol. proti ledu
+DETAILS_TOOLTIP_25	Snižuje poškození, které ti způsobí některé příšery.
+DETAILS_26	Odol. proti temnotě
+DETAILS_TOOLTIP_26	Odolnost proti temnotě: snižuje poškození, které ti způsobí některé příšery.
+DETAILS_27	Odolnost proti ohni
+DETAILS_TOOLTIP_27	Snižuje poškození, které ti způsobí některé příšery.
+DETAILS_28	Odolnost proti větru
+DETAILS_TOOLTIP_28	Snižuje poškození, které ti způsobí některé příšery.
+DETAILS_29	Odolnost proti Zemi
+DETAILS_TOOLTIP_29	Snižuje poškození, které ti způsobí některé příšery.
+DETAILS_77	Odolnost proti magii
+DETAILS_TOOLTIP_77	Snižuje odolnost proti magii tvého protivníka.
+DETAILS_30	Síla blesku
+DETAILS_TOOLTIP_30	Zvyšuje poškození způsobené sílou blesku.
+DETAILS_31	Síla ledu
+DETAILS_TOOLTIP_31	Zvyšuje poškození způsobené sílou ledu.
+DETAILS_32	Síla temnoty
+DETAILS_TOOLTIP_32	Zvyšuje poškození způsobené sílou temnoty.
+DETAILS_33	Síla ohně
+DETAILS_TOOLTIP_33	Zvyšuje poškození způsobené sílou ohně.
+DETAILS_34	Síla větru
+DETAILS_TOOLTIP_34	Zvyšuje poškození způsobené sílou větru.
+DETAILS_35	Síla Země
+DETAILS_TOOLTIP_35	Zvyšuje poškození způsobené sílou Země.
+DETAILS_CATE_3	Bonus třídy
+DETAILS_36	Síla proti váleč.
+DETAILS_TOOLTIP_36	Síla proti válečníkům: dává větší poškození válečníkům.
+DETAILS_37	Síla proti ninjům
+DETAILS_TOOLTIP_37	Síla proti ninjům: dává větší poškození ninjům.
+DETAILS_38	Síla proti Surům
+DETAILS_TOOLTIP_38	Síla proti Surům: dává větší poškození Surům.
+DETAILS_39	Síla proti šamanům
+DETAILS_TOOLTIP_39	Síla proti šamanům: dává větší poškození šamanům.
+DETAILS_41	Obrana proti váleč.
+DETAILS_TOOLTIP_41	Odolnost proti válečníkům: snižuje poškození, které utrpíš od válečníků.
+DETAILS_42	Obrana proti ninjům
+DETAILS_TOOLTIP_42	Odolnost proti ninjům: snižuje poškození, které utrpíš od ninjů.
+DETAILS_43	Obrana proti Surům
+DETAILS_TOOLTIP_43	Odolnost proti Surům: snižuje poškození, které utrpíš od Surů.
+DETAILS_44	Obrana proti šamanům
+DETAILS_TOOLTIP_44	Odolnost proti šamanům: snižuje poškození, které utrpíš od šamanů.
+DETAILS_CATE_4	Bonus zbraně
+DETAILS_46	Obrana proti mečům
+DETAILS_TOOLTIP_46	Snižuje poškození od meče.
+DETAILS_47	Obrana pr. ob. mečům
+DETAILS_TOOLTIP_47	Snižuje poškození od dvouruční zbraně.
+DETAILS_48	Obrana proti dýkám
+DETAILS_TOOLTIP_48	Snižuje poškození od dýky.
+DETAILS_50	Obrana proti zvonům
+DETAILS_TOOLTIP_50	Snižuje poškození od zvonu.
+DETAILS_51	Obrana proti vějířům
+DETAILS_TOOLTIP_51	Snižuje poškození od vějíře.
+DETAILS_52	Obrana proti šípům
+DETAILS_TOOLTIP_52	Snižuje poškození od luků a šípů.
+DETAILS_CATE_5	Jiný bonus
+DETAILS_53	Šance na bezvědomí
+DETAILS_TOOLTIP_53	Zvyšuje šanci na knokautování protivníka.
+DETAILS_54	Šance na zpomalení
+DETAILS_TOOLTIP_54	Zvyšuje šanci na zpomalení protivníka.
+DETAILS_55	Šance na otrávení
+DETAILS_TOOLTIP_55	Zvyšuje šanci na otrávení protivníka.
+DETAILS_56	Odolnost vůči jedu
+DETAILS_TOOLTIP_56	Snižuje poškození od otravy.
+DETAILS_59	Kradení ZB
+DETAILS_TOOLTIP_59	Vysává z protivníka ZB, když jej zasáhneš.
+DETAILS_60	Kradení MB
+DETAILS_TOOLTIP_60	Vysává z protivníka MB, když jej zasáhneš.
+DETAILS_61	Obnova ZB
+DETAILS_TOOLTIP_61	Zvyšuje rychlost obnovy ZB.
+DETAILS_62	Obnova MB
+DETAILS_TOOLTIP_62	Zvyšuje rychlost obnovy MB.
+DETAILS_63	Blokování útoku
+DETAILS_TOOLTIP_63	Šance blokovat útok zbraní: zvyšuje šanci vyhnout se útoku zbraní.
+DETAILS_64	Vyhnutí útoku šípy
+DETAILS_TOOLTIP_64	Šance blokovat útok šípy: zvyšuje šanci vyhnout se útoku šípy nebo útoku příšery na dálku.
+DETAILS_65	Odražení út. zbraní
+DETAILS_TOOLTIP_65	Šance odrazit útok zbraní: část poškození od protivníka je odražena zpět na něj.
+DETAILS_66	Obnova ZB při zabití
+DETAILS_TOOLTIP_66	Obnova ZB při zabíjení: tvoje ZB se zvýší při zabití protivníka.
+DETAILS_67	Obnova MB při zabití
+DETAILS_TOOLTIP_67	Obnova MB při zabíjení: tvoje MB se zvýší při zabití protivníka.
+DETAILS_68	Dvojité BZK
+DETAILS_TOOLTIP_68	Šance na dvojitou zkušenost: zvyšuje šanci na zisk bonusu BZK když porazíš protivníka.
+DETAILS_69	Dvojité Yangy
+DETAILS_TOOLTIP_69	Šance na dvojnásobek Yangů: zvyšuje šanci na zisk dvojnásobného množství Yangů.
+DETAILS_70	Šance na pad. předm.
+DETAILS_TOOLTIP_70	Šance na zisk předmětu: zvyšuje šanci získat dvakrát větší množství předmětů.
+DETAILS_CATE_6	Speciální bonus
+DETAILS_71	Hodnota útoku
+DETAILS_TOOLTIP_71	Zvýší tvou hodnotu útoku.
+DETAILS_72	Hodnota obrany
+DETAILS_TOOLTIP_72	Zvýší tvou hodnotu obrany.
+DETAILS_73	BZK
+DETAILS_TOOLTIP_73	Zvýší zisk zkušeností.
+DETAILS_74	Šance na pad. předm.
+DETAILS_TOOLTIP_74	Šance na padnutí předmětu: zvyšuje šanci na padnutí předmětu.
+DETAILS_75	Dvojité Yangy
+DETAILS_TOOLTIP_75	Šance na zisk Yangů: zvyšuje šanci na zisk více Yangů.
+STAT_PICK_TITLE_CON	Vitalita
+STAT_PICK_TITLE_INT	Inteligence
+STAT_PICK_TITLE_STR	Síla
+STAT_PICK_TITLE_DEX	Pohyblivost
+SKILL_MAX_UP_HINT	Shift + click: zvýšit až na mistra
+REMOVE_AFFECT_QUESTION	Chcete deaktivovat %s?
+REFINE_FAST_UPGRADE	Rychlé vylepšení
+ATLAS_MARK_WIKI_HINT	Kliknutím otevřete wiki
+METIN_QUEUE_ADDED	[Fronta Metinů] Kámen byl přidán do fronty.
+METIN_QUEUE_REMOVED	[Fronta Metinů] Kámen byl odebrán z fronty.
+METIN_QUEUE_FULL	[Fronta Metinů] Tvoje fronta útoků je plná.
+METIN_QUEUE_PREMIUM_HINT	[Fronta Metinů] S prémiovým členstvím můžeš zařadit více kamenů.
+AUTO_SHOUT_TOOLTIP	Automatické volání
+AUTO_SHOUT_TITLE	Automatické volání
+AUTO_SHOUT_DESC	Opakuje tvé volání každých 30 s (16 s s prémiem).
+AUTO_SHOUT_MESSAGE	Zpráva
+AUTO_SHOUT_STATUS_OFF	Vypnuto
+AUTO_SHOUT_STATUS_WAITING	Spouští se...
+AUTO_SHOUT_STATUS_ON	Zapnuto
+AUTO_SHOUT_NEXT	Další volání za
+AUTO_SHOUT_START	Spustit
+AUTO_SHOUT_STOP	Zastavit
+AUTO_SHOUT_NO_MESSAGE	Nejprve napiš zprávu pro automatické volání.
+TARGET_ARROW_DAMAGE	%s poškození šípy
+TARGET_METIN_QUEUE_HINT	Shift + pravé tlačítko: přidat do fronty útoků

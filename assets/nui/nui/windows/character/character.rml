@@ -373,5 +373,35 @@
 		<button id="char-tab-quest" class="nui-button nui-button--ghost nui-anim char-tab char-tab--quest" data-class-is-selected="tab == 'QUEST'"
 		        data-event-mousedown="tab_press('QUEST', ev.button)"><span class="char-tab__label">@ui.CHARACTER_QUEST</span></button>
 	</div>
+	<!-- NOVA-207: the bonus details. The toggle on the window's right edge is
+	     legacy's expand or minimize button, the one legacy shows
+	     (details_expand, details_minimize); the side panel right of it shows
+	     while details_panel holds its one entry, and its rows are an empty
+	     list while it is closed, so a closed panel instances no row. Its rows (characterdetails.py: a category's
+	     header, a row's label and value) scroll in a fixed-height viewport;
+	     a row's hover shows legacy's row tooltip (details_over), and its
+	     parts take no pointer, so a row hears one over and one out. -->
+	<button id="char-details-open" class="nui-button nui-anim char-details-toggle char-details-toggle--open"
+	        data-if="details_expand" data-event-mousedown="details_press('expand', ev.button)"><span
+		class="nui-glyph nui-glyph--chevron-right"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	<button id="char-details-shut" class="nui-button nui-anim char-details-toggle char-details-toggle--shut"
+	        data-if="details_minimize" data-event-mousedown="details_press('minimize', ev.button)"><span
+		class="nui-glyph nui-glyph--chevron-left"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	<div id="char-details" class="nui-board nui-fx char-details" data-if="details_panel.size &gt; 0">
+		<div class="nui-window__titlebar char-details__titlebar">
+			<span class="nui-window__title char-details__title">@game.DETAILS_TITLE</span>
+			<button id="char-details-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim char-details__close"
+			        data-event-mousedown="details_press('minimize', ev.button)"><span class="nui-glyph nui-glyph--close"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+		</div>
+		<div class="nui-list char-details__list">
+			<div id="char-details-rows" class="nui-list__viewport char-details__viewport">
+				<div class="char-details__row" data-for="r : details_rows" data-attr-id="'char-details-' + r.index"
+				     data-class-char-details__row--head="r.head" data-event-mouseover="details_over(r.index)"
+				     data-event-mouseout="details_out(r.index)"><span class="char-details__label">{{ r.label }}</span><span
+					class="char-details__value" data-if="!r.head">{{ r.value }}</span></div>
+			</div>
+		</div>
+	</div>
 </body>
 </rml>

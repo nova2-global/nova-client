@@ -1290,3 +1290,189 @@ SHOP_TEXT_OR	oppure
 SHOP_BUY_COUNT_TITLE	Quantità da comprare (max. %d)
 DO_YOU_BUY_WITH_ITEM	Desideri comprare %s per %s?
 SHOP_BULK_BUY_HINT	Shift + click: compra più pezzi
+SEARCH_IN_SHOPS	Ctrl + click: cerca nei negozi
+SEARCH_IN_WIKI	Shift + right-click: apri nella wiki
+MOVE_FROM_SAFEBOX_TO_INVENTORY	Right-click: sposta nell'inventario
+COSTUME_PREVIEW_HINT	Tieni %s: anteprima sul tuo personaggio
+DESTROY_ITEM_WARNING	Sei sicuro di voler distruggere permanentemente questo oggetto?
+ITEM_SPLIT_ALL	Dividi tutto
+SHOP_MARK_SELL_HINT	Tab + clic: segna da vendere
+CONFIRM_LEVEL_UP_QUESTION	Vuoi raggiungere il livello %d? I dungeon con un livello massimo potrebbero chiudersi per te.
+ANTI_EXP_FREEZE_HINT	Clic: congela EXP
+ANTI_EXP_FROZEN_HINT	EXP congelata. Clic: scongela
+DETAILS_TITLE	Dettagli
+DETAILS_CATE_1	Danno/Difesa
+DETAILS_1	Forte vs Mezziuomini
+DETAILS_TOOLTIP_1	Forte contro i Mezziuomini: infligge ingenti danni ai Mezziuomini
+DETAILS_2	Res. Mezzouomo
+DETAILS_TOOLTIP_2	Resistenza ai Mezziuomini: riduce il danno che viene inflitto dai Mezziuomini.
+DETAILS_3	Forte vs orchi
+DETAILS_TOOLTIP_3	Forza contro Orchi: infligge una maggiore quantità di danni agli Orchi.
+DETAILS_4	Forte vs zombie
+DETAILS_TOOLTIP_4	Forte contro gli Zombie: infligge una maggiore quantità di danni agli Zombie.
+DETAILS_5	Forte vs mostri
+DETAILS_TOOLTIP_5	Forte contro i mostri: infligge una maggiore quantità di danni ai mostri.
+DETAILS_ELEMENTAL	Forte vs gli Elementali
+DETAILS_TOOLTIP_ELEMENTAL	Forte contro gli elementali: infligge danni maggiori agli elementali.
+DETAILS_BOSS	Forte contro boss
+DETAILS_TOOLTIP_BOSS	Forte contro Boss: Fai più danni ai Boss.
+DETAILS_STONE	Forte contro metin
+DETAILS_TOOLTIP_METIN	Forte contro Metin: Fai più danni ai Metin.
+DETAILS_7	Forte vs animali
+DETAILS_TOOLTIP_7	Forte contro gli animali: infligge una maggiore quantità di danni agli animali selvatici.
+DETAILS_8	Forte vs esoterici
+DETAILS_TOOLTIP_8	Forte contro gli esoterici: infligge una maggiore quantità di danni agli esoterici.
+DETAILS_9	Forte vs diavolo
+DETAILS_TOOLTIP_9	Forte contro i diavoli: infligge una maggiore quantità di danni ai diavoli.
+DETAILS_12	Valore d'attacco
+DETAILS_TOOLTIP_12	Incrementa il tuo valore d'attacco.
+DETAILS_13	Valore di difesa
+DETAILS_TOOLTIP_13	Incrementa il tuo valore di difesa
+DETAILS_14	Danno medio
+DETAILS_TOOLTIP_14	Aumenta il danno medio che infliggi agli avversari quando li attacchi.
+DETAILS_15	Res. danno medio
+DETAILS_TOOLTIP_15	Resistenza al danno medio: riduce i danni che subisci in un attacco.
+DETAILS_16	Danni abilità
+DETAILS_TOOLTIP_16	Aumenta i danni provocati da un'abilità.
+DETAILS_17	Resistenza danni abilità
+DETAILS_TOOLTIP_17	Resistenza ai danni abilità: riduce il danno da abilità che subisci.
+DETAILS_18	Att. magico/C. a C.
+DETAILS_TOOLTIP_18	Aumenta il valore d'attacco corporale e magico.
+DETAILS_19	Attacco magico
+DETAILS_TOOLTIP_19	Aumenta il danno che infliggi agli avversari tramite attacco magico.
+DETAILS_20	Prob. colpo critico
+DETAILS_TOOLTIP_20	Aumenta la probabilità di mettere a segno un colpo critico.
+DETAILS_21	Colpo trafiggente
+DETAILS_TOOLTIP_21	Probabilità di colpo trafiggente: aumenta la probabilità di mettere a segno un colpo trafiggente.
+DETAILS_22	Res. colpo critico
+DETAILS_TOOLTIP_22	Resistenza ai colpi critici: riduce il danno che viene inflitto dai colpi critici.
+DETAILS_23	Res. colpo trafigg.
+DETAILS_TOOLTIP_23	Resistenza ai colpi trafiggenti: riduce il danno che viene inflitto dai colpi trafiggenti.
+DETAILS_CATE_2	Bonus elementali
+DETAILS_76	Resistenza magia
+DETAILS_TOOLTIP_76	Riduce il danno che subisci tramite attacco magico.
+DETAILS_24	Resistenza lampo
+DETAILS_TOOLTIP_24	Riduce il danno che viene inflitto da determinati mostri.
+DETAILS_25	Resistenza ghiaccio
+DETAILS_TOOLTIP_25	Riduce il danno che viene inflitto da determinati mostri.
+DETAILS_26	Res. oscurità
+DETAILS_TOOLTIP_26	Resistenza all'oscurità: riduce il danno che viene inflitto da determinati mostri.
+DETAILS_27	Resistenza fuoco
+DETAILS_TOOLTIP_27	Riduce il danno che viene inflitto da determinati mostri.
+DETAILS_28	Resistenza vento
+DETAILS_TOOLTIP_28	Riduce il danno che viene inflitto da determinati mostri.
+DETAILS_29	Resistenza terra
+DETAILS_TOOLTIP_29	Riduce il danno che viene inflitto da determinati mostri.
+DETAILS_77	Anti-magia
+DETAILS_TOOLTIP_77	Riduce la resistenza magia del tuo avversario.
+DETAILS_30	Forza del fulmine
+DETAILS_TOOLTIP_30	Incrementa il danno che provochi tramite la forza del fulmine.
+DETAILS_31	Forza del ghiaccio
+DETAILS_TOOLTIP_31	Incrementa il danno che provochi tramite la forza del ghiaccio.
+DETAILS_32	Forza dell'oscurità
+DETAILS_TOOLTIP_32	Incrementa il danno che provochi tramite la forza dell'oscurità.
+DETAILS_33	Forza del fuoco
+DETAILS_TOOLTIP_33	Incrementa il danno che provochi tramite la forza del fuoco.
+DETAILS_34	Forza del vento
+DETAILS_TOOLTIP_34	Incrementa il danno che provochi tramite la forza del vento.
+DETAILS_35	Forza della terra
+DETAILS_TOOLTIP_35	Incrementa il danno che provochi tramite la forza della terra.
+DETAILS_CATE_3	Bonus classe
+DETAILS_36	Forte vs guerrieri
+DETAILS_TOOLTIP_36	Forte contro i guerrieri: infligge una maggiore quantità di danni ai guerrieri.
+DETAILS_37	Forte vs ninja
+DETAILS_TOOLTIP_37	Forte contro i ninja: infligge una maggiore quantità di danni ai ninja.
+DETAILS_38	Forte vs sura
+DETAILS_TOOLTIP_38	Forte contro i sura: infligge una maggiore quantità di danni ai sura.
+DETAILS_39	Forte vs shamani
+DETAILS_TOOLTIP_39	Forte contro gli shamani: infligge una maggiore quantità di danni agli shamani.
+DETAILS_41	Difesa dai guerrieri
+DETAILS_TOOLTIP_41	Probabilità di difesa dagli attacchi dei guerrieri: riduce il danno che viene inflitto dai guerrieri.
+DETAILS_42	Difesa dai ninja
+DETAILS_TOOLTIP_42	Probabilità di difesa dagli attacchi dei ninja: riduce il danno che viene inflitto dai ninja.
+DETAILS_43	Difesa dai sura
+DETAILS_TOOLTIP_43	Probabilità di difesa dagli attacchi dei sura: riduce il danno che viene inflitto dai sura.
+DETAILS_44	Dif. dagli shamani
+DETAILS_TOOLTIP_44	Probabilità di difesa dagli attacchi degli shamani: riduce il danno che viene inflitto dagli shamani.
+DETAILS_CATE_4	Bonus armi
+DETAILS_46	Difesa spada
+DETAILS_TOOLTIP_46	Riduce il danno che viene inflitto da una spada.
+DETAILS_47	Difesa spadone
+DETAILS_TOOLTIP_47	Riduce il danno che viene inflitto da un'arma a due mani.
+DETAILS_48	Difesa pugnale
+DETAILS_TOOLTIP_48	Riduce il danno che viene inflitto da un pugnale.
+DETAILS_50	Difesa campana
+DETAILS_TOOLTIP_50	Riduce il danno che viene inflitto da una campana.
+DETAILS_51	Difesa ventaglio
+DETAILS_TOOLTIP_51	Riduce il danno che viene inflitto da un ventaglio.
+DETAILS_52	Difesa freccia
+DETAILS_TOOLTIP_52	Riduce il danno che viene inflitto da una freccia e da un arco.
+DETAILS_CATE_5	Altri bonus
+DETAILS_53	Prob. svenimento
+DETAILS_TOOLTIP_53	Aumenta la probabilità di far svenire un avversario.
+DETAILS_54	Prob. rallentamento
+DETAILS_TOOLTIP_54	Aumenta la probabilità di rallentare un avversario.
+DETAILS_55	Prob. avvelenamento
+DETAILS_TOOLTIP_55	Aumenta la probabilità di avvelenare un avversario.
+DETAILS_56	Res. avvelenamento
+DETAILS_TOOLTIP_56	Riduce il danno che viene inflitto da un veleno.
+DETAILS_59	Furto HP
+DETAILS_TOOLTIP_59	Quando colpisci il tuo avversario, gli sottrae HP.
+DETAILS_60	Furto MP
+DETAILS_TOOLTIP_60	Quando colpisci il tuo avversario, gli sottrae MP.
+DETAILS_61	Ripristino HP
+DETAILS_TOOLTIP_61	Accelera la rigenerazione dei tuoi punti vita.
+DETAILS_62	Ripristino MP
+DETAILS_TOOLTIP_62	Accelera la rigenerazione dei tuoi punti mana.
+DETAILS_63	Blocca attacco
+DETAILS_TOOLTIP_63	Probabilità di bloccare attacchi nella lotta corpo a corpo: aumenta la probabilità di schivare un attacco corpo a corpo.
+DETAILS_64	Schiva frecce
+DETAILS_TOOLTIP_64	Probabilità di schivare frecce: aumenta la probabilità di schivare l'attacco, a distanza o con frecce, di un mostro.
+DETAILS_65	Rifless. att. corp.
+DETAILS_TOOLTIP_65	Probabilità di riflettere un colpo nella lotta corpo a corpo: una parte del danno della lotta corpo a corpo viene restituito all'avversario.
+DETAILS_66	Ripr. HP (uccisione)
+DETAILS_TOOLTIP_66	Ripristino HP quando si uccide: quando uccidi un avversario, i tuoi punti vita aumentano.
+DETAILS_67	Ripr. MP (uccisione)
+DETAILS_TOOLTIP_67	Ripristino MP quando si uccide: quando uccidi un avversario, i tuoi punti mana aumentano.
+DETAILS_68	EXP doppia
+DETAILS_TOOLTIP_68	Probabilità di ricevere esperienza doppia: aumenta la probabilità di ricevere un bonus EXP quando hai sconfitto un avversario.
+DETAILS_69	Yang doppi
+DETAILS_TOOLTIP_69	Probabilità di droppare il doppio degli Yang: aumenta la tua probabilità di ricevere il doppio degli Yang.
+DETAILS_70	Prob. di drop
+DETAILS_TOOLTIP_70	Probabilità di droppare oggetti: aumenta la probabilità di ottenere il doppio degli oggetti.
+DETAILS_CATE_6	Bonus speciali
+DETAILS_71	Valore d'attacco
+DETAILS_TOOLTIP_71	Incrementa il tuo valore d'attacco.
+DETAILS_72	Difesa
+DETAILS_TOOLTIP_72	Incrementa il tuo valore di difesa
+DETAILS_73	EXP
+DETAILS_TOOLTIP_73	Aumenta la raccolta di esperienza.
+DETAILS_74	Prob. di drop
+DETAILS_TOOLTIP_74	Probabilità di droppare oggetti: raddoppia la tua probabilità di ottenere oggetti.
+DETAILS_75	Yang doppi
+DETAILS_TOOLTIP_75	Probabilità di droppare Yang: incrementa la tua probabilità di ottenere più Yang.
+STAT_PICK_TITLE_CON	Vitalità
+STAT_PICK_TITLE_INT	Intelligenza
+STAT_PICK_TITLE_STR	Forza
+STAT_PICK_TITLE_DEX	Destrezza
+SKILL_MAX_UP_HINT	Shift + click: alza fino a Maestro
+REMOVE_AFFECT_QUESTION	Vuoi disattivare %s?
+REFINE_FAST_UPGRADE	Miglioramento rapido
+ATLAS_MARK_WIKI_HINT	Clicca per aprire la wiki
+METIN_QUEUE_ADDED	[Coda Metin] La pietra è stata aggiunta alla coda.
+METIN_QUEUE_REMOVED	[Coda Metin] La pietra è stata rimossa dalla coda.
+METIN_QUEUE_FULL	[Coda Metin] La tua coda di attacco è piena.
+METIN_QUEUE_PREMIUM_HINT	[Coda Metin] Con un abbonamento premium puoi accodare più pietre.
+AUTO_SHOUT_TOOLTIP	Grido automatico
+AUTO_SHOUT_TITLE	Grido automatico
+AUTO_SHOUT_DESC	Ripete il tuo grido ogni 30 s (16 s con premium).
+AUTO_SHOUT_MESSAGE	Messaggio
+AUTO_SHOUT_STATUS_OFF	Spento
+AUTO_SHOUT_STATUS_WAITING	Avvio...
+AUTO_SHOUT_STATUS_ON	Attivo
+AUTO_SHOUT_NEXT	Prossimo grido tra
+AUTO_SHOUT_START	Avvia
+AUTO_SHOUT_STOP	Ferma
+AUTO_SHOUT_NO_MESSAGE	Scrivi prima un messaggio per il grido automatico.
+TARGET_ARROW_DAMAGE	%s danni delle frecce
+TARGET_METIN_QUEUE_HINT	Maiusc + clic destro: aggiungi alla coda di attacco

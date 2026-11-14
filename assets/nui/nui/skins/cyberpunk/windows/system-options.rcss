@@ -46,6 +46,12 @@ body.skin-cyberpunk.system-options .so-legacy .so-choice
 {
 	padding: 0 7dp;
 }
+/* The frame rate's value cell (NOVA-214): square, as the board's cells. */
+body.skin-cyberpunk.system-options .so-step-value
+{
+	border-radius: 0;
+	letter-spacing: 0.5dp;
+}
 body.skin-cyberpunk.system-options .so-heading
 {
 	color: var(--accent);
@@ -67,4 +73,11 @@ body.skin-cyberpunk.system-options .so-row--overlay
 	border-color: var(--cyberpunk-glow-alt);
 	border-radius: 0;
 	background-color: var(--cyberpunk-holo-b);
+}
+
+/* A found row (NOVA-213) keeps the selection's fill over the raised rows. */
+body.skin-cyberpunk.system-options .so-row.is-found
+{
+	background-color: var(--selection);
+	decorator: none;
 }

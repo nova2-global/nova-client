@@ -847,7 +847,8 @@ class Fixtures(unittest.TestCase):
         world = World(True)
         window = world.make_extra()
         module = world.m("nui_extra_inventory")
-        cell_keys = sorted(world.m("nui_slots").CELL_KEYS + world.m("nui_slots").MARK_KEYS)
+        # NOVA-187: and the sell marks' "sell" (uiInventory.SellMarkCells).
+        cell_keys = sorted(world.m("nui_slots").CELL_KEYS + world.m("nui_slots").MARK_KEYS + (world.m("nui_slots").GLOW_KEY, "sell"))
         names = []
         for file_name, fixture in self.fixtures():
             names.append(file_name)
@@ -864,7 +865,8 @@ class Fixtures(unittest.TestCase):
             self.assertEqual(shown.model["cells"], model["cells"])
             self.assertEqual(world.game.log[mark:], [], file_name)
         self.assertEqual(names, ["extra-inventory.costumes.fixture.json", "extra-inventory.fixture.json",
-                                 "extra-inventory.marks.fixture.json"])
+                                 "extra-inventory.marks.fixture.json", "extra-inventory.new-items.fixture.json",
+                                 "extra-inventory.sell-marks.fixture.json"])
 
     def test_the_marks_fixture_has_both_marks_and_the_main_one_a_stack(self):
         fixtures = dict(self.fixtures())
@@ -902,7 +904,7 @@ class Document(unittest.TestCase):
         self.assertEqual(sorted(tuple(case.get("except", ())) for case in main), [(), ("classic",)])
         for case in main:
             self.assertEqual([scale[1] for scale in case["scales"]], ["1", "1.5", "2"])
-        self.assertEqual({case.get("variant") for case in cases}, {None, "costumes", "marks"})
+        self.assertEqual({case.get("variant") for case in cases}, {None, "costumes", "marks", "new-items", "sell-marks"})
         names = {case.get("name") for case in cases}
         self.assertTrue({"reduced-motion", "no-effects", "hover", "hover-covered"} <= names)
         self.assertTrue(any(case.get("reduced_motion") for case in cases))

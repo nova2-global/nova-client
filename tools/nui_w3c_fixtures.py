@@ -160,8 +160,40 @@ def quest_rows(limits, quests):
     return rows, cells
 
 
+def details_rows(values):
+    """NOVA-207: the details panel's rows as nui_character._DetailsPanel
+    builds them: characterdetails.lines with the English locale's strings,
+    each row's value from `values` (point -> value; 0 for the rest)."""
+    sys.path.insert(0, os.path.join(REPO, "assets", "root"))
+    try:
+        import characterdetails
+    finally:
+        sys.path.pop(0)
+    texts = {}
+    with open(os.path.join(REPO, "assets", "locale", "locale", "en", "locale_game.txt"), encoding="utf-8") as handle:
+        for line in handle.read().splitlines():
+            parts = line.split("\t")
+            if len(parts) >= 2:
+                texts[parts[0]] = parts[1]
+    locale = type("Locale", (), texts)
+    rows = []
+    for index, line in enumerate(characterdetails.lines(locale)):
+        value = characterdetails.value_text(line, lambda point: values.get(point, 0))
+        rows.append({"index": index, "head": line["head"], "label": line["label"], "value": value})
+    return rows
+
+
+# The details case's values: a strong, long played character (points by
+# their server numbers, characterdetails.CATEGORIES).
+DETAILS_VALUES = {43: 25, 147: 12, 45: 10, 47: 15, 53: 20, 146: 8, 144: 5, 145: 30, 44: 10, 46: 10, 48: 10, 95: 120,
+                  96: 85, 122: 34, 124: 21, 121: 18, 123: 15, 132: 4, 131: 6, 40: 22, 41: 17, 136: 10, 137: 10, 77: 15,
+                  76: 20, 133: 20, 135: 10, 75: 20, 78: 15, 134: 10, 54: 12, 55: 12, 56: 12, 57: 12, 59: 15, 60: 15,
+                  61: 15, 62: 15, 69: 10, 70: 10, 71: 10, 72: 10, 73: 10, 74: 15, 38: 8, 39: 8, 37: 8, 63: 10, 64: 5,
+                  32: 25, 33: 25, 67: 9, 68: 12, 79: 6, 114: 10, 115: 10, 116: 20, 117: 10, 118: 10}
+
+
 def character(limits, tab, values=None, guild=True, skill_rows=None, support_rows=None, quests=(), scroll=None,
-              emotes_filled=True):
+              emotes_filled=True, details=None):
     model = {
         "tab": tab,
         "panel_status": [1] if tab == "STATUS" else [],
@@ -194,6 +226,10 @@ def character(limits, tab, values=None, guild=True, skill_rows=None, support_row
         "quest_scroll_shown": scroll is not None,
         "quest_scroll_pos": scroll if scroll is not None else 0.0,
         "quest_hover": -1,
+        # NOVA-207: the toggle legacy shows, and the panel with its rows when open.
+        "details_expand": details is None, "details_minimize": details is not None,
+        "details_panel": [1] if details is not None else [],
+        "details_rows": details_rows(details) if details is not None else [],
     }
     for suffix in ("ht", "iq", "st", "dx"):
         model["plus_" + suffix] = True
@@ -235,6 +271,7 @@ def character_fixtures():
         found[("character", name("quest"))] = character(limits, "QUEST", status, quests=QUESTS, scroll=0.5)
     found[("character", "noguild")] = character(TODAY, "STATUS", guild=False)
     found[("character", "hover")] = character(TODAY, "SKILL", skill_rows=TODAY_SKILLS, support_rows=SUPPORT)
+    found[("character", "details")] = character(TODAY, "STATUS", details=DETAILS_VALUES)
     return found
 
 

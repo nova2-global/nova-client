@@ -1,6 +1,8 @@
 """The question dialog of the NovaUI dialog kit (nui/windows/dialog-question):
 a modal with lines of text and two buttons, for uiCommon.QuestionDialog and
-QuestionDialog2. uiCommon.QuestionDialogWithTimeLimit stays legacy: its
+QuestionDialog2, or three for QuestionDialog3 (NOVA-189, NOVA-201: a third
+button between accept and cancel, the item drop's Destroy and the
+inventory's storage choice). uiCommon.QuestionDialogWithTimeLimit stays legacy: its
 countdown needs a timer, which comes with the C++ data feeds (G8).
 
 The buttons call their events and leave the dialog open, as the legacy
@@ -25,7 +27,7 @@ class QuestionWindow(kit.KindWindow):
 
 	def initial_model(self):
 		return {"lines": [], "accept_label": "@ui.YES", "cancel_label": "@ui.NO", "warn_line": -1,
-		        "check_on": False, "check_text": "", "checked": False}
+		        "check_on": False, "check_text": "", "checked": False, "middle_on": False, "middle_label": ""}
 
 	@nui.on("accept")
 	def on_accept(self):
@@ -34,6 +36,11 @@ class QuestionWindow(kit.KindWindow):
 	@nui.on("cancel")
 	def on_cancel(self):
 		self.forward("_nui_cancel")
+
+	@nui.on("middle")
+	def on_middle(self):
+		"""The third button (QuestionDialog3)."""
+		self.forward("_nui_middle")
 
 	@nui.on("check")
 	def on_check(self, button):
@@ -71,6 +78,7 @@ class QuestionDialog(kit.DialogFacade):
 			"cancel_label": "@ui.NO" if self._cancel_text is None else nui.plain_text(self._cancel_text),
 			"warn_line": self._warn_row(),
 			"check_on": False, "check_text": "", "checked": False,
+			"middle_on": False, "middle_label": "",
 		}
 
 	def _replay_text(self, legacy):
@@ -155,6 +163,9 @@ class QuestionDialog(kit.DialogFacade):
 
 	def _nui_check(self):
 		"""Only CheckQuestionDialog shows the row."""
+
+	def _nui_middle(self):
+		"""Only QuestionDialog3 shows the third button."""
 
 
 class CheckQuestionDialog(QuestionDialog):
@@ -261,3 +272,47 @@ class QuestionDialog2(QuestionDialog):
 		if self._legacy is not None:
 			self._legacy.SetText2(text)
 		self._refresh(lines=self._lines(), warn_line=self._warn_row())
+
+
+class QuestionDialog3(QuestionDialog):
+	"""uiCommon.QuestionDialog3 (NOVA-189, NOVA-201; OLD uiCommon.py
+	QuestionDialogItem): the question with a third button between accept and
+	cancel, the item drop question's Destroy and the inventory's storage
+	choice. The buttons read accept, third, cancel from the left, as legacy's
+	(x -60, 0 and +60 of the center). SetMiddleText and SetMiddleEvent set the
+	third button; it calls its event and leaves the dialog open, as the
+	other two do."""
+
+	LEGACY = "uiCommon.LegacyQuestionDialog3"
+
+	def __init__(self):
+		self._middle_text = ""
+		self._middle_event = None
+		QuestionDialog.__init__(self)
+
+	def _fill(self):
+		values = QuestionDialog._fill(self)
+		values.update({"middle_on": True, "middle_label": nui.plain_text(self._middle_text)})
+		return values
+
+	def _replay(self, legacy):
+		QuestionDialog._replay(self, legacy)
+		legacy.SetMiddleText(self._middle_text)
+		legacy.SetMiddleEvent(self._middle_event)
+
+	def SetMiddleText(self, text):
+		self._middle_text = text
+		if self._legacy is not None:
+			self._legacy.SetMiddleText(text)
+		self._refresh(middle_label=nui.plain_text(text))
+
+	def SetMiddleEvent(self, event):
+		self._middle_event = event
+		if self._legacy is not None:
+			self._legacy.SetMiddleEvent(event)
+
+	def SAFE_SetMiddleEvent(self, event):
+		self.SetMiddleEvent(ui.__mem_func__(event))
+
+	def _nui_middle(self):
+		kit.call_event(self._middle_event)

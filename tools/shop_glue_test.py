@@ -295,8 +295,11 @@ class InterfaceWorld(object):
         net.SendOfflineShopLeavePacket = lambda: log.calls.append(("net.SendOfflineShopLeavePacket", (), {}))
         ui = types.ModuleType("ui")
         setattr(ui, "__mem_func__", lambda fn: fn)
+        # NOVA-192, NOVA-193: the config also turns the shop search's Ctrl + click on.
+        shortcuts = types.ModuleType("item_shortcuts")
+        shortcuts.set_shop_search = lambda on: log.calls.append(("item_shortcuts.set_shop_search", (on,), {}))
         self.modules = {"uiPrivateShopBuilder": builder, "nui_windows": nui_windows, "uiCommon": common, "shop": shop,
-                        "net": net, "ui": ui, "localeInfo": support.locale_info("en")}
+                        "net": net, "ui": ui, "localeInfo": support.locale_info("en"), "item_shortcuts": shortcuts}
         with self:
             source = support.source_of("interfacemodule.py", self.METHODS, inside="Interface")
             body = "\n".join("\t" + line if line else line for line in source.split("\n"))
@@ -406,7 +409,8 @@ class InterfaceGlue(unittest.TestCase):
             with self.subTest(config=config):
                 world = InterfaceWorld(config)
                 world.call("OnOfflineShopConfig")
-                self.assertEqual(world.log.calls, [("wndInventory.ShowOfflineShopButtons", (shown,), {})])
+                self.assertEqual(world.log.calls, [("wndInventory.ShowOfflineShopButtons", (shown,), {}),
+                                                   ("item_shortcuts.set_shop_search", (shown,), {})])
 
     def test_a_shop_sign_of_style_0_is_todays_board_and_a_styled_one_a_title_bar(self):
         world = InterfaceWorld()

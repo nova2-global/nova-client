@@ -9,6 +9,61 @@ import link_tokens
 import chr
 import messenger
 import uiScriptLocale
+import weakref
+
+# The messenger's friend group (PythonMessenger.h MESSENGER_GRUOP_INDEX_FRIEND).
+MESSENGER_GROUP_FRIEND = 0
+
+
+class MessengerRelay(object):
+	"""The messenger handler the Interface sets over its messenger window
+	(NOVA-203): CPythonMessenger calls its one handler by name, so every call
+	goes on to the window (held weakly), and a change of the friend group
+	(a login, a logout, a removal) also runs `on_friends`, which refreshes the
+	whisper dialogs' add-friend buttons. The C++ side keeps no reference:
+	the Interface keeps the relay and uninstalls it before the window goes."""
+
+	FRIEND_CALLS = ("OnLogin", "OnLogout", "OnRemoveList", "OnRemoveAllList")
+
+	def __init__(self, window, on_friends):
+		self._window = weakref.ref(window)
+		self._on_friends = on_friends
+
+	def install(self):
+		messenger.SetMessengerHandler(self)
+		return self
+
+	def uninstall(self):
+		messenger.SetMessengerHandler(None)
+
+	def __getattr__(self, name):
+		if name.startswith("__"):
+			raise AttributeError(name)
+		window = self._window()
+		if window is None:
+			raise AttributeError(name)
+		return getattr(window, name)
+
+	def _relay(self, name, args):
+		window = self._window()
+		method = getattr(window, name, None) if window is not None else None
+		if method is not None:
+			method(*args)
+		if args and args[0] == MESSENGER_GROUP_FRIEND and self._on_friends:
+			self._on_friends()
+
+	def OnLogin(self, *args):
+		self._relay("OnLogin", args)
+
+	def OnLogout(self, *args):
+		self._relay("OnLogout", args)
+
+	def OnRemoveList(self, *args):
+		self._relay("OnRemoveList", args)
+
+	def OnRemoveAllList(self, *args):
+		self._relay("OnRemoveAllList", args)
+
 
 class LegacyWhisperButton(ui.Button):
 	def __init__(self):
@@ -35,6 +90,12 @@ class LegacyWhisperButton(ui.Button):
 			self.ToolTipText.Show()
 
 class WhisperDialog(ui.ScriptWindow):
+
+	# The add-friend button (NOVA-203): OLD's 21 x 18 icon, left of NEW's
+	# block button (w - 86) with a 1 px gap; True after the GM look.
+	FRIEND_BUTTON_X = 108
+	FRIEND_BUTTON_Y = 10
+	isGameMaster = False
 
 	# The target's online state (NOVA-48): NEW's messenger list icons, as
 	# OLD's old interface used (OLD's new_ui/online.sub is in neither NEW's
@@ -74,6 +135,7 @@ class WhisperDialog(ui.ScriptWindow):
 		# Widgets the uiscript adds (NOVA-47, NOVA-48); None until LoadDialog
 		# binds them, and under NovaUI, whose loader does not.
 		self.blockButton = None
+		self.friendButton = None
 		self.online = None
 		self.flag = None
 		## NOVA-42 round 3: a pasted link shows as its token and is swapped
@@ -108,6 +170,7 @@ class WhisperDialog(ui.ScriptWindow):
 			self.editBar = GetObject("editbar")
 			self.gamemasterMark = GetObject("gamemastermark")
 			self.blockButton = GetObject("blockbutton")
+			self.friendButton = GetObject("friendbutton")
 			self.online = GetObject("online")
 			self.flag = GetObject("flag")
 		except:
@@ -133,6 +196,8 @@ class WhisperDialog(ui.ScriptWindow):
 		self.acceptButton.SetEvent(ui.__mem_func__(self.AcceptTarget))
 		self.blockButton.SetEvent(ui.__mem_func__(self.BlockPlayer))
 		self.blockButton.Hide()
+		self.friendButton.SetEvent(ui.__mem_func__(self.AddFriend))
+		self.friendButton.Hide()
 		self.online.Hide()
 		self.flag.Hide()
 
@@ -174,6 +239,7 @@ class WhisperDialog(ui.ScriptWindow):
 		self.editBar = None
 		self.resizeButton = None
 		self.blockButton = None
+		self.friendButton = None
 		self.online = None
 		self.flag = None
 
@@ -222,6 +288,7 @@ class WhisperDialog(ui.ScriptWindow):
 				self.closeButton.SetPosition(width-24, 12)
 
 			self.__PlaceBlockButton(width)
+			self.__PlaceFriendButton(width)
 			self.SetChatLineMax(max)
 
 		except:
@@ -250,7 +317,9 @@ class WhisperDialog(ui.ScriptWindow):
 		self.acceptButton.Hide()
 		self.gamemasterMark.Hide()
 		self.minimizeButton.Show()
+		self.isGameMaster = False
 		self.RefreshBlockButton()
+		self.RefreshFriendButton()
 		self.__HideTargetDetails()
 
 	def OpenWithoutTarget(self, event):
@@ -267,6 +336,8 @@ class WhisperDialog(ui.ScriptWindow):
 		self.gamemasterMark.Hide()
 		if self.blockButton:
 			self.blockButton.Hide()
+		self.isGameMaster = False
+		self.RefreshFriendButton()
 		self.__HideTargetDetails()
 
 	## Whisper details (NOVA-48, OLD uiWhisper.py:114-122, game.py:3745-3772)
@@ -346,9 +417,38 @@ class WhisperDialog(ui.ScriptWindow):
 			net.SendBlockAddPacket(self.targetName)
 			self.__SetBlockButtonText(True)
 
+	## The add-friend button (NOVA-203, OLD uiWhisper.py:329-341)
+	def __PlaceFriendButton(self, width):
+		if not self.friendButton:
+			return
+		x = width - self.FRIEND_BUTTON_X
+		if app.IsRTL():
+			x += self.friendButton.GetWidth()
+		self.friendButton.SetPosition(x, self.FRIEND_BUTTON_Y)
+
+	# Shown for a partner who is not on the friend list and is no GM; the
+	# Interface calls it again when the friend list changes (MessengerRelay).
+	def RefreshFriendButton(self):
+		if not self.friendButton:
+			return
+		if self.__HasTarget() and not self.isGameMaster and not messenger.IsFriendByName(self.targetName):
+			self.friendButton.Show()
+		else:
+			self.friendButton.Hide()
+
+	# NEW's friend request; the button goes at once, as OLD's did (a refused
+	# request brings it back at the dialog's next open).
+	def AddFriend(self):
+		if not self.friendButton or not self.__HasTarget():
+			return
+		net.SendMessengerAddByNamePacket(self.targetName)
+		self.friendButton.Hide()
+
 	def SetGameMasterLook(self):
 		self.gamemasterMark.Show()
 		self.reportViolentWhisperButton.Hide()
+		self.isGameMaster = True
+		self.RefreshFriendButton()
 
 	def Minimize(self):
 		self.titleNameEdit.KillFocus()

@@ -17,6 +17,7 @@
 		],
 		"block_shown": true,
 		"blocked": false,
+		"friend_shown": true,
 		"online_shown": false,
 		"online": false,
 		"flag_shown": false,

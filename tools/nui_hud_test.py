@@ -604,14 +604,16 @@ class Fixtures(unittest.TestCase):
         module = self.world.module("nui_affects")
         facade = module.AffectShower()
         keys = self.entry_keys(facade, "icons", lambda f: f.SetAffect(CHR["AFFECT_JEONGWI"]))
-        self.check(module.AffectBoard, "affects", ("tooltip",), owner=object(), entries={"icons": keys})
+        self.check(module.AffectBoard, "affects", ("tooltip",), owner=object(), entries={"icons": keys, "items": keys})
 
     def test_the_target_fixtures_match_the_model_and_the_entries_the_facade_writes(self):
         module = self.world.module("nui_target")
         facade = module.TargetBoard()
         keys = self.entry_keys(facade, "buttons", lambda f: f.ShowDefaultButton())
         self.check(module.TargetBoardBoard, "target", ("mob", "player"), owner=object(), entries={"buttons": keys})
-        self.assertEqual(module.TargetBoardBoard.FEEDS, {"in_range": "target.in_range"})
+        # Wave 10 (qol-social): the archer gauge and the bar's tint follow feeds too.
+        self.assertEqual(module.TargetBoardBoard.FEEDS, {"in_range": "target.in_range", "arrow_percent": "target.arrow_percent",
+                                                         "poisoned": "target.poisoned", "burning": "target.burning"})
 
     def test_the_party_fixtures_match_the_model_and_the_entries_the_facade_writes(self):
         module = self.world.module("nui_party")
@@ -790,12 +792,15 @@ class ClassicAffectIcons(unittest.TestCase):
         golden = Image.open(os.path.join(REPO, "docs", "ui", "snapshots", "affects-classic-100.png")).convert("RGBA")
         fixture = json.loads(read(os.path.join(WINDOWS, "affects", "affects.fixture.json")))
         checked = 0
-        for index, icon in enumerate(fixture["affects"]["icons"]):
+        # NOVA-218: the second row 25dp under the first.
+        cells = [(index, 0, icon) for index, icon in enumerate(fixture["affects"]["icons"])]
+        cells += [(index, 1, icon) for index, icon in enumerate(fixture["affects"]["items"])]
+        for index, row, icon in cells:
             if not icon["small"] or not icon["image"].lower().endswith(".sub"):
                 continue
             atlas_path, left, top = self.sub_region(icon["image"])
             atlas = Image.open(atlas_path).convert("RGBA")
-            x0, y0 = 10 + 25 * index, 10  # .affects__row at 10dp, 25dp cells
+            x0, y0 = 10 + 25 * index, 10 + 25 * row  # .affects__rows at 10dp, 25dp cells
             good, total = self.matches(golden, atlas, left, top, x0, y0, legacy_texel)
             self.assertGreater(total, 300, icon["image"])
             self.assertEqual(good, total, "%s: legacy's texels" % icon["image"])
@@ -870,7 +875,8 @@ class AffectWorlds(unittest.TestCase):
                   if image is not None and image.IsShow()]
         view = []
         with world, quiet():
-            for image in sorted(images, key=lambda image: image.position[0]):
+            # Row by row, left to right (NOVA-218's two rows).
+            for image in sorted(images, key=lambda image: (image.position[1], image.position[0])):
                 image.OnMouseOverIn()
                 tooltip = getattr(image, "toolTip", None)
                 text_line = getattr(image, "toolTipText", None)
@@ -889,10 +895,10 @@ class AffectWorlds(unittest.TestCase):
         board = world.shower.board
         view = []
         with world, quiet():
-            for icon in board.get("icons"):
+            for icon in board.get("icons") + board.get("items"):
                 board.fire("icon_over", icon["key"])
             now = world.game.state.now
-            for icon in board.get("icons"):
+            for icon in board.get("icons") + board.get("items"):
                 if icon["label"]:
                     hover = ("label", plain(icon["title"]))
                 elif icon["title"] or icon["line"] or icon["end"] > 0:
@@ -969,8 +975,8 @@ class AffectDifferential(AffectWorlds):
         self.both(legacy, novaui, self.every_kind)
         view = self.same_view(legacy, novaui)
         self.assertEqual([hover[0] if hover else None for _, _, hover in view],
-                         ["board", "board", "label", "label", "board", "board", "board", "board"],
-                         "the horse, then the affects in the order they came")
+                         ["board", "label", "board", "label", "board", "board", "board", "board"],
+                         "the horse and the skill, then the potions and item bonuses by affect (NOVA-218)")
         self.assertIn(("d:/ymir work/ui/skill/common/affect/Increase_Move_Speed.sub", 0.7,
                        ("board", "SKILL_INC_MOVSPD", ["(LEFT_TIME : 1 HOUR, 2 MINUTE, 5 SECOND)"])), view)
         self.assertIn(("d:/ymir work/ui/pattern/auto_hpgauge/05.dds", 0.7, ("board", "item 72723", ["Remainder: 72.50%"])), view)
@@ -1016,7 +1022,7 @@ class AffectDifferential(AffectWorlds):
         self.same_view(legacy, novaui)
         self.both(legacy, novaui, lambda shower: shower.SetAffect(CHR["AFFECT_JEONGWI"]))
         view = self.same_view(legacy, novaui)
-        self.assertEqual(view[-1][2], ("label", "skill 3"), "an affect added again goes to the end")
+        self.assertEqual(view[1][2], ("label", "skill 3"), "an affect added again takes its sorted place (NOVA-218)")
         self.both(legacy, novaui, lambda shower: shower.ClearAffects())
         view = self.same_view(legacy, novaui)
         self.assertNotIn(("label", "skill 3"), [hover for _, _, hover in view], "the skill affects go on death")
@@ -1079,6 +1085,243 @@ class AffectDifferential(AffectWorlds):
             novaui.shower.Destroy()
             self.assertEqual(board.calls[-1], ("destroy",))
             novaui.shower.SetAffect(CHR["AFFECT_JEONGWI"])
+
+
+# --- NOVA-197: a press on a support buff asks to remove it ----------------------------------------
+
+# OLD uiAffectShower.py:46-61: the five support buffs and their skill vnums
+# (the server's REMOVABLE_SKILL_BUFFS).
+REMOVABLE_BUFFS = {"AFFECT_HOSIN": 94, "AFFECT_BOHO": 95, "AFFECT_GICHEON": 96, "AFFECT_KWAESOK": 110,
+                   "AFFECT_JEUNGRYEOK": 111}
+
+
+def buff_setup(game):
+    affect_setup(game)
+    skills = dict((CHR[name], vnum) for name, vnum in REMOVABLE_BUFFS.items())
+    skills[CHR["AFFECT_JEONGWI"]] = 3
+    game.answer("player", "AffectIndexToSkillIndex", lambda affect: skills.get(affect, 0))
+    game.modules["localeInfo"].REMOVE_AFFECT_QUESTION = "Do you want to disable %s?"
+
+
+class RemoveSkillBuff(unittest.TestCase):
+    """NOVA-197 (OLD uiAffectShower.py:46-61, 415-448): a left press on the
+    icon of one of the five support buffs asks REMOVE_AFFECT_QUESTION with
+    the skill's name; Yes sends /remove_skill_affect <vnum> once, the dialog
+    gone first. Every other icon, and any other button, asks nothing. The
+    question closes when its affect ends; NovaUI's also with the window."""
+
+    def worlds(self):
+        legacy, novaui = pair(buff_setup)
+        for world in (legacy, novaui):
+            with world:
+                world.shower = world.make("affects", world.module("uiAffectShower").AffectShower, "nui_affects.AffectShower")
+        return legacy, novaui
+
+    @staticmethod
+    def press(world, affect, button=0):
+        """A press on the icon of `affect`: legacy's image, or the board's event."""
+        with world, quiet():
+            if world.nui_on:
+                world.shower.board.fire("icon_press", affect, button)
+            elif button == 0:
+                world.shower.affectImageDict[affect].OnMouseLeftButtonDown()
+        dialogs = [dialog for dialog in QuestionDialog.made if dialog.opened]
+        return dialogs[-1] if dialogs else None
+
+    @staticmethod
+    def sent(world, since=0):
+        return [args for name, args in world.game.log[since:] if name == "net.SendChatPacket"]
+
+    def test_the_list_is_one_constant_with_the_servers_five(self):
+        legacy, novaui = self.worlds()
+        self.assertEqual(tuple(legacy.module("uiAffectShower").REMOVABLE_SKILL_BUFFS), (94, 95, 96, 110, 111))
+        self.assertIs(novaui.module("nui_affects").REMOVABLE_SKILL_BUFFS,
+                      novaui.module("uiAffectShower").REMOVABLE_SKILL_BUFFS, "NovaUI reads legacy's")
+
+    def test_each_support_buff_asks_with_its_name_and_yes_sends_once(self):
+        for world in self.worlds():
+            for name, vnum in sorted(REMOVABLE_BUFFS.items()):
+                affect = CHR[name]
+                with world, quiet():
+                    world.shower.SetAffect(affect)
+                dialog = self.press(world, affect)
+                self.assertIsNotNone(dialog, "%s %s" % (world.nui_on, name))
+                self.assertEqual(dialog.text, "Do you want to disable skill %d?" % vnum)
+                mark = len(world.game.log)
+                with world, quiet():
+                    dialog.accept()
+                    dialog.accept()
+                self.assertFalse(dialog.opened, "the dialog goes before the command")
+                self.assertEqual(self.sent(world, mark), [("/remove_skill_affect %d" % vnum,)], "once")
+
+    def test_no_sends_nothing(self):
+        for world in self.worlds():
+            with world, quiet():
+                world.shower.SetAffect(CHR["AFFECT_HOSIN"])
+            dialog = self.press(world, CHR["AFFECT_HOSIN"])
+            with world, quiet():
+                dialog.cancel()
+                dialog.accept()
+            self.assertFalse(dialog.opened)
+            self.assertEqual(self.sent(world), [])
+
+    def test_other_icons_and_other_buttons_ask_nothing(self):
+        for world in self.worlds():
+            with world, quiet():
+                world.shower.SetAffect(CHR["AFFECT_JEONGWI"])
+                world.shower.SetAffect(CHR["AFFECT_HOSIN"])
+                world.shower.BINARY_NEW_AddAffect(CHR["NEW_AFFECT_MALL"], PLAYER["POINT_MALL_ITEMBONUS"], 50, 3600)
+            made = len(QuestionDialog.made)
+            self.press(world, CHR["AFFECT_JEONGWI"])
+            self.press(world, 1000 + PLAYER["POINT_MALL_ITEMBONUS"])
+            self.press(world, CHR["AFFECT_HOSIN"], button=1)
+            self.assertEqual(len(QuestionDialog.made), made, "a warrior's own buff, a mall bonus, a right press")
+            self.assertEqual(self.sent(world), [])
+
+    def test_one_question_at_a_time(self):
+        for world in self.worlds():
+            with world, quiet():
+                world.shower.SetAffect(CHR["AFFECT_HOSIN"])
+                world.shower.SetAffect(CHR["AFFECT_KWAESOK"])
+            first = self.press(world, CHR["AFFECT_HOSIN"])
+            second = self.press(world, CHR["AFFECT_KWAESOK"])
+            self.assertFalse(first.opened)
+            self.assertTrue(second.opened)
+            with world, quiet():
+                first.accept()
+                second.accept()
+            self.assertEqual(self.sent(world), [("/remove_skill_affect 110",)])
+
+    def test_the_question_closes_when_its_affect_ends(self):
+        endings = (lambda shower: shower.ResetAffect(CHR["AFFECT_HOSIN"]), lambda shower: shower.ClearAffects(),
+                   lambda shower: shower.ClearAllAffects())
+        for ending in endings:
+            for world in self.worlds():
+                with world, quiet():
+                    world.shower.SetAffect(CHR["AFFECT_HOSIN"])
+                    world.shower.SetAffect(CHR["AFFECT_KWAESOK"])
+                dialog = self.press(world, CHR["AFFECT_HOSIN"])
+                with world, quiet():
+                    world.shower.ResetAffect(CHR["AFFECT_KWAESOK"])
+                self.assertTrue(dialog.opened, "another affect's end leaves it")
+                with world, quiet():
+                    ending(world.shower)
+                    dialog.accept()
+                self.assertFalse(dialog.opened)
+                self.assertEqual(self.sent(world), [])
+
+    def test_the_novaui_question_goes_with_the_window(self):
+        _, novaui = self.worlds()
+        with novaui, quiet():
+            novaui.shower.SetAffect(CHR["AFFECT_HOSIN"])
+        dialog = self.press(novaui, CHR["AFFECT_HOSIN"])
+        with novaui, quiet():
+            novaui.shower.Destroy()
+            dialog.accept()
+        self.assertFalse(dialog.opened)
+        self.assertEqual(self.sent(novaui), [])
+
+    def test_a_press_still_hits_its_icon_in_the_rows(self):
+        """NOVA-218 sorts the icons in two rows: the question is still the
+        pressed icon's."""
+        for world in self.worlds():
+            with world, quiet():
+                world.shower.BINARY_NEW_AddAffect(CHR["NEW_AFFECT_MALL"], PLAYER["POINT_MALL_ITEMBONUS"], 50, 3600)
+                world.shower.SetAffect(CHR["AFFECT_KWAESOK"])
+                world.shower.SetAffect(CHR["AFFECT_ATT_SPEED_POTION"])
+                world.shower.SetAffect(CHR["AFFECT_HOSIN"])
+            dialog = self.press(world, CHR["AFFECT_HOSIN"])
+            self.assertEqual(dialog.text, "Do you want to disable skill 94?")
+            dialog = self.press(world, CHR["AFFECT_KWAESOK"])
+            self.assertEqual(dialog.text, "Do you want to disable skill 110?")
+
+
+# --- NOVA-218: the icons in two rows, sorted by type --------------------------------------------
+
+MALL_ITEM = 1000 + PLAYER["POINT_MALL_ITEMBONUS"]
+
+
+class AffectRows(AffectWorlds):
+    """NOVA-218 (OLD uiAffectShower.py __ArrangeImageList): the status icons
+    (premium, heart, horse) and the skill buffs on the first row, the potions
+    and item bonuses on the second, each row sorted by affect, so an icon
+    never moves when another starts, ends or is renewed; the second row only
+    when it has icons, under the first (at the top when the first is empty).
+    Legacy keeps its 25 px step on both rows."""
+
+    def add_mixed(self, shower):
+        shower.BINARY_NEW_AddAffect(CHR["NEW_AFFECT_MALL"], PLAYER["POINT_MALL_ITEMBONUS"], 50, 3600)
+        shower.SetAffect(CHR["AFFECT_JEONGWI"])
+        shower.SetAffect(CHR["AFFECT_ATT_SPEED_POTION"])
+        shower.BINARY_NEW_AddAffect(CHR["NEW_AFFECT_EXP_BONUS"], 0, 50, 3600)
+        shower.SetAffect(CHR["AFFECT_POISON"])
+        shower.SetHorseState(15, 3, 1)
+
+    @staticmethod
+    def legacy_rows(shower):
+        """{y: [affect keys left to right]} of the legacy images ("horse", "heart")."""
+        images = [(key, image) for key, image in shower.affectImageDict.items()]
+        images += [("horse", shower.horseImage), ("heart", shower.lovePointImage)]
+        rows = {}
+        for key, image in sorted((pair for pair in images if pair[1] is not None and pair[1].IsShow()),
+                                 key=lambda pair: (pair[1].position[1], pair[1].position[0])):
+            rows.setdefault(image.position[1], []).append((image.position[0], key))
+        return rows
+
+    @staticmethod
+    def novaui_rows(shower):
+        names = {-11: "horse", -10: "heart"}   # nui_affects.HORSE_KEY, LOVER_KEY
+        return [[names.get(icon["key"], icon["key"]) for icon in shower.board.get(row)] for row in ("icons", "items")]
+
+    def test_the_split_is_one_function(self):
+        legacy, novaui = self.worlds()
+        module = legacy.module("uiAffectShower")
+        self.assertEqual(module.AffectRow(CHR["AFFECT_JEONGWI"], True), module.AFFECT_ROW_SKILLS)
+        self.assertEqual(module.AffectRow(CHR["AFFECT_POISON"], True), module.AFFECT_ROW_SKILLS)
+        for affect in ("AFFECT_ATT_SPEED_POTION", "AFFECT_MOV_SPEED_POTION", "AFFECT_FISH_MIND", "AFFECT_CHINA_FIREWORK"):
+            self.assertEqual(module.AffectRow(CHR[affect], True), module.AFFECT_ROW_ITEMS, affect)
+        for affect in (CHR["NEW_AFFECT_EXP_BONUS"], CHR["NEW_AFFECT_AUTO_HP_RECOVERY"], CHR["NEW_AFFECT_DRAGON_SOUL_DECK1"], MALL_ITEM):
+            self.assertEqual(module.AffectRow(affect, False), module.AFFECT_ROW_ITEMS, affect)
+        self.assertIs(novaui.module("nui_affects").uiAffectShower.AffectRow, novaui.module("uiAffectShower").AffectRow)
+
+    def test_legacy_puts_skills_and_items_on_two_sorted_rows(self):
+        legacy, novaui = self.worlds()
+        self.both(legacy, novaui, self.add_mixed)
+        step = legacy.shower.IMAGE_STEP
+        self.assertEqual(self.legacy_rows(legacy.shower), {
+            0: [(0, "horse"), (step, CHR["AFFECT_POISON"]), (2 * step, CHR["AFFECT_JEONGWI"])],
+            25: [(0, CHR["AFFECT_ATT_SPEED_POTION"]), (step, CHR["NEW_AFFECT_EXP_BONUS"]), (2 * step, MALL_ITEM)]})
+        self.assertEqual(legacy.shower.size, (3 * step, 51))
+
+    def test_novaui_shows_the_same_rows(self):
+        legacy, novaui = self.worlds()
+        self.both(legacy, novaui, self.add_mixed)
+        self.assertEqual(self.novaui_rows(novaui.shower),
+                         [["horse", CHR["AFFECT_POISON"], CHR["AFFECT_JEONGWI"]],
+                          [CHR["AFFECT_ATT_SPEED_POTION"], CHR["NEW_AFFECT_EXP_BONUS"], MALL_ITEM]])
+        rows = self.legacy_rows(legacy.shower)
+        self.assertEqual([[key for _, key in row] for _, row in sorted(rows.items())], self.novaui_rows(novaui.shower))
+
+    def test_an_icon_keeps_its_place_when_another_ends_or_is_renewed(self):
+        legacy, novaui = self.worlds()
+        self.both(legacy, novaui, lambda shower: (shower.SetAffect(CHR["AFFECT_JEONGWI"]), shower.SetAffect(CHR["AFFECT_POISON"]),
+                                                  shower.SetAffect(CHR["AFFECT_GEOMGYEONG"])))
+        before = self.novaui_rows(novaui.shower)
+        self.both(legacy, novaui, lambda shower: (shower.ResetAffect(CHR["AFFECT_JEONGWI"]), shower.SetAffect(CHR["AFFECT_JEONGWI"])))
+        self.assertEqual(self.novaui_rows(novaui.shower), before, "a renewed buff comes back to its place")
+        self.assertEqual(before[0], [CHR["AFFECT_POISON"], CHR["AFFECT_JEONGWI"], CHR["AFFECT_GEOMGYEONG"]])
+        self.assertEqual([key for _, key in self.legacy_rows(legacy.shower)[0]], before[0])
+
+    def test_one_row_until_the_second_has_icons_and_items_alone_at_the_top(self):
+        legacy, novaui = self.worlds()
+        self.both(legacy, novaui, lambda shower: shower.SetAffect(CHR["AFFECT_JEONGWI"]))
+        self.assertEqual(legacy.shower.size[1], 26)
+        self.assertEqual(novaui.shower.board.get("items"), [])
+        self.both(legacy, novaui, lambda shower: (shower.ResetAffect(CHR["AFFECT_JEONGWI"]),
+                                                  shower.BINARY_NEW_AddAffect(CHR["NEW_AFFECT_EXP_BONUS"], 0, 50, 3600)))
+        self.assertEqual(self.legacy_rows(legacy.shower), {0: [(0, CHR["NEW_AFFECT_EXP_BONUS"])]})
+        self.assertEqual(legacy.shower.size[1], 26)
+        self.assertEqual(self.novaui_rows(novaui.shower), [[], [CHR["NEW_AFFECT_EXP_BONUS"]]])
 
 
 # --- the target board: differential --------------------------------------------------------

@@ -909,6 +909,27 @@
 {
 	border-color: var(--cyberpunk-acid);
 }
+/* NOVA-188: the kind's tint over the acid (item_glow). */
+.skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-active.is-glow-red
+{
+	border-color: var(--glow-red);
+}
+.skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-active.is-glow-blue
+{
+	border-color: var(--glow-blue);
+}
+.skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-active.is-glow-yellow
+{
+	border-color: var(--glow-yellow);
+}
+.skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-active.is-glow-cyan
+{
+	border-color: var(--glow-cyan);
+}
+.skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-active.is-glow-violet
+{
+	border-color: var(--glow-violet);
+}
 .skin-cyberpunk .nui-slot.is-unavailable, .skin-cyberpunk .nui-slot.is-unavailable:hover,
 .skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-unavailable, .skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-unavailable:hover
 {

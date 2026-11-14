@@ -558,8 +558,18 @@ def IsolateModules(test):
 
 
 # Call IsolateModules first: this puts the fakes in sys.modules.
+def StubCostumePreview():
+	"""NOVA-202: the cube hands its hovers to the costume preview."""
+	preview = types.ModuleType("costume_preview")
+	preview.calls = []
+	preview.hover = lambda vnum: preview.calls.append(("hover", vnum))
+	preview.leave = lambda: preview.calls.append(("leave",))
+	return preview
+
+
 def LoadWindowModule():
 	sys.modules.update(MakeModules())
+	sys.modules["costume_preview"] = StubCostumePreview()
 	path = os.path.join(ROOT, "uicuberenewal.py")
 	spec = importlib.util.spec_from_file_location("uiCubeRenewal", path)
 	module = importlib.util.module_from_spec(spec)
@@ -793,6 +803,31 @@ class CubeRenewalTest(unittest.TestCase):
 		self.assertFalse(scrollBar.shown)
 		self.assertEqual(0, window.startLine)
 		self.assertEqual([(0, "GEMS")], self.ShownRowKeys())
+
+	def test_the_wheel_scrolls_the_list_a_row_a_notch(self):
+		"""NOVA-186 (OLD uiCubeRenewal.py:1134-1137): the window manager offers
+		the wheel to the window under the pointer; the cube scrolls its list."""
+		recipes = [Recipe(GEM + i % 10, materials=[(ORE, 1)], category="GEMS") for i in range(30)]
+		window = self.Open(recipes)
+		self.assertFalse(window.OnScrollWheel(-120), "a list that fits leaves the wheel to the camera")
+
+		window.ToggleCategory("GEMS")
+		for i in range(10):
+			window.ToggleReward(("GEMS", GEM + i))
+		scrollBar = self.Child("list_scroll_bar")
+
+		self.assertTrue(window.OnScrollWheel(-120))
+		self.assertEqual(1, window.startLine)
+		self.assertEqual(window.visibleRows[1:13], self.ShownRowKeys())
+		self.assertAlmostEqual(1.0 / 29, scrollBar.pos)
+
+		self.assertTrue(window.OnScrollWheel(120))
+		self.assertTrue(window.OnScrollWheel(120))
+		self.assertEqual(0, window.startLine, "the top stops it")
+
+		for _ in range(40):
+			window.OnScrollWheel(-120)
+		self.assertEqual(29, window.startLine, "so does the bottom")
 
 	## Counts
 
@@ -1439,6 +1474,7 @@ class RealWidgetsTest(unittest.TestCase):
 		modules["item"].GetItemSize = lambda: (1, 1)
 		self.wndMgr = FakeWndMgr()
 		modules["wndMgr"] = self.wndMgr
+		modules["costume_preview"] = StubCostumePreview()
 		sys.modules.update(modules)
 
 		# The client's interpreter has these built in; ui.py uses them.

@@ -1,0 +1,127 @@
+/* The auto-shout window's modern look (NOVA-204): a repeat mark on the
+   accent's tile before the title; one line on what it does; the message
+   field; the state, a dot (muted while off, the warning color while
+   starting, --success while on) with Off, Starting... or On and the time to
+   the next shout; Start (the primary) or Stop in the footer. Centered at its
+   first open (the facade's PLACE). Classic (a legacy board at the uiscript's
+   places, autoshoutwindow.py): skins/classic/windows/auto-shout.rcss. */
+
+body.auto-shout
+{
+	left: 16dp;
+	top: 16dp;
+	width: 320dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.auto-shout button
+{
+	tab-index: none;
+	focus: none;
+}
+/* The toggle parks the focus when a legacy edit line takes wndMgr's. */
+.auto-shout .auto-shout__toggle
+{
+	focus: auto;
+}
+.auto-shout__title-icon
+{
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	vertical-align: middle;
+}
+.auto-shout__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+}
+.auto-shout__body
+{
+	display: block;
+	padding: 10dp 12dp 4dp;
+}
+.auto-shout__desc
+{
+	display: block;
+	margin: 0 0 var(--space-2);
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+}
+.auto-shout__label
+{
+	display: block;
+	margin-bottom: var(--space-1);
+	color: var(--text);
+	font-size: var(--font-sm);
+}
+.auto-shout__slot
+{
+	display: block;
+}
+.auto-shout__field
+{
+	width: 100%;
+	height: 28dp;
+	line-height: 26dp;
+	focus: auto;
+}
+.auto-shout__state
+{
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+	height: 24dp;
+	margin-top: var(--space-2);
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+}
+.auto-shout__dot
+{
+	display: block;
+	flex: 0 0 auto;
+	width: 8dp;
+	height: 8dp;
+	border-radius: 4dp;
+	background-color: var(--text-muted);
+}
+.auto-shout__state.is-waiting .auto-shout__dot
+{
+	background-color: var(--warning);
+}
+.auto-shout__state.is-on .auto-shout__dot
+{
+	background-color: var(--success);
+}
+.auto-shout__state.is-on .auto-shout__status
+{
+	color: var(--success);
+}
+.auto-shout__next
+{
+	color: var(--text);
+}
+.auto-shout__countdown
+{
+	display: inline-block;
+	color: var(--accent);
+}
+.auto-shout__footer
+{
+	display: flex;
+	justify-content: flex-end;
+}
+.auto-shout__toggle-label
+{
+	pointer-events: none;
+}

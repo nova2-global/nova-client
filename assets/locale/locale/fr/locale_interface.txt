@@ -740,3 +740,47 @@ KEYBIND_EMOTION_6	Émotion 6
 KEYBIND_EMOTION_7	Émotion 7
 KEYBIND_EMOTION_8	Émotion 8
 KEYBIND_EMOTION_9	Émotion 9
+OPTION_NEW_ITEM_HIGHLIGHT	Nouveaux
+DESTROY	Détruire
+STORAGE_TITLE	Stockage
+OPTION_YANG_TEXT	Journal de Yang
+OPTION_COUNTRY_FLAGS	Drapeaux
+OPTION_SEARCH_HINT	Rechercher une option
+OPTION_SEARCH_NONE	Aucune option ne correspond.
+OPTION_BGM	Musique de fond
+KEYBIND_WIKI	Wiki
+OPTION_KEYWORDS_NAME_COLOR	nom couleur royaume empire
+OPTION_KEYWORDS_TARGET_BOARD	cible menu ennemi
+OPTION_KEYWORDS_PK	pvp combat paix hostile guilde libre
+OPTION_KEYWORDS_BLOCK	bloquer échange groupe guilde chuchoter ami demande
+OPTION_KEYWORDS_VIEW_CHAT	chat bulle discussion
+OPTION_KEYWORDS_ALWAYS_NAME	nom toujours
+OPTION_KEYWORDS_DAMAGE	dégâts coups chiffres
+OPTION_KEYWORDS_SALES	boutique enseigne vente
+OPTION_KEYWORDS_PICKUP	ramasser butin filtre objets potions
+OPTION_KEYWORDS_SHOPS	boutiques hors ligne marchand
+OPTION_KEYWORDS_SASH	écharpe épaule costume
+OPTION_KEYWORDS_BUFFI	buffi compagnon soutien
+OPTION_KEYWORDS_MOB_LEVEL	monstre niveau info
+OPTION_KEYWORDS_MOB_AI	monstre agressif étoile
+OPTION_KEYWORDS_KEYS	touches clavier raccourci
+OPTION_KEYWORDS_YANG	yang or argent ramasser message
+OPTION_KEYWORDS_FLAGS	drapeau pays nation langue
+OPTION_KEYWORDS_SOUND	son effets volume
+OPTION_KEYWORDS_MUSIC	musique volume
+OPTION_KEYWORDS_BGM	musique fond chanson
+OPTION_KEYWORDS_CAMERA	caméra zoom distance loin proche
+OPTION_KEYWORDS_FOG	brouillard distance de vue
+OPTION_KEYWORDS_TILING	graphismes
+OPTION_KEYWORDS_FOV	champ de vision angle
+OPTION_KEYWORDS_SNOW	neige chute temps noël
+OPTION_KEYWORDS_FPS	fps images compteur performance
+OPTION_KEYWORDS_TIPS	astuces conseil aide
+OPTION_KEYWORDS_THEME	thème apparence style sombre clair classique
+OPTION_KEYWORDS_SCALE	échelle taille interface
+OPTION_KEYWORDS_MOTION	mouvement animation
+OPTION_KEYWORDS_EFFECTS	effets flou ombre
+OPTION_KEYWORDS_COLORS	couleurs accent panneau opacité
+OPTION_FRAME_RATE	Limite FPS
+OPTION_FRAME_RATE_UNLIMITED	Illimité
+OPTION_FRAME_RATE_VSYNC	VSync

@@ -20,6 +20,7 @@ import ime
 import link_tokens
 import wndMgr
 import nui_windows
+import item_glow
 
 ITEM_FLAG_APPLICABLE = 1 << 14
 
@@ -42,6 +43,19 @@ PET_NAME_CHANGE = 6
 PET_DESTINY_ORB = 7
 PET_SUMMONED_SOCKET = 3
 PET_PREVIEW_INVENTORY = 3
+
+
+# NOVA-183: OLD's toggle items (ITEM_TOGGLE, NEW's ItemData.h) and the socket
+# the server sets while one is on (OLD uiInventory.py:1461-1467). Named here,
+# as the pet's, so that every test world runs this module.
+TOGGLE_ITEM_TYPE = 37
+TOGGLE_ON_SOCKET = 3
+
+
+def IsToggleItem(vnum):
+	"""True for an ITEM_TOGGLE item: a pet, a mount, an effect tag or a buff."""
+	item.SelectItem(vnum)
+	return item.GetItemType() == TOGGLE_ITEM_TYPE
 
 
 def GetPetItemSubType(vnum):
@@ -146,6 +160,86 @@ def SetSlotState(slotWindow, name, slotIndex):
 	setState = getattr(slotWindow, name, None)
 	if setState:
 		setState(slotIndex)
+
+
+## NOVA-187: the NPC shop's sell marks (uiShop's store; a client without it has none).
+def _SellMarks():
+	try:
+		import uiShop
+	except ImportError:
+		return None
+	return uiShop if hasattr(uiShop, "ToggleSellMark") else None
+
+def SellMarkColor(window, cell):
+	"""The icon's diffuse color of (window, cell): OLD's mark gold while marked."""
+	marks = _SellMarks()
+	return marks.GetSellMarkColor(window, cell) if marks else (1.0, 1.0, 1.0, 1.0)
+
+def IsSellMarked(window, cell):
+	marks = _SellMarks()
+	return bool(marks) and marks.IsSellMarked(window, cell)
+
+def SellMarkPress(window, cell, refresh):
+	"""A left press on the item at (window, cell), as the sell marks take it first: with the
+	mark key down at an NPC shop and nothing attached, it marks or unmarks the item; on a marked
+	item it does nothing more (no pick, no drop of what is attached, which goes back). True when
+	the press is taken. Worn cells are never marked."""
+	marks = _SellMarks()
+	if not marks:
+		return False
+	if window == player.INVENTORY and (player.IsEquipmentSlot(cell) or player.IsCostumeSlot(cell)):
+		return False
+	attached = mouseModule.mouseController.isAttached()
+	if not attached and marks.IsSellMarkKeyPressed():
+		marks.ToggleSellMark(window, cell, refresh)
+		return True
+	if marks.IsSellMarked(window, cell):
+		if attached:
+			mouseModule.mouseController.DeattachObject()
+		return True
+	return False
+
+
+def SellMarkCells(cells, window, position, refresh_board=False):
+	"""NovaUI's grids: the cells with their "sell" key (NOVA-187), an item the NPC shop's sell
+	marks hold, on its anchor (legacy tints the icon gold; the board draws the cell's mark).
+	position(index) is the cell's item position in `window`. refresh_board: the cells were set
+	anew from the items, so the shop's board shows the marks' current total."""
+	marked = False
+	for cell in cells:
+		cell["sell"] = bool(cell["kind"] == "item" and not cell.get("covered")
+		                    and IsSellMarked(window, position(cell["index"])))
+		marked = marked or cell["sell"]
+	if marked and refresh_board:
+		marks = _SellMarks()
+		if marks:
+			marks.RefreshSellMarkBoard()
+	return cells
+
+
+def SendSplitAll(dlgPickMoney, window, cell, count):
+	"""NOVA-190: a split accepted with "Split all" ticked (OLD uiInventory.py:
+	1307-1315) cuts the stack at (window, cell) into piles of `count` on the
+	server, all or none, instead of attaching `count`: True when it did. A
+	count of the whole stack has nothing to split, so the pick attaches it as
+	the plain split does."""
+	isSplitAll = getattr(dlgPickMoney, "IsSplitAll", None)
+	if not (isSplitAll and isSplitAll()):
+		return False
+
+	if window == player.INVENTORY:
+		itemVnum, itemCount = player.GetItemIndex(cell), player.GetItemCount(cell)
+	else:
+		itemVnum, itemCount = player.GetItemIndex(window, cell), player.GetItemCount(window, cell)
+	if count <= 0 or count >= itemCount:
+		return False
+
+	if uiPrivateShopBuilder.IsBuildingPrivateShop():
+		chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.MOVE_ITEM_FAILURE_PRIVATE_SHOP)
+		return True
+
+	net.SendItemSplitPacket(window, cell, itemVnum, count)
+	return True
 
 
 def MoneySlotText(money):
@@ -843,8 +937,68 @@ class InventoryWindow(ui.ScriptWindow):
 		self.RefreshEquipSlotWindow()
 
 	def ClickMallButton(self):
-		print("click_mall_button")
+		self.OpenStorageChoice()
+
+	## NOVA-201: the mall button opens the storage choice (OLD uiInventory.py:
+	## 1230-1277): a small board with Item Mall (/click_mall) and Safebox
+	## (/click_safebox: the server opens the safebox where the player stands,
+	## after its password). A second press closes it. The NovaUI inventory
+	## shows the dialog kit's three-button question instead.
+	storageChoice = None
+	storageMallButton = None
+	storageSafeboxButton = None
+
+	def OpenStorageChoice(self):
+		if self.storageChoice and self.storageChoice.IsShow():
+			self.storageChoice.Hide()
+			return
+
+		if not self.storageChoice:
+			self.__MakeStorageChoice()
+
+		self.storageChoice.SetCenterPosition()
+		self.storageChoice.SetTop()
+		self.storageChoice.Show()
+
+	def __MakeStorageChoice(self):
+		board = ui.BoardWithTitleBar()
+		board.SetSize(210, 80)
+		board.AddFlag("float")
+		board.AddFlag("movable")
+		board.SetTitleName(uiScriptLocale.STORAGE_TITLE)
+		board.SetCloseEvent(ui.__mem_func__(board.Hide))
+
+		mallButton = self.__MakeStorageButton(board, uiScriptLocale.SYSTEM_MALL, self.OpenItemMall)
+		mallButton.SetPosition(30, 45)
+		safeboxButton = self.__MakeStorageButton(board, uiScriptLocale.SAFE_TITLE, self.OpenSafeboxAnywhere)
+		safeboxButton.SetPosition(119, 45)
+
+		self.storageChoice = board
+		self.storageMallButton = mallButton
+		self.storageSafeboxButton = safeboxButton
+
+	def __MakeStorageButton(self, board, text, event):
+		button = ui.Button()
+		button.SetParent(board)
+		button.SetUpVisual("d:/ymir work/ui/public/middle_button_01.sub")
+		button.SetOverVisual("d:/ymir work/ui/public/middle_button_02.sub")
+		button.SetDownVisual("d:/ymir work/ui/public/middle_button_03.sub")
+		button.SetText(text)
+		button.SetEvent(ui.__mem_func__(event))
+		button.Show()
+		return button
+
+	def CloseStorageChoice(self):
+		if self.storageChoice:
+			self.storageChoice.Hide()
+
+	def OpenItemMall(self):
+		self.CloseStorageChoice()
 		net.SendChatPacket("/click_mall")
+
+	def OpenSafeboxAnywhere(self):
+		self.CloseStorageChoice()
+		net.SendChatPacket("/click_safebox")
 
 	# DSSButton
 	def ClickDSSButton(self):
@@ -944,6 +1098,8 @@ class InventoryWindow(ui.ScriptWindow):
 
 	def OnPickItem(self, count):
 		itemSlotIndex = self.dlgPickMoney.itemGlobalSlotIndex
+		if SendSplitAll(self.dlgPickMoney, player.INVENTORY, itemSlotIndex, count):
+			return
 		selectedItemVNum = player.GetItemIndex(itemSlotIndex)
 		mouseModule.mouseController.AttachObject(self, player.SLOT_TYPE_INVENTORY, itemSlotIndex, selectedItemVNum, count)
 
@@ -952,6 +1108,22 @@ class InventoryWindow(ui.ScriptWindow):
 			return local
 
 		return self.inventoryPageIndex*player.INVENTORY_PAGE_SIZE + local
+
+	## The wheel over the window turns the bag's page (NOVA-185; OLD
+	## uiInventory.py:1147-1157): a notch up the previous page, down the next.
+	## The window manager offers it the wheel (NOVA-186); True takes it, so the
+	## camera does not zoom.
+	def OnScrollWheel(self, length):
+		pageCount = len(self.inventoryTab) or player.INVENTORY_PAGE_COUNT
+		if length >= 0:
+			page = max(0, self.inventoryPageIndex - 1)
+		else:
+			page = min(pageCount - 1, self.inventoryPageIndex + 1)
+		if page != self.inventoryPageIndex:
+			if page < len(self.inventoryTab):
+				self.inventoryTab[page].Down()
+			self.SetInventoryPage(page)
+		return True
 
 	def RefreshBagSlotWindow(self):
 		getItemVNum=player.GetItemIndex
@@ -965,55 +1137,36 @@ class InventoryWindow(ui.ScriptWindow):
 			# If itemCount == 0, clear the slot.
 			if 0 == itemCount:
 				self.wndItem.ClearSlot(i)
+				item_glow.clear_new(player.INVENTORY, slotNumber)
 				continue
 			elif 1 == itemCount:
 				itemCount = 0
 				
 			itemVnum = getItemVNum(slotNumber)
-			setItemVNum(i, itemVnum, itemCount)
+			setItemVNum(i, itemVnum, itemCount, SellMarkColor(player.INVENTORY, slotNumber))
 			
-			## Auto-potion special handling (HP: #72723~#72726, SP: #72727~#72730) - Display activation/deactivation in slot even though it's an item - [hyo]
+			## Auto-potion special handling (HP: #72723~#72726, SP: #72727~#72730): the
+			## player module learns the active potion's charge. [hyo]
 			if constInfo.IS_AUTO_POTION(itemVnum):
 				# metinSocket - [0]: Activation status, [1]: Amount used, [2]: Maximum capacity
-				metinSocket = [player.GetItemMetinSocket(slotNumber, j) for j in range(player.METIN_SOCKET_MAX_NUM)]	
-				
-				if slotNumber >= player.INVENTORY_PAGE_SIZE * self.inventoryPageIndex:
-					slotNumber -= player.INVENTORY_PAGE_SIZE * self.inventoryPageIndex
-					
+				metinSocket = [player.GetItemMetinSocket(slotNumber, j) for j in range(player.METIN_SOCKET_MAX_NUM)]
 				isActivated = 0 != metinSocket[0]
-				
 				if isActivated:
-					self.wndItem.ActivateSlot(slotNumber)
 					potionType = 0
 					if constInfo.IS_AUTO_POTION_HP(itemVnum):
 						potionType = player.AUTO_POTION_TYPE_HP
 					elif constInfo.IS_AUTO_POTION_SP(itemVnum):
-						potionType = player.AUTO_POTION_TYPE_SP						
-					
+						potionType = player.AUTO_POTION_TYPE_SP
 					usedAmount = int(metinSocket[1])
-					totalAmount = int(metinSocket[2])					
-					player.SetAutoPotionInfo(potionType, isActivated, (totalAmount - usedAmount), totalAmount, self.__InventoryLocalSlotPosToGlobalSlotPos(i))
-					
-				else:
-					self.wndItem.DeactivateSlot(slotNumber)			
+					totalAmount = int(metinSocket[2])
+					player.SetAutoPotionInfo(potionType, isActivated, (totalAmount - usedAmount), totalAmount, slotNumber)
 
-			## A summoned pet's seal glows (NOVA-24; OLD uiInventory.py:1469-1473:
-			## socket 3 is set while it is out). OLD tinted the cell; NEW's slot
-			## window activates it, as an active auto potion.
-			elif GetPetItemSubType(itemVnum) == PET_SUMMON:
-				if player.GetItemMetinSocket(slotNumber, PET_SUMMONED_SOCKET) != 0:
-					self.wndItem.ActivateSlot(i)
-				else:
-					self.wndItem.DeactivateSlot(i)
+			## The cell's glow (NOVA-188; OLD uiInventory.py:1450-1545): an active
+			## auto potion, summoned pet seal (NOVA-24), buffi item (NOVA-38) or
+			## toggle item that is on (NOVA-183) in its kind's color, else a newly
+			## received item until it is hovered (item_glow).
+			item_glow.show(self.wndItem, i, player.INVENTORY, slotNumber, itemVnum)
 
-			## A buffi item is active while its buffi is out (NOVA-38; OLD
-			## uiInventory.py:1476-1479: the server sets its socket 3).
-			elif constInfo.IS_FAKEBUFF_ITEM(itemVnum):
-				if player.METIN_SOCKET_MAX_NUM > 3 and 0 != player.GetItemMetinSocket(slotNumber, 3):
-					self.wndItem.ActivateSlot(i)
-				else:
-					self.wndItem.DeactivateSlot(i)
-					
 		self.RefreshMarkSlots()
 		self.wndItem.RefreshSlot()
 
@@ -1237,6 +1390,10 @@ class InventoryWindow(ui.ScriptWindow):
 
 		itemSlotIndex = self.__InventoryLocalSlotPosToGlobalSlotPos(itemSlotIndex)
 
+		## NOVA-187: the NPC shop's sell marks take the press first.
+		if SellMarkPress(player.INVENTORY, itemSlotIndex, ui.__mem_func__(self.RefreshBagSlotWindow)):
+			return
+
 		## NOVA-9 (OLD uiInventory.py:1758-1761): Ctrl + click on an item
 		## searches the shops for it, while the offline shop is on, nothing is
 		## attached and no safebox is open; otherwise Ctrl + click adds the
@@ -1288,6 +1445,7 @@ class InventoryWindow(ui.ScriptWindow):
 				if itemCount > 1:
 					self.dlgPickMoney.SetTitleName(localeInfo.PICK_ITEM_TITLE)
 					self.dlgPickMoney.SetAcceptEvent(ui.__mem_func__(self.OnPickItem))
+					self.dlgPickMoney.SetItemMode()
 					self.dlgPickMoney.Open(itemCount)
 					self.dlgPickMoney.itemGlobalSlotIndex = itemSlotIndex
 				#else:
@@ -1442,6 +1600,8 @@ class InventoryWindow(ui.ScriptWindow):
 
 		###########################################################
 		self.__SendUseItemToItemPacket(scrollSlotPos, targetSlotPos)
+		# NOVA-198: the fast upgrade repeats this request through RefineItem.
+		uiRefine.FAST_REFINE.RecordScroll(scrollSlotPos, scrollIndex, targetSlotPos, ui.__mem_func__(self.RefineItem))
 		#net.SendItemUseToItemPacket(scrollSlotPos, targetSlotPos)
 		return
 		###########################################################
@@ -1577,6 +1737,9 @@ class InventoryWindow(ui.ScriptWindow):
 		## OLD's selectedItem (uiInventory.py:2159): Shift over a chest shows
 		## its contents (NOVA-18).
 		constInfo.SET_HOVERED_CHEST(player.GetItemIndex(overSlotPos))
+		## A newly received item stops glowing once hovered (NOVA-188; OLD :2150).
+		if item_glow.clear_new(player.INVENTORY, overSlotPos):
+			self.RefreshBagSlotWindow()
 
 		if mouseModule.mouseController.isAttached():
 			attachedItemType = mouseModule.mouseController.GetAttachedType()
@@ -1884,6 +2047,10 @@ class InventoryWindow(ui.ScriptWindow):
 			return
 
 		slotIndex = self.__InventoryLocalSlotPosToGlobalSlotPos(slotIndex)
+
+		## NOVA-187: a marked item is not used.
+		if IsSellMarked(player.INVENTORY, slotIndex):
+			return
 
 		if app.ENABLE_DRAGON_SOUL_SYSTEM:
 			if self.wndDragonSoulRefine.IsShow():

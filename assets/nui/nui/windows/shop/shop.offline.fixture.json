@@ -1776,6 +1776,8 @@
 		"owner_time_text": "",
 		"owner_time_end": 0.0,
 		"owner_lock_text": "",
-		"owner_close_shown": false
+		"owner_close_shown": false,
+		"mark_shown": false,
+		"mark_total": ""
 	}
 }

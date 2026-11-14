@@ -1290,3 +1290,189 @@ SHOP_TEXT_OR	or
 SHOP_BUY_COUNT_TITLE	Items to buy (max. %d)
 DO_YOU_BUY_WITH_ITEM	Do you want to buy %s for %s?
 SHOP_BULK_BUY_HINT	Shift + click: buy several
+SEARCH_IN_SHOPS	Ctrl + click: search the shops
+SEARCH_IN_WIKI	Shift + right-click: open in the wiki
+MOVE_FROM_SAFEBOX_TO_INVENTORY	Right-click: move to the inventory
+COSTUME_PREVIEW_HINT	Hold %s: preview on your character
+DESTROY_ITEM_WARNING	Are you sure you want to permanently destroy this item?
+ITEM_SPLIT_ALL	Split all
+SHOP_MARK_SELL_HINT	Tab + click: mark to sell
+CONFIRM_LEVEL_UP_QUESTION	Do you want to reach level %d? Dungeons with a level cap may close to you.
+ANTI_EXP_FREEZE_HINT	Click: freeze EXP
+ANTI_EXP_FROZEN_HINT	EXP frozen. Click: unfreeze
+DETAILS_TITLE	Details
+DETAILS_CATE_1	Damage/Defence
+DETAILS_1	Str. vs Half Humans
+DETAILS_TOOLTIP_1	Strong against Half Humans: Deals heavier damage to Half Humans.
+DETAILS_2	Res. to Half Humans
+DETAILS_TOOLTIP_2	Resistance to Half Humans: Reduces the damage you suffer from Half Humans.
+DETAILS_3	Strong vs Orcs
+DETAILS_TOOLTIP_3	Strong against Orcs: Deals heavier damage to orcs.
+DETAILS_4	Strong vs Undead
+DETAILS_TOOLTIP_4	Strong against Undead: Deals heavier damage to undead.
+DETAILS_5	Strong vs Monsters
+DETAILS_TOOLTIP_5	Strong against Monsters: Deals heavier damage to monsters.
+DETAILS_ELEMENTAL	Strong vs Elementals
+DETAILS_TOOLTIP_ELEMENTAL	Strong against Elementals: Deals heavier damage to elementals.
+DETAILS_BOSS	Strong vs Bosses
+DETAILS_TOOLTIP_BOSS	Strong against Bosses: Deals heavier damage to bosses.
+DETAILS_STONE	Strong vs Stones
+DETAILS_TOOLTIP_METIN	Strong against Metin Stone: Deals heavier damage to metin stones.
+DETAILS_7	Strong vs Animals
+DETAILS_TOOLTIP_7	Strong against Animals: Deals heavier damage to wild animals.
+DETAILS_8	Strong vs Esoterics
+DETAILS_TOOLTIP_8	Strong against Esoterics: Deals heavier damage to esoterics.
+DETAILS_9	Strong vs Devils
+DETAILS_TOOLTIP_9	Strong against Devils: Deals heavier damage to devils.
+DETAILS_12	Attack Value
+DETAILS_TOOLTIP_12	Increases your attack value.
+DETAILS_13	Defence Value
+DETAILS_TOOLTIP_13	Increases your defence value.
+DETAILS_14	Average Damage
+DETAILS_TOOLTIP_14	Increases the average damage you deal to enemies on an attack.
+DETAILS_15	Average Dmg. Resist.
+DETAILS_TOOLTIP_15	Resistance to average damage: reduces the damage you suffer on an attack.
+DETAILS_16	Skill Damage
+DETAILS_TOOLTIP_16	Increases the damage done by a skill.
+DETAILS_17	Skill Damage Resist.
+DETAILS_TOOLTIP_17	Resistance against skill damage: Reduces the damage done to you by a skill.
+DETAILS_18	Magic/Melee Attack
+DETAILS_TOOLTIP_18	Increases both your physical and magic attack value.
+DETAILS_19	Magic Attack
+DETAILS_TOOLTIP_19	Increases the damage you deal to enemies on a magical attack.
+DETAILS_20	Critical Hit Chance
+DETAILS_TOOLTIP_20	Increases the chance of landing a critical hit.
+DETAILS_21	Piercing Hit
+DETAILS_TOOLTIP_21	Piercing hit probability: Increases the chance of landing a piercing hit.
+DETAILS_22	Critical Hit Resist.
+DETAILS_TOOLTIP_22	Critical hit resistance: Reduces the damage inflicted by a critical hit.
+DETAILS_23	Piercing Hit Resist.
+DETAILS_TOOLTIP_23	Piercing hit resistance: Reduces the damage inflicted by a piercing hit.
+DETAILS_CATE_2	Elemental bonus
+DETAILS_76	Magic Resistance
+DETAILS_TOOLTIP_76	Reduces the damage you suffer on a magical attack.
+DETAILS_24	Lightning Resistance
+DETAILS_TOOLTIP_24	Reduces the damage you suffer from certain monsters.
+DETAILS_25	Water Resistance
+DETAILS_TOOLTIP_25	Reduces the damage you suffer from certain monsters.
+DETAILS_26	Darkness Resistance
+DETAILS_TOOLTIP_26	Darkness resistance: Reduces the damage you suffer from certain monsters.
+DETAILS_27	Fire Resistance
+DETAILS_TOOLTIP_27	Reduces the damage you suffer from certain monsters.
+DETAILS_28	Wind Resistance
+DETAILS_TOOLTIP_28	Reduces the damage you suffer from certain monsters.
+DETAILS_29	Earth Resistance
+DETAILS_TOOLTIP_29	Reduces the damage you suffer from certain monsters.
+DETAILS_77	Anti-Magic
+DETAILS_TOOLTIP_77	Reduces your enemy's magic resistance.
+DETAILS_30	Power of Lightning
+DETAILS_TOOLTIP_30	Increases the damage you inflict through the power of lightning.
+DETAILS_31	Power of Water
+DETAILS_TOOLTIP_31	Increases the damage you inflict through the power of water.
+DETAILS_32	Power of Darkness
+DETAILS_TOOLTIP_32	Increases the damage you inflict through the power of darkness.
+DETAILS_33	Power of Fire
+DETAILS_TOOLTIP_33	Increases the damage you inflict through the power of fire.
+DETAILS_34	Power of the Wind
+DETAILS_TOOLTIP_34	Increases the damage you inflict through the power of the wind.
+DETAILS_35	Power of Earth
+DETAILS_TOOLTIP_35	Increases the damage you inflict through the power of earth.
+DETAILS_CATE_3	Class bonus
+DETAILS_36	Strong vs Warriors
+DETAILS_TOOLTIP_36	Strong against Warriors: Deals heavier damage to warriors.
+DETAILS_37	Strong vs Ninjas
+DETAILS_TOOLTIP_37	Strong against Ninjas: Deals heavier damage to ninjas.
+DETAILS_38	Strong vs Suras
+DETAILS_TOOLTIP_38	Strong against Suras: Deals heavier damage to suras.
+DETAILS_39	Strong vs Shamans
+DETAILS_TOOLTIP_39	Strong against Shamans: Deals heavier damage to shamans.
+DETAILS_41	Defence vs Warriors
+DETAILS_TOOLTIP_41	Defence chance against warrior attacks: Reduces the damage you suffer from warriors.
+DETAILS_42	Defence vs Ninjas
+DETAILS_TOOLTIP_42	Defence chance against ninja attacks: Reduces the damage you suffer from ninjas.
+DETAILS_43	Defence vs Suras
+DETAILS_TOOLTIP_43	Defence chance against sura attacks: Reduces the damage you suffer from suras.
+DETAILS_44	Defence vs Shamans
+DETAILS_TOOLTIP_44	Defence chance against shaman attacks: Reduces the damage you suffer from shamans.
+DETAILS_CATE_4	Weapon bonus
+DETAILS_46	Sword Defence
+DETAILS_TOOLTIP_46	Reduces the damage dealt by a sword.
+DETAILS_47	Two-handed Defence
+DETAILS_TOOLTIP_47	Reduces the damage dealt by a two-handed weapon.
+DETAILS_48	Dagger Defence
+DETAILS_TOOLTIP_48	Reduces the damage dealt by a dagger.
+DETAILS_50	Bell Defence
+DETAILS_TOOLTIP_50	Reduces the damage dealt by a bell.
+DETAILS_51	Fan Defence
+DETAILS_TOOLTIP_51	Reduces the damage dealt by a fan.
+DETAILS_52	Arrow Defence
+DETAILS_TOOLTIP_52	Reduces the damage dealt by bows and arrows.
+DETAILS_CATE_5	Other bonus
+DETAILS_53	Faint Chance
+DETAILS_TOOLTIP_53	Increases the chance of knocking out an opponent.
+DETAILS_54	Slowing Chance
+DETAILS_TOOLTIP_54	Increases the chance of slowing an opponent.
+DETAILS_55	Poison Chance
+DETAILS_TOOLTIP_55	Increases the chance of poisoning an enemy.
+DETAILS_56	Poison Resistance
+DETAILS_TOOLTIP_56	Reduces the damage dealt by poison.
+DETAILS_59	HP Steal
+DETAILS_TOOLTIP_59	Drains your enemy's HP when you hit them.
+DETAILS_60	SP Steal
+DETAILS_TOOLTIP_60	Drains your enemy's SP when you hit them.
+DETAILS_61	HP Recovery
+DETAILS_TOOLTIP_61	Increases the recovery of your hit points.
+DETAILS_62	SP Recovery
+DETAILS_TOOLTIP_62	Increases the recovery of your spell points.
+DETAILS_63	Block Attack
+DETAILS_TOOLTIP_63	Chance to block a melee attack: Increases the chance of evading a melee attack.
+DETAILS_64	Evade Arrow Attack
+DETAILS_TOOLTIP_64	Chance of avoiding an arrow attack: Increases the chance of evading an arrow or ranged attack by a monster.
+DETAILS_65	Reflect Melee Attack
+DETAILS_TOOLTIP_65	Chance to reflect melee hits: Part of the enemy's melee damage is reflected back at them.
+DETAILS_66	HP Recovery on Kill
+DETAILS_TOOLTIP_66	HP recovery when killing: Your hit points increase when you kill an enemy.
+DETAILS_67	SP Recovery on Kill
+DETAILS_TOOLTIP_67	SP recovery when killing: Your spell points increase when you kill an enemy.
+DETAILS_68	Double EXP
+DETAILS_TOOLTIP_68	Chance to gain double experience: Increases the chance of an EXP bonus when you defeat your opponent.
+DETAILS_69	Double Yang
+DETAILS_TOOLTIP_69	Chance to drop double Yang: Increases the chance of receiving twice the amount of Yang.
+DETAILS_70	Drop Chance
+DETAILS_TOOLTIP_70	Chance to drop items: Increases the chance of looting twice the number of items.
+DETAILS_CATE_6	Special bonus
+DETAILS_71	Attack Value
+DETAILS_TOOLTIP_71	Increases your attack value.
+DETAILS_72	Defence Value
+DETAILS_TOOLTIP_72	Increases your defence value.
+DETAILS_73	EXP
+DETAILS_TOOLTIP_73	Increases the gathering of experience.
+DETAILS_74	Drop Chance
+DETAILS_TOOLTIP_74	Item drop chance: Increases the probability of looting items.
+DETAILS_75	Double Yang
+DETAILS_TOOLTIP_75	Yang drop chance: Increases the probability of looting more Yang.
+STAT_PICK_TITLE_CON	Vitality
+STAT_PICK_TITLE_INT	Intelligence
+STAT_PICK_TITLE_STR	Strength
+STAT_PICK_TITLE_DEX	Dexterity
+SKILL_MAX_UP_HINT	Shift + click: raise up to Master
+REMOVE_AFFECT_QUESTION	Do you want to disable %s?
+REFINE_FAST_UPGRADE	Fast upgrade
+ATLAS_MARK_WIKI_HINT	Click to open the wiki
+METIN_QUEUE_ADDED	[Metin Queue] The stone is now in your attack queue.
+METIN_QUEUE_REMOVED	[Metin Queue] The stone has left your attack queue.
+METIN_QUEUE_FULL	[Metin Queue] Your attack queue is full.
+METIN_QUEUE_PREMIUM_HINT	[Metin Queue] A premium membership lets you queue more stones.
+AUTO_SHOUT_TOOLTIP	Auto Shout
+AUTO_SHOUT_TITLE	Auto Shout
+AUTO_SHOUT_DESC	Repeats your shout every 30 s (16 s with premium).
+AUTO_SHOUT_MESSAGE	Message
+AUTO_SHOUT_STATUS_OFF	Off
+AUTO_SHOUT_STATUS_WAITING	Starting...
+AUTO_SHOUT_STATUS_ON	On
+AUTO_SHOUT_NEXT	Next shout in
+AUTO_SHOUT_START	Start
+AUTO_SHOUT_STOP	Stop
+AUTO_SHOUT_NO_MESSAGE	Type a message for the auto shout first.
+TARGET_ARROW_DAMAGE	%s arrow damage
+TARGET_METIN_QUEUE_HINT	Shift + right-click: add to the attack queue

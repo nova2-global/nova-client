@@ -154,8 +154,10 @@ class Document(unittest.TestCase):
 		self.assertEqual(px(rule(classic, ".go-label--keys"), "top"), 442)
 		block = rule(classic, ".go-choice--keys-open")
 		self.assertEqual((px(block, "left"), px(block, "top")), (90, 440))
-		self.assertEqual(px(rule(classic, ""), "height"), 483, "the board grows by the row")
-		self.assertEqual(px(rule(classic, ".game-options__body"), "height"), 483)
+		# 483 with the row; NOVA-188's new item row, the yang and flag rows
+		# (NOVA-211, 215) and the search field (NOVA-213) under it grow it to 575.
+		self.assertEqual(px(rule(classic, ""), "height"), 575, "the board grows by the rows")
+		self.assertEqual(px(rule(classic, ".game-options__body"), "height"), 575)
 
 	def test_classic_keys_page_is_the_legacy_dialog_s_board(self):
 		classic = sys_test.read(CLASSIC)

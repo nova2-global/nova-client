@@ -741,3 +741,47 @@ KEYBIND_EMOTION_6	Συναίσθημα 6
 KEYBIND_EMOTION_7	Συναίσθημα 7
 KEYBIND_EMOTION_8	Συναίσθημα 8
 KEYBIND_EMOTION_9	Συναίσθημα 9
+OPTION_NEW_ITEM_HIGHLIGHT	Νέα
+DESTROY	Καταστροφή
+STORAGE_TITLE	Αποθήκευση
+OPTION_YANG_TEXT	Αρχείο Yang
+OPTION_COUNTRY_FLAGS	Σημαίες
+OPTION_SEARCH_HINT	Αναζήτηση ρυθμίσεων
+OPTION_SEARCH_NONE	Δεν βρέθηκε ρύθμιση.
+OPTION_BGM	Μουσική υπόκρουσης
+KEYBIND_WIKI	Wiki
+OPTION_KEYWORDS_NAME_COLOR	όνομα χρώμα βασίλειο
+OPTION_KEYWORDS_TARGET_BOARD	στόχος μενού εχθρός
+OPTION_KEYWORDS_PK	pvp μάχη ειρήνη εχθρικό συντεχνία ελεύθερο
+OPTION_KEYWORDS_BLOCK	αποκλεισμός ανταλλαγή ομάδα συντεχνία ψίθυρος φίλος αίτημα
+OPTION_KEYWORDS_VIEW_CHAT	συνομιλία συννεφάκι
+OPTION_KEYWORDS_ALWAYS_NAME	όνομα πάντα
+OPTION_KEYWORDS_DAMAGE	ζημιά χτύπημα αριθμοί
+OPTION_KEYWORDS_SALES	κατάστημα πινακίδα πώληση
+OPTION_KEYWORDS_PICKUP	συλλογή λάφυρα φίλτρο αντικείμενα φίλτρα
+OPTION_KEYWORDS_SHOPS	καταστήματα εκτός σύνδεσης έμπορος
+OPTION_KEYWORDS_SASH	κορδέλα ώμος στολή
+OPTION_KEYWORDS_BUFFI	buffi σύντροφος υποστήριξη
+OPTION_KEYWORDS_MOB_LEVEL	τέρας επίπεδο πληροφορίες
+OPTION_KEYWORDS_MOB_AI	τέρας επιθετικό αστέρι
+OPTION_KEYWORDS_KEYS	πλήκτρα πληκτρολόγιο συντόμευση
+OPTION_KEYWORDS_YANG	yang χρυσός χρήματα συλλογή μήνυμα
+OPTION_KEYWORDS_FLAGS	σημαία χώρα έθνος γλώσσα
+OPTION_KEYWORDS_SOUND	ήχος εφέ ένταση
+OPTION_KEYWORDS_MUSIC	μουσική ένταση
+OPTION_KEYWORDS_BGM	μουσική υπόκρουση τραγούδι
+OPTION_KEYWORDS_CAMERA	κάμερα ζουμ απόσταση μακριά κοντά
+OPTION_KEYWORDS_FOG	ομίχλη απόσταση θέασης
+OPTION_KEYWORDS_TILING	γραφικά
+OPTION_KEYWORDS_FOV	οπτικό πεδίο γωνία
+OPTION_KEYWORDS_SNOW	χιόνι χιονόπτωση καιρός χριστούγεννα
+OPTION_KEYWORDS_FPS	fps καρέ μετρητής απόδοση
+OPTION_KEYWORDS_TIPS	συμβουλές υπόδειξη βοήθεια
+OPTION_KEYWORDS_THEME	θέμα εμφάνιση στυλ σκοτεινό φωτεινό κλασικό
+OPTION_KEYWORDS_SCALE	κλίμακα μέγεθος διεπαφή
+OPTION_KEYWORDS_MOTION	κίνηση κινούμενα
+OPTION_KEYWORDS_EFFECTS	εφέ θόλωμα σκιά
+OPTION_KEYWORDS_COLORS	χρώματα έμφαση πλαίσιο αδιαφάνεια
+OPTION_FRAME_RATE	Ρυθμός καρέ
+OPTION_FRAME_RATE_UNLIMITED	Απεριόριστο
+OPTION_FRAME_RATE_VSYNC	VSync

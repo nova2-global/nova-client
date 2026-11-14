@@ -225,11 +225,12 @@ class ShopFlows(ShopTest):
         self.assertEqual([c for c in novaui if c[0].startswith("net.")], [("net.SendShopBuyPacket", (2,))])
         self.assertIn("uiCommon.QuestionDialog.Open", [name for name, _ in novaui])
 
-    def test_buy_mode_asks_on_a_press_and_sell_mode_tells(self):
+    def test_buy_mode_buys_a_cheap_row_on_a_press_and_sell_mode_tells(self):
         def flow(world, window):
             self.toggle(world, window, "buy")
             self.press(world, window, 3)
-            window.itemBuyQuestionDialog.accept()
+            # NOVA-194: a cheap gold-only NPC row asks nothing.
+            self.assertIsNone(window.itemBuyQuestionDialog)
             self.toggle(world, window, "sell")
             self.press(world, window, 3)
             self.toggle(world, window, "sell")
@@ -240,11 +241,11 @@ class ShopFlows(ShopTest):
         self.assertIn(("net.SendShopBuyPacket", (3,)), novaui)
         self.assertEqual((w4.board(b).model["buy_down"], w4.board(b).model["sell_down"]), (False, False))
 
-    def test_a_press_with_no_mode_attaches_the_item_and_the_inventory_s_drop_asks(self):
+    def test_a_press_with_no_mode_attaches_the_item_and_the_inventory_s_drop_buys(self):
         def flow(world, window):
             self.press(world, window, 1)
             world.mouse.RunCallBack("INVENTORY")
-            window.itemBuyQuestionDialog.accept()
+            self.assertIsNone(window.itemBuyQuestionDialog, "NOVA-194: a cheap gold-only NPC row asks nothing")
         (legacy, world, a), (novaui, _, b) = self.run_both(flow)
         self.assertEqual(novaui, legacy)
         self.assertIn(("mouse.AttachObject", (P["SLOT_TYPE_SHOP"], 1, GLAIVE, 1)), novaui)
@@ -484,10 +485,10 @@ class ShopBarter(ShopTest):
         self.assertEqual(self.buy_packets(novaui), [("net.SendShopBuyPacket", (2,)), ("net.SendShopBuyPacket", (7,))])
         self.assertFalse(any(cell["barter"] for cell in w4.board(b).model["cells"]))
 
-    def test_a_second_tab_s_buy_question_and_drop_name_its_row_once(self):
+    def test_a_second_tab_s_buy_and_drop_name_its_row_once(self):
         """The buy mode's press and the inventory's drop hand the real index
         on: it is no longer offset by the tab twice (row 80 for tab 1's
-        first cell)."""
+        first cell). Both buy at once (NOVA-194)."""
         def flow(world, window):
             if world.nui_on:
                 w4.press(window, "tab_press", 1, 0)
@@ -496,11 +497,10 @@ class ShopBarter(ShopTest):
             window.CancelShopping()
             world.game.cursor = A["BUY"]
             self.press(world, window, 0)
-            window.itemBuyQuestionDialog.accept()
             world.game.cursor = A["NORMAL"]
             self.press(world, window, 0)
             world.mouse.RunCallBack("INVENTORY")
-            window.itemBuyQuestionDialog.accept()
+            # NOVA-194: both buy at once, a cheap gold-only NPC row.
         (legacy, _, _), (novaui, _, _) = self.run_both(flow, shop_stock(2))
         self.assertEqual(novaui, legacy)
         self.assertEqual(self.buy_packets(novaui), [("net.SendShopBuyPacket", (40,))] * 2)

@@ -118,6 +118,8 @@ APP_CONSTANTS.update({"ENABLE_ENERGY_SYSTEM": 1, "ENABLE_DRAGON_SOUL_SYSTEM": 1}
 APP_CONSTANTS.update({"VK_UP": 0x26, "VK_DOWN": 0x28, "DIK_LALT": 0x38, "DIK_LSHIFT": 0x2A, "DIK_LCONTROL": 0x1D})
 # Wave 3a: the help closes on H (uihelp.py OnKeyDown).
 APP_CONSTANTS.update({"DIK_H": 0x23})
+# NOVA-195, NOVA-196: the right-hand modifiers the character window reads.
+APP_CONSTANTS.update({"DIK_RSHIFT": 0x36, "DIK_RCONTROL": 0x9D})
 # NOVA-83: a bulk buy at an NPC shop takes either Shift (uishop.py BULK_BUY_KEYS).
 APP_CONSTANTS.update({"DIK_RSHIFT": 0x36})
 MINIMAP_CONSTANTS = {"TYPE_OPC": 0, "TYPE_OPCPVP": 1, "TYPE_OPCPVPSELF": 2, "TYPE_NPC": 3, "TYPE_MONSTER": 4, "TYPE_WARP": 5,
@@ -274,7 +276,7 @@ class LegacySlots(LegacyWidget):
     def SetSlotCoolTime(self, index, cool_time, elapsed=0.0):
         self._cell(index)["cool"] = (cool_time, elapsed) if cool_time else None
 
-    def ActivateSlot(self, index):
+    def ActivateSlot(self, index, color=0):
         self._cell(index)["active"] = True
 
     def DeactivateSlot(self, index):
@@ -1160,7 +1162,10 @@ class Game(object):
                          # NOVA-118: snowfall, the FPS counter and tips
                          # (CPythonSystem's SNOWFALL_DEFAULT, FPS_COUNTER_DEFAULT
                          # and TIPS_DEFAULT: OLD's off, off, on).
-                         "snowfall": False, "fps_counter": False, "tips": True}
+                         "snowfall": False, "fps_counter": False, "tips": True,
+                         # NOVA-214: the frame rate limit (CPythonSystem's MAX_FPS,
+                         # 60 by default; 0 unlimited, -1 VSync).
+                         "max_fps": 60}
         self.pk_mode = 0         # player.GetPKMode
         self.guild_id = 0        # player.GetGuildID
         self.software_tiling = False  # background.IsSoftwareTiling
@@ -1313,6 +1318,9 @@ class Game(object):
         wndmgr.IsDragging = lambda: game.dragging
         wndmgr.AttachIcon = recorded(log, "wndMgr.AttachIcon", lambda *args: None)
         wndmgr.SetAttachingFlag = lambda flag: None
+        # The legacy taskbar tints the EXP points while anti-EXP is on (NOVA-200).
+        if not hasattr(wndmgr, "SetDiffuseColor"):
+            wndmgr.SetDiffuseColor = recorded(log, "wndMgr.SetDiffuseColor", lambda *args: None)
         wndmgr.IsAttaching = lambda: bool(game.modules["mouseModule"].mouseController.isAttached())
         for name in ("SetSlotBaseImage", "AppendSlot", "SetCoverButton", "SetSlotStyle", "Register", "Destroy",
                      "Show", "Hide", "SetTop", "SetWindowSize", "SetWindowPosition", "IsShow", "SetParent"):
@@ -1327,6 +1335,8 @@ class Game(object):
         modules["systemSetting"].IsSoftwareCursor = lambda: False
         modules["systemSetting"].GetUINuiWindows = lambda: "+hud"
         modules["systemSetting"].IsUINuiLogin = lambda: 0
+        # NOVA-188: the new item glow's option, on as CPythonSystem's default.
+        modules["systemSetting"].IsShowNewItemHighlight = lambda: 1
         nuigame = Recording("nuigame", log)
         modules["nuigame"] = nuigame if self.engine else None
         self._wave2b_modules(modules)
@@ -1554,6 +1564,12 @@ class Game(object):
                                               ("tips", "IsShowTips", "SetShowTips")):
             getter(getter_name, key, int)
             setter(setter_name, lambda value, key=key: settings.__setitem__(key, value == 1))
+        # The frame rate limit (NOVA-214): the seven choices in display order;
+        # anything else is stored as 60, as CPythonSystem::SetMaxFPS does.
+        setting.MAX_FPS_CHOICES, setting.MAX_FPS_UNLIMITED, setting.MAX_FPS_VSYNC = (60, 120, 144, 165, 240, 0, -1), 0, -1
+        getter("GetMaxFPS", "max_fps", int)
+        setter("SetMaxFPS", lambda value: settings.__setitem__(
+            "max_fps", value if value in setting.MAX_FPS_CHOICES else 60))
 
         background = modules["background"]
         background.IsSoftwareTiling = lambda: bool(game.software_tiling)
@@ -1619,6 +1635,14 @@ class Game(object):
         # the world's file (Game.files).
         if name not in ("datacache", "keybindings") and "keybindings" not in self.modules:
             self.load("keybindings", "keybindings.py")
+        # Wave 10's item helpers (NOVA-188, 192, 202), which the item windows,
+        # the tooltip, the options and game.py import: fresh for each world,
+        # once constInfo is loaded (item_glow imports it).
+        if name not in ITEM_HELPERS and name not in ("datacache", "keybindings", "constInfo") \
+                and "constInfo" in self.modules:
+            for needed in ITEM_HELPERS:
+                if needed not in self.modules:
+                    self.load(needed, needed + ".py")
         # The wiki imports its text pages (NOVA-139): the page format and the
         # page store come first unless the test loaded its own.
         for needed in WIKI_PAGE_MODULES if name == "nui_wiki" else ():
@@ -2257,6 +2281,11 @@ def _client_values(table, module):
 WAVE3B_DIALOG_MODULES = ("uiCommon", "uiPickMoney", "uiRefine", "uiAttachMetin")
 
 
+# Wave 10: modules Game.load puts into every world before the windows that
+# import them (item_glow imports constInfo, so it comes after it).
+ITEM_HELPERS = ("item_shortcuts", "item_glow", "costume_preview")
+
+
 class LegacySlotWindow(object):
     """ui.SlotWindow and ui.GridSlotWindow as the C++ CSlotWindow keeps them
     (P14 spec 6.0): the slots a uiscript or ArrangeSlot made, what legacy set
@@ -2323,6 +2352,8 @@ class LegacySlotWindow(object):
         slot = self._slot(index)
         if slot is None:
             return
+        # The icon's diffuse color (the sell marks' gold, NOVA-187), by cell.
+        self.__dict__.setdefault("colors", {})[int(index)] = color
         if not vnum:
             self.ClearSlot(index)
             return
@@ -2337,15 +2368,23 @@ class LegacySlotWindow(object):
             slot.update({"vnum": 0, "count": 0, "active": False, "locked": False, "disabled": False, "in_use": False,
                          "unusable_ontop": False})
 
-    def ActivateSlot(self, index):
+    def ActivateSlot(self, index, color=0):
         slot = self._slot(index)
         if slot is not None:
             slot["active"] = True
+            slot["glow"] = int(color)
 
     def DeactivateSlot(self, index):
         slot = self._slot(index)
         if slot is not None:
             slot["active"] = False
+            slot["glow"] = 0
+
+    def glows(self):
+        """{slot: color} of the active slots that hold an item (NOVA-188: the
+        tint wndMgr.ActivateSlot was given; 0 the untinted glow)."""
+        return dict((index, slot.get("glow", 0)) for index, slot in self.slots.items()
+                    if slot["vnum"] and slot["active"])
 
     def SetCoverButton(self, index, up="", over="", down="", disable="", left=False, right=True):
         slot = self._slot(index)
@@ -2430,6 +2469,60 @@ class LegacySlotWindow(object):
         return getattr(self._base, attr)
 
 
+class LegacyCheckBox(object):
+    """ui.CheckBox (ui.py CheckBox) as the refine dialog uses it (NOVA-198):
+    its text, state, shown flag and ON_CHECK and ON_UNCHECK events; a left
+    release flips it and calls the event of the new state."""
+
+    def __init__(self, layer="UI"):
+        self.checked = False
+        self.text = ""
+        self.shown = False
+        self.position = (0, 0)
+        self.events = {"ON_CHECK": None, "ON_UNCHECK": None}
+
+    def SetParent(self, parent):
+        pass
+
+    def SetPosition(self, x, y):
+        self.position = (x, y)
+
+    def SetWindowHorizontalAlignCenter(self):
+        pass
+
+    def SetWindowVerticalAlignBottom(self):
+        pass
+
+    def SetTextInfo(self, text):
+        self.text = text
+
+    def SetCheckStatus(self, flag):
+        self.checked = bool(flag)
+
+    def GetCheckStatus(self):
+        return self.checked
+
+    def SetEvent(self, func, kind):
+        if kind in self.events:
+            self.events[kind] = func
+
+    def Show(self):
+        self.shown = True
+
+    def Hide(self):
+        self.shown = False
+
+    def IsShow(self):
+        return self.shown
+
+    def OnMouseLeftButtonUp(self):
+        self.SetCheckStatus(not self.checked)
+        event = self.events["ON_CHECK" if self.checked else "ON_UNCHECK"]
+        if event:
+            event()
+        return True
+
+
 class LegacyDialog(object):
     """A legacy common dialog (uiCommon.QuestionDialog, QuestionDialog2,
     PopupDialog; uiPickMoney.PickMoneyDialog): records Open and Close with
@@ -2478,12 +2571,14 @@ class LegacyDialog(object):
     def Open(self, *args):
         self.opened = args
         self.is_open = True
+        self.split_all = False
         self._log("Open", *(tuple(self.texts) + (self.title,) + args))
 
     def Close(self):
         if self.is_open:
             self._log("Close")
         self.is_open = False
+        self.item_mode = False
 
     def Hide(self):
         self.is_open = False
@@ -2513,6 +2608,48 @@ class LegacyDialog(object):
     def cancel(self):
         if self.cancel_event:
             self.cancel_event()
+
+    # QuestionDialog3's third button (NOVA-189, NOVA-201): middle() presses it;
+    # the button labels a caller sets.
+    accept_text = cancel_text = None
+    middle_text = ""
+    middle_event = None
+
+    def SetMiddleText(self, text):
+        self.middle_text = text
+
+    def SetAcceptText(self, text):
+        self.accept_text = text
+
+    def SetCancelText(self, text):
+        self.cancel_text = text
+
+    def SetMiddleEvent(self, event):
+        self.middle_event = event
+
+    def middle(self):
+        if self.middle_event:
+            self.middle_event()
+
+    # uiPickMoney's "Split all" box (NOVA-190): SetItemMode shows it, Open
+    # unchecks it, Close hides it; tick() ticks it.
+    item_mode = False
+    split_all = False
+
+    def SetItemMode(self):
+        self.item_mode = True
+        self.split_all = False
+        self._log("SetItemMode")
+
+    def SetMoneyMode(self):
+        self.item_mode = False
+        self.split_all = False
+
+    def IsSplitAll(self):
+        return self.item_mode and self.split_all
+
+    def tick(self):
+        self.split_all = not self.split_all
 
 
 class LegacyDialogWindow(object):
@@ -2795,10 +2932,15 @@ def _wave3b_modules(game):
 
     game.put("uiCommon", module_of("uiCommon", QuestionDialog=dialog("uiCommon", "QuestionDialog"),
                                    QuestionDialog2=dialog("uiCommon", "QuestionDialog2"),
+                                   # The question with a third button (NOVA-189, NOVA-201).
+                                   QuestionDialog3=dialog("uiCommon", "QuestionDialog3"),
                                    PopupDialog=dialog("uiCommon", "PopupDialog")))
     game.put("uiPickMoney", module_of("uiPickMoney", PickMoneyDialog=dialog("uiPickMoney", "PickMoneyDialog")))
+    # The fast upgrade's record (NOVA-198): RefineItem records its scroll; a no-op here
+    # (nui_refine_attach_test tests the record).
+    fast_refine = types.SimpleNamespace(RecordScroll=lambda *args: None, RecordNpc=lambda *args: None)
     game.put("uiRefine", module_of("uiRefine", RefineDialog=window("uiRefine.RefineDialog"),
-                                   RefineDialogNew=window("uiRefine.RefineDialogNew")))
+                                   RefineDialogNew=window("uiRefine.RefineDialogNew"), FAST_REFINE=fast_refine))
     game.put("uiAttachMetin", module_of("uiAttachMetin", AttachMetinDialog=window("uiAttachMetin.AttachMetinDialog")))
 
     class Interface(object):
@@ -3592,6 +3734,10 @@ class PlainToolTip(object):
         self._log("SetTitle", name)
         self.lines.append((name, "title"))
 
+    def AppendDescription(self, desc, color=None):
+        self._log("AppendDescription", desc)
+        self.lines.append((desc, "description"))
+
     def AlignHorizonalCenter(self):
         self._log("AlignHorizonalCenter")
 
@@ -3767,6 +3913,24 @@ def install_wave3c_ui(game):
     ui.PythonScriptLoader = PythonScriptLoader
     ui.ImageBox = Image
     ui.ExpandedImageBox = Image
+
+    class ScrollWindow(Win):
+        """ui.ScrollWindow (NOVA-207's details panel): its content window."""
+
+        def __init__(self, width, height, kind=0, layer="UI"):
+            Win.__init__(self, layer)
+            self.content = None
+
+        def SetContentWindow(self, content):
+            self.content = content
+
+        def OnRunMouseWheel(self, length):
+            return bool(self.content)
+
+    ui.ScrollWindow = ScrollWindow
+    ui.HorizontalBar = Win
+    if not hasattr(ui, "SlotBar"):
+        ui.SlotBar = Win
     class SlotWindow(LegacySkillSlotWindow):
         """ui.SlotWindow and ui.GridSlotWindow, a class, so a legacy module
         loaded after this (uitaskbar.py's SkillButton) can subclass it."""

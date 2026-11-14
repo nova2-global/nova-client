@@ -115,6 +115,60 @@ body.skin-classic.refine .refine__material-text
 	decorator: classic-thinboard;
 	font-effect: outline(1dp var(--classic-text-outline));
 }
+/* The fast upgrade box (NOVA-198; legacy's ui.CheckBox, bottom-aligned at
+   84, centered): its row 7 under the materials, 14 tall, then the cost 6
+   under it (legacy's board grows by 20). The row takes no press; the box
+   and its label do, as legacy's CheckBox window. Legacy's slot bar (a
+   CBar3D) draws its bottom and right lines at y + h and x + w, so its
+   14 x 14 covers 15 x 15 px. */
+body.skin-classic.refine .refine__fast-row
+{
+	height: 14dp;
+	margin-top: 7dp;
+	pointer-events: none;
+}
+body.skin-classic.refine .refine__fast
+{
+	position: relative;
+	height: 15dp;
+	padding: 0;
+	pointer-events: auto;
+}
+body.skin-classic.refine .refine__check
+{
+	width: 15dp;
+	height: 15dp;
+	margin-right: 5dp;
+	border-width: 1dp;
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+	border-radius: 0;
+	background-color: var(--classic-slot-fill);
+}
+body.skin-classic.refine .refine__fast:hover .refine__check
+{
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+}
+body.skin-classic.refine .refine__check-mark
+{
+	left: -5dp;
+	top: -3dp;
+	width: 24dp;
+	height: 16dp;
+	border-width: 0;
+	transform: none;
+	decorator: image("d:/ymir work/ui/public/check_image.sub");
+}
+body.skin-classic.refine .refine__fast-label
+{
+	color: var(--text);
+	font-size: var(--font-md);
+	line-height: 14dp;
+	font-effect: outline(1dp var(--classic-text-outline));
+}
+body.skin-classic.refine .refine__fast-row ~ .refine__cost
+{
+	margin-top: 6dp;
+}
 body.skin-classic.refine .refine__line
 {
 	margin-top: 7dp;

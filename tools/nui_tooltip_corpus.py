@@ -841,6 +841,18 @@ def state_cases(items):
     add("move-extra-chest", "SetInventoryItem", chest, count=2, sockets=[10, 0, 0], attrs=[], window="EXTRA_INVENTORY",
         pos=675, safebox_open=True, trading=True)
     add("move-worn-safebox-open", "SetInventoryItem", 11200, sockets=[0, 0, 0], attrs=[], pos=90, safebox_open=True)
+    # Wave 10 (NOVA-192, NOVA-202): the shortcut hints, each where it works
+    # (`shortcuts`: item_shortcuts' switches; `any_cell`: NOVA-191's
+    # net.SAFEBOX_CHECKOUT_ANY_CELL), and the costume preview's hint over a
+    # costume a shop hovers (`hovered_costume`: costume_preview.hover).
+    add("hints-search-wiki", "SetInventoryItem", 27001, sockets=[0, 0, 0], attrs=[], shortcuts=["search", "wiki"])
+    add("hints-extra-search-wiki", "SetInventoryItem", 41001, sockets=[0, 0, 0], attrs=[], window="EXTRA_INVENTORY",
+        pos=900, shortcuts=["search", "wiki"])
+    add("hints-safebox-open-none", "SetInventoryItem", 27001, sockets=[0, 0, 0], attrs=[], safebox_open=True,
+        shortcuts=["search", "wiki"])
+    add("hints-safebox-item", "SetSafeBoxItem", 27001, sockets=[0, 0, 0], attrs=[], safebox_open=True, any_cell=True)
+    add("hints-costume-preview", "SetShopItem", 41001, sockets=[0, 0, 0], attrs=[], hovered_costume=41001,
+        shop={"open": True, "private": False, "price": 5000})
     return [case for case in cases if case["vnum"] is not None]
 
 
@@ -887,6 +899,9 @@ def api_cases(items):
     add("skill-width-reset-normal", "skill", [["SetSkillNew", [1, 121, 3, 40]], ["SetSkill", [1]]],
         skill={"vnum": 121, "slot": 1, "grade": 3, "level": 40, "efficient": 0.5, "next": 0.6})
     add("skill-only-name-none", "skill", [["SetSkillOnlyName", [1, 0, 0]]])
+    # NOVA-196: the character window's hint after a job skill whose plus shows.
+    add("skill-max-up-hint", "skill", [["SetSkillNew", [1, 1, 0, 5]], ["AppendSkillMaxUpHint", []]],
+        skill={"vnum": 1, "slot": 1, "grade": 0, "level": 5, "efficient": 0.5, "next": 0.6})
     add("guild-war-type", "plain", [["_parent", [300, 200]], ["ClearToolTip", []], ["AutoAppendTextLine", ["Normal war", 0xFFF1E6C0]],
                                     ["AutoAppendTextLine", ["Kill the enemy guild's members."]], ["AlignHorizonalCenter", []],
                                     ["ShowToolTip", []]])
@@ -1177,6 +1192,9 @@ class DialogWorld(TipWorld):
                 if len(fields) >= 2 and fields[0]:
                     strings.__dict__[fields[0]] = fields[1]
         game.modules["systemSetting"].GetUINuiWindows = lambda: self.FLAGS if recorder else ""
+        # The refine dialog's fast upgrade box (NOVA-198).
+        if not isinstance(getattr(game.modules["ui"], "CheckBox", None), type):
+            game.modules["ui"].CheckBox = support.LegacyCheckBox
         # The legacy materials' text lines (uirefine.py AppendMaterial) align
         # vertically; the tooltip ui's stand-in TextLine has no such call.
         text_line = game.modules["ui"].TextLine
@@ -1185,6 +1203,7 @@ class DialogWorld(TipWorld):
                 setattr(text_line, name, lambda widget, value=value: setattr(widget, "valign", value))
         with quiet():
             for name, file_name in (("nui_limits", "nui_limits.py"), ("nui_proxies", "nui_proxies.py"),
+                                    ("nui_form_proxies", "nui_form_proxies.py"),
                                     ("uiRefine", "uirefine.py"), ("uiAttachMetin", "uiattachmetin.py")):
                 game.load(name, file_name)
             if recorder:
@@ -1255,6 +1274,19 @@ def _main_call(world):
         world.main_call_publishes = world.m("nui_tooltip").STATS["publishes"]
 
 
+def _apply_wave10(world, case):
+    """A case's item shortcut switches, NOVA-191's any-cell checkout and the
+    costume a window hovers (NOVA-192, NOVA-202); off unless the case says."""
+    case = case or {}
+    shortcuts = world.m("item_shortcuts")
+    shortcuts.set_shop_search("search" in case.get("shortcuts", ()))
+    shortcuts.set_wiki("wiki" in case.get("shortcuts", ()))
+    world.m("uiToolTip").SAFEBOX_ANY_CELL_HINT = bool(case.get("any_cell"))
+    world.game.modules["net"].SAFEBOX_CHECKOUT_ANY_CELL = 0xFFFF
+    with quiet():
+        world.m("costume_preview").hover(int(case.get("hovered_costume", 0)))
+
+
 def _run_case(world, case):
     game = world.game
     world.main_call_publishes = world.m("nui_tooltip").STATS["publishes"] if world.recorder else 0
@@ -1268,6 +1300,7 @@ def _run_case(world, case):
     game.modules["localeInfo"].MINIMAP_ZONE_NAME_DICT = {"metin2_map_a1": "Yongan"} if case.get("zone") else {}
     world.dragon_soul.isActivated = bool(case.get("ds_active"))
     world.m("uiToolTip").SetSafeboxOpen(bool(case.get("safebox_open")))
+    _apply_wave10(world, case)
     game.modules["wndMgr"].mouse = tuple(case.get("mouse", (0, 0)))
     if case.get("skill") and "real_grade" in case:
         world.data.case["skill"] = dict(case["skill"], grade=case["real_grade"])
@@ -1717,6 +1750,7 @@ def _model_of(world, kind, calls, case=None):
     tip = world.tooltip(kind)
     support.apply_case(world.game, case or {"vnum": 0})
     world.m("uiToolTip").SetSafeboxOpen(bool((case or {}).get("safebox_open")))
+    _apply_wave10(world, case)
     world.game.state.now = FIXTURE_CLOCK_NOW
     for name, args in calls:
         getattr(tip, name)(*args)

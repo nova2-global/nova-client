@@ -8,6 +8,8 @@
 		"warn_line": -1,
 		"check_on": true,
 		"check_text": "@ui.OFFLINE_SHOP_REMOVE_ITEM_ALL",
-		"checked": true
+		"checked": true,
+		"middle_on": false,
+		"middle_label": ""
 	}
 }

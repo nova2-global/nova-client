@@ -1457,8 +1457,13 @@ class SlotWindow(Window):
 	def HideRequirementSign(self, slotNumber):
 		wndMgr.HideRequirementSign(self.hWnd, slotNumber)
 
-	def ActivateSlot(self, slotNumber):
-		wndMgr.ActivateSlot(self.hWnd, slotNumber)
+	def ActivateSlot(self, slotNumber, color=0):
+		"""The slot's active glow; `color` (0xRRGGBB, NOVA-188) tints it, 0 is
+		the untinted glow."""
+		if color:
+			wndMgr.ActivateSlot(self.hWnd, slotNumber, color)
+		else:
+			wndMgr.ActivateSlot(self.hWnd, slotNumber)
 
 	def DeactivateSlot(self, slotNumber):
 		wndMgr.DeactivateSlot(self.hWnd, slotNumber)

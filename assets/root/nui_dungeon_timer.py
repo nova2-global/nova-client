@@ -10,7 +10,9 @@ code.
 
 The board is a deck of boss cards: every dungeon has a card with its boss (one named model
 preview per dungeon, "dungeon_boss_<idx>", view "model-dungeon-boss-<idx>", shown only for the
-visible cards; the front card's boss turns, the side cards' are still pictures), a badge (Ready,
+visible cards; the front card's boss turns, the side cards' are still pictures; every dungeon's
+boss is warmed when the window is made, NOVA-256, and a card whose boss is not made yet shows its
+plain background, then fades the boss in), a badge (Ready,
 the live countdown, or Hidden), and a place in the deck (a slot class; the sheet transitions
 left, top, width, height and opacity over 0.3 s). Below it the front dungeon's details, its
 drops merged across all its mobs in one grid (merged_drops) with filter chips, and Run or
@@ -18,7 +20,20 @@ Practice.
 
 No Python runs per frame. A card's clock is a nui-countdown (M:SS) to the dungeon's re-entry
 time: its end raises card_ready and the card turns ready. The notice of a checked dungeon is
-nui_dungeon_notice's: legacy's per-frame UpdateTime does nothing here."""
+nui_dungeon_notice's: legacy's per-frame UpdateTime does nothing here. While a shown card's boss
+loads, a hidden nui-countdown (previews_check) asks every PREVIEW_POLL seconds whether it is made.
+
+What an open costs (NOVA-256; r46: the session's first open made the five bosses in one frame,
+242 ms of GR2 parses): the previews are background previews (modelpreview.SetBackground), so a
+Select makes no model; the client reads each boss's files on its loader thread and parses them one
+a step, front card first. Every dungeon's boss is warmed when the window is made (legacy's
+LoadWindow, uiTimerWindow.warm_boss_previews: modelpreview.SetWarm), so the client makes them
+hidden once the game phase settles and the first open finds them (Eddy, r47: no "DT" placeholder,
+ever). A close hides the previews and keeps them, models and pictures, for the next open (Destroy,
+at the phase's end, clears them all), and the board is kept loaded and hidden from the window's
+making on (KEEP_BOARD_FROM_PROBE), so an open loads no document."""
+
+import math
 
 import app
 import item
@@ -49,18 +64,34 @@ SLOTS = {0: "c", 1: "r1", 2: "r2", 3: "r3", -1: "l1", -2: "l2", -3: "l3"}
 # The slots that show a card: the outermost ones sit behind the deck, hidden.
 SHOWN_SLOTS = ("c", "r1", "r2", "l1", "l2")
 FRONT_SLOT = "c"
-PREVIEW_PREFIX = "dungeon_boss_"
-
-
-def monogram(title):
-	"""Two letters for a card without a boss model: the first letters of the first two
-	words, or the first two letters of a one-word name."""
-	words = [word for word in title.split() if word]
-	if not words:
-		return ""
-	if len(words) >= 2:
-		return "".join(word[0] for word in words[:2]).upper()
-	return words[0][:2].upper()
+PREVIEW_PREFIX = uiTimerWindow.BOSS_PREVIEW_PREFIX
+# NOVA-256: the previews' bosses load off the frame (modelpreview.SetBackground), in this order of
+# their cards' slots: the front card first, then the nearest.
+BACKGROUND_PREVIEWS = True
+PREVIEW_ORDER = ("c", "r1", "l1", "r2", "l2")
+# Seconds between two looks at a boss that is still loading (the hidden previews_check clock).
+PREVIEW_POLL = 0.2
+# NOVA-256: the board the window's making loads (nui_end's probe) stays, hidden and emptied, so even
+# the session's first open loads no document (default, Eddy to confirm: a hidden document for the
+# phase, the inventory's kept-board pattern from the making on instead of from the first open).
+KEEP_BOARD_FROM_PROBE = True
+# NOVA-262: the card view's size in dp (.dungeon-timer__view in the window's sheet; every slot
+# scales it with a transform, so one target size serves every card). Each warmed boss gets its
+# target at this size in pixels and a first draw while hidden.
+VIEW_DP = (206, 252)
+# NOVA-262: the prewarm of the kept board, some seconds after the window is made (after the
+# client's warm-up of the bosses): its cards, then its drops and chips, filled while hidden, then
+# drawn once off the screen, then hidden; one step at each end of its hidden clock (prewarm_at).
+PREWARM = True
+PREWARM_DELAY = 7.0
+PREWARM_GAP = 0.25
+PREWARM_OFFSCREEN = (-8000.0, -8000.0)
+PREWARM_STEPS = 4
+# Drops asked in the first step and still loading wait for at most this many more gaps (2 s)
+# before the second step writes them, so the open does not make the grid.
+PREWARM_DROPS_WAITS = 8
+# The board's clocks: none runs while it is hidden (a clock's end calls Python).
+HIDDEN_CLOCKS = {"go_end": 0.0, "drops_retry": 0.0, "drops_timeout": 0.0, "previews_check": 0.0}
 
 
 class _TimerBoard(nui_hud.RaisesOnPress, nui.Window):
@@ -166,6 +197,14 @@ class _TimerBoard(nui_hud.RaisesOnPress, nui.Window):
 	@nui.on("drops_timeout")
 	def on_drops_timeout(self):
 		self._owner.drops_timed_out()
+
+	@nui.on("previews_ready")
+	def on_previews_ready(self):
+		self._owner.check_previews()
+
+	@nui.on("prewarm_ready")
+	def on_prewarm_ready(self):
+		self._owner.prewarm_step()
 
 	@nui.on("ticket_press")
 	def on_ticket_press(self, button):
@@ -286,6 +325,9 @@ class TimerWindow(nui_facade.Facade, uiTimerWindow.TimerWindow):
 	# Class-level defaults: ui.Window.__init__ calls Hide before __init__ below has set
 	# anything on the instance.
 	_preview_models = None
+	_preview_waiting = None
+	_preview_unready = None
+	_preview_late = None
 	_show_hidden = False
 	_filter = ""
 	_mode = "run"
@@ -296,8 +338,14 @@ class TimerWindow(nui_facade.Facade, uiTimerWindow.TimerWindow):
 		self._drops_empty = uiTimerWindow.asked_set()
 		self._drops_next_ask = 0.0
 		self._drop_items = []
-		# idx -> whether its preview has a model (made at the first show of its card).
+		# idx -> (the race its preview was asked for, whether it has a model), from the first show
+		# of its card until Destroy; the ones whose boss still loads (a background preview).
 		self._preview_models = {}
+		self._preview_waiting = set()
+		# The shown cards published without their boss, and those whose boss came after that
+		# (they fade in) while the window shows.
+		self._preview_unready = set()
+		self._preview_late = set()
 		self.nui_begin()
 		try:
 			uiTimerWindow.TimerWindow.__init__(self)
@@ -306,6 +354,9 @@ class TimerWindow(nui_facade.Facade, uiTimerWindow.TimerWindow):
 			self.nui_discard()
 			raise
 		self.nui_notices = nui_dungeon_notice.Notices(self._announce)
+		self._prewarm = 0
+		self._prewarm_waits = 0
+		self._start_prewarm()
 
 	def nui_model(self):
 		return {
@@ -340,7 +391,81 @@ class TimerWindow(nui_facade.Facade, uiTimerWindow.TimerWindow):
 			"filter_chips": [],
 			"drops_retry": 0.0,
 			"drops_timeout": 0.0,
+			# NOVA-256: the clock that looks again at the bosses still loading (0: none loads).
+			"previews_check": 0.0,
+			# NOVA-262: the prewarm's clock, set on the kept board only (an open restores 0).
+			"prewarm_at": 0.0,
 		}
+
+	def nui_demand(self):
+		"""NOVA-256: the board is kept, hidden and emptied, between opens (P18's kept boards), from
+		the window's making on (KEEP_BOARD_FROM_PROBE) or from its first open."""
+		return nui_hud.KeptBoard(self._make_board, self._restore_board, self._keep_board, self._empty_board,
+		                         keep_probe=KEEP_BOARD_FROM_PROBE)
+
+	def _empty_board(self, board):
+		"""The kept hidden board runs no clock. It keeps its cards, drops and chips (NOVA-262: an open
+		then makes no element and lays nothing out again, r48's 9 ms; their update while hidden costs
+		about 0.01 ms a frame); _restore_board sets every key again at the next show."""
+		board.set(**HIDDEN_CLOCKS)
+
+	def _warm_target_size(self):
+		"""The card view's size in pixels at the scale now (ElementView's want: its content box,
+		rounded up), for every warmed boss's target (NOVA-262)."""
+		scale = nui.get_scale() or 1.0
+		return tuple(int(math.ceil(dp * scale - 0.001)) for dp in VIEW_DP)
+
+	# --- the prewarm (NOVA-262) ---------------------------------------------------------
+
+	def _prewarm_board(self):
+		"""The kept board while the window is hidden, else None."""
+		demand = getattr(self, "demand", None)
+		kept = getattr(demand, "kept", None)
+		return kept() if kept is not None else None
+
+	def _start_prewarm(self):
+		board = self._prewarm_board()
+		if not PREWARM or board is None:
+			return
+		self._prewarm = 1
+		self._prewarm_waits = 0
+		board.set(prewarm_at=nui.now() + PREWARM_DELAY)
+
+	def prewarm_step(self):
+		"""The prewarm clock's end: the next step, each in its own update (none takes a whole frame):
+		the cards and the details as an open publishes them, written into the hidden board; the drops
+		and chips; the board shown off the screen, so it is laid out and drawn once (its meshes,
+		glyphs and icons made); the board hidden again. Drops still loading hold the second step
+		for some gaps. An open by the player ends it."""
+		board = self._prewarm_board()
+		step = self._prewarm
+		if board is None or self.IsShow() or not step:
+			self._prewarm = 0
+			return
+		state = self._state
+		if step == 1:
+			# What an open shows first (legacy Open's choice): its details, cards and drops (the
+			# drops request goes now, so they are there at the open).
+			target = next((idx for idx in uiTimerWindow.iter_indices_sorted() if not uiTimerWindow.is_hidden_for_current_view(idx)), None)
+			if target is not None:
+				self.SetDescription(target)
+			skip = set(HIDDEN_CLOCKS) | {"drops_items", "filter_chips", "prewarm_at"}
+			board.set(**dict((key, value) for key, value in state.items() if key not in skip))
+		elif step == 2:
+			if state["drops_state"] == "loading" and self._prewarm_waits < PREWARM_DROPS_WAITS:
+				# The drops asked in step 1 are on their way (none in the data cache): again later.
+				self._prewarm_waits += 1
+				board.set(prewarm_at=nui.now() + PREWARM_GAP)
+				return
+			board.set(drops_items=state["drops_items"], filter_chips=state["filter_chips"], drops_state=state["drops_state"],
+			          drops_count=state["drops_count"])
+		elif step == 3:
+			board.set_position(PREWARM_OFFSCREEN[0], PREWARM_OFFSCREEN[1])
+			board.show()
+		else:
+			board.hide()
+		self._prewarm = step + 1 if step < PREWARM_STEPS else 0
+		board.set(prewarm_at=nui.now() + PREWARM_GAP if self._prewarm else 0.0)
 
 	# --- the loader (uitimerwindow.py __LoadWindow, on proxies) ------------------------
 
@@ -389,9 +514,9 @@ class TimerWindow(nui_facade.Facade, uiTimerWindow.TimerWindow):
 		"""The cards' previews replace legacy's single one."""
 
 	def _TimerWindow__HideBossModel(self):
-		"""Legacy's Hide: the cards' previews go too (legacy's Hide runs in ui.Window.__init__
-		before the window has any: _clear_previews survives that)."""
-		self._clear_previews()
+		"""Legacy's Hide: the cards' previews hide and keep their bosses for the next show (legacy's
+		Hide runs in ui.Window.__init__ before the window has any: _hide_previews survives that)."""
+		self._hide_previews()
 
 	# --- the deck ----------------------------------------------------------------------
 
@@ -428,24 +553,36 @@ class TimerWindow(nui_facade.Facade, uiTimerWindow.TimerWindow):
 		deck = self._deck()
 		front = self.index if self.index in deck else (deck[0] if deck else None)
 		now = nui.now()
+		indices = list(uiTimerWindow.iter_indices_sorted())
+		slots = dict((idx, "out" if front is None else self._slot_of(deck, front, idx)) for idx in indices)
+		# The previews in the order their bosses should load: the front card's first.
+		views = {}
+		for idx in self._preview_order(slots):
+			views[idx] = self._sync_preview(idx, slots[idx])
 		cards = []
-		for idx in uiTimerWindow.iter_indices_sorted():
-			slot = "out" if front is None else self._slot_of(deck, front, idx)
+		for idx in indices:
+			slot = slots[idx]
 			left = self._left(idx)
 			hidden = uiTimerWindow.is_user_hidden(idx)
 			title = nui.plain_text(uiTimerWindow.get_title(idx))
 			cards.append({
-				"idx": int(idx), "title": title, "mono": monogram(title), "level": self._level_text(idx),
-				"slot": slot, "hidden": hidden, "view": self._sync_preview(idx, slot),
+				"idx": int(idx), "title": title, "level": self._level_text(idx),
+				"slot": slot, "hidden": hidden, "view": views[idx], "fade": bool(views[idx]) and idx in self._preview_late,
 				"state": "hidden" if hidden else ("cd" if left > 0 else "ready"),
 				"end": now + left if left > 0 and not hidden else 0.0,
 			})
 		count = self._hidden_count()
 		left = self._left(self.index) if front is not None else 0
 		hero_hidden = front is not None and uiTimerWindow.is_user_hidden(front)
+		if self.IsShow():
+			for idx in indices:
+				if slots[idx] in SHOWN_SLOTS and not views[idx] and idx in self._preview_waiting:
+					self._preview_unready.add(idx)
+		loading = self.IsShow() and any(idx in self._preview_waiting for idx in indices if slots[idx] in SHOWN_SLOTS)
 		self.nui_set(cards=cards, selected=int(front) if front is not None else -1,
 		             chip=self._chip_text(count), chip_on=self._show_hidden, hero_hidden=hero_hidden,
 		             hide_locked=not hero_hidden and len(self.visible_indices) <= 1,
+		             previews_check=now + PREVIEW_POLL if loading else 0.0,
 		             **self._go_state(front, left, now))
 
 	def _chip_text(self, count):
@@ -474,8 +611,18 @@ class TimerWindow(nui_facade.Facade, uiTimerWindow.TimerWindow):
 
 	# --- the previews (one per dungeon, only for the cards that show) ------------------
 
+	def _preview_order(self, slots):
+		"""The dungeons in the order their previews are asked for: by their card's slot in
+		PREVIEW_ORDER (the front card first), then the rest (a background preview's boss loads in the
+		order asked)."""
+		rank = dict((slot, i) for i, slot in enumerate(PREVIEW_ORDER))
+		return sorted(slots, key=lambda idx: (rank.get(slots[idx], len(rank)), idx))
+
 	def _sync_preview(self, idx, slot):
-		"""Shows or hides dungeon idx's preview and answers whether its card shows it."""
+		"""Shows or hides dungeon idx's preview and answers whether its card shows it: a shown card
+		whose boss is made (warmed ahead, or a background preview's boss loaded over the steps after
+		it is asked; the card shows its plain background until then, and never another dungeon's
+		boss)."""
 		name = PREVIEW_PREFIX + str(int(idx))
 		preview = uiTimerWindow.model_preview()
 		if preview is None or self._preview_models is None:
@@ -485,11 +632,12 @@ class TimerWindow(nui_facade.Facade, uiTimerWindow.TimerWindow):
 			if idx in self._preview_models:
 				preview.Show(name, False)
 			return False
-		if idx not in self._preview_models:
-			# 0 is no boss here; the client takes race 0 for the warrior (r39).
-			race = self.nui_race(idx)
-			self._preview_models[idx] = bool(race) and bool(preview.Select(name, race))
-		if not self._preview_models[idx]:
+		# 0 is no boss here; the client takes race 0 for the warrior (r39).
+		race = self.nui_race(idx)
+		asked = self._preview_models.get(idx)
+		if asked is None or asked[0] != race:
+			self._select_preview(preview, name, idx, race)
+		if not self._preview_models[idx][1]:
 			return False
 		preview.Show(name, True)
 		# Only the front card turns; a side card is drawn once and keeps its picture (r38: five
@@ -497,17 +645,73 @@ class TimerWindow(nui_facade.Facade, uiTimerWindow.TimerWindow):
 		set_still = getattr(preview, "SetStill", None)
 		if set_still is not None:
 			set_still(name, slot != FRONT_SLOT)
+		return self._preview_ready(preview, name, idx, race)
+
+	def _select_preview(self, preview, name, idx, race):
+		"""Asks dungeon idx's preview for its boss; a background preview (a client with
+		SetBackground) answers at once and makes the model over the next steps."""
+		self._preview_waiting.discard(idx)
+		if not race:
+			self._preview_models[idx] = (race, False)
+			return
+		set_background = getattr(preview, "SetBackground", None) if BACKGROUND_PREVIEWS else None
+		if set_background is not None:
+			set_background(name, True)
+		ok = bool(preview.Select(name, race))
+		self._preview_models[idx] = (race, ok)
+		if ok and set_background is not None:
+			self._preview_waiting.add(idx)
+
+	def _preview_ready(self, preview, name, idx, race):
+		"""Whether dungeon idx's boss is made: at once without a background preview, else once the
+		client's request no longer waits, and only with a model of the card's own race."""
+		if idx not in self._preview_waiting:
+			return True
+		get_state = getattr(preview, "GetState", None)
+		state = get_state(name) if get_state is not None else None
+		if state is None:
+			self._preview_waiting.discard(idx)
+			return True
+		if state.get("pending"):
+			return False
+		self._preview_waiting.discard(idx)
+		if not state.get("has_model") or int(state.get("race", -1)) != int(race):
+			# It made no model: the plain card stays (the same race is not asked again).
+			self._preview_models[idx] = (race, False)
+			return False
+		if idx in self._preview_unready:
+			# Its card showed without it: it fades in.
+			self._preview_unready.discard(idx)
+			self._preview_late.add(idx)
 		return True
 
-	def _clear_previews(self):
+	def check_previews(self):
+		"""The previews_check clock's end: the cards whose boss is made show it, and the clock runs
+		again while one still loads."""
+		self.nui_set(previews_check=0.0)
+		if self.IsShow():
+			self.publish_cards()
+
+	def _hide_previews(self):
+		"""Every preview the cards have hides, keeping its model and picture for the next show."""
+		if self._preview_unready is not None:
+			self._preview_unready.clear()
+			self._preview_late.clear()
 		models = self._preview_models
 		if not models:
 			return
 		preview = uiTimerWindow.model_preview()
-		if preview is not None:
-			for idx in models:
-				preview.Clear(PREVIEW_PREFIX + str(int(idx)))
-		models.clear()
+		if preview is None:
+			return
+		for idx in models:
+			preview.Show(PREVIEW_PREFIX + str(int(idx)), False)
+
+	def _clear_previews(self):
+		"""The window forgets its previews (Destroy: the phase's end, after legacy's Destroy cleared
+		every dungeon's boss preview, uiTimerWindow.clear_boss_previews)."""
+		for kept in (self._preview_models, self._preview_waiting, self._preview_unready, self._preview_late):
+			if kept:
+				kept.clear()
 
 	# --- the board's presses ------------------------------------------------------------
 
@@ -658,6 +862,7 @@ class TimerWindow(nui_facade.Facade, uiTimerWindow.TimerWindow):
 			self.nui_notices.discard()
 		self.nui_discard()
 		uiTimerWindow.TimerWindow.Destroy(self)
+		self._clear_previews()
 
 	# --- the drops ---------------------------------------------------------------------
 

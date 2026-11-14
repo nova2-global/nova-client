@@ -83,6 +83,8 @@ class LoginWindow(ui.ScriptWindow):
 		self.nuiBoard = None
 		# NovaUI server and channel board (nui_server_board.py), made in Open().
 		self.nuiServerBoard = None
+		# NOVA-205: the legacy board's saved account keys (__ShowSlotKeys).
+		self.slotKeyLines = []
 
 	def __del__(self):
 		net.ClearPhaseWindow(net.PHASE_WINDOW_LOGIN, self)
@@ -207,6 +209,7 @@ class LoginWindow(ui.ScriptWindow):
 		self.pwdEditLine.SetReturnEvent(0)
 		self.pwdEditLine.SetTabEvent(0)
 
+		self.__ShowSlotKeys(False)
 		self.connectBoard = None
 		self.loginBoard = None
 		self.idEditLine = None
@@ -414,6 +417,9 @@ class LoginWindow(ui.ScriptWindow):
 		self.pwdEditLine.SetReturnEvent(ui.__mem_func__(self.__OnClickLoginButton))
 		self.pwdEditLine.SetTabEvent(ui.__mem_func__(self.idEditLine.SetFocus))
 		self.pwdEditLine.SetSecretMode(1)
+		# NOVA-205: F1 to F12 pass the edit lines to OnKeyDown.
+		self.idEditLine.OnKeyDown = ui.__mem_func__(self.__EditLine_OnKeyDown)
+		self.pwdEditLine.OnKeyDown = ui.__mem_func__(self.__EditLine_OnKeyDown)
 		return 1
 
 	def __VirtualKeyboard_SetKeys(self, keyCodes):
@@ -793,6 +799,7 @@ class LoginWindow(ui.ScriptWindow):
 		self.serverBoard.Show()
 		self.connectBoard.Hide()
 		self.loginBoard.Hide()
+		self.__ShowSlotKeys(False)
 
 		if self.virtualKeyboard:
 			self.virtualKeyboard.Hide()
@@ -827,6 +834,7 @@ class LoginWindow(ui.ScriptWindow):
 		elif not self.stream.isAutoLogin:
 			self.connectBoard.Show()
 			self.loginBoard.Show()
+		self.__ShowSlotKeys(self.loginBoard.IsShow())
 
 		## if users have the login infomation, then don't initialize.2005.9 haho
 		if self.idEditLine == None:
@@ -1135,6 +1143,72 @@ class LoginWindow(ui.ScriptWindow):
 	def __OnClickSelectConnectButton(self):
 		self.__RefreshServerList()
 		self.__OpenServerBoard()
+
+	## Saved account keys (NOVA-205, OLD introLogin.py:997-1001, 775-786)
+	# F1 to F12 log in with the saved account in that place of the list
+	# (nui_accounts.accounts(), most recent first): NovaUI's board while it
+	# runs (nui_login.slot_key; this is where a key comes when no NovaUI field
+	# has the focus), else the legacy board's rule below.
+	def OnKeyDown(self, key):
+		index = nui_accounts.slot_of_key(key)
+		if index < 0:
+			return False
+		if nui_login.slot_key(self, index) is None:
+			self.__SlotLogin(index)
+		return True
+
+	# The legacy board: the account's name and stored password (Windows
+	# Credential Manager) in the edit lines, then the Log in button's path.
+	# Nothing for an empty place, while the board is hidden or a popup is up
+	# (a log in runs). An account of another server than the chosen one, or
+	# without a stored password, only fills the name and waits.
+	def __SlotLogin(self, index):
+		if not self.loginBoard or not self.loginBoard.IsShow() or self.stream.popupWindow.IsShow():
+			return False
+		saved = nui_accounts.accounts()
+		if not 0 <= index < len(saved):
+			return False
+		login, server = saved[index]["login"], saved[index]["server"]
+		secret = nui_accounts.load_secret(server, login) if server == self.__GetServerID() else None
+		self.idEditLine.SetText(login)
+		self.pwdEditLine.SetText(secret or "")
+		if not secret:
+			self.pwdEditLine.SetFocus()
+			return True
+		nui_accounts.remember_login(login, server, True, secret)
+		self.__OnClickLoginButton()
+		return True
+
+	# A focused legacy EditLine keeps F5 to F12 (ui.EditLine.OnKeyDown passes
+	# F1 to F4 only); the login lines pass all twelve to OnKeyDown.
+	def __EditLine_OnKeyDown(self, key):
+		if nui_accounts.slot_of_key(key) >= 0:
+			return False
+		return ui.EditLine.OnKeyDown(self.idEditLine, key)
+
+	# The keys of the saved accounts under the legacy login board, one line
+	# each ("F1  <login>"), under the saved accounts heading. The NovaUI
+	# board shows them on its own rows.
+	def __ShowSlotKeys(self, show):
+		for line in self.slotKeyLines:
+			line.Hide()
+		self.slotKeyLines = []
+		if not show or not self.loginBoard:
+			return
+		saved = nui_accounts.accounts()
+		if not saved:
+			return
+		texts = [uiScriptLocale.NUI_LOGIN_SAVED]
+		texts += ["%s  %s" % (nui_accounts.key_name(index), account["login"]) for index, account in enumerate(saved)]
+		(x, y) = self.loginBoard.GetLocalPosition()
+		for row, text in enumerate(texts):
+			line = ui.TextLine()
+			line.SetParent(self)
+			line.SetPosition(x + 20, y + 118 + row * 16)
+			line.SetText(text)
+			line.SetOutline()
+			line.Show()
+			self.slotKeyLines.append(line)
 
 	def __OnClickLoginButton(self):
 		id = self.idEditLine.GetText()

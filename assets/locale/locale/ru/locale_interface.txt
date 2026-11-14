@@ -741,3 +741,47 @@ KEYBIND_EMOTION_6	Эмоция 6
 KEYBIND_EMOTION_7	Эмоция 7
 KEYBIND_EMOTION_8	Эмоция 8
 KEYBIND_EMOTION_9	Эмоция 9
+OPTION_NEW_ITEM_HIGHLIGHT	Новые
+DESTROY	Уничтожить
+STORAGE_TITLE	Склад
+OPTION_YANG_TEXT	Журнал янов
+OPTION_COUNTRY_FLAGS	Флаги
+OPTION_SEARCH_HINT	Поиск настроек
+OPTION_SEARCH_NONE	Ничего не найдено.
+OPTION_BGM	Фоновая музыка
+KEYBIND_WIKI	Вики
+OPTION_KEYWORDS_NAME_COLOR	имя цвет империя королевство
+OPTION_KEYWORDS_TARGET_BOARD	цель меню враг
+OPTION_KEYWORDS_PK	пвп бой мир враждебный гильдия свободный
+OPTION_KEYWORDS_BLOCK	блок обмен группа гильдия шепот друг запрос
+OPTION_KEYWORDS_VIEW_CHAT	чат облачко
+OPTION_KEYWORDS_ALWAYS_NAME	имя всегда
+OPTION_KEYWORDS_DAMAGE	урон удар цифры
+OPTION_KEYWORDS_SALES	магазин вывеска продажа
+OPTION_KEYWORDS_PICKUP	подбор добыча фильтр предметы зелья
+OPTION_KEYWORDS_SHOPS	магазины офлайн торговец
+OPTION_KEYWORDS_SASH	шарф плечо костюм
+OPTION_KEYWORDS_BUFFI	баффи спутник поддержка
+OPTION_KEYWORDS_MOB_LEVEL	монстр уровень инфо
+OPTION_KEYWORDS_MOB_AI	монстр агрессивный звезда
+OPTION_KEYWORDS_KEYS	клавиши клавиатура горячие
+OPTION_KEYWORDS_YANG	ян золото деньги подбор сообщение
+OPTION_KEYWORDS_FLAGS	флаг страна нация язык
+OPTION_KEYWORDS_SOUND	звук эффекты громкость
+OPTION_KEYWORDS_MUSIC	музыка громкость
+OPTION_KEYWORDS_BGM	музыка фон песня
+OPTION_KEYWORDS_CAMERA	камера зум расстояние далеко близко
+OPTION_KEYWORDS_FOG	туман дальность обзора
+OPTION_KEYWORDS_TILING	графика
+OPTION_KEYWORDS_FOV	поле зрения угол
+OPTION_KEYWORDS_SNOW	снег снегопад погода рождество
+OPTION_KEYWORDS_FPS	фпс кадры счетчик производительность
+OPTION_KEYWORDS_TIPS	советы подсказка помощь
+OPTION_KEYWORDS_THEME	тема вид стиль темная светлая классика
+OPTION_KEYWORDS_SCALE	масштаб размер интерфейс
+OPTION_KEYWORDS_MOTION	движение анимация
+OPTION_KEYWORDS_EFFECTS	эффекты размытие тень
+OPTION_KEYWORDS_COLORS	цвета акцент панель прозрачность
+OPTION_FRAME_RATE	Лимит FPS
+OPTION_FRAME_RATE_UNLIMITED	Без лимита
+OPTION_FRAME_RATE_VSYNC	VSync

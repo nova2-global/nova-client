@@ -18,6 +18,12 @@ import chr
 import ui
 import mouseModule
 import constInfo
+import item_shortcuts
+import costume_preview
+try:
+	import net
+except ImportError:  # a tooltip outside the client (tools)
+	net = None
 
 WARP_SCROLLS = [22011, 22000, 22010]
 
@@ -44,6 +50,13 @@ PET_EGG_HATCH_SOCKET = 1
 ## NOVA-83: an NPC shop item's tooltip ends with how to buy several (Shift + click), when the exe
 ## buys several (shop.BUY_COUNT_MAX). Default, Eddy to confirm.
 SHOP_BULK_BUY_HINT = True
+# NOVA-192: the safebox's right-click hint; it shows only with an exe that
+# has NOVA-191's any-cell checkout (net.SAFEBOX_CHECKOUT_ANY_CELL).
+SAFEBOX_ANY_CELL_HINT = True
+
+## NOVA-196: the tooltip of a job skill whose plus button shows ends with how Shift raises it
+## to the master level (the character window asks for it). Default, Eddy to confirm.
+SKILL_MAX_UP_HINT = True
 
 SASH_ABSORPTION_SOCKET = 0
 SASH_ABSORBED_SOCKET = 1
@@ -118,6 +131,16 @@ def SetSafeboxOpen(isOpen):
 
 def IsSafeboxOpen():
 	return g_isSafeboxOpen
+
+def PreviewKeyName():
+	"""The key of the costume preview's action (NOVA-202), as the key table
+	names it; "Alt" where the table cannot say."""
+	try:
+		import keybindings
+		name = keybindings.badge(costume_preview.KEY_ACTION)
+	except Exception:
+		name = ""
+	return name or "Alt"
 
 # Tooltip max width when descriptions are long
 DESC_MAX_WIDTH = 280
@@ -678,6 +701,7 @@ class ItemToolTip(ToolTip):
 		self.itemVnum = 0
 		self.metinSlot = []
 		self.isShopItem = False
+		self.isSafeboxItem = False
 		# When displaying item tooltip, if the current character cannot equip the item, force it to use Disable Color (already works this way but needed ability to turn it off)
 		self.bCannotUseItemForceSetDisableColor = True
 
@@ -818,6 +842,7 @@ class ItemToolTip(ToolTip):
 		# MR-10: -- END OF -- Fix element centering in tooltips
 
 		self.isShopItem = False
+		self.isSafeboxItem = False
 		self.toolTipWidth = self.TOOL_TIP_WIDTH
 		self.itemWindowType = None
 		self.itemSlotIndex = -1
@@ -1013,6 +1038,7 @@ class ItemToolTip(ToolTip):
 		self.ClearToolTip()
 		self.itemWindowType = None
 		self.itemSlotIndex = slotIndex
+		self.isSafeboxItem = True
 		metinSlot = []
 		for i in range(player.METIN_SOCKET_MAX_NUM):
 			metinSlot.append(safebox.GetItemMetinSocket(slotIndex, i))
@@ -1848,6 +1874,7 @@ class ItemToolTip(ToolTip):
 			self.AppendTextLine(localeInfo.CHEST_CONTENT_PREVIEW, self.NORMAL_COLOR)
 
 		self.__AppendMoveHints(itemVnum, itemType)
+		self.__AppendShortcutHints(itemVnum)
 		self.__AppendPetHints(itemType, metinSlot)
 
 		self.ShowToolTip()
@@ -1879,6 +1906,39 @@ class ItemToolTip(ToolTip):
 				self.AppendTextLine(localeInfo.MOVE_TO_INVENTORY_PLUS, self.NORMAL_COLOR)
 			else:
 				self.AppendTextLine(localeInfo.MOVE_TO_INVENTORY, self.NORMAL_COLOR)
+
+	## The item shortcuts (NOVA-192; OLD uiToolTip.py:2001-2007), each only
+	## where it works:
+	## - a safebox item: right-click takes it out to a free cell (NOVA-191's
+	##   any-cell checkout, net.SAFEBOX_CHECKOUT_ANY_CELL);
+	## - an item of a bag cell or of the special inventory, while no safebox
+	##   is open (there Ctrl and Shift move it into the safebox): Ctrl + click
+	##   searches the shops while the shop search is on (NOVA-9, NOVA-193),
+	##   Shift + right-click opens the wiki where it can open (NOVA-42).
+	## An NPC shop's several-buy hint is SHOP_BULK_BUY_HINT (NOVA-83).
+	def __AppendShortcutHints(self, itemVnum):
+		## NOVA-202: a costume under the pointer in a shop, the exchange, the
+		## cube or the shop search can be previewed on the player.
+		if itemVnum and costume_preview.hovered_plan() is not None and costume_preview.hovered_vnum() == itemVnum:
+			self.AppendTextLine(localeInfo.COSTUME_PREVIEW_HINT % PreviewKeyName(), self.NORMAL_COLOR)
+
+		if self.isSafeboxItem:
+			if IsSafeboxOpen() and SAFEBOX_ANY_CELL_HINT and hasattr(net, "SAFEBOX_CHECKOUT_ANY_CELL"):
+				self.AppendTextLine(localeInfo.MOVE_FROM_SAFEBOX_TO_INVENTORY, self.NORMAL_COLOR)
+			return
+
+		window = self.itemWindowType
+		if self.isShopItem or window not in (player.INVENTORY, player.EXTRA_INVENTORY):
+			return
+		if window == player.INVENTORY and (player.IsEquipmentSlot(self.itemSlotIndex) or player.IsBeltInventorySlot(self.itemSlotIndex)):
+			return
+		if IsSafeboxOpen():
+			return
+
+		if item_shortcuts.shop_search_on():
+			self.AppendTextLine(localeInfo.SEARCH_IN_SHOPS, self.NORMAL_COLOR)
+		if item_shortcuts.wiki_on():
+			self.AppendTextLine(localeInfo.SEARCH_IN_WIKI, self.NORMAL_COLOR)
 
 	## The advanced pet (NOVA-24). An egg made while PET_EGG_HATCH_SECONDS
 	## was above 0 says when it can hatch (decision Q2, socket 1). A seal
@@ -2910,6 +2970,12 @@ class SkillToolTip(ToolTip):
 			self.AppendSkillRequirement(skillIndex, skillLevel)
 
 		self.ShowToolTip()
+
+	def AppendSkillMaxUpHint(self):
+		"""NOVA-196: one line, how Shift + click raises the skill to its master level."""
+		if SKILL_MAX_UP_HINT:
+			self.AppendSpace(5)
+			self.AppendTextLine(localeInfo.SKILL_MAX_UP_HINT, self.CAN_LEVEL_UP_COLOR)
 
 	def __SetSkillTitle(self, skillIndex, skillGrade):
 		self.SetTitle(skill.GetSkillName(skillIndex, skillGrade))

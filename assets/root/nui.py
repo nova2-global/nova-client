@@ -487,9 +487,10 @@ class Window(object):
 		text, or a textarea), cut to its maxlength, and sends one change event
 		(linebreak False) when the text changed, as typing would. `caret`
 		("end", "start", "keep" or a character index) places the caret, with no
-		selection, when the field has the focus; a field without the focus
-		keeps its own caret. False for an unknown or hidden element, or one
-		that takes no text. With even_hidden=True (P18) a field of a hidden
+		selection, in the field when it has the focus, else when it next takes
+		the focus (a click, Tab, focus(), its autofocus), once; "keep" asks
+		nothing. A click still puts the caret where it was pressed. False for
+		an unknown or hidden element, or one that takes no text. With even_hidden=True (P18) a field of a hidden
 		document, or one under a data-if that is off, takes the text too (a
 		pooled board emptied for its next window); an exe without it answers
 		as before, False for a hidden field."""
@@ -524,6 +525,18 @@ class Window(object):
 		if not self._doc:
 			return None
 		return _nui.GetValue(self._doc, element_id)
+
+	def get_caret(self, element_id):
+		"""The caret of the text field with this id as (start, end), character
+		indexes of its selection (equal without one), or None for an unknown
+		element, one that takes no text, or an exe without GetCaret. A field
+		without the focus answers where its caret was left; a caret
+		set_value() asked for is placed at its next focus."""
+		get_caret = getattr(_nui, "GetCaret", None) if _nui is not None else None
+		if not self._doc or get_caret is None:
+			return None
+		caret = get_caret(self._doc, element_id)
+		return tuple(caret) if caret is not None else None
 
 	def set(self, **values):
 		"""Replace model keys; only the views that use them update.

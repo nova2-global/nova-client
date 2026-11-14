@@ -283,6 +283,8 @@
    }
   ],
   "model_view": true,
+  "preview_loading": false,
+  "preview_check_at": 0.0,
   "attach_right": true,
   "active_group": 2,
   "hover_group": 2,

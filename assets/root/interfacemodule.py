@@ -47,6 +47,8 @@ import uiselectitem
 import uiGemShop
 import uiChestDrop
 import uiWiki
+import uiCostumePreview
+import costume_preview
 import uiSash
 ## The advanced pet's windows (NOVA-24).
 import uiPet
@@ -54,6 +56,8 @@ import uiPet
 import uiSearchShop
 import uiOfflineShopLog
 import uiKillRank
+import uiAutoShout
+import autoshout
 import uiMyShopDecoration
 import uiSelectSkill
 # The switchbot (NOVA-43; OLD interfaceModule.py:90, 417).
@@ -71,6 +75,8 @@ import uiScriptLocale
 import event
 import localeInfo
 import nui_windows
+import item_glow
+import item_shortcuts
 
 IsQBHide = 0
 # nova-protocol offline_shop_packets.h EOfflineShopCG: the builder's CREATE;
@@ -105,12 +111,15 @@ class Interface(object):
 		self.wndDragonSoulRefine = None
 		self.wndChat = None
 		self.wndMessenger = None
+		# NOVA-203: the messenger handler over wndMessenger (uiWhisper.MessengerRelay).
+		self.messengerRelay = None
 		self.wndMiniMap = None
 		self.wndGuild = None
 		self.wndGuildBuilding = None
 		self.wndGemShop = None
 		self.wndChestDrop = None
 		self.wndWiki = None
+		self.wndCostumePreview = None
 		self.wndSashCombine = None
 		self.wndSashAbsorption = None
 		## The advanced pet's windows (NOVA-24; OLD interfaceModule.py:392-398).
@@ -128,6 +137,8 @@ class Interface(object):
 		self.wndFastEquip = None
 		# NOVA-29: the kill ranking and the guild war top killers.
 		self.wndKillRank = None
+		# NOVA-204: the auto-shout window, made at its first open.
+		self.wndAutoShout = None
 		self.wndTopKillers = None
 		self.wndTimer = None
 		self.wndDungeonRank = None
@@ -161,6 +172,10 @@ class Interface(object):
 		from _weakref import proxy
 		self.wndMessenger.SetWhisperButtonEvent(lambda n,i=proxy(self):i.OpenWhisperDialog(n))
 		self.wndMessenger.SetGuildButtonEvent(ui.__mem_func__(self.ToggleGuildWindow))
+		# NOVA-203: a change of the friend list refreshes the whisper dialogs'
+		# add-friend buttons; every messenger call still reaches the window.
+		self.messengerRelay = uiWhisper.MessengerRelay(self.wndMessenger,
+			ui.__mem_func__(self.RefreshWhisperFriendButtons)).install()
 
 	def __MakeGuildWindow(self):
 		self.wndGuild = nui_windows.make("guild", uiGuild.GuildWindow, "nui_guild.GuildWindow")
@@ -178,6 +193,7 @@ class Interface(object):
 		self.wndChat.BindInterface(self)
 		self.wndChat.SetSendWhisperEvent(ui.__mem_func__(self.OpenWhisperDialogWithoutTarget))
 		self.wndChat.SetOpenChatLogEvent(ui.__mem_func__(self.ToggleChatLogWindow))
+		self.wndChat.SetAutoShoutEvent(ui.__mem_func__(self.ToggleAutoShoutWindow))
 
 	def __PlaceChatAboveTaskBar(self):
 		wndChat = getattr(self, "wndChat", None)
@@ -255,6 +271,8 @@ class Interface(object):
 			wndDragonSoulRefine = None
  
 		wndMiniMap = nui_windows.make("minimap", uiMiniMap.MiniMap, "nui_minimap.MiniMap")
+		# NOVA-206: a press on a boss or metin stone mark on the atlas opens its wiki page.
+		wndMiniMap.SetOpenWikiMobEvent(ui.__mem_func__(self.OpenWikiMob))
 		# The NovaUI atlas needs the NovaUI minimap, which makes it (P10 spec D16).
 		if not getattr(wndMiniMap, "NUI_FACADE", False) and nui_windows.is_on("atlas"):
 			nui_windows.refuse("atlas", "needs the NovaUI minimap")
@@ -295,6 +313,13 @@ class Interface(object):
 		# window: uiWiki.UnavailableWindow stands in when NovaUI cannot run.
 		self.wndWiki = nui_windows.make("wiki", uiWiki.UnavailableWindow, "nui_wiki.WikiWindow")
 		self.wndWiki.Hide()
+		# The costume preview popup (NOVA-202): Alt over a costume in a shop,
+		# the exchange, the cube or the shop search.
+		self.wndCostumePreview = nui_windows.make("costume-preview", uiCostumePreview.CostumePreview,
+		                                          "nui_costume_preview.CostumePreview")
+		costume_preview.set_popup(self.wndCostumePreview)
+		# Shift + right-click opens an item in it, and the tooltips say so (NOVA-192).
+		item_shortcuts.set_wiki(getattr(self.wndWiki, "AVAILABLE", True))
 		# Its Link button pastes a page's link where the player types.
 		self.wndWiki.SetPasteLinkEvent(ui.__mem_func__(self.PasteWikiLink))
 
@@ -739,6 +764,11 @@ class Interface(object):
 	################################
 
 	def Close(self):
+		## The "new item" glows end with the game phase (NOVA-188), and so do
+		## the item shortcuts' switches (NOVA-192).
+		item_glow.forget_all()
+		item_shortcuts.reset()
+
 		if self.dlgWhisperWithoutTarget:
 			self.dlgWhisperWithoutTarget.Destroy()
 			del self.dlgWhisperWithoutTarget
@@ -823,6 +853,12 @@ class Interface(object):
 		if self.wndCubeRenewal:
 			self.wndCubeRenewal.Destroy()
 
+		# The C++ messenger keeps no reference to its handler: the relay goes
+		# from it before the Interface lets it go.
+		if self.messengerRelay:
+			self.messengerRelay.uninstall()
+			self.messengerRelay = None
+
 		if self.wndMessenger:
 			self.wndMessenger.Destroy()
 
@@ -857,6 +893,11 @@ class Interface(object):
 		if self.wndWiki:
 			self.wndWiki.Destroy()
 			self.wndWiki = None
+
+		costume_preview.set_popup(None)
+		if self.wndCostumePreview:
+			self.wndCostumePreview.Destroy()
+			self.wndCostumePreview = None
 
 		if self.wndSashCombine:
 			self.wndSashCombine.Destroy()
@@ -904,6 +945,10 @@ class Interface(object):
 		if self.wndKillRank:
 			self.wndKillRank.Destroy()
 			self.wndKillRank = None
+
+		if self.wndAutoShout:
+			self.wndAutoShout.Destroy()
+			self.wndAutoShout = None
 
 		if self.wndTopKillers:
 			self.wndTopKillers.Destroy()
@@ -1095,6 +1140,14 @@ class Interface(object):
 		net.SendChatPacket("/in_game_mall")
 	# END_OF_ITEM_MALL
 
+	## NOVA-203: every open whisper dialog's add-friend button, after a change
+	## of the friend list (uiWhisper.MessengerRelay).
+	def RefreshWhisperFriendButtons(self):
+		for dlg in list((self.whisperDialogDict or {}).values()):
+			refresh = getattr(dlg, "RefreshFriendButton", None)
+			if refresh:
+				refresh()
+
 	def RefreshMessenger(self):
 		self.wndMessenger.RefreshMessenger()
 
@@ -1202,6 +1255,18 @@ class Interface(object):
 		if self.wndKillRank:
 			self.wndKillRank.SetPersonalKillRank(rank, name, guildName, count)
 
+	## NOVA-204: the auto-shout window, from the button by the chat input; made
+	## at its first open.
+	def ToggleAutoShoutWindow(self):
+		if not self.wndAutoShout:
+			self.wndAutoShout = nui_windows.make("auto-shout", uiAutoShout.AutoShoutWindow, "nui_auto_shout.AutoShoutWindow")
+		self.wndAutoShout.Toggle()
+
+	## The server's chat command "AutoShoutState <0|1> <seconds>" (game.py's
+	## server command table): the switch and the countdown (autoshout.py).
+	def AutoShoutState(self, on, seconds):
+		autoshout.server_state(on, seconds)
+
 	# The guild war top killers (NOVA-29): shown while TAB is held during a war
 	# (OLD toggled at the press and at the release, interfaceModule.py:4313).
 	def OpenTopKillers(self):
@@ -1245,7 +1310,11 @@ class Interface(object):
 	def OnOfflineShopConfig(self):
 		import shop
 		config = shop.GetConfig()
-		self.wndInventory.ShowOfflineShopButtons(isinstance(config, dict) and bool(config.get("enabled")))
+		enabled = isinstance(config, dict) and bool(config.get("enabled"))
+		self.wndInventory.ShowOfflineShopButtons(enabled)
+		# Ctrl + click searches the shops from both inventories, and the
+		# tooltips say so (NOVA-192, NOVA-193).
+		item_shortcuts.set_shop_search(enabled)
 
 	# GC HIDE_SHOPS: the game options show the server's state (M5); a window
 	# made later reads it when it is made.
@@ -1449,6 +1518,11 @@ class Interface(object):
 
 	def AppendMaterialToRefineDialog(self, vnum, count):
 		self.dlgRefineNew.AppendMaterial(vnum, count)
+
+	## NOVA-198: RefineSuceeded and RefineFailed, for the fast upgrade.
+	def OnRefineResult(self, succeeded):
+		if self.dlgRefineNew:
+			self.dlgRefineNew.OnRefineResult(succeeded)
 
 	## Show & Hide
 	def ShowDefaultWindows(self):
@@ -1688,6 +1762,11 @@ class Interface(object):
 		if player.DRAGON_SOUL_INVENTORY == inven_type:
 			if app.ENABLE_DRAGON_SOUL_SYSTEM:
 				self.wndDragonSoul.HighlightSlot(inven_pos)
+		## A newly received item of the inventory or the special inventory
+		## glows until hovered (NOVA-188; OLD interfaceModule.py:2965-2978).
+		## The C++ refreshes both inventories right after this call.
+		elif inven_type in (player.INVENTORY, getattr(player, "EXTRA_INVENTORY", -1)):
+			item_glow.mark_new(inven_type, inven_pos)
 
 	def DragonSoulGiveQuilification(self):
 		self.DRAGON_SOUL_IS_QUALIFIED = True

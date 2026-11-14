@@ -740,3 +740,47 @@ KEYBIND_EMOTION_6	Érzelem 6
 KEYBIND_EMOTION_7	Érzelem 7
 KEYBIND_EMOTION_8	Érzelem 8
 KEYBIND_EMOTION_9	Érzelem 9
+OPTION_NEW_ITEM_HIGHLIGHT	Új tárgy
+DESTROY	Elpusztít
+STORAGE_TITLE	Tárolás
+OPTION_YANG_TEXT	Yang napló
+OPTION_COUNTRY_FLAGS	Zászlók
+OPTION_SEARCH_HINT	Beállítás keresése
+OPTION_SEARCH_NONE	Nincs egyező beállítás.
+OPTION_BGM	Háttérzene
+KEYBIND_WIKI	Wiki
+OPTION_KEYWORDS_NAME_COLOR	név szín birodalom
+OPTION_KEYWORDS_TARGET_BOARD	célpont menü ellenség
+OPTION_KEYWORDS_PK	pvp harc béke ellenséges céh szabad
+OPTION_KEYWORDS_BLOCK	tiltás csere csoport céh suttogás barát kérés
+OPTION_KEYWORDS_VIEW_CHAT	chat buborék
+OPTION_KEYWORDS_ALWAYS_NAME	név mindig
+OPTION_KEYWORDS_DAMAGE	sebzés találat számok
+OPTION_KEYWORDS_SALES	bolt tábla eladás
+OPTION_KEYWORDS_PICKUP	felvétel zsákmány szűrő tárgyak italok
+OPTION_KEYWORDS_SHOPS	boltok offline kereskedő
+OPTION_KEYWORDS_SASH	vállpánt jelmez
+OPTION_KEYWORDS_BUFFI	buffi társ támogatás
+OPTION_KEYWORDS_MOB_LEVEL	szörny szint info
+OPTION_KEYWORDS_MOB_AI	szörny agresszív csillag
+OPTION_KEYWORDS_KEYS	billentyű billentyűzet gyorsbillentyű
+OPTION_KEYWORDS_YANG	yang arany pénz felvétel üzenet
+OPTION_KEYWORDS_FLAGS	zászló ország nemzet nyelv
+OPTION_KEYWORDS_SOUND	hang effektek hangerő
+OPTION_KEYWORDS_MUSIC	zene hangerő
+OPTION_KEYWORDS_BGM	zene háttér dal
+OPTION_KEYWORDS_CAMERA	kamera nagyítás távolság távol közel
+OPTION_KEYWORDS_FOG	köd látótávolság
+OPTION_KEYWORDS_TILING	grafika
+OPTION_KEYWORDS_FOV	látómező szög
+OPTION_KEYWORDS_SNOW	hó havazás időjárás karácsony
+OPTION_KEYWORDS_FPS	fps képkocka számláló teljesítmény
+OPTION_KEYWORDS_TIPS	tippek tanács segítség
+OPTION_KEYWORDS_THEME	téma megjelenés stílus sötét világos klasszikus
+OPTION_KEYWORDS_SCALE	méretezés méret felület
+OPTION_KEYWORDS_MOTION	mozgás animáció
+OPTION_KEYWORDS_EFFECTS	effektek elmosás árnyék
+OPTION_KEYWORDS_COLORS	színek kiemelés panel átlátszóság
+OPTION_FRAME_RATE	FPS-korlát
+OPTION_FRAME_RATE_UNLIMITED	Korlátlan
+OPTION_FRAME_RATE_VSYNC	VSync

@@ -12,6 +12,11 @@
 		"snow": 1,
 		"fps": 0,
 		"tips": 0,
+		"frame_rate": 60,
+		"frame_rate_label": "60",
+		"frame_rate_on": true,
+		"frame_rate_first": true,
+		"frame_rate_last": false,
 		"interface": true,
 		"themes": [
 			{"id": "modern-dark", "label": "@ui.THEME_MODERN_DARK"},
@@ -42,6 +47,10 @@
 			{"slot": "highlight", "kind": "color", "label": "@ui.OPTION_UI_COLOR_HIGHLIGHT", "value": "#f2d39b", "swatches": [{"index": 0, "color": "#f2d39b"}, {"index": 1, "color": "#ffd166"}, {"index": 2, "color": "#9fefff"}, {"index": 3, "color": "#ff9fbf"}, {"index": 4, "color": "#b9f18c"}, {"index": 5, "color": "#e7eaf0"}], "choices": []}
 		],
 		"accent_hue": 272,
-		"colors_adjusted": true
+		"colors_adjusted": true,
+		"searching": false,
+		"results": [],
+		"found": "",
+		"found_end": 0.0
 	}
 }

@@ -1156,8 +1156,11 @@ class Flows(Pair):
         self.same(flow, expect=["player.SetAutoPotionInfo"])
 
     def test_the_mall_button(self):
-        legacy, _, _ = self.same(lambda w, win, i: i.button("mallButton", "mall_press"), expect=["net.SendChatPacket"])
-        self.assertEqual(legacy, [("net.SendChatPacket", ("/click_mall",))])
+        """NOVA-201: the button opens the storage choice and sends nothing
+        itself (nui_qol_items_test.StorageChoice has the choices)."""
+        (legacy, _, _, _), (novaui, _, _, _) = self.run_flow(lambda w, win, i: i.button("mallButton", "mall_press"))
+        for calls in (legacy, novaui):
+            self.assertNotIn("net.SendChatPacket", [name for name, _ in calls])
 
     def test_the_dragon_soul_button(self):
         self.same(lambda w, win, i: i.button("DSSButton", "dss_press"), expect=["interface.ToggleDragonSoulWindow"])
@@ -1183,7 +1186,8 @@ class Flows(Pair):
             i.press("bag", 4)
             game_window(w).OnMouseLeftButtonUp()
             accept_last(w)
-        legacy, _, _ = self.same(flow, expect=["uiCommon.QuestionDialog.Open", "net.SendItemDropPacketNew"])
+        # NOVA-189: the drop question has Destroy too (QuestionDialog3).
+        legacy, _, _ = self.same(flow, expect=["uiCommon.QuestionDialog3.Open", "net.SendItemDropPacketNew"])
         self.assertIn(("net.SendItemDropPacketNew", (P["INVENTORY"], 4, 10)), legacy)
 
     def test_a_drop_whose_question_is_canceled_sends_nothing(self):
@@ -1191,7 +1195,7 @@ class Flows(Pair):
             i.press("bag", 0, cell=5)  # the sword's lower cell stands for its anchor
             game_window(w).OnMouseLeftButtonUp()
             w.game.dialogs[-1].cancel()
-        legacy, _, _ = self.same(flow, expect=["uiCommon.QuestionDialog.Open"])
+        legacy, _, _ = self.same(flow, expect=["uiCommon.QuestionDialog3.Open"])
         self.assertNotIn("net.SendItemDropPacketNew", [name for name, _ in legacy])
 
     def test_a_split_stack_dropped_on_the_ground_drops_the_split_count(self):
@@ -1343,7 +1347,10 @@ class Flows(Pair):
 # __SendDropItemPacket; Wave 3b leaves it unchanged, P14 spec 6.1's "world
 # drop, give, trade" row).
 GAME_DROP = ("OnMouseLeftButtonUp", "__PutItem", "__PutMoney", "__DropMoney", "__DropItem", "RequestDropItem",
-             "__SendDropItemPacket")
+             "__SendDropItemPacket",
+             # NOVA-189: the drop question's Destroy.
+             "destroyQuestionDialog", "__NewItemDropQuestion", "__AskDestroyItem", "__CancelDestroyItem",
+             "__CloseDestroyQuestion", "__AcceptDestroyItem", "__SendDestroyItemPacket")
 
 
 def game_window(world):

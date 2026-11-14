@@ -741,3 +741,47 @@ KEYBIND_EMOTION_6	Emocja 6
 KEYBIND_EMOTION_7	Emocja 7
 KEYBIND_EMOTION_8	Emocja 8
 KEYBIND_EMOTION_9	Emocja 9
+OPTION_NEW_ITEM_HIGHLIGHT	Nowe
+DESTROY	Zniszcz
+STORAGE_TITLE	Schowek
+OPTION_YANG_TEXT	Log Yang
+OPTION_COUNTRY_FLAGS	Flagi
+OPTION_SEARCH_HINT	Szukaj opcji
+OPTION_SEARCH_NONE	Brak pasujących opcji.
+OPTION_BGM	Muzyka w tle
+KEYBIND_WIKI	Wiki
+OPTION_KEYWORDS_NAME_COLOR	imię kolor królestwo
+OPTION_KEYWORDS_TARGET_BOARD	cel menu wróg
+OPTION_KEYWORDS_PK	pvp walka pokój wrogi gildia wolny
+OPTION_KEYWORDS_BLOCK	blokuj handel grupa gildia szept przyjaciel prośba
+OPTION_KEYWORDS_VIEW_CHAT	czat dymek
+OPTION_KEYWORDS_ALWAYS_NAME	imię zawsze
+OPTION_KEYWORDS_DAMAGE	obrażenia trafienie liczby
+OPTION_KEYWORDS_SALES	sklep szyld sprzedaż
+OPTION_KEYWORDS_PICKUP	podnieś łup filtr przedmioty mikstury
+OPTION_KEYWORDS_SHOPS	sklepy offline kupiec
+OPTION_KEYWORDS_SASH	szarfa ramię kostium
+OPTION_KEYWORDS_BUFFI	buffi towarzysz wsparcie
+OPTION_KEYWORDS_MOB_LEVEL	potwór poziom info
+OPTION_KEYWORDS_MOB_AI	potwór agresywny gwiazda
+OPTION_KEYWORDS_KEYS	klawisze klawiatura skrót
+OPTION_KEYWORDS_YANG	yang złoto pieniądze podnieś wiadomość
+OPTION_KEYWORDS_FLAGS	flaga kraj naród język
+OPTION_KEYWORDS_SOUND	dźwięk efekty głośność
+OPTION_KEYWORDS_MUSIC	muzyka głośność
+OPTION_KEYWORDS_BGM	muzyka tło utwór
+OPTION_KEYWORDS_CAMERA	kamera zoom odległość daleko blisko
+OPTION_KEYWORDS_FOG	mgła zasięg widzenia
+OPTION_KEYWORDS_TILING	grafika
+OPTION_KEYWORDS_FOV	pole widzenia kąt
+OPTION_KEYWORDS_SNOW	śnieg opady pogoda święta
+OPTION_KEYWORDS_FPS	fps klatki licznik wydajność
+OPTION_KEYWORDS_TIPS	wskazówki podpowiedź pomoc
+OPTION_KEYWORDS_THEME	motyw wygląd styl ciemny jasny klasyczny
+OPTION_KEYWORDS_SCALE	skala rozmiar interfejs
+OPTION_KEYWORDS_MOTION	ruch animacja
+OPTION_KEYWORDS_EFFECTS	efekty rozmycie cień
+OPTION_KEYWORDS_COLORS	kolory akcent panel krycie
+OPTION_FRAME_RATE	Limit FPS
+OPTION_FRAME_RATE_UNLIMITED	Bez limitu
+OPTION_FRAME_RATE_VSYNC	VSync

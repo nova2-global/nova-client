@@ -13,6 +13,14 @@
 		"hp_values": "1.234 / 2.000",
 		"element": 6,
 		"element_name": "Dark",
-		"show_info": true
+		"show_info": true,
+		"trail": 62,
+		"trail_snap": true,
+		"poisoned": false,
+		"burning": false,
+		"arrow_percent": 0,
+		"arrow_pre": "",
+		"arrow_post": " arrow damage",
+		"hint": ""
 	}
 }

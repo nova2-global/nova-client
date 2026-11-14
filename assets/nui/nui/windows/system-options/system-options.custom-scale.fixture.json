@@ -12,6 +12,11 @@
 		"snow": 1,
 		"fps": 0,
 		"tips": 0,
+		"frame_rate": 0,
+		"frame_rate_label": "@ui.OPTION_FRAME_RATE_UNLIMITED",
+		"frame_rate_on": true,
+		"frame_rate_first": false,
+		"frame_rate_last": false,
 		"interface": true,
 		"themes": [
 			{"id": "modern-dark", "label": "@ui.THEME_MODERN_DARK"},
@@ -37,6 +42,10 @@
 		"effects_available": true,
 		"color_slots": [],
 		"accent_hue": 0,
-		"colors_adjusted": false
+		"colors_adjusted": false,
+		"searching": false,
+		"results": [],
+		"found": "",
+		"found_end": 0.0
 	}
 }

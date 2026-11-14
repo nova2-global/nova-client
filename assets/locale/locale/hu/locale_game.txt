@@ -1290,3 +1290,189 @@ SHOP_TEXT_OR	vagy
 SHOP_BUY_COUNT_TITLE	Vásárolandó mennyiség (max. %d)
 DO_YOU_BUY_WITH_ITEM	Szeretnél %s-t vásárolni %s-ért?
 SHOP_BULK_BUY_HINT	Shift + click: több vásárlása
+SEARCH_IN_SHOPS	Ctrl + click: keresés a boltokban
+SEARCH_IN_WIKI	Shift + right-click: megnyitás a wikiben
+MOVE_FROM_SAFEBOX_TO_INVENTORY	Right-click: áthelyezés a leltárba
+COSTUME_PREVIEW_HINT	%s nyomva tartva: előnézet a karaktereden
+DESTROY_ITEM_WARNING	Biztos, hogy véglegesen el akarod pusztítani ezt a tárgyat?
+ITEM_SPLIT_ALL	Összes felosztása
+SHOP_MARK_SELL_HINT	Tab + kattintás: megjelölés eladásra
+CONFIRM_LEVEL_UP_QUESTION	El akarod érni a(z) %d. szintet? A szintkorláttal rendelkező kazamaták bezárulhatnak előtted.
+ANTI_EXP_FREEZE_HINT	Kattintás: TP befagyasztása
+ANTI_EXP_FROZEN_HINT	TP befagyasztva. Kattintás: feloldás
+DETAILS_TITLE	Részletek
+DETAILS_CATE_1	Sebzés/Védelem
+DETAILS_1	Félemberek ell. erő
+DETAILS_TOOLTIP_1	Nagyobb sebzést okozol a félember típusú ellenfeleknek.
+DETAILS_2	Félemberek ell. véd.
+DETAILS_TOOLTIP_2	Félemberek elleni védelem: Csökkenti a félember típusú ellenfelek által okozott sebzést.
+DETAILS_3	Orkok elleni erő
+DETAILS_TOOLTIP_3	Orkok elleni erő: Nagyobb sebzést okozol az orkoknak.
+DETAILS_4	Élőholtak elleni erő
+DETAILS_TOOLTIP_4	Élőholtak elleni erő: Nagyobb sebzést okozol az élőholtaknak.
+DETAILS_5	Szörnyek elleni erő
+DETAILS_TOOLTIP_5	Nagyobb sebzést okozol a szörnyeknek.
+DETAILS_ELEMENTAL	Strong vs Elementals
+DETAILS_TOOLTIP_ELEMENTAL	Strong against Elementals: Deals heavier damage to elementals.
+DETAILS_BOSS	Strong vs Bosses
+DETAILS_TOOLTIP_BOSS	Strong against Bosses: Deals heavier damage to bosses.
+DETAILS_STONE	Strong vs Stones
+DETAILS_TOOLTIP_METIN	Strong against Metin Stone: Deals heavier damage to metin stones.
+DETAILS_7	Állatok elleni erő
+DETAILS_TOOLTIP_7	Nagyobb sebzést okozol a vadállatoknak.
+DETAILS_8	Ezot. elleni erő
+DETAILS_TOOLTIP_8	Nagyobb sebzést okozol az ezoterikusoknak.
+DETAILS_9	Ördögök elleni erő
+DETAILS_TOOLTIP_9	Nagyobb sebzést okozol az ördögöknek.
+DETAILS_12	Támadóérték
+DETAILS_TOOLTIP_12	Megnöveli támadóértéked.
+DETAILS_13	Védelmi érték
+DETAILS_TOOLTIP_13	Megnöveli védelmi értéked.
+DETAILS_14	Átlagos kár
+DETAILS_TOOLTIP_14	Növeli az átlagos károkat, amit az ellenségeidnek okozol támadáskor.
+DETAILS_15	Átlagos kár ell.
+DETAILS_TOOLTIP_15	Csökkenti a támadásban elszenvedett sebzéseidet.
+DETAILS_16	Készség kár
+DETAILS_TOOLTIP_16	Megnöveli a készségek által okozott sebzést.
+DETAILS_17	Készség kár ellenállás
+DETAILS_TOOLTIP_17	Csökkenti a készségek által elszenvedett sebzéseidet.
+DETAILS_18	Mág./közelharci tám.
+DETAILS_TOOLTIP_18	Növeli a fizikai és mágikus támadó értékedet is.
+DETAILS_19	Mágikus támadás
+DETAILS_TOOLTIP_19	Növeli a mágikus támadásokkal okozott sebzésed.
+DETAILS_20	Krit. találat esélye
+DETAILS_TOOLTIP_20	Növeli a kritikus találat bevitelének esélyét.
+DETAILS_21	Átható találat
+DETAILS_TOOLTIP_21	Növeli az átható találat bevitelének esélyét.
+DETAILS_22	Krit. találat ell.
+DETAILS_TOOLTIP_22	Kritikus találat ellenállás: Csökkenti a kritikus találatokból származó sebzést.
+DETAILS_23	Átható találat ell.
+DETAILS_TOOLTIP_23	Átható találat ellenállás: Csökkenti az átható találatokból származó sebzést.
+DETAILS_CATE_2	Elementáris bónusz
+DETAILS_76	Mágia ellenállás
+DETAILS_TOOLTIP_76	Csökkenti a mágikus támadásoktól elszenvedett sebzést.
+DETAILS_24	Villám ellenállás
+DETAILS_TOOLTIP_24	Csökkenti bizonyos szörnyek által okozott sebzést.
+DETAILS_25	Jég ellenállás
+DETAILS_TOOLTIP_25	Csökkenti bizonyos szörnyek által okozott sebzést.
+DETAILS_26	Sötétség ellenállás
+DETAILS_TOOLTIP_26	Csökkenti bizonyos szörnyek által okozott sebzést.
+DETAILS_27	Tűz ellenállás
+DETAILS_TOOLTIP_27	Csökkenti bizonyos szörnyek által okozott sebzést.
+DETAILS_28	Szél ellenállás
+DETAILS_TOOLTIP_28	Csökkenti bizonyos szörnyek által okozott sebzést.
+DETAILS_29	Föld ellenállás
+DETAILS_TOOLTIP_29	Csökkenti bizonyos szörnyek által okozott sebzést.
+DETAILS_77	Ellenmágia
+DETAILS_TOOLTIP_77	Csökkenti az ellenfeled mágia ellenállását.
+DETAILS_30	Villám ereje
+DETAILS_TOOLTIP_30	Növeli a sebzést, amit a villám erejével okozol.
+DETAILS_31	Jég ereje
+DETAILS_TOOLTIP_31	Növeli a sebzést, amit a jég erejével okozol.
+DETAILS_32	Sötétség ereje
+DETAILS_TOOLTIP_32	Növeli a sebzést, amit a sötétség erejével okozol.
+DETAILS_33	Tűz ereje
+DETAILS_TOOLTIP_33	Növeli a sebzést, amit a tűz erejével okozol.
+DETAILS_34	Szél ereje
+DETAILS_TOOLTIP_34	Növeli a sebzést, amit a szél erejével okozol.
+DETAILS_35	Föld ereje
+DETAILS_TOOLTIP_35	Növeli a sebzést, amit a föld erejével okozol.
+DETAILS_CATE_3	Karakterosztály bónusz
+DETAILS_36	Harcosok elleni erő
+DETAILS_TOOLTIP_36	Harcosok elleni erő: Nagyobb sebzést okozol a harcosoknak.
+DETAILS_37	Nindzsák elleni erő
+DETAILS_TOOLTIP_37	Nindzsák elleni erő: Nagyobb sebzést okozol a nindzsáknak.
+DETAILS_38	Surák elleni erő
+DETAILS_TOOLTIP_38	Surák elleni erő: Nagyobb sebzést okozol a suráknak.
+DETAILS_39	Sámánok elleni erő
+DETAILS_TOOLTIP_39	Sámánok elleni erő: Nagyobb sebzést okozol a sámánoknak.
+DETAILS_41	Harcos védelem
+DETAILS_TOOLTIP_41	Védekezési esély harcos támadás ellen: Csökkenti a harcosok által neked okozott sebzést.
+DETAILS_42	Nindzsa védelem
+DETAILS_TOOLTIP_42	Védekezési esély nindzsa támadás ellen: Csökkenti a nindzsák által neked okozott sebzést.
+DETAILS_43	Sura védelem
+DETAILS_TOOLTIP_43	Védekezési esély sura támadás ellen: Csökkenti a surák által neked okozott sebzést.
+DETAILS_44	Sámán védelem
+DETAILS_TOOLTIP_44	Védekezési esély sámán támadás ellen: Csökkenti a sámánok által neked okozott sebzést.
+DETAILS_CATE_4	Fegyver bónusz
+DETAILS_46	Kard védelem
+DETAILS_TOOLTIP_46	Csökkenti a kardok által okozott sérüléseket.
+DETAILS_47	Kétkezes védelem
+DETAILS_TOOLTIP_47	Csökkenti a kétkezes fegyverek által okozott sérüléseket.
+DETAILS_48	Tőr védelem
+DETAILS_TOOLTIP_48	Csökkenti a tőrök által okozott sérüléseket.
+DETAILS_50	Harang védelem
+DETAILS_TOOLTIP_50	Csökkenti a harangok által okozott sérüléseket.
+DETAILS_51	Legyező védelem
+DETAILS_TOOLTIP_51	Csökkenti a legyezők által okozott sérüléseket.
+DETAILS_52	Nyíl védelem
+DETAILS_TOOLTIP_52	Csökkenti az íjak és nyilak által okozott sérüléseket.
+DETAILS_CATE_5	Egyéb bónusz
+DETAILS_53	Ájulási esély
+DETAILS_TOOLTIP_53	Növeli az esélyt az ellenfelek kiütésére.
+DETAILS_54	Lassítás esélye
+DETAILS_TOOLTIP_54	Növeli az esélyt az ellenfél lelassítására.
+DETAILS_55	Mérgezés esélye
+DETAILS_TOOLTIP_55	Növeli az esélyt az ellenfél megmérgezésére.
+DETAILS_56	Méreg ellenállás
+DETAILS_TOOLTIP_56	Csökkenti a méreg által okozott sebzést.
+DETAILS_59	TP lopás
+DETAILS_TOOLTIP_59	Elszívja az ellenfeled TP-jét, amikor eltalálod.
+DETAILS_60	MP lopás
+DETAILS_TOOLTIP_60	Elszívja az ellenfeled MP-jét, amikor eltalálod.
+DETAILS_61	TP helyreállítás
+DETAILS_TOOLTIP_61	Növeli az életerő pontjaid helyreállítását.
+DETAILS_62	MP helyreállítás
+DETAILS_TOOLTIP_62	Növeli a mana pontjaid helyreállítását.
+DETAILS_63	Támadás kivédése
+DETAILS_TOOLTIP_63	Esély közelharci támadás kivédésre: Növeli az esélyt közelharci támadás kivédésére.
+DETAILS_64	Nyilak elkerülése
+DETAILS_TOOLTIP_64	Növeli az esélyt nyilak és szörnyek általi távolsági támadások elkerülésére.
+DETAILS_65	Fiz. tám. visszav.
+DETAILS_TOOLTIP_65	Esély közelharci találatok visszaverésére: Az ellenfél közelharci támadásainak egy része visszaverődik rá.
+DETAILS_66	TP helyreá. öléskor
+DETAILS_TOOLTIP_66	Az életerő pontjaid növekednek, amikor megölsz egy ellenséget.
+DETAILS_67	MP helyreá. öléskor
+DETAILS_TOOLTIP_67	A mana pontjaid növekednek, amikor megölsz egy ellenséget.
+DETAILS_68	Dupla EXP
+DETAILS_TOOLTIP_68	Esély dupla tapasztalati pont szerzésére: Növeli az EXP bónusz esélyét, amikor legyőzöl egy ellenfelet.
+DETAILS_69	Dupla Yang
+DETAILS_TOOLTIP_69	Esély dupla mennyiségű Yang eldobására: Növeli az esélyét, hogy kétszer annyi Yangot kapj.
+DETAILS_70	Dobási esély
+DETAILS_TOOLTIP_70	Esély tárgy dobásra: Növeli az esélyét, hogy kétszer annyi tárgyat zsákmányolj.
+DETAILS_CATE_6	Különleges bónusz
+DETAILS_71	Támadóérték
+DETAILS_TOOLTIP_71	Megnöveli támadóértéked.
+DETAILS_72	Védelmi érték
+DETAILS_TOOLTIP_72	Megnöveli védelmi értéked.
+DETAILS_73	EXP
+DETAILS_TOOLTIP_73	Megnöveli a tapasztalat gyűjtését.
+DETAILS_74	Dobási esély
+DETAILS_TOOLTIP_74	Tárgydobási esély: Növeli a tárgyak zsákmányolásának esélyét.
+DETAILS_75	Dupla Yang
+DETAILS_TOOLTIP_75	Yang eldobási esély: Növeli az esélyét, hogy több Yangot zsákmányolj.
+STAT_PICK_TITLE_CON	Életerő
+STAT_PICK_TITLE_INT	Intelligencia
+STAT_PICK_TITLE_STR	Erő
+STAT_PICK_TITLE_DEX	Ügyesség
+SKILL_MAX_UP_HINT	Shift + click: emelés mesterig
+REMOVE_AFFECT_QUESTION	Szeretnéd kikapcsolni ezt: %s?
+REFINE_FAST_UPGRADE	Gyors fejlesztés
+ATLAS_MARK_WIKI_HINT	Kattints a wiki megnyitásához
+METIN_QUEUE_ADDED	[Metin sor] A kő bekerült a támadási sorba.
+METIN_QUEUE_REMOVED	[Metin sor] A kő kikerült a támadási sorból.
+METIN_QUEUE_FULL	[Metin sor] A támadási sorod megtelt.
+METIN_QUEUE_PREMIUM_HINT	[Metin sor] Prémium tagsággal több követ állíthatsz sorba.
+AUTO_SHOUT_TOOLTIP	Automatikus kiáltás
+AUTO_SHOUT_TITLE	Automatikus kiáltás
+AUTO_SHOUT_DESC	30 mp-enként megismétli a kiáltásod (prémiummal 16 mp).
+AUTO_SHOUT_MESSAGE	Üzenet
+AUTO_SHOUT_STATUS_OFF	Ki
+AUTO_SHOUT_STATUS_WAITING	Indul...
+AUTO_SHOUT_STATUS_ON	Be
+AUTO_SHOUT_NEXT	Következő kiáltás:
+AUTO_SHOUT_START	Indítás
+AUTO_SHOUT_STOP	Leállítás
+AUTO_SHOUT_NO_MESSAGE	Előbb írj üzenetet az automatikus kiáltáshoz.
+TARGET_ARROW_DAMAGE	%s nyílsebzés
+TARGET_METIN_QUEUE_HINT	Shift + jobb klikk: hozzáadás a támadási sorhoz

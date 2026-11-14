@@ -1,0 +1,8 @@
+{
+	"auto_shout": {
+		"state": "waiting",
+		"next_end": 0.0,
+		"interval": 0,
+		"message_max": 255
+	}
+}

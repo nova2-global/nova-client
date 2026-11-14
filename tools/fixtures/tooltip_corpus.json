@@ -27,7 +27,7 @@
 		},
 		"uitooltip": {
 			"path": "assets/root/uitooltip.py",
-			"sha256": "9d9524c23a6c4029b7d566bc68f48aa168db20fd85bf473bbd848141f0d496af"
+			"sha256": "dfed1c41f33e8bc3a12e76210d74c08c7d34a77053705973a9b199fd021407f7"
 		}
 	},
 	"items": {
@@ -36025,6 +36025,114 @@
 			"safebox_open": true
 		},
 		{
+			"id": "hints-search-wiki",
+			"context": "SetInventoryItem",
+			"vnum": 27001,
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"sockets": [
+				0,
+				0,
+				0,
+				0
+			],
+			"attrs": [],
+			"shortcuts": [
+				"search",
+				"wiki"
+			]
+		},
+		{
+			"id": "hints-extra-search-wiki",
+			"context": "SetInventoryItem",
+			"vnum": 41001,
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"sockets": [
+				0,
+				0,
+				0,
+				0
+			],
+			"attrs": [],
+			"window": "EXTRA_INVENTORY",
+			"pos": 900,
+			"shortcuts": [
+				"search",
+				"wiki"
+			]
+		},
+		{
+			"id": "hints-safebox-open-none",
+			"context": "SetInventoryItem",
+			"vnum": 27001,
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"sockets": [
+				0,
+				0,
+				0,
+				0
+			],
+			"attrs": [],
+			"safebox_open": true,
+			"shortcuts": [
+				"search",
+				"wiki"
+			]
+		},
+		{
+			"id": "hints-safebox-item",
+			"context": "SetSafeBoxItem",
+			"vnum": 27001,
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"sockets": [
+				0,
+				0,
+				0,
+				0
+			],
+			"attrs": [],
+			"safebox_open": true,
+			"any_cell": true
+		},
+		{
+			"id": "hints-costume-preview",
+			"context": "SetShopItem",
+			"vnum": 41001,
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"sockets": [
+				0,
+				0,
+				0,
+				0
+			],
+			"attrs": [],
+			"hovered_costume": 41001,
+			"shop": {
+				"open": true,
+				"private": false,
+				"price": 5000
+			}
+		},
+		{
 			"id": "skill-none",
 			"context": "SetSkillNew",
 			"vnum": 0,
@@ -40471,6 +40579,40 @@
 				"race": 0
 			},
 			"clock": 1700000000
+		},
+		{
+			"id": "skill-max-up-hint",
+			"context": "calls",
+			"kind": "skill",
+			"vnum": 0,
+			"calls": [
+				[
+					"SetSkillNew",
+					[
+						1,
+						1,
+						0,
+						5
+					]
+				],
+				[
+					"AppendSkillMaxUpHint",
+					[]
+				]
+			],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"skill": {
+				"vnum": 1,
+				"slot": 1,
+				"grade": 0,
+				"level": 5,
+				"efficient": 0.5,
+				"next": 0.6
+			}
 		},
 		{
 			"id": "guild-war-type",

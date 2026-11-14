@@ -40,6 +40,8 @@ FACADES = [
     # The offline shop's two dialogs with a check box (NOVA-9; the kit's since NOVA-169's follow-up).
     ("uicommon.py", "BulkMoneyInputDialog", "nui_dialog_money", "BulkMoneyInputDialog"),
     ("uicommon.py", "CheckQuestionDialog", "nui_dialog_question", "CheckQuestionDialog"),
+    # The question with a third button (NOVA-189, NOVA-201).
+    ("uicommon.py", "QuestionDialog3", "nui_dialog_question", "QuestionDialog3"),
     ("uipickmoney.py", "PickMoneyDialog", "nui_pick_money", "PickMoneyDialog"),
 ]
 SHIMS = ["Show", "Hide", "IsShow", "SetTop", "SetCenterPosition", "SetPosition", "ClearDictionary", "Lock",
@@ -407,7 +409,8 @@ class Question(KitTest):
         dialog.Open()
         window = self.kit_window(QUESTION)
         self.assertEqual(window.model, {"lines": ["LOCALE_CHANGE_CONFIRM"], "accept_label": "@ui.YES", "cancel_label": "@ui.NO",
-                                        "warn_line": -1, "check_on": False, "check_text": "", "checked": False})
+                                        "warn_line": -1, "check_on": False, "check_text": "", "checked": False,
+                                        "middle_on": False, "middle_label": ""})
         self.assertEqual(window.focused, "dialog-question-accept")
         window.fire("accept")
         window.fire("cancel")
@@ -762,7 +765,8 @@ class PickMoney(KitTest):
         window = self.kit_window(PICK)
         self.assertFalse(window.MODAL)
         self.assertEqual(window.placement, ("position", 400.0, 280.0, (0.5, 1.0)))
-        self.assertEqual(window.model, {"title": "EXCHANGE_MONEY", "max": 6, "limit": " / 250"})
+        self.assertEqual(window.model, {"title": "EXCHANGE_MONEY", "max": 6, "limit": " / 250",
+                                        "split_on": False, "split_checked": False})
         self.assertEqual(window.fields["pick-money-field"], "1")
         self.assertEqual(window.focused, "pick-money-field")
 

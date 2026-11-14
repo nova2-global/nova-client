@@ -38,6 +38,7 @@ moved it. Every count comes from nui_limits.current()."""
 
 import ui
 import uiExtraInventory
+import uiInventory
 import uiPickMoney
 import wndMgr
 
@@ -198,7 +199,9 @@ class ExtraInventoryWindow(uiExtraInventory.ExtraInventoryWindow):
 	def _empty_state(self):
 		limits = self._limits
 		return {
-			"cells": nui_slots.with_marks([nui_slots.empty_cell(i) for i in range(limits.EXTRA_INVENTORY_PAGE_SIZE)]),
+			# NOVA-187: each cell with the sell marks' "sell" (uiInventory.SellMarkCells).
+			"cells": [dict(cell, sell=False) for cell in
+			          nui_slots.with_marks([nui_slots.empty_cell(i) for i in range(limits.EXTRA_INVENTORY_PAGE_SIZE)])],
 			"cols": limits.EXTRA_INVENTORY_COLUMNS,
 			"pages": pages(1),
 			"page": 0,
@@ -270,10 +273,15 @@ class ExtraInventoryWindow(uiExtraInventory.ExtraInventoryWindow):
 	def _on_cells(self, cells):
 		events = self._cell_events
 		states, picked = (events.states, events.picked) if events is not None else ({}, -1)
-		self._set(cells=nui_slots.with_states(cells, states, picked))
+		self._set(cells=self._sell_marks(nui_slots.with_states(cells, states, picked), True))
 
 	def _on_states(self, states, picked):
-		self._set(cells=nui_slots.with_states(self.wndItem.cells(), states, picked))
+		self._set(cells=self._sell_marks(nui_slots.with_states(self.wndItem.cells(), states, picked)))
+
+	def _sell_marks(self, cells, refresh_board=False):
+		"""NOVA-187: the cells' "sell" key (uiInventory.SellMarkCells)."""
+		import player
+		return uiInventory.SellMarkCells(cells, player.EXTRA_INVENTORY, self._cell_position, refresh_board)
 
 	def _on_attaching(self, flag):
 		self._set(attaching=flag)
@@ -320,7 +328,7 @@ class ExtraInventoryWindow(uiExtraInventory.ExtraInventoryWindow):
 		wndItem = nui_form_proxies.TypedSlotWindowProxy(
 			range(limits.EXTRA_INVENTORY_PAGE_SIZE), self._on_cells, cols=limits.EXTRA_INVENTORY_COLUMNS,
 			rows=limits.EXTRA_INVENTORY_ROWS, positions=self._cell_position, window=limits.WINDOW_EXTRA_INVENTORY,
-			slot_type=limits.SLOT_TYPE_EXTRA_INVENTORY, marks=True)
+			slot_type=limits.SLOT_TYPE_EXTRA_INVENTORY, marks=True, glows=True)
 
 		self.inventoryTab = [nui_proxies.ButtonProxy() for _ in range(limits.EXTRA_INVENTORY_COSTUME_PAGE_COUNT)]
 		self.categoryTab = [nui_proxies.ButtonProxy() for _ in range(limits.EXTRA_INVENTORY_CATEGORY_COUNT)]

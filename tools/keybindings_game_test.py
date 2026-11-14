@@ -109,7 +109,9 @@ class Game(unittest.TestCase):
 		             "keybindings": self.kb, "interfaceModule": self.interfaceModule,
 		             "constInfo": types.SimpleNamespace(SET_ITEM_QUESTION_DIALOG_STATUS=lambda value: None),
 		             "uiPrivateShopBuilder": types.SimpleNamespace(IsBuildingPrivateShop=lambda: False),
-		             "ui": types.SimpleNamespace(__mem_func__=lambda f: f)}
+		             "ui": types.SimpleNamespace(__mem_func__=lambda f: f),
+		             # NOVA-202: the show names key also holds the costume preview.
+		             "costume_preview": types.SimpleNamespace(key=lambda held: None)}
 		window = compiled(namespace)()
 		window.interface = support.Recording("interface", log, wndWeb=None)
 		window.interface.wndDragonSoul = support.Recording("wndDragonSoul", log)
@@ -186,7 +188,8 @@ class DefaultKeysReachTodaysCalls(Game):
 	def test_quickslots(self):
 		for n in range(1, 5):
 			self.check(str(n), (), [("player.RequestUseLocalQuickSlot", (n - 1,))])
-		for n in range(1, 5):
+		# F1 opens Help since NOVA-217: quickslot 5 has no default key.
+		for n in range(2, 5):
 			self.check("F%d" % n, (), [("player.RequestUseLocalQuickSlot", (n + 3,))])
 		self.check("5", (), [])
 
@@ -200,7 +203,9 @@ class DefaultKeysReachTodaysCalls(Game):
 		                    ("O", ("interface.ToggleDragonSoulWindowWithNoInfo", ())),
 		                    ("M", ("interface.ToggleMiniMap", ())),
 		                    ("L", ("interface.ToggleChatLogWindow", ())),
-		                    ("H", ("interface.OpenHelpWindow", ())),
+		                    # NOVA-217: the wiki on H, Help on F1.
+		                    ("H", ("interface.ToggleWiki", ())),
+		                    ("F1", ("interface.OpenHelpWindow", ())),
 		                    ("P", ("interface.TogglePetWindow", ())),
 		                    ("F5", ("game.ShowSwitchbot", ())),
 		                    ("F6", ("game.OpenTimerWindow", ())),
@@ -233,8 +238,8 @@ class DefaultKeysReachTodaysCalls(Game):
 		self.window.OnKeyDown(self.dik("LALT"))
 		self.app.held = set([self.dik("LALT")])
 		start = len(self.log)
-		self.window.OnKeyDown(self.dik("F1"))
-		self.assertEqual(self.log[start:], [("player.RequestUseLocalQuickSlot", (4,))])
+		self.window.OnKeyDown(self.dik("F2"))
+		self.assertEqual(self.log[start:], [("player.RequestUseLocalQuickSlot", (5,))])
 
 	def test_tab_targets_previews_and_shows_the_war_kills_while_held(self):
 		self.check("TAB", (), [("player.SelectTabNextTarget", ()), ("interface.PressTabKey", ()),
@@ -322,8 +327,8 @@ class Rebinding(Game):
 	def test_a_combination_moved_to_a_plain_key(self):
 		self.bindings.assign("horse_summon", 0, self.kb.key("K"))
 		self.assertEqual(self.press("K"), [("net.SendChatPacket", ("/user_horse_ride",))])
-		self.assertEqual(self.press("H", "LCONTROL"), [("interface.OpenHelpWindow", ())],
-		                 "Ctrl+H has no binding now: the plain H's")
+		self.assertEqual(self.press("H", "LCONTROL"), [("interface.ToggleWiki", ())],
+		                 "Ctrl+H has no binding now: the plain H's (the wiki, NOVA-217)")
 
 
 class Capturing(Game):

@@ -58,11 +58,14 @@ import localeInfo
 
 import playerSettingModule
 import interfaceModule
+import uiRefine
+import uiprogression
 import nui_windows
 
 import musicInfo
 import debugInfo
 import stringCommander
+import costume_preview
 
 from _weakref import proxy
 
@@ -188,6 +191,8 @@ class GameWindow(ui.ScriptWindow):
 		constInfo.SET_DEFAULT_CONVERT_EMPIRE_LANGUAGE_ENABLE()
 		constInfo.SET_DEFAULT_USE_ITEM_WEAPON_TABLE_ATTACK_BONUS()
 		constInfo.SET_DEFAULT_USE_SKILL_EFFECT_ENABLE()
+		# NOVA-215: the saved country flag choice.
+		constInfo.SET_DEFAULT_COUNTRY_FLAGS()
 
 		# TWO_HANDED_WEAPON_ATTACK_SPEED_UP
 		constInfo.SET_TWO_HANDED_WEAPON_ATT_SPEED_DECREASE_VALUE()
@@ -283,6 +288,11 @@ class GameWindow(ui.ScriptWindow):
 		skill.ClearSkillData()
 		wndMgr.Unlock()
 		mouseModule.mouseController.DeattachObject()
+
+		# NOVA-199: an open level-up question goes with the game.
+		if getattr(self, "levelUpQuestion", None):
+			self.levelUpQuestion.Close()
+			self.levelUpQuestion = None
 
 		if self.guildWarQuestionDialog:
 			self.guildWarQuestionDialog.Close()
@@ -395,6 +405,8 @@ class GameWindow(ui.ScriptWindow):
 			"guild": lambda: interface().ToggleGuildWindow(),
 			"chat_log": lambda: interface().ToggleChatLogWindow(),
 			"help": lambda: interface().OpenHelpWindow(),
+			# NOVA-217: the ingame wiki (OLD game.py:788, H).
+			"wiki": lambda: interface().ToggleWiki(),
 			# The advanced pet (NOVA-24; OLD game.py:500-501).
 			"pet": lambda: interface().TogglePetWindow(),
 			# The switchbot (NOVA-43; OLD game.py:491).
@@ -1008,8 +1020,24 @@ class GameWindow(ui.ScriptWindow):
 	def RecvWhisper(self, name):
 		self.interface.RecvWhisper(name)
 
+	# The yang line obeys its game option (NOVA-211; OLD game.py:1463-1466).
 	def OnPickMoney(self, money):
-		chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.GAME_PICK_MONEY % (money))
+		if constInfo.GET_SAVED_OPTION(constInfo.OPTION_YANG_TEXT):
+			chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.GAME_PICK_MONEY % (money))
+
+	## The metin queue (NOVA-216; OLD game.py:3885-3893): C++ tells what a
+	## Shift+right-click did to the queue. Full with the premium hint says
+	## both lines. An older exe without the constants uses the contract's.
+	def BINARY_MetinQueueMessage(self, kind):
+		added = getattr(player, "METIN_QUEUE_ADDED", 1)
+		removed = getattr(player, "METIN_QUEUE_REMOVED", 2)
+		full = getattr(player, "METIN_QUEUE_FULL", 3)
+		hint = getattr(player, "METIN_QUEUE_FULL_PREMIUM_HINT", 4)
+		lines = {added: (localeInfo.METIN_QUEUE_ADDED,), removed: (localeInfo.METIN_QUEUE_REMOVED,),
+		         full: (localeInfo.METIN_QUEUE_FULL,),
+		         hint: (localeInfo.METIN_QUEUE_FULL, localeInfo.METIN_QUEUE_PREMIUM_HINT)}.get(kind, ())
+		for line in lines:
+			chat.AppendChat(chat.CHAT_TYPE_INFO, line)
 
 	def OnShopError(self, type):
 		try:
@@ -1530,6 +1558,9 @@ class GameWindow(ui.ScriptWindow):
 		self.ShowNameFlag = True
 		self.playerGauge.EnableShowAlways()
 		player.SetQuickPage(self.quickSlotPageIndex+1)
+		## The same key over a costume in a shop, the exchange, the cube or the
+		## shop search previews it on the player (NOVA-202).
+		costume_preview.key(True)
 
 	# ADD_ALWAYS_SHOW_NAME
 	def __IsShowName(self):
@@ -1547,6 +1578,7 @@ class GameWindow(ui.ScriptWindow):
 		self.ShowNameFlag = False
 		self.playerGauge.DisableShowAlways()
 		player.SetQuickPage(self.quickSlotPageIndex)
+		costume_preview.key(False)
 
 	def ShowMouseImage(self):
 		self.interface.ShowMouseImage()
@@ -1700,6 +1732,8 @@ class GameWindow(ui.ScriptWindow):
 					# MR-3: -- END OF -- Auto-deactivate auto potions before moving out
 					if chr.IsNPC(dstChrID):
 						net.SendGiveItemPacket(dstChrID, attachedInvenType, attachedItemSlotPos, attachedItemCount)
+						# NOVA-198: a blacksmith's refine, which the fast upgrade repeats.
+						uiRefine.FAST_REFINE.RecordNpc(dstChrID, attachedInvenType, attachedItemSlotPos, attachedItemCount)
 					else:
 						net.SendExchangeStartPacket(dstChrID)
 						net.SendExchangeItemAddPacket(attachedInvenType, attachedItemSlotPos, 0)
@@ -1757,7 +1791,7 @@ class GameWindow(ui.ScriptWindow):
 				questionText = localeInfo.HOW_MANY_ITEM_DO_YOU_DROP(dropItemName, attachedItemCount)
 
 				## Dialog
-				itemDropQuestionDialog = uiCommon.QuestionDialog()
+				itemDropQuestionDialog = self.__NewItemDropQuestion(dropItemIndex)
 				itemDropQuestionDialog.SetText(questionText)
 				itemDropQuestionDialog.SetAcceptEvent(lambda arg=True: self.RequestDropItem(arg))
 				itemDropQuestionDialog.SetCancelEvent(lambda arg=False: self.RequestDropItem(arg))
@@ -1799,7 +1833,7 @@ class GameWindow(ui.ScriptWindow):
 				questionText = localeInfo.HOW_MANY_ITEM_DO_YOU_DROP(dropItemName, attachedItemCount)
 
 				## Dialog
-				itemDropQuestionDialog = uiCommon.QuestionDialog()
+				itemDropQuestionDialog = self.__NewItemDropQuestion(dropItemIndex)
 				itemDropQuestionDialog.SetText(questionText)
 				itemDropQuestionDialog.SetAcceptEvent(lambda arg=True: self.RequestDropItem(arg))
 				itemDropQuestionDialog.SetCancelEvent(lambda arg=False: self.RequestDropItem(arg))
@@ -1812,6 +1846,8 @@ class GameWindow(ui.ScriptWindow):
 				constInfo.SET_ITEM_QUESTION_DIALOG_STATUS(1)
 
 	def RequestDropItem(self, answer):
+		# NOVA-189: whatever ends the drop question ends its destroy warning.
+		self.__CloseDestroyQuestion()
 		if not self.itemDropQuestionDialog:
 			return
 
@@ -1848,6 +1884,71 @@ class GameWindow(ui.ScriptWindow):
 
 		net.SendItemDropPacketNew(itemInvenType, itemVNum, itemCount)
 	# END_OF_PRIVATESHOP_DISABLE_ITEM_DROP
+
+	# NOVA-189: Destroy in the drop question of a main or special inventory
+	# item (OLD game.py:2103-2108, 2197-2241). The buttons read Yes (drop),
+	# Destroy and No, as OLD's; Destroy asks again (DESTROY_ITEM_WARNING), and
+	# its Yes sends the destroy packet for the window, cell, vnum and count the
+	# drop question names (OLD sent the cell only and destroyed the whole
+	# stack). The server refuses an item that changed, and says why.
+	# The warning takes the drop question's place, and its No brings the drop
+	# question back: NovaUI has one question window, so a warning opened above
+	# the drop question found it in use and fell back to the legacy dialog.
+	destroyQuestionDialog = None
+
+	def __NewItemDropQuestion(self, itemVnum):
+		import uiScriptLocale
+		dialog = uiCommon.QuestionDialog3()
+		dialog.SetMiddleText(uiScriptLocale.DESTROY)
+		dialog.SetMiddleEvent(ui.__mem_func__(self.__AskDestroyItem))
+		dialog.dropVnum = itemVnum
+		return dialog
+
+	def __AskDestroyItem(self):
+		if not self.itemDropQuestionDialog:
+			return
+
+		self.__CloseDestroyQuestion()
+		self.itemDropQuestionDialog.Close()
+		dialog = uiCommon.QuestionDialog()
+		dialog.SetText(localeInfo.DESTROY_ITEM_WARNING)
+		dialog.SetAcceptEvent(ui.__mem_func__(self.__AcceptDestroyItem))
+		dialog.SetCancelEvent(ui.__mem_func__(self.__CancelDestroyItem))
+		dialog.Open()
+		self.destroyQuestionDialog = dialog
+
+	def __CancelDestroyItem(self):
+		self.__CloseDestroyQuestion()
+		if self.itemDropQuestionDialog:
+			self.itemDropQuestionDialog.Open()
+
+	def __CloseDestroyQuestion(self):
+		if self.destroyQuestionDialog:
+			self.destroyQuestionDialog.Close()
+		self.destroyQuestionDialog = None
+
+	def __AcceptDestroyItem(self):
+		dropDialog = self.itemDropQuestionDialog
+		if dropDialog:
+			window = {player.SLOT_TYPE_INVENTORY: player.INVENTORY,
+			          player.SLOT_TYPE_EXTRA_INVENTORY: player.EXTRA_INVENTORY}.get(dropDialog.dropType)
+			if window is not None and dropDialog.dropNumber != player.ITEM_MONEY:
+				self.__SendDestroyItemPacket(window, dropDialog.dropNumber, dropDialog.dropVnum, dropDialog.dropCount)
+
+		self.__CloseDestroyQuestion()
+		self.RequestDropItem(False)
+
+	def __SendDestroyItemPacket(self, window, cell, itemVnum, itemCount):
+		if uiPrivateShopBuilder.IsBuildingPrivateShop():
+			chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.DROP_ITEM_FAILURE_PRIVATE_SHOP)
+			return
+
+		## A pick attaches the stack's count; a cell whose count is unknown
+		## destroys the whole stack the cell holds.
+		if itemCount <= 0:
+			itemCount = player.GetItemCount(window, cell)
+
+		net.SendItemDestroyPacket(window, cell, itemVnum, itemCount)
 
 	def OnMouseRightButtonDown(self):
 
@@ -2305,6 +2406,13 @@ class GameWindow(ui.ScriptWindow):
 			"ClearBossInfo"			: self.__ClearBossInfo,
 			"AddBossInfo"			: self.__AddBossInfo,
 			"BossInfoLoadComplete"	: self.__BossInfoLoadComplete,
+
+			# NOVA-199, NOVA-200 (uiprogression.py): the checkpoint level-up's
+			# question and the anti-EXP switch's state.
+			"ConfirmLevelUp"		: self.__ConfirmLevelUp,
+			"AntiExpState"			: self.__AntiExpState,
+			# NOVA-204: the auto-shout's state (the server sends it after every change and repeat).
+			"AutoShoutState"		: self.interface.AutoShoutState,
 		}
 
 		self.serverCommander=stringCommander.Analyzer()
@@ -2312,6 +2420,17 @@ class GameWindow(ui.ScriptWindow):
 			self.serverCommander.SAFE_RegisterCallBack(
 				serverCommandItem[0], serverCommandItem[1]
 			)
+
+	## NOVA-199: the server holds a checkpoint level-up and asks first.
+	def __ConfirmLevelUp(self):
+		if not getattr(self, "levelUpQuestion", None):
+			self.levelUpQuestion = uiprogression.LevelUpQuestion()
+		self.levelUpQuestion.Open()
+
+	## NOVA-200: the anti-EXP switch, at login and at each change.
+	def __AntiExpState(self, state):
+		interface = getattr(self, "interface", None)
+		uiprogression.set_anti_exp(state, getattr(interface, "wndTaskBar", None))
 
 	def BINARY_ServerCommand_Run(self, line):
 		#dbg.TraceError(line)
@@ -2369,6 +2488,9 @@ class GameWindow(ui.ScriptWindow):
 	def RefineSuceededMessage(self, arg = None):
 		snd.PlaySound("sound/ui/make_soket.wav")
 		self.PopupMessage(localeInfo.REFINE_SUCCESS)
+		# NOVA-198: the fast upgrade's next step.
+		if self.interface:
+			self.interface.OnRefineResult(True)
 
 	def RefineFailedMessage(self, arg = None):
 		snd.PlaySound("sound/ui/jaeryun_fail.wav")
@@ -2386,6 +2508,9 @@ class GameWindow(ui.ScriptWindow):
 			self.PopupMessage(localeInfo.REFINE_FAILURE_GRADE_DOWN)
 		else:
 			self.PopupMessage(localeInfo.REFINE_FAILURE_DEL_ITEM)
+		# NOVA-198: a failure ends the fast upgrade.
+		if self.interface:
+			self.interface.OnRefineResult(False)
 	# MR-15: -- END OF -- Update refine messages
 
 	def CommandCloseSafebox(self):

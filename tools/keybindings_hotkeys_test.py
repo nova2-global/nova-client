@@ -20,7 +20,10 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import nui_hud_core_test as hud  # noqa: E402
 import nui_chat_test as chat_test  # noqa: E402
 
-DEFAULT_KEYS = ["1", "2", "3", "4", "F1", "F2", "F3", "F4"]
+# Quickslot 5 has no default key since F1 opens Help (NOVA-217), so it
+# draws no key art (uiTaskBar.QuickSlotKey).
+DEFAULT_KEYS = ["1", "2", "3", "4", "", "F2", "F3", "F4"]
+DEFAULT_ART = [True, True, True, True, False, True, True, True]
 
 
 class Files(object):
@@ -63,7 +66,7 @@ class NovaUITaskbar(unittest.TestCase):
 
 	def test_the_defaults(self):
 		self.assertEqual(self.get("quick_keys"), DEFAULT_KEYS)
-		self.assertEqual(self.get("quick_key_art"), [True] * 8)
+		self.assertEqual(self.get("quick_key_art"), DEFAULT_ART)
 		self.assertEqual((self.get("hotkey_character"), self.get("hotkey_inventory"), self.get("hotkey_messenger")),
 		                 ("C", "I", "Alt+M"))
 		self.assertEqual(self.get("tip_character"), "TASKBAR_CHARACTER [C/V/B/N]")
@@ -76,13 +79,13 @@ class NovaUITaskbar(unittest.TestCase):
 		self.bindings.assign("quickslot_1", 0, self.kb.key("K"))
 		self.bindings.assign("inventory", 0, self.kb.alt("NUMPAD6"))
 		self.bindings.assign("quickslot_6", 0, 0)
-		self.assertEqual(self.get("quick_keys"), ["K", "2", "3", "4", "F1", "", "F3", "F4"])
-		self.assertEqual(self.get("quick_key_art"), [False, True, True, True, True, False, True, True])
+		self.assertEqual(self.get("quick_keys"), ["K", "2", "3", "4", "", "", "F3", "F4"])
+		self.assertEqual(self.get("quick_key_art"), [False, True, True, True, False, False, True, True])
 		self.assertEqual(self.get("hotkey_inventory"), "Alt+Num 6")
 		self.assertEqual(self.get("tip_inventory"), "TASKBAR_INVENTORY [Alt+Num 6]")
 		self.bindings.reset()
 		self.assertEqual(self.get("quick_keys"), DEFAULT_KEYS)
-		self.assertEqual(self.get("quick_key_art"), [True] * 8)
+		self.assertEqual(self.get("quick_key_art"), DEFAULT_ART)
 		self.assertEqual(self.get("hotkey_inventory"), "I")
 
 	def test_the_quick_page_tooltips_follow_their_mode_keys(self):
@@ -114,8 +117,11 @@ class LegacyTaskbar(unittest.TestCase):
 
 	def test_the_default_keys_keep_the_art(self):
 		for n in range(1, 9):
-			self.assertTrue(self.art(n).IsShow(), n)
-			self.assertFalse(self.text(n).IsShow(), n)
+			self.assertIs(bool(self.art(n).IsShow()), DEFAULT_ART[n - 1], n)
+			if DEFAULT_ART[n - 1]:
+				self.assertFalse(self.text(n).IsShow(), n)
+		# Quickslot 5 has no default key (NOVA-217): no art and no key text.
+		self.assertFalse(self.text(5).IsShow() and self.text(5).text)
 		self.assertEqual(self.bar.GetChild("CharacterButton").tooltip, "TASKBAR_CHARACTER [C/V/B/N]")
 		self.assertEqual(self.bar.GetChild("MessengerButton").tooltip, "TASKBAR_MESSENGER [Alt+M]")
 

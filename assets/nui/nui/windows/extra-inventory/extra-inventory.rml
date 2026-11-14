@@ -54,17 +54,19 @@
 			     data-class-nui-slot-grid--cols-5="cols == 5">
 				<div class="nui-slot nui-anim nui-fx" data-for="c : cells" data-attr-id="'xinv-cell-' + it_index"
 				     data-class-is-empty="c.kind == '' &amp;&amp; !c.covered" data-class-is-covered="c.covered"
-				     data-class-is-picked="c.picked"
+				     data-class-is-picked="c.picked" data-class-is-active="c.active"
+				     data-class-is-glow-red="c.glow == 'red'" data-class-is-glow-blue="c.glow == 'blue'" data-class-is-glow-yellow="c.glow == 'yellow'" data-class-is-glow-cyan="c.glow == 'cyan'" data-class-is-glow-violet="c.glow == 'violet'"
 				     data-class-is-target="c.target == 'move'" data-class-is-blocked="c.target == 'blocked'"
 				     data-class-is-usable="c.target == 'usable'" data-class-is-unusable="c.target == 'unusable'"
 				     data-class-nui-slot--h2="c.h == 2" data-class-nui-slot--h3="c.h == 3"
-				     data-class-is-in-use="c.in_use" data-class-is-unusable-ontop="c.unusable_ontop"
+				     data-class-is-in-use="c.in_use" data-class-is-unusable-ontop="c.unusable_ontop" data-class-is-sell-marked="c.sell"
 				     data-event-mousedown="cell_press(it_index, ev.button)" data-event-mouseup="cell_release(it_index, ev.button)"
 				     data-event-dblclick="cell_use(it_index)" data-event-mouseover="cell_over(it_index)"
 				     data-event-mouseout="cell_out(it_index)" data-event-nuidrop="cell_drop(it_index)">
 					<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
 					<div class="nui-slot__wash" data-if="c.in_use || c.unusable_ontop"></div>
 					<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
+					<nui-frames class="nui-slot__active" data-if="c.active" count="13" delay="0.0667"/>
 				</div>
 			</div>
 		</div>

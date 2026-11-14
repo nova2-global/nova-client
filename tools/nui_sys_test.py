@@ -56,7 +56,8 @@ LOADED_LEGACY = (("uiSelectMusic", "uiselectmusic.py"), ("uiCommon", "uicommon.p
                  ("uikeybindings", "uikeybindings.py"), ("uiGameOption", "uigameoption.py"),
                  ("uiSystem", "uisystem.py"), ("uiRestart", "uirestart.py"), ("uiHelp", "uihelp.py"),
                  ("uiPointReset", "uipointreset.py"))
-LOADED_NOVAUI = ("nui_dialog_kit", "nui_dialog_message", "nui_dialog_question", "nui_theme_picker", "nui_music_list",
+# settings_index: the options' search index (NOVA-213), which both option facades read.
+LOADED_NOVAUI = ("settings_index", "nui_dialog_kit", "nui_dialog_message", "nui_dialog_question", "nui_theme_picker", "nui_music_list",
                  "nui_system_options", "nui_game_options", "nui_system_menu", "nui_restart", "nui_help",
                  "nui_point_reset")
 
@@ -1011,7 +1012,10 @@ class GameOptions(Pair):
         self.assertEqual(model, {"name_color": 0, "target_board": 1, "pk_mode": 0, "block": 0, "blocked": [False] * 6,
                                  "view_chat": False, "always_show_name": True, "show_damage": False, "sales_text": True,
                                  "pickup": [True] * 4, "hide_shops": False, "show_sash": True, "hide_buffi": False,
-                                 "mob_level": True, "mob_ai": True})
+                                 "mob_level": True, "mob_ai": True, "new_item_glow": True,
+                                 # NOVA-211, NOVA-215: constInfo's saved options; NOVA-213: the search.
+                                 "yang_text": True, "country_flags": True, "searching": False, "results": [],
+                                 "found": "", "found_end": 0.0})
         self.assertEqual([button.down for button in a.pickupFilterButtonList], [True] * 4)
         self.assertEqual([button.down for button in a.viewChatButtonList], [False, True])
         self.assertEqual([button.down for button in a.showDamageButtonList], [False, True])
@@ -1418,7 +1422,12 @@ class Fixtures(unittest.TestCase):
                 # NOVA-116: the field of view and its range.
                 "fov", "fov_min", "fov_max",
                 # NOVA-118: snowfall, the FPS counter and tips (0 is On).
-                "snow", "fps", "tips"}
+                "snow", "fps", "tips",
+                # NOVA-213: the search's results and the found row.
+                "searching", "results", "found", "found_end",
+                # NOVA-214: the frame rate limit, its label, whether the exe has
+                # it, and whether it is the first or last choice.
+                "frame_rate", "frame_rate_label", "frame_rate_on", "frame_rate_first", "frame_rate_last"}
         self.assertEqual(set(options.nui_model()), keys)
         for variant in (None, "custom-scale", "colors", "no-effects"):
             self.assertEqual(set(fixture("system-options", variant)["system_options"]), keys, variant)
@@ -1428,8 +1437,13 @@ class Fixtures(unittest.TestCase):
         self.assertEqual(set(game_options.nui_model()), {"name_color", "target_board", "pk_mode", "block", "blocked",
                                                          "view_chat", "always_show_name", "show_damage", "sales_text",
                                                          "pickup", "hide_shops", "show_sash", "hide_buffi", "mob_level", "mob_ai",
+                                                         # NOVA-188: the new item glow's row.
+                                                         "new_item_glow",
                                                          # NOVA-121: the keys page.
-                                                         "page", "key_rows", "notice"})
+                                                         "page", "key_rows", "notice",
+                                                         # NOVA-211, 215: the saved options; NOVA-213: the search.
+                                                         "yang_text", "country_flags", "searching", "results",
+                                                         "found", "found_end"})
 
 
 class HideShops(unittest.TestCase):
@@ -1451,6 +1465,8 @@ class HideShops(unittest.TestCase):
 
 
 LOCALES = os.path.normpath(os.path.join(support.support.HERE, "..", "assets", "locale", "locale"))
+# The classic game options' search row under legacy's board (NOVA-213).
+CLASSIC_SEARCH_ROW = 17
 CLASSIC_GAME_OPTIONS = os.path.normpath(os.path.join(WINDOWS, "..", "skins", "classic", "windows", "game-options.rcss"))
 # OLD's label (settingsData.py:264, _L("OPTION_ACCE", "Shoulder Sash")) and
 # OLD's translations of it (Ol:<locale>/locale_interface.txt); OLD has no ae
@@ -1499,8 +1515,18 @@ class ShowSash(unittest.TestCase):
         self.assertEqual(cls.KEYBOARD_HEIGHT, cls.MOB_INFO_HEIGHT + 25)
         self.assertEqual(self.place(dialog.keyboardLabel), (30, cls.KEYBOARD_ROW_Y + 2))
         self.assertEqual(self.place(dialog.keyboardButton), (90, cls.KEYBOARD_ROW_Y))
-        self.assertEqual(dialog.GetChild("board").size[1], cls.KEYBOARD_HEIGHT, "the board grown by its rows")
-        self.assertEqual(dialog.size[1], cls.KEYBOARD_HEIGHT, "the window with it")
+        # NOVA-188: the new item row under the Keyboard row.
+        self.assertEqual(cls.NEW_ITEM_ROW_Y, cls.KEYBOARD_ROW_Y + 25)
+        self.assertEqual(cls.NEW_ITEM_HEIGHT, cls.KEYBOARD_HEIGHT + 25)
+        self.assertEqual(self.place(dialog.newItemLabel), (30, cls.NEW_ITEM_ROW_Y + 2))
+        self.assertEqual([self.place(button) for button in dialog.newItemButtonList],
+                         [(90, cls.NEW_ITEM_ROW_Y), (155, cls.NEW_ITEM_ROW_Y)])
+        # The yang and country flag rows (NOVA-211, NOVA-215) come under it.
+        self.assertEqual(cls.YANG_TEXT_ROW_Y, cls.NEW_ITEM_ROW_Y + 25)
+        self.assertEqual(cls.COUNTRY_FLAGS_ROW_Y, cls.YANG_TEXT_ROW_Y + 25)
+        self.assertEqual(cls.COUNTRY_FLAGS_HEIGHT, cls.KEYBOARD_HEIGHT + 75)
+        self.assertEqual(dialog.GetChild("board").size[1], cls.COUNTRY_FLAGS_HEIGHT, "the board grown by its rows")
+        self.assertEqual(dialog.size[1], cls.COUNTRY_FLAGS_HEIGHT, "the window with it")
         self.assertEqual(cls.SHOW_SASH_HEIGHT - cls.SHOW_SASH_ROW_Y, cls.HIDE_SHOPS_HEIGHT - cls.HIDE_SHOPS_ROW_Y,
                          "the bottom margin under the last row kept")
 
@@ -1570,10 +1596,12 @@ class ShowSash(unittest.TestCase):
             found = re.search(rule % ("go-choice--sash-%d" % value), classic)
             self.assertEqual((found.group(1), found.group(2)), (str(x), str(cls.SHOW_SASH_ROW_Y)))
         heights = re.findall(r"height: (\d+)dp;", classic.split(".game-options__titlebar")[0])
-        # Legacy's board grows by the Keyboard row (NOVA-121) after the sash's.
-        self.assertEqual(heights, [str(cls.KEYBOARD_HEIGHT)], "the body as tall as legacy's board")
+        # Legacy's board grows by the Keyboard row (NOVA-121) after the sash's,
+        # then the yang and flag rows (NOVA-211, 215); classic adds the search
+        # field under them (NOVA-213, CLASSIC_SEARCH_ROW).
+        self.assertEqual(heights, [str(cls.COUNTRY_FLAGS_HEIGHT + CLASSIC_SEARCH_ROW)], "the body as tall as legacy's board")
         body = classic.split("body.skin-classic.game-options .game-options__body")[1].split("}")[0]
-        self.assertIn("height: %ddp;" % cls.KEYBOARD_HEIGHT, body)
+        self.assertIn("height: %ddp;" % (cls.COUNTRY_FLAGS_HEIGHT + CLASSIC_SEARCH_ROW), body)
 
     def test_the_label_is_in_every_locale_with_old_s_text(self):
         locales = [name for name in sorted(os.listdir(LOCALES))
@@ -1882,11 +1910,12 @@ class FieldOfView(Pair):
         self.assertEqual((children["fov_name"]["x"], children["fov_name"]["y"]), (30, cls.FIELD_OF_VIEW_ROW_Y + 2))
         self.assertEqual((children["fov_controller"]["type"], children["fov_controller"]["x"],
                           children["fov_controller"]["y"]), ("sliderbar", 110, cls.FIELD_OF_VIEW_ROW_Y))
-        self.assertEqual(max(child["y"] for child in board_spec["children"]), cls.PLAYER_OPTION_ROW_Y["tips"] + 2,
-                         "NOVA-118's rows follow it")
+        self.assertEqual(max(child["y"] for child in board_spec["children"]), cls.FRAME_RATE_ROW_Y + 2,
+                         "NOVA-118's rows and NOVA-214's follow it")
         self.assertIs(a.ctrlFieldOfView, a.GetChild("fov_controller"))
         self.assertEqual(a.GetChild("fov_name").text, "OPTION_FIELD_OF_VIEW")
-        self.assertEqual((script["height"], board_spec["height"]), (330, 330), "grown by NOVA-118's three rows")
+        self.assertEqual((script["height"], board_spec["height"]), (355, 355),
+                         "grown by NOVA-118's three rows and NOVA-214's one")
 
     def test_each_show_puts_the_angle_on_both_sliders(self):
         legacy, novaui, a, b = self.pair()
@@ -1947,8 +1976,8 @@ class FieldOfView(Pair):
         self.assertIn("body.skin-classic.system-options .so-label--fov { top: %ddp; }" % (row + 2), classic)
         self.assertIn("body.skin-classic.system-options .so-slider--fov { top: %ddp; }" % row, classic)
         part = classic.split("body.skin-classic.system-options .so-legacy\n{")[1].split("}")[0]
-        self.assertIn("height: %ddp;" % (type(a).PLAYER_OPTION_ROW_Y["tips"] + 22), part,
-                      "the legacy part as tall as its last row (NOVA-118's)")
+        self.assertIn("height: %ddp;" % (type(a).FRAME_RATE_ROW_Y + 22), part,
+                      "the legacy part as tall as its last row (NOVA-214's)")
 
     def test_the_label_is_in_every_locale(self):
         locales = [name for name in sorted(os.listdir(LOCALES))
@@ -2032,8 +2061,8 @@ class PlayerOptionRows(Pair):
                     child = children[name + suffix]
                     self.assertEqual((child["type"], child["x"], child["y"], child["text"]), ("radio_button", x, y, text))
                     self.assertTrue(child["default_image"].endswith("Middle_Button_01.sub"))
-        self.assertEqual((script["height"], board_spec["height"]), (330, 330), "255 and three rows of 25")
-        self.assertEqual(max(child["y"] for child in board_spec["children"]), PLAYER_OPTION_ROW_Y["tips"] + 2)
+        self.assertEqual((script["height"], board_spec["height"]), (355, 355), "255, three rows of 25 and NOVA-214's")
+        self.assertEqual(max(child["y"] for child in board_spec["children"]), FRAME_RATE_ROW_Y + 2, "NOVA-214's row last")
 
     def test_each_show_puts_the_flags_on_both(self):
         legacy, novaui, a, b = self.pair()
@@ -2105,12 +2134,181 @@ class PlayerOptionRows(Pair):
                 self.assertIn("body.skin-classic.system-options .so-choice--%s-1 { left: 180dp; top: %ddp; }" % (name, y),
                               classic)
         part = classic.split("body.skin-classic.system-options .so-legacy\n{")[1].split("}")[0]
-        self.assertIn("height: %ddp;" % (PLAYER_OPTION_ROW_Y["tips"] + 22), part)
+        self.assertIn("height: %ddp;" % (FRAME_RATE_ROW_Y + 22), part, "NOVA-214's row last")
 
     def test_the_labels_are_in_every_locale(self):
         locales = [name for name in sorted(os.listdir(LOCALES))
                    if os.path.exists(os.path.join(LOCALES, name, "locale_interface.txt"))]
         for key, texts in PLAYER_OPTION_TEXT.items():
+            self.assertEqual(locales, sorted(texts))
+            for locale in locales:
+                with self.subTest(key=key, locale=locale):
+                    with open(os.path.join(LOCALES, locale, "locale_interface.txt"), "rb") as handle:
+                        data = handle.read()
+                    self.assertTrue(data.endswith(b"\n"))
+                    self.assertNotIn(b"\r", data)
+                    lines = [line for line in data.decode("utf-8").split("\n") if line.startswith(key + "\t")]
+                    self.assertEqual(lines, [key + "\t" + texts[locale]])
+
+
+# --- the frame rate limit (NOVA-214) ----------------------------------------------------------
+
+# The row under tips: the label at x 30, the previous and next buttons (the
+# small art, 43 x 21) at 110 and 242 (the sliders' span, 110 to 285), the
+# value centered between them at 198.
+FRAME_RATE_ROW_Y = 310
+FRAME_RATE_TEXT = {
+    "OPTION_FRAME_RATE": {"ae": "معدل الإطارات", "br": "Limite de FPS", "cz": "Limit FPS", "de": "Bildrate",
+                          "dk": "Billedrate", "en": "Frame rate", "es": "Límite de FPS", "fr": "Limite FPS",
+                          "gr": "Ρυθμός καρέ", "hu": "FPS-korlát", "it": "Limite FPS", "nl": "Framerate",
+                          "pl": "Limit FPS", "pt": "Limite de FPS", "ro": "Limită FPS", "ru": "Лимит FPS",
+                          "tr": "FPS sınırı"},
+    "OPTION_FRAME_RATE_UNLIMITED": {"ae": "غير محدود", "br": "Ilimitado", "cz": "Neomezeno", "de": "Unbegrenzt",
+                                    "dk": "Ubegrænset", "en": "Unlimited", "es": "Ilimitado", "fr": "Illimité",
+                                    "gr": "Απεριόριστο", "hu": "Korlátlan", "it": "Illimitato", "nl": "Onbeperkt",
+                                    "pl": "Bez limitu", "pt": "Ilimitado", "ro": "Nelimitat", "ru": "Без лимита",
+                                    "tr": "Sınırsız"},
+    "OPTION_FRAME_RATE_VSYNC": dict((locale, "VSync") for locale in ("ae", "br", "cz", "de", "dk", "en", "es", "fr", "gr",
+                                                                     "hu", "it", "nl", "pl", "pt", "ro", "ru", "tr")),
+}
+FRAME_RATE_API = ("GetMaxFPS", "SetMaxFPS", "MAX_FPS_CHOICES", "MAX_FPS_UNLIMITED", "MAX_FPS_VSYNC")
+
+
+class FrameRateRow(Pair):
+    """The frame rate limit (NOVA-214; OLD's MAX_FPS combo,
+    uiGameOption.py:1326-1336) in the legacy system options (uisystemoption.py,
+    uiscript systemoptiondialog.py) and the NovaUI ones: the value between a
+    previous and a next button, stepping through systemSetting.MAX_FPS_CHOICES
+    (60, 120, 144, 165, 240, Unlimited, VSync) without wrapping, each step
+    systemSetting.SetMaxFPS, saved at exit with the other options. An exe
+    without the API shows no row."""
+
+    max_fps = 144
+
+    def setup_state(self, game):
+        game.settings.update({"sound_volume": 0.75, "music_volume": 0.5, "fog_level": 1, "max_fps": self.max_fps})
+        game.software_tiling = False
+
+    def pair(self, setup=None):
+        legacy, novaui = self.worlds(setup)
+        a, b = legacy.make_options(), novaui.make_options()
+        a.Show()
+        b.Show()
+        return legacy, novaui, a, b
+
+    def test_the_legacy_row_sits_under_tips_with_its_value_between_two_small_buttons(self):
+        legacy, novaui, a, b = self.pair()
+        self.assertEqual(type(a).FRAME_RATE_ROW_Y, FRAME_RATE_ROW_Y)
+        script = support.read_uiscript("uiscript/systemoptiondialog.py")
+        board_spec = script["children"][0]
+        children = {child["name"]: child for child in board_spec["children"]}
+        y = FRAME_RATE_ROW_Y
+        self.assertEqual((children["frame_rate_name"]["type"], children["frame_rate_name"]["x"],
+                          children["frame_rate_name"]["y"]), ("text", 30, y + 2))
+        self.assertEqual(a.GetChild("frame_rate_name").text, "OPTION_FRAME_RATE")
+        for name, x, text in (("frame_rate_prev", 110, "<"), ("frame_rate_next", 242, ">")):
+            child = children[name]
+            self.assertEqual((child["type"], child["x"], child["y"], child["text"]), ("button", x, y, text), name)
+            for state, number in (("default_image", "01"), ("over_image", "02"), ("down_image", "03")):
+                self.assertTrue(child[state].endswith("small_button_%s.sub" % number), name)
+        value = children["frame_rate_value"]
+        self.assertEqual((value["type"], value["x"], value["y"], value["text_horizontal_align"]), ("text", 198, y + 2, "center"))
+        self.assertEqual((script["height"], board_spec["height"]), (y + 45, y + 45))
+        self.assertEqual(max(child["y"] for child in board_spec["children"]), y + 2, "the last row")
+
+    def test_each_show_puts_the_limit_on_both(self):
+        legacy, novaui, a, b = self.pair()
+        self.assertEqual(a.GetChild("frame_rate_value").text, "144")
+        model = board(b).model
+        self.assertEqual((model["frame_rate"], model["frame_rate_label"], model["frame_rate_on"], model["frame_rate_first"],
+                          model["frame_rate_last"]), (144, "144", True, False, False))
+        for value, label, first, last in ((0, "@ui.OPTION_FRAME_RATE_UNLIMITED", False, False),
+                                          (-1, "@ui.OPTION_FRAME_RATE_VSYNC", False, True), (60, "60", True, False),
+                                          (75, "60", True, False)):
+            with self.subTest(value=value):
+                novaui.game.settings["max_fps"] = value
+                b.Hide()
+                b.Show()
+                model = board(b).model
+                self.assertEqual((model["frame_rate_label"], model["frame_rate_first"], model["frame_rate_last"]),
+                                 (label, first, last))
+        self.assertEqual(novaui.effects(), [], "a show only reads")
+
+    def test_each_press_steps_one_choice_as_legacy_does_and_nothing_is_saved_yet(self):
+        legacy, novaui, a, b = self.pair()
+        steps = (("frame_rate_next", 1, 165, "165"), ("frame_rate_next", 1, 240, "240"),
+                 ("frame_rate_next", 1, 0, "OPTION_FRAME_RATE_UNLIMITED"),
+                 ("frame_rate_next", 1, -1, "OPTION_FRAME_RATE_VSYNC"),
+                 ("frame_rate_prev", -1, 0, "OPTION_FRAME_RATE_UNLIMITED"), ("frame_rate_prev", -1, 240, "240"))
+        for child, step, value, text in steps:
+            with self.subTest(child=child, value=value):
+                calls = self.same(legacy, novaui, lambda: a.GetChild(child).click(),
+                                  lambda: fire(b, "frame_rate", step, 0), "%s %d" % (child, value))
+                self.assertEqual(calls, [("systemSetting.SetMaxFPS", (value,))])
+                self.assertEqual((legacy.game.settings["max_fps"], novaui.game.settings["max_fps"]), (value, value))
+                self.assertEqual(a.GetChild("frame_rate_value").text, text)
+                self.assertEqual(board(b).get("frame_rate"), value)
+                self.assertEqual(board(b).get("frame_rate_label"), text if text.isdigit() else "@ui." + text)
+        for world in (legacy, novaui):
+            self.assertNotIn(("systemSetting.SaveConfig", ()), world.effects(), "saved at exit, as the other options")
+
+    def test_a_press_past_an_end_and_a_press_that_is_not_the_left_button_make_no_call(self):
+        for value, child, step in ((60, "frame_rate_prev", -1), (-1, "frame_rate_next", 1)):
+            with self.subTest(value=value):
+                self.max_fps = value
+                legacy, novaui, a, b = self.pair()
+                self.assertEqual(self.same(legacy, novaui, lambda: a.GetChild(child).click(),
+                                           lambda: fire(b, "frame_rate", step, 0), child), [])
+                self.assertEqual(board(b).get("frame_rate_first" if step < 0 else "frame_rate_last"), True)
+        mark = novaui.mark()
+        fire(b, "frame_rate", -1, 1)
+        fire(b, "frame_rate", "back", 0)
+        self.assertEqual(novaui.effects_since(mark), [])
+
+    def test_an_exe_without_the_api_shows_no_row_in_either_window(self):
+        def older_exe(game):
+            game.modules["systemSetting"].lack(*FRAME_RATE_API)
+        legacy, novaui, a, b = self.pair(older_exe)
+        for name in ("frame_rate_name", "frame_rate_prev", "frame_rate_value", "frame_rate_next"):
+            self.assertFalse(a.GetChild(name).IsShow(), name)
+        self.assertIs(board(b).model["frame_rate_on"], False)
+        self.assertEqual(self.same(legacy, novaui, lambda: a.GetChild("frame_rate_next").click(),
+                                   lambda: fire(b, "frame_rate", 1, 0), "older exe"), [])
+
+    def test_the_novaui_row_is_a_value_between_previous_and_next_after_tips(self):
+        document = read(os.path.join(WINDOWS, "system-options", "system-options.rml"))
+        row = re.search(r'<div class="so-row so-row--frame-rate"[^>]*>', document)
+        self.assertIsNotNone(row)
+        self.assertIn('data-if="frame_rate_on"', row.group(0))
+        self.assertIn('<span id="so-frame-rate-label" class="so-label so-label--frame-rate">@ui.OPTION_FRAME_RATE</span>',
+                      document)
+        self.assertIn('<span id="so-frame-rate-value" class="so-step-value">{{ frame_rate_label }}</span>', document)
+        for name, step, end, glyph in (("prev", -1, "frame_rate_first", "chevron-left"),
+                                       ("next", 1, "frame_rate_last", "chevron-right")):
+            match = re.search(r'<button id="so-frame-rate-%s"[^>]*>' % name, document)
+            self.assertIsNotNone(match, name)
+            tag = match.group(0)
+            self.assertIn('data-event-mousedown="frame_rate(%d, ev.button)"' % step, tag)
+            self.assertIn('data-attrif-disabled="%s"' % end, tag)
+            self.assertIn("nui-glyph--" + glyph, document[match.end():match.end() + 200])
+        order = [document.index(mark) for mark in ('id="so-tips-1"', 'id="so-frame-rate-prev"', 'id="so-frame-rate-value"',
+                                                   'id="so-frame-rate-next"', 'id="so-interface"')]
+        self.assertEqual(order, sorted(order), "after tips, in the legacy part")
+
+    def test_the_classic_row_is_at_legacy_s_places_and_the_legacy_part_grows_by_it(self):
+        classic = read(CLASSIC_SYSTEM_OPTIONS)
+        y = FRAME_RATE_ROW_Y
+        for rule in ("body.skin-classic.system-options .so-label--frame-rate { top: %ddp; }" % (y + 2),
+                     "body.skin-classic.system-options .so-step--prev { left: 110dp; top: %ddp; }" % y,
+                     "body.skin-classic.system-options .so-step--next { left: 242dp; top: %ddp; }" % y):
+            self.assertIn(rule, classic)
+        part = classic.split("body.skin-classic.system-options .so-legacy\n{")[1].split("}")[0]
+        self.assertIn("height: %ddp;" % (y + 22), part, "the legacy part as tall as its last row")
+
+    def test_the_texts_are_in_every_locale(self):
+        locales = [name for name in sorted(os.listdir(LOCALES))
+                   if os.path.exists(os.path.join(LOCALES, name, "locale_interface.txt"))]
+        for key, texts in FRAME_RATE_TEXT.items():
             self.assertEqual(locales, sorted(texts))
             for locale in locales:
                 with self.subTest(key=key, locale=locale):

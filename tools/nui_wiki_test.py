@@ -55,7 +55,8 @@ def setup(game):
     game.answer("nonplayer", "Search", lambda text, limit: (8002,) if text == "wolf" else ())
     previews = types.ModuleType("modelpreview")
     previews.calls = []
-    previews.Select = lambda name, race: previews.calls.append(("Select", name, race)) or (race != 0)
+    # An item's look comes with its race (NOVA-259: one Select, no SetParts).
+    previews.Select = lambda name, race, *look: previews.calls.append(("Select", name, race) + look) or (race != 0)
     previews.SetParts = lambda name, a, w, h, s: previews.calls.append(("SetParts", name, a, w, h, s)) or True
     previews.Show = lambda name, show: previews.calls.append(("Show", name, show))
     previews.Clear = lambda name: previews.calls.append(("Clear", name))
@@ -285,8 +286,9 @@ class Preview(WikiTest):
         with world.game, w4.quiet():
             window.Open()
             window.open_item(SWORD)
-        self.assertIn(("Select", "wiki", 3), self.calls(world))
-        self.assertIn(("SetParts", "wiki", 0, SWORD, 0, 0), self.calls(world))
+        # NOVA-259: the race and the look in one Select (one model, made off the frame).
+        self.assertIn(("Select", "wiki", 3, 0, SWORD, 0, 0), self.calls(world))
+        self.assertFalse([c for c in self.calls(world) if c[0] == "SetParts"])
 
     def test_a_race_the_item_excludes_picks_the_first_allowed_race(self):
         world, window = self.world()
@@ -295,7 +297,7 @@ class Preview(WikiTest):
         with world.game, w4.quiet():
             window.Open()
             window.open_item(SWORD)
-        self.assertIn(("Select", "wiki", 1), self.calls(world))
+        self.assertIn(("Select", "wiki", 1, 0, SWORD, 0, 0), self.calls(world))
 
     def test_a_pet_shows_its_item_value3_race(self):
         world, window = self.world()

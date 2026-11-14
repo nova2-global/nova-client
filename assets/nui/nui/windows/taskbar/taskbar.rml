@@ -68,7 +68,11 @@
 		<span id="taskbar-hp-value" class="taskbar-value taskbar-value--hp">{{ hp }}</span>
 		<span id="taskbar-sp-value" class="taskbar-value taskbar-value--sp">{{ sp }}</span>
 
-		<span id="exp-orbs" class="nui-has-tooltip taskbar-exp">
+		<!-- NOVA-200: the EXP orbs are the anti-EXP switch (a left press sends
+		     /anti_exp; the server answers with AntiExpState, TaskBar.SetAntiExp),
+		     frosted while EXP is frozen; the tooltip says which way a press goes. -->
+		<span id="exp-orbs" class="nui-has-tooltip taskbar-exp" data-class-is-frozen="exp_frozen"
+			data-event-mousedown="exp_press(ev.button)">
 			<progress id="exp-orb-1" class="taskbar-orb taskbar-orb--1" direction="top" data-attr-value="exp_orbs[0]"/>
 			<span class="taskbar-orb-glass nui-fx taskbar-orb--1" data-class-is-full="exp_orbs[0] >= 1"
 				data-style---orb-level="(exp_orbs[0] * 100) + '%'"></span>
@@ -81,8 +85,9 @@
 			<progress id="exp-orb-4" class="taskbar-orb taskbar-orb--4" direction="top" data-attr-value="exp_orbs[3]"/>
 			<span class="taskbar-orb-glass nui-fx taskbar-orb--4" data-class-is-full="exp_orbs[3] >= 1"
 				data-style---orb-level="(exp_orbs[3] * 100) + '%'"></span>
+			<span class="taskbar-exp__frost" data-if="exp_frozen"></span>
 			<span class="taskbar-exp__pct">{{ exp_percent | format(1) }}%</span>
-			<span class="nui-tooltip nui-anim taskbar-tip"><span>@game.TASKBAR_EXP</span> : {{ exp_percent | format(2) }}%</span>
+			<span class="nui-tooltip nui-anim taskbar-tip"><span>@game.TASKBAR_EXP</span> : {{ exp_percent | format(2) }}%<br/>{{ exp_hint }}</span>
 		</span>
 
 		<button id="mouse-left" class="taskbar-mode taskbar-mode--left nui-has-tooltip"

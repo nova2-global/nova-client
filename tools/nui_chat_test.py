@@ -495,6 +495,32 @@ class ChatDifferential(unittest.TestCase):
         legacy, novaui = self.flow(steps)
         self.assertEqual(novaui.text(), "second")
 
+    def test_a_recalled_line_keeps_its_key_and_has_the_caret_at_its_end(self):
+        # NOVA-257: Up and Down are kept, so the host's text widget does not
+        # also move the caret (to the start), and the line comes with the
+        # caret at its end, in the chat and in the chat log's field.
+        for which in ("chat", "log"):
+            world = World(True)
+            world.enter_game()
+            with world:
+                if which == "chat":
+                    world.chat.OpenChat()
+                else:
+                    world.log.Open()
+            for text in ("first line", "the second line"):
+                world.type(text, which)
+                world.enter(which)
+                if which == "chat":
+                    with world:
+                        world.chat.OpenChat()
+            board, field = world.board(which), world.field(which)
+            self.assertIs(world.key("up", which), True, which)
+            self.assertEqual((board.get_value(field), board.get_caret(field)), ("the second line", (15, 15)), which)
+            self.assertIs(world.key("up", which), True, which)
+            self.assertEqual((board.get_value(field), board.get_caret(field)), ("first line", (10, 10)), which)
+            self.assertIs(world.key("down", which), True, which)
+            self.assertEqual(board.get_caret(field), (15, 15), which)
+
     def test_the_shout_color_button_picker_and_one_colored_shout(self):
         """Wave 5 (NOVA-11; legacy ChatInputSet): with the perk, the button shows
         while the chat is open; a swatch picks the color the next shout sends,
@@ -1534,6 +1560,31 @@ class Layers(unittest.TestCase):
                 layers = [call for call in ast.walk(init) if isinstance(call, ast.Call) and isinstance(call.func, ast.Attribute)
                           and call.func.attr == "__init__" and len(call.args) >= 2]
                 self.assertEqual(layers, [], "%s: ui.Window's default layer, UI" % node.name)
+
+
+class LegacyBarEasing(unittest.TestCase):
+    """NOVA-214: rendering runs more often than updates once the frame rate is
+    uncapped, so the legacy chat's board eases its height a tenth per update
+    (OnUpdate), not per render, and keeps 60 Hz's speed at any frame rate."""
+
+    @staticmethod
+    def methods():
+        tree = ast.parse(read(os.path.join(ROOT, "uichat.py")))
+        chat = next(node for node in tree.body if isinstance(node, ast.ClassDef) and node.name == "ChatWindow")
+        return {item.name: item for item in chat.body if isinstance(item, ast.FunctionDef)}
+
+    @staticmethod
+    def eases(method):
+        return [node for node in ast.walk(method) if isinstance(node, ast.AugAssign)
+                and isinstance(node.target, ast.Attribute) and node.target.attr == "curHeightBar"]
+
+    def test_the_bar_eases_in_on_update_and_on_render_only_draws_it(self):
+        methods = self.methods()
+        self.assertEqual(self.eases(methods["OnRender"]), [], "no easing per render")
+        easing = self.eases(methods["OnUpdate"])
+        self.assertEqual(len(easing), 1)
+        self.assertEqual(ast.unparse(easing[0]), "self.curHeightBar += (self.heightBar - self.curHeightBar) // 10",
+                         "unchanged otherwise")
 
 
 # --- shared content pieces ------------------------------------------------------------------------

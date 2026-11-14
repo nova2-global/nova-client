@@ -33,6 +33,8 @@ ever). A close hides the previews and keeps them, models and pictures, for the n
 at the phase's end, clears them all), and the board is kept loaded and hidden from the window's
 making on (KEEP_BOARD_FROM_PROBE), so an open loads no document."""
 
+import math
+
 import app
 import item
 import net
@@ -73,6 +75,23 @@ PREVIEW_POLL = 0.2
 # the session's first open loads no document (default, Eddy to confirm: a hidden document for the
 # phase, the inventory's kept-board pattern from the making on instead of from the first open).
 KEEP_BOARD_FROM_PROBE = True
+# NOVA-262: the card view's size in dp (.dungeon-timer__view in the window's sheet; every slot
+# scales it with a transform, so one target size serves every card). Each warmed boss gets its
+# target at this size in pixels and a first draw while hidden.
+VIEW_DP = (206, 252)
+# NOVA-262: the prewarm of the kept board, some seconds after the window is made (after the
+# client's warm-up of the bosses): its cards, then its drops and chips, filled while hidden, then
+# drawn once off the screen, then hidden; one step at each end of its hidden clock (prewarm_at).
+PREWARM = True
+PREWARM_DELAY = 7.0
+PREWARM_GAP = 0.25
+PREWARM_OFFSCREEN = (-8000.0, -8000.0)
+PREWARM_STEPS = 4
+# Drops asked in the first step and still loading wait for at most this many more gaps (2 s)
+# before the second step writes them, so the open does not make the grid.
+PREWARM_DROPS_WAITS = 8
+# The board's clocks: none runs while it is hidden (a clock's end calls Python).
+HIDDEN_CLOCKS = {"go_end": 0.0, "drops_retry": 0.0, "drops_timeout": 0.0, "previews_check": 0.0}
 
 
 class _TimerBoard(nui_hud.RaisesOnPress, nui.Window):
@@ -182,6 +201,10 @@ class _TimerBoard(nui_hud.RaisesOnPress, nui.Window):
 	@nui.on("previews_ready")
 	def on_previews_ready(self):
 		self._owner.check_previews()
+
+	@nui.on("prewarm_ready")
+	def on_prewarm_ready(self):
+		self._owner.prewarm_step()
 
 	@nui.on("ticket_press")
 	def on_ticket_press(self, button):
@@ -331,6 +354,9 @@ class TimerWindow(nui_facade.Facade, uiTimerWindow.TimerWindow):
 			self.nui_discard()
 			raise
 		self.nui_notices = nui_dungeon_notice.Notices(self._announce)
+		self._prewarm = 0
+		self._prewarm_waits = 0
+		self._start_prewarm()
 
 	def nui_model(self):
 		return {
@@ -367,6 +393,8 @@ class TimerWindow(nui_facade.Facade, uiTimerWindow.TimerWindow):
 			"drops_timeout": 0.0,
 			# NOVA-256: the clock that looks again at the bosses still loading (0: none loads).
 			"previews_check": 0.0,
+			# NOVA-262: the prewarm's clock, set on the kept board only (an open restores 0).
+			"prewarm_at": 0.0,
 		}
 
 	def nui_demand(self):
@@ -376,10 +404,68 @@ class TimerWindow(nui_facade.Facade, uiTimerWindow.TimerWindow):
 		                         keep_probe=KEEP_BOARD_FROM_PROBE)
 
 	def _empty_board(self, board):
-		"""The kept hidden board holds no card, drop or chip and runs no clock (RmlUi updates every
-		element of a loaded document each frame); _restore_board sets them again at the next show."""
-		board.set(cards=[], drops_items=[], filter_chips=[], go_end=0.0, drops_retry=0.0, drops_timeout=0.0,
-		          previews_check=0.0)
+		"""The kept hidden board runs no clock. It keeps its cards, drops and chips (NOVA-262: an open
+		then makes no element and lays nothing out again, r48's 9 ms; their update while hidden costs
+		about 0.01 ms a frame); _restore_board sets every key again at the next show."""
+		board.set(**HIDDEN_CLOCKS)
+
+	def _warm_target_size(self):
+		"""The card view's size in pixels at the scale now (ElementView's want: its content box,
+		rounded up), for every warmed boss's target (NOVA-262)."""
+		scale = nui.get_scale() or 1.0
+		return tuple(int(math.ceil(dp * scale - 0.001)) for dp in VIEW_DP)
+
+	# --- the prewarm (NOVA-262) ---------------------------------------------------------
+
+	def _prewarm_board(self):
+		"""The kept board while the window is hidden, else None."""
+		demand = getattr(self, "demand", None)
+		kept = getattr(demand, "kept", None)
+		return kept() if kept is not None else None
+
+	def _start_prewarm(self):
+		board = self._prewarm_board()
+		if not PREWARM or board is None:
+			return
+		self._prewarm = 1
+		self._prewarm_waits = 0
+		board.set(prewarm_at=nui.now() + PREWARM_DELAY)
+
+	def prewarm_step(self):
+		"""The prewarm clock's end: the next step, each in its own update (none takes a whole frame):
+		the cards and the details as an open publishes them, written into the hidden board; the drops
+		and chips; the board shown off the screen, so it is laid out and drawn once (its meshes,
+		glyphs and icons made); the board hidden again. Drops still loading hold the second step
+		for some gaps. An open by the player ends it."""
+		board = self._prewarm_board()
+		step = self._prewarm
+		if board is None or self.IsShow() or not step:
+			self._prewarm = 0
+			return
+		state = self._state
+		if step == 1:
+			# What an open shows first (legacy Open's choice): its details, cards and drops (the
+			# drops request goes now, so they are there at the open).
+			target = next((idx for idx in uiTimerWindow.iter_indices_sorted() if not uiTimerWindow.is_hidden_for_current_view(idx)), None)
+			if target is not None:
+				self.SetDescription(target)
+			skip = set(HIDDEN_CLOCKS) | {"drops_items", "filter_chips", "prewarm_at"}
+			board.set(**dict((key, value) for key, value in state.items() if key not in skip))
+		elif step == 2:
+			if state["drops_state"] == "loading" and self._prewarm_waits < PREWARM_DROPS_WAITS:
+				# The drops asked in step 1 are on their way (none in the data cache): again later.
+				self._prewarm_waits += 1
+				board.set(prewarm_at=nui.now() + PREWARM_GAP)
+				return
+			board.set(drops_items=state["drops_items"], filter_chips=state["filter_chips"], drops_state=state["drops_state"],
+			          drops_count=state["drops_count"])
+		elif step == 3:
+			board.set_position(PREWARM_OFFSCREEN[0], PREWARM_OFFSCREEN[1])
+			board.show()
+		else:
+			board.hide()
+		self._prewarm = step + 1 if step < PREWARM_STEPS else 0
+		board.set(prewarm_at=nui.now() + PREWARM_GAP if self._prewarm else 0.0)
 
 	# --- the loader (uitimerwindow.py __LoadWindow, on proxies) ------------------------
 

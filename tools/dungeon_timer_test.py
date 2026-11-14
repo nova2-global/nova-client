@@ -282,6 +282,18 @@ class BossPreview(unittest.TestCase):
         cleared = set(c[1] for c in mp.calls if c[0] == "Clear")
         self.assertTrue(set(warmed) <= cleared)
 
+    def test_warm_boss_previews_passes_a_target_size_when_given_one(self):
+        """NOVA-262: the NovaUI window warms each boss's card view target (SetWarmTarget)."""
+        world = dts.World(False, preview="background")
+        world.timer()
+        mp = world.game.modules["modelpreview"]
+        del mp.calls[:]
+        with world.game:
+            world.timer_module.warm_boss_previews((206, 252))
+        sizes = [c for c in mp.calls if c[0] == "SetWarmTarget"]
+        self.assertEqual(sorted(c[1] for c in sizes), ["dungeon_boss_%d" % i for i in NEW_DUNGEONS])
+        self.assertEqual(set((c[2], c[3]) for c in sizes), {(206, 252)})
+
 
 class Drops(unittest.TestCase):
     def test_the_drops_button_asks_once_and_rows_fill_the_panel(self):

@@ -212,14 +212,17 @@ def warm_order():
 	return order
 
 
-def warm_boss_previews():
+def warm_boss_previews(target=None):
 	"""Asks the client to make every dungeon's boss in the background, hidden (modelpreview's
 	SetBackground and SetWarm): it starts once the game phase has settled, one step at a time and
-	after the cards in view. The window's own Select of a boss then finds its model. A client
-	without SetWarm warms nothing. Returns how many were asked."""
+	after the cards in view. The window's own Select of a boss then finds its model. With target,
+	(width, height) in pixels of the view that will show it (NOVA-262: the NovaUI card), the client
+	also makes each one's render target at that size and draws it there once, hidden
+	(SetWarmTarget). A client without SetWarm warms nothing. Returns how many were asked."""
 	preview = model_preview()
 	if preview is None or getattr(preview, "SetWarm", None) is None or getattr(preview, "SetBackground", None) is None:
 		return 0
+	set_target = getattr(preview, "SetWarmTarget", None) if target else None
 	asked = 0
 	for idx in warm_order():
 		race = int(DESCRIPTION[idx][0][0])
@@ -228,6 +231,8 @@ def warm_boss_previews():
 		name = boss_preview_name(idx)
 		preview.SetBackground(name, True)
 		preview.SetWarm(name, True)
+		if set_target is not None:
+			set_target(name, int(target[0]), int(target[1]))
 		if preview.Select(name, race):
 			asked += 1
 	return asked
@@ -587,7 +592,12 @@ class TimerWindow(ui.ScriptWindow):
 		if self.load_error:
 			self.emptyLabel.SetText(localeInfo.TIMERWINDOW_LOAD_ERROR % self.load_error)
 			self.emptyLabel.Show()
-		warm_boss_previews()
+		warm_boss_previews(self._warm_target_size())
+
+	def _warm_target_size(self):
+		"""The size in pixels of the view that shows a warmed boss, for its target (NOVA-262), or
+		None: legacy's one preview is not a warmed one."""
+		return None
 
 	def __LoadWindow(self):
 		pyScrLoader = ui.PythonScriptLoader()

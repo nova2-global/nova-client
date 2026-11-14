@@ -140,6 +140,9 @@ class BackgroundModelPreview(ModelPreview):
         else:
             self.background.discard(name)
 
+    def SetWarmTarget(self, name, width, height):
+        self.calls.append(("SetWarmTarget", name, int(width), int(height)))
+
     def SetWarm(self, name, on):
         self.calls.append(("SetWarm", name, bool(on)))
         if on:

@@ -352,8 +352,8 @@ class BackgroundBosses(unittest.TestCase):
         with world.game, w4.quiet():
             w4.press(window, "close_press", 0)
         self.assertIs(window.demand.kept(), kept)
-        for key in ("cards", "drops_items", "filter_chips"):
-            self.assertEqual(kept.model[key], [], key)
+        # NOVA-262: the kept board keeps its lists; no clock runs while hidden.
+        self.assertTrue(kept.model["cards"])
         for key in ("go_end", "drops_retry", "drops_timeout", "previews_check"):
             self.assertEqual(kept.model[key], 0.0, key)
         with world.game, w4.quiet():
@@ -463,6 +463,175 @@ class WarmBosses(unittest.TestCase):
         self.assertNotIn("dungeon-timer__mono", sheet)
         self.assertIn(".dungeon-timer__view--fade.nui-anim", sheet)
         self.assertIn("0.15s", sheet)
+
+
+class OpenFrame(unittest.TestCase):
+    """NOVA-262 (r48: the first open took one 32 ms frame: the five previews' first targets and
+    draws, 11.25 ms, and the board's first show of about 320 elements): every warmed boss gets its
+    card view's target and a first draw while hidden (modelpreview.SetWarmTarget), the kept board
+    keeps its cards, drops and chips while hidden, and it is filled and drawn once off the screen
+    some seconds after the window is made (the prewarm), so an open only shows what exists."""
+
+    def made(self, scale=1.0):
+        world = dts.World(True, preview="background")
+        world.game.state.scale = scale
+        world.rank()
+        window = world.timer()
+        world.game.state.now = 100.0
+        return world, window, world.game.modules["modelpreview"]
+
+    def kept(self, window):
+        return window.demand.kept()
+
+    def prewarm(self, world, window, steps=4):
+        board = self.kept(window)
+        for _ in range(steps):
+            with world.game, w4.quiet():
+                board.fire("prewarm_ready")
+        return board
+
+    def test_every_warmed_boss_gets_its_card_view_s_target_size(self):
+        import math
+        for scale in (1.0, 1.5):
+            world, window, mp = self.made(scale)
+            sizes = dict((c[1], (c[2], c[3])) for c in mp.calls if c[0] == "SetWarmTarget")
+            want = (int(math.ceil(206 * scale - 0.001)), int(math.ceil(252 * scale - 0.001)))
+            self.assertEqual(sorted(sizes), ["dungeon_boss_%d" % i for i in (0, 1, 2, 3, 5, 6)])
+            self.assertEqual(set(sizes.values()), {want}, "the card view's size in pixels at %s" % scale)
+
+    def test_the_view_size_is_the_sheet_s(self):
+        with world_module() as module:
+            dp = module.VIEW_DP
+        with open(os.path.join(WINDOWS, "dungeon-timer", "dungeon-timer.rcss"), encoding="utf-8") as handle:
+            sheet = handle.read()
+        rule = sheet[sheet.index(".dungeon-timer__view\n{"):]
+        rule = rule[:rule.index("}")]
+        self.assertIn("width: %ddp;" % dp[0], rule)
+        self.assertIn("height: %ddp;" % dp[1], rule)
+
+    def test_the_legacy_window_warms_no_target(self):
+        world = dts.World(False, preview="background")
+        world.timer()
+        self.assertFalse([c for c in world.game.modules["modelpreview"].calls if c[0] == "SetWarmTarget"])
+
+    def test_the_prewarm_fills_draws_off_the_screen_and_hides_the_kept_board(self):
+        world, window, mp = self.made()
+        board = self.kept(window)
+        self.assertIsNotNone(board)
+        self.assertGreater(board.model["prewarm_at"], 0.0, "scheduled when the window is made")
+        self.assertEqual(window._state["prewarm_at"], 0.0, "never in the state an open restores")
+        self.assertEqual(board.model["cards"], [])
+        with world.game, w4.quiet():
+            board.fire("prewarm_ready")
+        self.assertEqual(len(board.model["cards"]), 6, "the cards, while hidden")
+        self.assertFalse(board.visible)
+        self.assertGreater(board.model["prewarm_at"], 0.0)
+        with world.game, w4.quiet():
+            world.timer_module.add_drop(0, 2598, 1, 27001, 3, 800000)
+            window.refreshMobList()
+            board.fire("prewarm_ready")
+        self.assertTrue(board.model["filter_chips"], "then the drops and chips")
+        self.assertEqual(len(board.model["drops_items"]), 1)
+        self.assertFalse(board.visible)
+        with world.game, w4.quiet():
+            board.fire("prewarm_ready")
+        self.assertTrue(board.visible, "drawn once")
+        self.assertEqual(board.placement[0], "position")
+        self.assertLess(board.placement[1], -1000, "off the screen")
+        self.assertFalse(window.IsShow())
+        with world.game, w4.quiet():
+            board.fire("prewarm_ready")
+        self.assertFalse(board.visible, "hidden again")
+        self.assertEqual(board.model["prewarm_at"], 0.0, "done")
+        for key in ("go_end", "drops_retry", "drops_timeout", "previews_check"):
+            self.assertEqual(board.model[key], 0.0, "no clock runs while hidden: " + key)
+
+    def test_the_first_open_after_the_prewarm_reuses_the_board_and_its_cards_centered(self):
+        world, window, mp = self.made()
+        board = self.prewarm(world, window)
+        with world.game, w4.quiet():
+            window.Open()
+        self.assertIs(w4.board(window), board)
+        self.assertEqual(board.placement, ("center",), "back on the screen")
+        self.assertEqual(len(model(window)["cards"]), 6)
+
+    def test_a_close_keeps_the_cards_drops_and_chips(self):
+        world, window, mp = self.made()
+        while mp.step():
+            pass
+        with world.game, w4.quiet():
+            window.Open()
+        cards = model(window)["cards"]
+        with world.game, w4.quiet():
+            w4.press(window, "close_press", 0)
+        kept = self.kept(window)
+        self.assertEqual(kept.model["cards"], cards, "kept while hidden (no element made again at the next open)")
+        self.assertTrue(kept.model["filter_chips"])
+        for key in ("go_end", "drops_retry", "drops_timeout", "previews_check"):
+            self.assertEqual(kept.model[key], 0.0, key)
+
+    def test_drops_still_loading_hold_the_second_step_until_they_come(self):
+        world, window, mp = self.made()
+        board = self.kept(window)
+        with world.game, w4.quiet():
+            board.fire("prewarm_ready")
+        self.assertEqual(window._state["drops_state"], "loading")
+        self.assertIn((0,), world.drop_requests(), "asked in the first step")
+        with world.game, w4.quiet():
+            board.fire("prewarm_ready")
+        self.assertEqual(board.model["drops_items"], [], "not written while they load")
+        self.assertGreater(board.model["prewarm_at"], 0.0, "the step comes again")
+        self.assertFalse(board.visible)
+        with world.game, w4.quiet():
+            world.timer_module.add_drop(0, 2598, 1, 27001, 3, 800000)
+            window.refreshMobList()
+            board.fire("prewarm_ready")
+        self.assertEqual(len(board.model["drops_items"]), 1, "written once they came")
+        self.assertEqual(board.model["drops_state"], "ready")
+        self.assertFalse(board.visible)
+        with world.game, w4.quiet():
+            board.fire("prewarm_ready")
+        self.assertTrue(board.visible, "then the draw off the screen")
+
+    def test_drops_that_never_come_hold_it_two_seconds_at_most(self):
+        world, window, mp = self.made()
+        board = self.kept(window)
+        fires = 0
+        while not board.visible and fires < 30:
+            with world.game, w4.quiet():
+                board.fire("prewarm_ready")
+            fires += 1
+        self.assertTrue(board.visible)
+        self.assertEqual(fires, 3 + 8, "the first step, eight waits of 0.25 s, the second, the draw")
+        self.assertEqual(board.model["drops_state"], "loading")
+
+    def test_an_open_during_the_prewarm_ends_it(self):
+        world, window, mp = self.made()
+        board = self.kept(window)
+        with world.game, w4.quiet():
+            board.fire("prewarm_ready")
+            window.Open()
+        self.assertTrue(board.visible)
+        placement = board.placement
+        for _ in range(3):
+            with world.game, w4.quiet():
+                board.fire("prewarm_ready")
+        self.assertTrue(board.visible, "the player's window stays")
+        self.assertEqual(board.placement, placement, "and stays where it is")
+        self.assertTrue(window.IsShow())
+
+
+class world_module(object):
+    """nui_dungeon_timer under a world's modules."""
+
+    def __enter__(self):
+        self.world = dts.World(True, preview="background")
+        self.world.game.__enter__()
+        import nui_dungeon_timer
+        return nui_dungeon_timer
+
+    def __exit__(self, *exc):
+        self.world.game.__exit__(*exc)
 
 
 class Hiding(unittest.TestCase):
